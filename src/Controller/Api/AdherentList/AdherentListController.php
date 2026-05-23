@@ -59,8 +59,9 @@ class AdherentListController extends AbstractController
             $scope->getCommitteeUuids(),
             $scope->getAgoraUuids(),
         );
+        $filter->national = $scope->isNational();
 
-        if (!$scope->isNational() && !$filter->hasActivePerimeter()) {
+        if (!$filter->national && !$filter->hasActivePerimeter()) {
             throw new BadRequestHttpException('The provided scope does not have any perimeter, unable to search adherents.');
         }
 

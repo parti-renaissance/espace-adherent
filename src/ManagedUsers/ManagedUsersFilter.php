@@ -92,6 +92,8 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?bool $smsSubscription = null;
 
+    public bool $national = false;
+
     public ?string $subscriptionType;
 
     #[Assert\Choice(choices: ['createdAt', 'lastName'])]
