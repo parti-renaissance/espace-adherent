@@ -78,6 +78,10 @@ class ManagedUserRepository extends ServiceEntityRepository
 
     private function applyFilters(QueryBuilder $qb, ManagedUsersFilter $filter): QueryBuilder
     {
+        if (!$filter->national && !$filter->hasActivePerimeter()) {
+            throw new \LogicException('A non-national scope must define a perimeter (zone, committee or agora) before searching managed users.');
+        }
+
         if ($managedZones = $filter->managedZones) {
             $managedZonesExpression = $qb->expr()->orX();
 
@@ -313,7 +317,9 @@ class ManagedUserRepository extends ServiceEntityRepository
             $typeExpression->add('u.isCommitteeSupervisor = 1');
         }
 
-        $qb->andWhere($typeExpression);
+        if ($typeExpression->count()) {
+            $qb->andWhere($typeExpression);
+        }
 
         // excludes
         if (false === $filter->includeCommitteeHosts) {

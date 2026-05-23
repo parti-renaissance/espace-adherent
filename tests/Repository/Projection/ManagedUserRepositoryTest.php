@@ -33,6 +33,28 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         $this->assertCount(3, $this->managedUserRepository->searchByFilter($filter));
     }
 
+    public function testNationalScopeSearchWithoutAnyFilterDoesNotProduceEmptyWhereClause(): void
+    {
+        // National scope with no zones and no criteria: no WHERE condition is added.
+        // The committee-type Orx expression is empty and must not be appended,
+        // otherwise Doctrine renders an invalid "... WHERE  ORDER BY ..." DQL.
+        $filter = new ManagedUsersFilter(null, []);
+        $filter->national = true;
+
+        $this->assertGreaterThan(0, $this->managedUserRepository->searchByFilter($filter)->count());
+    }
+
+    public function testNonNationalScopeWithoutPerimeterIsRefused(): void
+    {
+        // A non-national scope with no perimeter would expose every adherent:
+        // the repository must refuse to build the query (fail closed).
+        $filter = new ManagedUsersFilter(null, []);
+
+        $this->expectException(\LogicException::class);
+
+        $this->managedUserRepository->searchByFilter($filter);
+    }
+
     #[DataProvider('providesOnlyEmailSubscribers')]
     public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count): void
     {
