@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership;
 
+use App\Address\Address;
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
@@ -16,6 +17,7 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\PublicId\AdherentPublicIdGenerator;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
@@ -23,14 +25,14 @@ use Symfony\Component\Uid\Uuid;
 class AdherentFactory
 {
     private PasswordHasherInterface $hasher;
-    private AdherentPublicIdGenerator $publicIdGenerator;
-    private PostAddressFactory $addressFactory;
 
-    public function __construct(PasswordHasherFactoryInterface $hasherFactory, AdherentPublicIdGenerator $publicIdGenerator, ?PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        PasswordHasherFactoryInterface $hasherFactory,
+        private readonly AdherentPublicIdGenerator $publicIdGenerator,
+        private ?PostAddressFactory $addressFactory = null,
+    ) {
         $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
-        $this->publicIdGenerator = $publicIdGenerator;
-        $this->addressFactory = $addressFactory ?: new PostAddressFactory();
+        $this->addressFactory ??= new PostAddressFactory();
     }
 
     public function createFromMembershipRequest(MembershipInterface $membershipRequest): Adherent
@@ -105,6 +107,37 @@ class AdherentFactory
 
         if ($membershipRequest->originalEmail && $membershipRequest->originalEmail === $adherent->getEmailAddress()) {
             $adherent->enable();
+        }
+
+        return $adherent;
+    }
+
+    public function createForSignup(
+        string $email,
+        ?string $gender = null,
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?PhoneNumber $phone = null,
+        ?Address $address = null,
+    ): Adherent {
+        $adherent = Adherent::create(
+            uuid: Adherent::createUuid($email),
+            publicId: $this->generatePublicId(),
+            emailAddress: mb_strtolower($email),
+            password: null,
+            gender: $gender,
+            firstName: $firstName ?? '',
+            lastName: $lastName ?? '',
+            phone: $phone,
+        );
+
+        if (null !== $address) {
+            $adherent->setPostAddress($this->addressFactory->createFlexible(
+                $address->getCountry(),
+                $address->getPostalCode(),
+                $address->getCityName(),
+                $address->getAddress(),
+            ));
         }
 
         return $adherent;

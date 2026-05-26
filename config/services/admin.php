@@ -445,6 +445,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Renaissance\NewsletterSource::class, 'label' => 'Sources Newsletter', 'group' => 'Tech'])
     ;
     $services
+        ->set('app.admin.signup_source', App\Admin\SignupSourceAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\SignupSource::class, 'label' => 'Sources d\'inscription', 'group' => 'Tech'])
+    ;
+    $services
         ->set('app.admin.geo.zone', App\Admin\Geo\ZoneAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Geo\Zone::class, 'show_in_dashboard' => false])
     ;
