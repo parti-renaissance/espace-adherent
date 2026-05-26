@@ -24,6 +24,9 @@ updates:
               patterns:
                   - 'symfony/*'
                   - 'twig/*'
+          api:
+              patterns:
+                  - 'api-platform/*'
           admin:
               patterns:
                   - 'sonata-project/*'
