@@ -113,6 +113,79 @@ class VotingPlatformAbleToVoteVoterTest extends AbstractAdherentVoterTestCase
         );
     }
 
+    public function testConsultationSympathizerCannotPotentiallyVote(): void
+    {
+        $designation = $this->createConsultationDesignation();
+        $designation->targetYear = (int) date('Y');
+
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())->method('isRenaissanceSympathizer')->willReturn(true);
+
+        $this->voterRepository->expects($this->never())->method('existsForElection');
+
+        $this->assertGrantedForAdherent(
+            false,
+            true,
+            $adherent,
+            VotingPlatformAbleToVoteVoter::POTENTIAL_PERMISSION,
+            $this->createElectionStub($designation)
+        );
+    }
+
+    public function testPrimoContributorAfterElectionCreationDateCannotVote(): void
+    {
+        $designation = $this->createConsultationDesignation();
+        $designation->targetYear = (int) date('Y');
+        $designation->electionCreationDate = new \DateTime('-2 days');
+
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())->method('isRenaissanceSympathizer')->willReturn(false);
+        $adherent
+            ->expects($this->atLeastOnce())
+            ->method('getFirstMembershipDonation')
+            ->willReturn(new \DateTime('-1 hour'))
+        ;
+
+        $this->voterRepository->expects($this->never())->method('existsForElection');
+
+        $this->assertGrantedForAdherent(
+            false,
+            true,
+            $adherent,
+            VotingPlatformAbleToVoteVoter::POTENTIAL_PERMISSION,
+            $this->createElectionStub($designation)
+        );
+    }
+
+    /**
+     * Counterpart to the primo guard: an existing adherent whose first contribution predates
+     * the freeze must NOT be blocked, even if they re-cotise during the vote window.
+     */
+    public function testExistingAdherentRecotisingDuringVoteWindowIsAllowed(): void
+    {
+        $designation = $this->createConsultationDesignation();
+        $designation->targetYear = (int) date('Y');
+        $designation->electionCreationDate = new \DateTime('-2 days');
+
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->atLeastOnce())->method('isRenaissanceSympathizer')->willReturn(false);
+        $adherent
+            ->expects($this->atLeastOnce())
+            ->method('getFirstMembershipDonation')
+            ->willReturn(new \DateTime('-1 year'))
+        ;
+
+        $this->voterRepository->expects($this->never())->method('existsForElection');
+
+        $this->assertGrantedForAdherent(
+            true,
+            true,
+            $adherent,
+            VotingPlatformAbleToVoteVoter::POTENTIAL_PERMISSION,
+            $this->createElectionStub($designation)
+        );
+    }
+
     /**
      * With a target year, the consultation keeps relying on the membership-year tag
      * (and the auto-built voters list), not on the new explicit-list check.

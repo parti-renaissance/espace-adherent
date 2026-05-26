@@ -42,10 +42,16 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 
         if (
             $adherent->isRenaissanceSympathizer()
-            && (
-                self::PERMISSION === $attribute
-                || (self::POTENTIAL_PERMISSION === $attribute && $designation->membershipDeadline && $designation->membershipDeadline < new \DateTime())
-            )
+            && \in_array($attribute, [self::PERMISSION, self::POTENTIAL_PERMISSION], true)
+        ) {
+            return false;
+        }
+
+        if (
+            \in_array($attribute, [self::PERMISSION, self::POTENTIAL_PERMISSION], true)
+            && $designation->getElectionCreationDate()
+            && ($firstDonation = $adherent->getFirstMembershipDonation())
+            && $firstDonation > $designation->getElectionCreationDate()
         ) {
             return false;
         }
