@@ -5,19 +5,25 @@ declare(strict_types=1);
 namespace Tests\App\Membership\Signup;
 
 use App\Entity\AdherentSignupSource;
+use App\Mailer\MailerService;
 use App\Membership\AdherentFactory;
+use App\Membership\MembershipNotifier;
+use App\Membership\Signup\Command\SendSignupConfirmationCommand;
 use App\Membership\Signup\SignupCommand;
 use App\Membership\Signup\SignupHandler;
 use App\Membership\UserEvents;
+use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use App\Repository\AdherentRepository;
+use App\Repository\BannedAdherentRepository;
 use App\Subscription\SubscriptionHandler;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\AbstractWebTestCase;
 
 #[Group('functional')]
 class SignupHandlerFunctionalTest extends AbstractWebTestCase
 {
-    public function testRegisterDoesNotDispatchUserCreated(): void
+    public function testHandleNewEmailDispatchesConfirmationCommandWithoutUserCreated(): void
     {
         $dispatched = false;
         static::getContainer()->get('event_dispatcher')->addListener(
@@ -29,29 +35,47 @@ class SignupHandlerFunctionalTest extends AbstractWebTestCase
 
         $email = 'fresh-signup@example.test';
 
-        // The handler has no consumer yet (the endpoint lands in phase 3), so the compiler inlines it
-        // out of the container. Build it from real services to exercise the genuine persistence path.
         $handler = new SignupHandler(
             $this->manager,
             static::getContainer()->get('doctrine'),
             static::getContainer()->get(AdherentRepository::class),
+            static::getContainer()->get(BannedAdherentRepository::class),
             static::getContainer()->get(AdherentFactory::class),
             static::getContainer()->get(SubscriptionHandler::class),
+            static::getContainer()->get(MembershipNotifier::class),
+            static::getContainer()->get(MailerService::class),
+            static::getContainer()->get(MessageBusInterface::class),
         );
-        $adherent = $handler->register(new SignupCommand($email, 'newsletter'));
+
+        $handler->handle(new SignupCommand($email, 'newsletter'));
 
         // The lightweight signup must NOT trigger member onboarding (no zones / tags / Mailchimp member).
         self::assertFalse($dispatched, 'A lightweight signup must not dispatch USER_CREATED.');
-        self::assertTrue($adherent->isPending());
 
         // A real PENDING contact has been registered with its source recorded.
         $persisted = static::getContainer()->get(AdherentRepository::class)->findOneByEmail($email);
         self::assertNotNull($persisted);
+        self::assertTrue($persisted->isPending());
         self::assertNotNull(
             $this->manager->getRepository(AdherentSignupSource::class)->findOneBy([
                 'adherent' => $persisted,
                 'source' => 'newsletter',
             ])
         );
+
+        // The confirmation command must reach the bus so the magic-link email is sent (test env routes to sync,
+        // but the dispatch itself is recorded by RecorderMiddleware regardless of transport).
+        $recorder = static::getContainer()->get(MessageRecorderInterface::class);
+        $confirmationDispatched = false;
+        foreach ($recorder->getMessages() as $envelope) {
+            $message = $envelope->getMessage();
+            if ($message instanceof SendSignupConfirmationCommand
+                && $message->adherent->getEmailAddress() === $email
+            ) {
+                $confirmationDispatched = true;
+                break;
+            }
+        }
+        self::assertTrue($confirmationDispatched, 'SendSignupConfirmationCommand must be dispatched on the bus.');
     }
 }

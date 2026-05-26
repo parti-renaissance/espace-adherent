@@ -78,7 +78,7 @@ class SignupController extends AbstractController
             return $this->json($violations, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->signupHandler->register(new SignupCommand(
+        $this->signupHandler->handle(new SignupCommand(
             email: $signupRequest->email,
             source: $source->code,
             firstName: $signupRequest->firstName,

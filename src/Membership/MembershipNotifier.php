@@ -90,7 +90,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendConnexionDetailsMessage(Adherent $adherent, ?string $appCode = null): void
     {
-        $url = $this->linkHandler->createLoginLink($adherent, appCode: $appCode)->getUrl();
+        $url = $this->linkHandler->createLoginLink($adherent, lifetime: 86400, appCode: $appCode)->getUrl();
 
         if ($adherent->isRenaissanceAdherent()) {
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(

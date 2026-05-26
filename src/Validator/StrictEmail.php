@@ -21,6 +21,8 @@ class StrictEmail extends Constraint
 
     public function __construct(
         ?bool $dnsCheck = true,
+        ?bool $disabledEmail = true,
+        ?bool $disposable = true,
         $options = null,
         ?array $groups = null,
         $payload = null,
@@ -28,5 +30,7 @@ class StrictEmail extends Constraint
         parent::__construct($options, $groups, $payload);
 
         $this->dnsCheck = $dnsCheck;
+        $this->disabledEmail = $disabledEmail;
+        $this->disposable = $disposable;
     }
 }
