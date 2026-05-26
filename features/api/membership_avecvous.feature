@@ -268,7 +268,7 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "cgu_accepted",
-                        "message": "Veuillez accepter les CGU."
+                        "message": "Vous devez accepter les conditions générales d'utilisation."
                     }
                 ]
             }
@@ -510,7 +510,7 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "cgu_accepted",
-                        "message": "Veuillez accepter les CGU."
+                        "message": "Vous devez accepter les conditions générales d'utilisation."
                     }
                 ]
             }

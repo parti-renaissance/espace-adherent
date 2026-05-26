@@ -6,6 +6,7 @@ namespace App\Controller\Api\Signup;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\CguAccepted as AssertCguAccepted;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
@@ -71,7 +72,7 @@ class SignupRequest implements RecaptchaChallengeInterface
     #[Groups(['signup:write'])]
     public bool $smsOptIn = false;
 
-    #[Assert\IsTrue(message: 'Vous devez accepter les conditions générales pour vous inscrire.')]
+    #[AssertCguAccepted]
     #[Groups(['signup:write'])]
-    public bool $generalOptIn = false;
+    public bool $cguAccepted = false;
 }

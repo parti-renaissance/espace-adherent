@@ -13,6 +13,7 @@ use App\Membership\Contact\SourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\ContactRepository;
+use App\Validator\CguAccepted as AssertCguAccepted;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -104,7 +105,7 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $phoneContact = false;
 
-    #[Assert\IsTrue(message: 'contact.cgu_accepted.is_true')]
+    #[AssertCguAccepted]
     #[Groups(['contact_create', 'contact_update'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $cguAccepted = false;

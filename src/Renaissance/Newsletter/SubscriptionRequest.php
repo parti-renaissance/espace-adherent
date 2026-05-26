@@ -6,6 +6,7 @@ namespace App\Renaissance\Newsletter;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\CguAccepted as AssertCguAccepted;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use App\Validator\UniqueRenaissanceNewsletter;
@@ -37,7 +38,7 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     #[Groups(['newsletter:write'])]
     public ?string $source = null;
 
-    #[Assert\IsTrue]
+    #[AssertCguAccepted]
     #[Groups(['newsletter:write'])]
     public ?bool $cguAccepted = false;
 }

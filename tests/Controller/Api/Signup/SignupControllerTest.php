@@ -122,7 +122,7 @@ class SignupControllerTest extends AbstractApiTestCase
     {
         $email = 'no-cgu@example.test';
 
-        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake', 'general_opt_in' => false]);
+        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake', 'cgu_accepted' => false]);
 
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         self::assertNull($this->getAdherentRepository()->findOneByEmail($email));
@@ -133,7 +133,7 @@ class SignupControllerTest extends AbstractApiTestCase
         $email = 'string-false-cgu@example.test';
 
         // A malicious client sends the boolean as the JSON string "false" to probe type coercion.
-        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake', 'general_opt_in' => 'false']);
+        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake', 'cgu_accepted' => 'false']);
 
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         self::assertNull($this->getAdherentRepository()->findOneByEmail($email));
@@ -388,7 +388,7 @@ class SignupControllerTest extends AbstractApiTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => self::CLIENT_IP],
-            json_encode(['email' => $email, 'recaptcha' => 'fake', 'general_opt_in' => true])
+            json_encode(['email' => $email, 'recaptcha' => 'fake', 'cgu_accepted' => true])
         );
 
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
@@ -486,9 +486,9 @@ class SignupControllerTest extends AbstractApiTestCase
 
     private function post(array $payload): void
     {
-        // The CGU gate requires general_opt_in to be true: default it so success cases pass; rejection
+        // The CGU gate requires cgu_accepted to be true: default it so success cases pass; rejection
         // tests override it with false.
-        $payload += ['general_opt_in' => true];
+        $payload += ['cgu_accepted' => true];
 
         $this->client->request(
             Request::METHOD_POST,
