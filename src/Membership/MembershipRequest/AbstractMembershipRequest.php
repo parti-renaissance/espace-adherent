@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Membership\MembershipRequest;
 
 use App\Validator\BannedAdherent;
+use App\Validator\CguAccepted as AssertCguAccepted;
 use App\Validator\UniqueMembership;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +24,7 @@ abstract class AbstractMembershipRequest implements MembershipInterface
     #[Groups(['membership:write'])]
     public ?string $firstName = null;
 
-    #[Assert\IsTrue(message: 'common.cgu.not_accepted', groups: ['Default', 'membership_request_amount'])]
+    #[AssertCguAccepted(groups: ['Default', 'membership_request_amount'])]
     #[Groups(['membership:write'])]
     public bool $cguAccepted = false;
 

@@ -73,7 +73,6 @@ constraint.unique_in_collection: Un élément avec la valeur "%value%" existe d�
 # Contact
 #
 contact.source.choice: Cette valeur n'est pas valide.
-contact.cgu_accepted.is_true: Veuillez accepter les CGU.
 
 #
 # Adherent

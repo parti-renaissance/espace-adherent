@@ -128,7 +128,7 @@ class SignupActivationFlowTest extends AbstractApiTestCase
                 'email' => $email,
                 'source' => 'newsletter',
                 'recaptcha' => 'fake',
-                'general_opt_in' => true,
+                'cgu_accepted' => true,
             ])
         );
     }
