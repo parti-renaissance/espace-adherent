@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 trait RecaptchaChallengeTrait
 {
-    #[Groups(['contact_create', 'legislative_newsletter_subscriptions_write', 'adhesion-email:persist', 'newsletter:write', 'procuration-email:persist', 'petition:write'])]
+    #[Groups(['contact_create', 'legislative_newsletter_subscriptions_write', 'adhesion-email:persist', 'newsletter:write', 'procuration-email:persist', 'petition:write', 'signup:write'])]
     protected ?string $recaptcha = null;
 
     #[Groups(['contact_create', 'legislative_newsletter_subscriptions_write'])]
