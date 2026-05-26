@@ -6,42 +6,80 @@ namespace App\Membership\Signup;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
+use App\Mailer\MailerService;
+use App\Mailer\Message\Renaissance\SignupExcludedAdherentMessage;
 use App\Membership\AdherentFactory;
+use App\Membership\MembershipNotifier;
+use App\Membership\Signup\Command\SendSignupConfirmationCommand;
 use App\Repository\AdherentRepository;
+use App\Repository\BannedAdherentRepository;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class SignupHandler
 {
+    private const ACTIVE_STATUSES = [Adherent::PENDING, Adherent::ENABLED];
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ManagerRegistry $registry,
         private readonly AdherentRepository $adherentRepository,
+        private readonly BannedAdherentRepository $bannedAdherentRepository,
         private readonly AdherentFactory $adherentFactory,
         private readonly SubscriptionHandler $subscriptionHandler,
+        private readonly MembershipNotifier $membershipNotifier,
+        private readonly MailerService $mailerService,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
-    public function register(SignupCommand $command): Adherent
+    public function handle(SignupCommand $command): void
     {
         $email = mb_strtolower($command->email);
-        $adherent = $this->adherentRepository->findOneByEmail($email);
-        $created = null === $adherent;
 
-        if ($created) {
-            $adherent = $this->adherentFactory->createForSignup(
-                $email,
-                $command->gender,
-                $command->firstName,
-                $command->lastName,
-                $command->phone,
-                $command->address,
-            );
-            $this->entityManager->persist($adherent);
+        if ($this->bannedAdherentRepository->countForEmail($email) > 0) {
+            $this->mailerService->sendMessage(SignupExcludedAdherentMessage::create($email));
+
+            return;
         }
+
+        $activeAdherent = $this->adherentRepository->findOneByEmailAndStatus($email, self::ACTIVE_STATUSES);
+
+        if (null !== $activeAdherent) {
+            $this->logSourceIfMissing($this->entityManager, $activeAdherent, $command->source);
+            $this->entityManager->flush();
+
+            $this->membershipNotifier->sendConnexionDetailsMessage($activeAdherent);
+
+            return;
+        }
+
+        $existingAdherent = $this->adherentRepository->findOneByEmail($email);
+
+        if (null !== $existingAdherent) {
+            return;
+        }
+
+        $adherent = $this->register($command, $email);
+
+        $this->bus->dispatch(new SendSignupConfirmationCommand($adherent));
+    }
+
+    private function register(SignupCommand $command, string $email): Adherent
+    {
+        $adherent = $this->adherentFactory->createForSignup(
+            $email,
+            $command->gender,
+            $command->firstName,
+            $command->lastName,
+            $command->phone,
+            $command->address,
+        );
+        $this->entityManager->persist($adherent);
 
         $this->logSourceIfMissing($this->entityManager, $adherent, $command->source);
 
@@ -65,9 +103,7 @@ class SignupHandler
             return $adherent;
         }
 
-        if ($created) {
-            $this->subscriptionHandler->addDefaultTypesToAdherent($adherent, $command->emailOptIn, $command->smsOptIn);
-        }
+        $this->subscriptionHandler->addDefaultTypesToAdherent($adherent, $command->emailOptIn, $command->smsOptIn);
 
         return $adherent;
     }

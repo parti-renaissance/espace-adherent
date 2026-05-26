@@ -25,7 +25,7 @@ class SignupRequest implements RecaptchaChallengeInterface
 
     #[Assert\NotBlank]
     #[Groups(['signup:write'])]
-    #[StrictEmail(dnsCheck: false)]
+    #[StrictEmail(dnsCheck: false, disabledEmail: false)]
     public ?string $email = null;
 
     #[Assert\Length(max: 100)]

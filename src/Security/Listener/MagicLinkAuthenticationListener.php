@@ -7,16 +7,20 @@ namespace App\Security\Listener;
 use App\Adhesion\AdhesionStepEnum;
 use App\Controller\Renaissance\MagicLinkController;
 use App\Entity\Adherent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class MagicLinkAuthenticationListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly RequestStack $requestStack,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -39,8 +43,10 @@ class MagicLinkAuthenticationListener implements EventSubscriberInterface
             return;
         }
 
+        $justValidated = false;
         if ($adherent->isPending()) {
             $adherent->enable();
+            $justValidated = true;
         }
 
         if (!$adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
@@ -48,5 +54,9 @@ class MagicLinkAuthenticationListener implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
+
+        if ($justValidated) {
+            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
+        }
     }
 }

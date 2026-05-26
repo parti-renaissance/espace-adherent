@@ -15,6 +15,7 @@ class LoadSignupSourceData extends Fixture
         'petition' => 'Pétition',
         'event' => 'Événement',
         'national_event' => 'Grand événement national',
+        'vox' => 'Vox',
     ];
 
     public function load(ObjectManager $manager): void
