@@ -24,7 +24,7 @@ class Router
     private function getPath(object $object): string
     {
         if ($object instanceof Action) {
-            return '/actions?uuid='.$object->getUuid();
+            return '/actions/'.$object->getUuid();
         }
 
         if ($object instanceof Event) {
