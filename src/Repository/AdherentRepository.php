@@ -35,7 +35,6 @@ use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
-use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
@@ -951,6 +950,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $qb = $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
+            ->orderBy('adherent.id')
         ;
 
         if (null !== $offset && null !== $limit) {
@@ -977,13 +977,72 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilderForZones($zones, true, false)
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
             ->leftJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = adherent')
-            ->leftJoin('voter.votersLists', 'voters_lists', Join::WITH, 'voters_lists.election = :election')
-            ->leftJoin(ElectionRound::class, 'election_round', Join::WITH, 'election_round.election = :election')
-            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = election_round')
+            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
             ->andWhere('vote.id IS NULL')
             ->groupBy('adherent.id')
-            ->setParameter('election', $election)
+            ->orderBy('adherent.id')
+            ->setParameter('current_round', $election->getCurrentRound())
         ;
+
+        if (null !== $offset && null !== $limit) {
+            $qb
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->getResult()
+        ;
+    }
+
+    public function findRenaissanceAdherentsForElection(
+        Election $election,
+        bool $excludeVoted = false,
+        ?int $offset = null,
+        ?int $limit = null,
+    ): array {
+        $designation = $election->getDesignation();
+
+        $qb = $this
+            ->createQueryBuilderForZones($designation->getZones()->toArray(), true, false)
+            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
+            ->orderBy('adherent.id')
+        ;
+
+        if ($designation->accountCreationDeadline) {
+            $qb
+                ->andWhere('adherent.registeredAt <= :account_creation_deadline')
+                ->setParameter('account_creation_deadline', $designation->accountCreationDeadline)
+            ;
+        } elseif (
+            $designation->getElectionCreationDate()
+            && ($designation->isConsultationType() || $designation->isVoteType() || $designation->isCongressCNType())
+        ) {
+            $qb
+                ->andWhere('adherent.registeredAt <= :election_creation_date')
+                ->setParameter('election_creation_date', $designation->getElectionCreationDate())
+            ;
+        }
+
+        if ($designation->membershipDeadline) {
+            $qb
+                ->andWhere('adherent.lastMembershipDonation IS NULL OR adherent.lastMembershipDonation <= :membership_deadline')
+                ->setParameter('membership_deadline', $designation->membershipDeadline)
+            ;
+        }
+
+        if ($excludeVoted) {
+            $qb
+                ->leftJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = adherent')
+                ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
+                ->andWhere('vote.id IS NULL')
+                ->groupBy('adherent.id')
+                ->setParameter('current_round', $election->getCurrentRound())
+            ;
+        }
 
         if (null !== $offset && null !== $limit) {
             $qb

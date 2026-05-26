@@ -171,6 +171,11 @@ class DesignationAdmin extends AbstractAdmin
             ->tab('Notifications 📯')
                 ->with('Envoi d\'email')
                     ->add('notifications', DesignationNotificationType::class, ['label' => false, 'required' => false])
+                    ->add('notifyPotentialElectorate', CheckboxType::class, [
+                        'label' => 'Notifier le collège électoral potentiel',
+                        'required' => false,
+                        'help' => 'Uniquement pour Consultation/Vote avec un "Collège électoral" (année) défini. Si coché, le mail d\'ouverture du vote et les rappels J-1/H-1 sont envoyés à tous les adhérents Renaissance dans le périmètre (à jour ou non), avec un CTA "Me mettre à jour" pour les non-à-jour. L\'annonce J-2 et le mail de résultats ne sont PAS affectés.',
+                    ])
                 ->end()
             ->end()
             ->tab('Questionnaire ❓')

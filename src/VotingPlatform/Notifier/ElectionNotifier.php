@@ -60,10 +60,27 @@ class ElectionNotifier
 
                 return ElectionIsOpenMessage::create($election, $recipients, $url, $description);
             },
-            DesignationTypeEnum::CONGRESS_CN === $electionType ? function (int $offset, int $limit): array {
-                return $this->adherentRepository->findAllForCongressCNElection(false, $offset, $limit);
-            } : null
+            $this->resolvePotentialElectorateCallback($election)
         );
+    }
+
+    private function resolvePotentialElectorateCallback(Election $election): ?callable
+    {
+        $designation = $election->getDesignation();
+
+        if (DesignationTypeEnum::CONGRESS_CN === $designation->getType()) {
+            return function (int $offset, int $limit): array {
+                return $this->adherentRepository->findAllForCongressCNElection(false, $offset, $limit);
+            };
+        }
+
+        if ($designation->notifyPotentialElectorate) {
+            return function (int $offset, int $limit) use ($election): array {
+                return $this->adherentRepository->findRenaissanceAdherentsForElection($election, false, $offset, $limit);
+            };
+        }
+
+        return null;
     }
 
     public function notifyVoteAnnouncement(Election $election): void
@@ -84,7 +101,8 @@ class ElectionNotifier
                 }
 
                 return VoteAnnouncementMessage::create($election, $recipients, $url);
-            }
+            },
+            $this->resolvePotentialElectorateCallback($election)
         );
     }
 
@@ -97,7 +115,11 @@ class ElectionNotifier
         $designation = $election->getDesignation();
         $zones = $election->getDesignation()->getZones()->toArray();
 
-        if (!$designation->isCommitteeSupervisorType() && $zones) {
+        if ($designation->notifyPotentialElectorate) {
+            $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+                return $this->adherentRepository->findRenaissanceAdherentsForElection($election, true, $offset, $limit);
+            };
+        } elseif (!$designation->isCommitteeSupervisorType() && $zones) {
             $getRecipientsCallback = function (int $offset, int $limit) use ($election, $zones): array {
                 return $this->adherentRepository->getAllInZonesAndNotVoted($election, $zones, $offset, $limit);
             };
