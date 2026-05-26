@@ -157,6 +157,14 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $accountCreationDeadline = null;
 
+    #[Assert\Expression(
+        '!this.notifyPotentialElectorate || ((this.isConsultationType() or this.isVoteType()) and this.targetYear !== null)',
+        message: "Le ciblage du collège électoral potentiel n'est possible que pour une consultation ou un vote ayant un collège électoral (année de cotisation) défini.",
+        groups: ['Default', 'Admin'],
+    )]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $notifyPotentialElectorate = false;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $membershipDeadline = null;
 
