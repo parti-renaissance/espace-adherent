@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Chatbot;
 
 use App\Chatbot\ChatbotManager;
+use App\Chatbot\RateLimit\ChatbotRateLimitChecker;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
@@ -16,8 +17,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -29,7 +28,7 @@ class PostMessageController extends AbstractController
     public function __construct(
         #[AutowireLocator('ai.agent', indexAttribute: 'name')]
         private readonly ContainerInterface $agents,
-        private readonly RateLimiterFactory $botChatbotLimiter,
+        private readonly ChatbotRateLimitChecker $rateLimitChecker,
         private readonly AuthorizationChecker $authorizationChecker,
         private readonly LoggerInterface $logger,
     ) {
@@ -63,10 +62,7 @@ class PostMessageController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $limit = $this->botChatbotLimiter->create('chatbot_'.$agentId.'_'.$user->getUuid()->toRfc4122())->consume(1);
-        if (!$limit->isAccepted()) {
-            throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - time()));
-        }
+        $this->rateLimitChecker->check($user, $agentId);
 
         $agent = $this->agents->get($agentId);
         $thread = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);

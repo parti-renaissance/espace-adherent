@@ -38,12 +38,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
 
     private function resetChatbotRateLimiter(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        $limiter = self::getContainer()->get('limiter.bot_chatbot');
-
-        foreach (['chatbot', 'antiseche'] as $agentId) {
-            $limiter->create('chatbot_'.$agentId.'_'.$adherent->getUuid()->toRfc4122())->reset();
-        }
+        self::getContainer()->get('cache.rate_limiter')->clear();
     }
 
     protected function tearDown(): void
