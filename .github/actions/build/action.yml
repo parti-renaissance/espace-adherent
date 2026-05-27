@@ -34,20 +34,25 @@ runs:
           with:
               skip-install: ${{ inputs.skip-composer-install }}
 
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v4
+
         - name: Build docker image
           shell: bash
           env:
               TAG: ${{ inputs.tag }}
               HASH: ${{ inputs.hash }}
           run: |-
-              docker build --quiet \
-                  --cache-from=$REGISTRY:$TAG-$HASH \
-                  --cache-from=$REGISTRY:$TAG \
+              docker buildx build \
+                  --load \
+                  --cache-from=type=gha,scope=dev \
+                  --cache-from=type=registry,ref=$REGISTRY:$TAG-$HASH \
+                  --cache-from=type=registry,ref=$REGISTRY:$TAG \
+                  --cache-to=type=gha,scope=dev,mode=max \
                   --tag=$REGISTRY:$TAG-$HASH \
                   --target=frankenphp_base \
                   --build-arg BUILDKIT_INLINE_CACHE=1 \
                   --build-arg BUILD_DEV=1 \
-                  --compress \
                   .
 
         - name: Start app container

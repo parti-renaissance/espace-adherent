@@ -1,10 +1,16 @@
 name: Dependencies cache
 description: Restore dependencies from cache
 
+outputs:
+    composer-cache-hit:
+        description: 'Whether the composer cache was hit exactly (true/false)'
+        value: ${{ steps.composer-cache.outputs.cache-hit }}
+
 runs:
     using: composite
     steps:
         - name: Cache composer
+          id: composer-cache
           uses: actions/cache@v5
           with:
               path: vendor/
@@ -17,4 +23,4 @@ runs:
                   public/built/
                   public/css/
                   public/select2/
-              key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+              key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}

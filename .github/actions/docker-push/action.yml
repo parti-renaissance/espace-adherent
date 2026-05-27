@@ -19,10 +19,5 @@ runs:
               TAG: ${{ inputs.tag }}
           run: |-
               docker image tag $REGISTRY:$TAG-$HASH $REGISTRY:$TAG
-
-        - shell: bash
-          env:
-              HASH: ${{ inputs.hash }}
-              TAG: ${{ inputs.tag }}
-          run: |-
-              docker image push --all-tags --quiet $REGISTRY
+              docker image push --quiet $REGISTRY:$TAG-$HASH
+              docker image push --quiet $REGISTRY:$TAG

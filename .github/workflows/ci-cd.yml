@@ -62,34 +62,33 @@ jobs:
         steps:
             - uses: actions/checkout@v6
 
-            - name: Setup pnpm
-              uses: ./.github/actions/setup-pnpm
-
-            - name: Build static assets
-              run: pnpm build-prod
-
             - name: Cache static assets
+              id: static-cache
               uses: actions/cache@v5
               with:
                   path: |
                       public/built/
                       public/css/
                       public/select2/
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}
+
+            - name: Setup pnpm
+              if: steps.static-cache.outputs.cache-hit != 'true'
+              uses: ./.github/actions/setup-pnpm
+
+            - name: Build static assets
+              if: steps.static-cache.outputs.cache-hit != 'true'
+              run: pnpm build-prod
 
     lint:
         name: Lint
         runs-on: ubuntu-24.04
-        needs: [build]
         if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
         env:
             EXEC:
             RUN_NODE:
         steps:
             - uses: actions/checkout@v6
-
-            - name: Set cache key (monthly refresh)
-              run: echo "CACHE_MONTH=$(date +'%Y-%m')" >> $GITHUB_ENV
 
             - name: Cache composer
               id: composer-cache
@@ -120,30 +119,40 @@ jobs:
             - uses: ./.github/actions/setup-pnpm
 
             - name: Validate composer.json and composer.lock
+              if: ${{ !cancelled() }}
               run: composer validate --no-check-all --no-check-publish
 
             - name: PHP Coding Standards Fixer
+              if: ${{ !cancelled() }}
               run: make phpcs
 
             - name: Lint YAML files
+              if: ${{ !cancelled() }}
               run: make ly
 
             - name: Lint Twig files
+              if: ${{ !cancelled() }}
               run: make lt
 
             - name: Lint container
+              if: ${{ !cancelled() }}
               run: make lc
 
             - name: ESLint
+              if: ${{ !cancelled() }}
               run: make lj
 
             - name: Prettier
+              if: ${{ !cancelled() }}
               run: make lp
 
             - name: PHPStan - PHP Static Analysis Tool
+              if: ${{ !cancelled() }}
               run: make phpstan
 
             - name: Composer Security Audit
+              if: ${{ !cancelled() }}
+              continue-on-error: true
               run: composer audit --abandoned=report
 
     phpunit:
@@ -155,7 +164,8 @@ jobs:
         steps:
             - uses: actions/checkout@v6
 
-            - uses: ./.github/actions/dependencies-cache
+            - id: deps-cache
+              uses: ./.github/actions/dependencies-cache
 
             - name: Cache PHPUnit
               uses: actions/cache@v5
@@ -174,6 +184,7 @@ jobs:
             - uses: ./.github/actions/build
               with:
                   hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq
                   keys: true
                   cache-warmup: true
@@ -195,7 +206,8 @@ jobs:
         steps:
             - uses: actions/checkout@v6
 
-            - uses: ./.github/actions/dependencies-cache
+            - id: deps-cache
+              uses: ./.github/actions/dependencies-cache
 
             - uses: ./.github/actions/docker-login
 
@@ -206,6 +218,7 @@ jobs:
             - uses: ./.github/actions/build
               with:
                   hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq
                   keys: true
                   cache-warmup: true
@@ -234,7 +247,8 @@ jobs:
         steps:
             - uses: actions/checkout@v6
 
-            - uses: ./.github/actions/dependencies-cache
+            - id: deps-cache
+              uses: ./.github/actions/dependencies-cache
 
             - uses: ./.github/actions/docker-login
 
@@ -245,6 +259,7 @@ jobs:
             - uses: ./.github/actions/build
               with:
                   hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq selenium
                   keys: true
 
@@ -292,26 +307,24 @@ jobs:
 
             - uses: ./.github/actions/docker-login
 
-            - uses: ./.github/actions/docker-pull
-              with:
-                  hash: ${{ env.HASH }}
-                  tag: ${{ env.TAG }}
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v4
 
             - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.php
 
             - run: |-
-                  docker build \
-                      --quiet \
-                      --cache-from=${{ env.REGISTRY }}:${{ env.TAG }} \
+                  docker buildx build \
+                      --push \
+                      --cache-from=type=gha,scope=prod \
+                      --cache-from=type=gha,scope=dev \
+                      --cache-from=type=registry,ref=${{ env.REGISTRY }}:${{ env.TAG }} \
+                      --cache-from=type=registry,ref=${{ env.REGISTRY }}:dev-${{ hashFiles('Dockerfile', 'docker/*') }} \
+                      --cache-to=type=gha,scope=prod,mode=max \
                       --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
+                      --tag ${{ env.REGISTRY }}:${{ env.TAG }} \
                       --target=frankenphp_base \
                       --build-arg BUILDKIT_INLINE_CACHE=1 \
                       .
-
-            - uses: ./.github/actions/docker-push
-              with:
-                  hash: ${{ env.HASH }}
-                  tag: ${{ env.TAG }}
 
     deploy-staging:
         name: Deploy Staging

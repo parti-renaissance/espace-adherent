@@ -53,15 +53,17 @@ services:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        image: redis:7.2-alpine
+        image: redis:7.4-alpine
 
     rabbitmq:
         image: rabbitmq:3-management-alpine
 
     node:
-        build:
-            context: .
-            target: node
+        image: node:22-alpine
+        working_dir: /srv/app
+        environment:
+            COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+        entrypoint: ['/bin/sh', '-c', 'corepack enable >/dev/null 2>&1 && exec "$$@"', '--']
         volumes:
             - ./:/srv/app
 
