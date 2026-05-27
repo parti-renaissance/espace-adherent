@@ -68,7 +68,7 @@ services:
             - ./:/srv/app
 
     selenium:
-        image: selenium/standalone-chrome:90.0
+        image: selenium/standalone-chromium:148.0
         shm_size: 2g
 
     mercure:

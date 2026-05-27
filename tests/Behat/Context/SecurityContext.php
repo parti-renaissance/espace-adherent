@@ -7,7 +7,7 @@ namespace Tests\App\Behat\Context;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Repository\AdherentRepository;
 use App\Repository\AdministratorRepository;
-use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -47,7 +47,7 @@ class SecurityContext extends RawMinkContext
     {
         $driver = $this->getSession()->getDriver();
 
-        if ($driver instanceof Selenium2Driver) {
+        if (!$driver instanceof BrowserKitDriver) {
             $page = $this->getSession()->getPage();
 
             $this->visitPath('/connexion');

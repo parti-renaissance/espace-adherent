@@ -13,7 +13,6 @@ use Behatch\HttpCall\ContextSupportedVoter;
 use Behatch\HttpCall\HttpCallResult;
 use Behatch\HttpCall\HttpCallResultPool;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use WebDriver\Exception;
 
 class HttpCallListener implements EventSubscriberInterface
 {
@@ -59,7 +58,7 @@ class HttpCallListener implements EventSubscriberInterface
                     new HttpCallResult($this->mink->getSession()->getPage()->getContent())
                 );
             }
-        } catch (\LogicException|DriverException|Exception $e) {
+        } catch (\LogicException|DriverException $e) {
         }
     }
 }
