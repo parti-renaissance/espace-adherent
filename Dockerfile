@@ -2,24 +2,17 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 ARG PHP_VERSION=8.5
-ARG NODE_VERSION=22
-
-FROM node:${NODE_VERSION}-alpine AS node
-RUN apk add --no-cache git
-ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-RUN corepack enable
-WORKDIR /srv/app
 
 FROM mlocati/php-extension-installer:2.11 AS php_extension_installer
 
 FROM dunglas/frankenphp:1-php${PHP_VERSION} AS frankenphp_base
 
-ENV TZ Europe/Paris
-ENV LANG fr_FR.UTF-8
-ENV LANGUAGE fr_FR.UTF-8
-ENV LC_ALL fr_FR.UTF-8
+ENV TZ=Europe/Paris \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 ARG BUILD_DEV
+ARG COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /srv/app
 
@@ -27,7 +20,11 @@ WORKDIR /srv/app
 COPY --link --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # persistent / runtime deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
         acl \
         file \
         gettext \
@@ -36,8 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libzip-dev \
         tzdata \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone \
-    && rm -rf /var/lib/apt/lists/*
+    && echo $TZ > /etc/timezone
 
 RUN set -eux; \
     install-php-extensions \
@@ -59,27 +55,34 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php/conf.d/default.ini $PHP_INI_DIR/conf.d/
 COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/app.ini
 
-COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
+COPY --link --chmod=755 docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
+
+# Composer deps first (cached layer, invalidated only when composer.* changes)
+COPY --link composer.json composer.lock symfony.lock ./
+RUN --mount=type=cache,target=/root/.composer/cache \
+    if [ -z "$BUILD_DEV" ]; then \
+        set -eux; \
+        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-autoloader --no-interaction; \
+    fi
+
+# Then the rest of the app
 COPY --link . .
 
 RUN mkdir -p var/cache var/log
 
-RUN test -z "$BUILD_DEV" && ( \
+RUN --mount=type=cache,target=/root/.composer/cache \
+    if [ -z "$BUILD_DEV" ]; then \
         set -eux; \
-        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
         composer dump-autoload --classmap-authoritative --no-dev; \
         composer dump-env prod; \
         composer run-script --no-dev post-install-cmd; \
         rm -rf /root/.composer; \
-        chmod +x bin/console; sync \
-    ) || :
+        chmod +x bin/console; \
+    fi
 
 RUN chown -R www-data:www-data var/
 
