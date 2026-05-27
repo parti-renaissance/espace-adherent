@@ -148,7 +148,6 @@
         "behat/behat": "^3.10",
         "behat/mink": "^1.12",
         "behat/mink-browserkit-driver": "^2.2",
-        "behat/mink-selenium2-driver": "^1.5",
         "coduo/php-matcher": "^6.0",
         "dama/doctrine-test-bundle": "^8.0",
         "doctrine/doctrine-fixtures-bundle": "^4.0",
@@ -163,9 +162,11 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^13.0",
         "roave/security-advisories": "dev-latest",
+        "robertfausk/behat-panther-extension": "^1.2",
         "soyuka/contexts": "^3.3",
         "symfony/css-selector": "^7.4",
         "symfony/debug-bundle": "^7.4",
+        "symfony/panther": "^2.4",
         "symfony/phpunit-bridge": "^7.4",
         "symfony/var-dumper": "^7.4",
         "symfony/web-profiler-bundle": "^7.4",
@@ -204,7 +205,8 @@
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*",
         "symfony/polyfill-php83": "*",
-        "symfony/polyfill-php84": "*"
+        "symfony/polyfill-php84": "*",
+        "symfony/polyfill-php85": "*"
     },
     "conflict": {
         "symfony/symfony": "*"

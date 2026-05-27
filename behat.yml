@@ -2,6 +2,7 @@ default:
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
+        Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             base_url: 'http://test.renaissance.code'
             files_path: 'tests/Fixtures'
@@ -9,15 +10,19 @@ default:
                 default:
                     symfony: ~
                 javascript:
-                    selenium2:
-                        wd_host: http://selenium:4444/wd/hub
-                        browser: 'chrome'
-                        capabilities:
-                            version: ''
-                            extra_capabilities:
-                                chromeOptions:
+                    panther:
+                        options:
+                            browser: 'selenium'
+                            connection_timeout_in_ms: 5000
+                            request_timeout_in_ms: 30000
+                        manager_options:
+                            host: 'http://selenium:4444/wd/hub'
+                            capabilities:
+                                browserName: 'chrome'
+                                'goog:chromeOptions':
                                     args:
                                         - '--start-maximized'
+                                        - '--no-sandbox'
         Behatch\Extension: ~
         Tests\App\Behat\Extension\AppExtension: ~
     suites:
