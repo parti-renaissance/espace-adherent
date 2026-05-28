@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdherentActivationCodeRepository::class)]
 #[ORM\Index(columns: ['adherent_id', 'value'])]
-#[ORM\Table]
 class AdherentActivationCode
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
@@ -24,6 +23,9 @@ class AdherentActivationCode
     #[ORM\Column]
     public string $value;
 
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
+    public int $failedAttempts = 0;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
@@ -36,23 +38,42 @@ class AdherentActivationCode
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $revokedAt = null;
 
-    public static function create(Adherent $adherent, int $codeTtl): self
-    {
+    public static function create(
+        Adherent $adherent,
+        int $codeTtl,
+        int $codeLength = 4,
+    ): self {
         $code = new self();
         $code->adherent = $adherent;
-        $code->value = static::generateValue();
+        $code->value = static::generateValue($codeLength);
         $code->createdAt = new \DateTime();
         $code->expiredAt = new \DateTime('+'.$codeTtl.' min');
 
         return $code;
     }
 
-    private static function generateValue(): string
+    private static function generateValue(int $length = 4): string
     {
-        $numbers = range(0, 9);
-        shuffle($numbers);
+        if ($length < 1 || $length > 10) {
+            throw new \InvalidArgumentException('Code length must be between 1 and 10.');
+        }
 
-        return implode('', \array_slice($numbers, 0, 4));
+        $code = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $code .= random_int(0, 9);
+        }
+
+        return $code;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
     }
 
     public function isExpired(): bool

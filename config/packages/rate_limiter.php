@@ -35,6 +35,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'limit' => 5,
                 'interval' => '1 minute',
             ],
+            'signup_code_attempt' => [
+                'policy' => 'sliding_window',
+                'limit' => 10,
+                'interval' => '1 minute',
+            ],
         ],
     ]);
 };
