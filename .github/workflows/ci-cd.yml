@@ -281,7 +281,7 @@ jobs:
     docker-build-push-gcr:
         name: Build prod & push on registry
         runs-on: ubuntu-24.04
-        needs: [lint, phpunit, behat, behat-selenium]
+        needs: [lint, phpunit, behat, behat-selenium, build-static]
         if: |
             always() &&
             (github.ref_name == 'master' || github.event_name == 'release') &&
@@ -303,7 +303,7 @@ jobs:
                       public/built/
                       public/css/
                       public/select2/
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}
 
             - uses: ./.github/actions/docker-login
 
