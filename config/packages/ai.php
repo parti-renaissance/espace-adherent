@@ -8,6 +8,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'vertexai' => [
                 'project_id' => '%env(VERTEX_AI_PROJECT_ID)%',
                 'location' => '%env(VERTEX_AI_LOCATION)%',
+                'http_client' => 'app.chatbot.vertexai_http_client',
             ],
             'generic' => [
                 'antiseche' => [

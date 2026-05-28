@@ -186,6 +186,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->load('App\Controller\\', __DIR__.'/../src/Controller/')
         ->tag('controller.service_arguments');
 
+    $services->set('app.chatbot.vertexai_http_client', App\Chatbot\Http\VertexAiSseHttpClient::class)
+        ->arg('$client', service('http_client'));
+
     $services->set('app.chatbot.antiseche.model_catalog', Symfony\AI\Platform\Bridge\Generic\ModelCatalog::class)
         ->args([[
             'antiseche-rag' => [
