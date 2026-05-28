@@ -306,9 +306,9 @@ Feature:
             """
 
         Examples:
-            | email                       |
-            | jacques.picard@en-marche.fr |
-            | disabled-email@test.com     |
+            | email                               |
+            | jacques.picard@en-marche.fr         |
+            | disabled-email@parti-renaissance.fr |
 
     Scenario: As an logged in user, I can create a new referral with a sympathizer email address
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"

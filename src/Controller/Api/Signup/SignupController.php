@@ -10,6 +10,7 @@ use App\Membership\Signup\SignupCommand;
 use App\Membership\Signup\SignupHandler;
 use App\Recaptcha\FriendlyCaptchaV2ApiClient;
 use App\Repository\SignupSourceRepository;
+use App\Validator\StrictEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,10 +60,19 @@ class SignupController extends AbstractController
         $signupRequest->setRecaptchaSiteKey($source?->friendlyCaptchaSiteKey ?: $this->friendlyCaptchaNewsletterSiteKey);
         $signupRequest->setRecaptchaApi(FriendlyCaptchaV2ApiClient::NAME);
 
-        $errors = $this->validator->validate($signupRequest);
+        $violations = $this->validator->validate($signupRequest);
 
-        if ($errors->count()) {
-            return $this->json($errors, Response::HTTP_BAD_REQUEST);
+        $blockingViolations = new ConstraintViolationList();
+        foreach ($violations as $violation) {
+            $isSoftEmailWarning = $violation->getConstraint() instanceof StrictEmail
+                && StrictEmail::LEVEL_WARNING === $violation->getCause();
+            if (!$isSoftEmailWarning) {
+                $blockingViolations->add($violation);
+            }
+        }
+
+        if ($blockingViolations->count()) {
+            return $this->json($blockingViolations, Response::HTTP_BAD_REQUEST);
         }
 
         if (!$source || !$source->enabled) {

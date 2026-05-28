@@ -7,6 +7,7 @@ namespace App\Membership\Signup\Request;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\CguAccepted as AssertCguAccepted;
+use App\Validator\Email\EmailForceableRequest;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
@@ -20,13 +21,14 @@ use Symfony\Component\Validator\Constraints as Assert;
     'not this.smsOptIn or this.phone',
     message: 'Vous avez accepté de recevoir des informations par SMS, mais vous n\'avez pas précisé votre numéro de téléphone.'
 )]
-class SignupRequest implements RecaptchaChallengeInterface
+class SignupRequest implements RecaptchaChallengeInterface, EmailForceableRequest
 {
     use RecaptchaChallengeTrait;
 
+    #[Assert\Length(max: 254)]
     #[Assert\NotBlank]
     #[Groups(['signup:write'])]
-    #[StrictEmail(dnsCheck: false, disabledEmail: false)]
+    #[StrictEmail(dnsCheck: true, disabledEmail: false, typoCheck: true, strictDnsErrors: true)]
     public ?string $email = null;
 
     #[Assert\Length(max: 100)]
@@ -75,4 +77,12 @@ class SignupRequest implements RecaptchaChallengeInterface
     #[AssertCguAccepted]
     #[Groups(['signup:write'])]
     public bool $cguAccepted = false;
+
+    #[Groups(['signup:write'])]
+    public bool $forceEmail = false;
+
+    public function isEmailForced(): bool
+    {
+        return $this->forceEmail;
+    }
 }

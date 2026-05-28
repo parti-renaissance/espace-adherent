@@ -7,6 +7,7 @@ namespace App\Normalizer;
 use ApiPlatform\Validator\Exception\ConstraintViolationListAwareExceptionInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ConstraintViolationListNormalizer implements NormalizerInterface
@@ -26,10 +27,20 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
         foreach ($object as $violation) {
             $propertyPath = $this->nameConverter ? $this->nameConverter->normalize($violation->getPropertyPath(), null, $format, $context) : $violation->getPropertyPath();
 
-            $violations[] = [
+            $entry = [
                 'propertyPath' => $propertyPath,
                 'message' => $violation->getMessage(),
             ];
+
+            $code = $violation->getCode();
+            if (null !== $code && !Uuid::isValid($code)) {
+                $entry['code'] = $code;
+                if ([] !== ($parameters = $violation->getParameters())) {
+                    $entry['parameters'] = $parameters;
+                }
+            }
+
+            $violations[] = $entry;
         }
 
         $result = [

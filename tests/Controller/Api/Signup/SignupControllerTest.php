@@ -214,8 +214,8 @@ class SignupControllerTest extends AbstractApiTestCase
 
     public function testSignupBannedEmailReturns201AndSendsExcludedMail(): void
     {
-        // disabled-email@test.com is the fixture banned email (LoadBannedAdherentData).
-        $email = 'disabled-email@test.com';
+        // disabled-email@parti-renaissance.fr is the fixture banned email (LoadBannedAdherentData).
+        $email = 'disabled-email@parti-renaissance.fr';
 
         $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
 
@@ -474,6 +474,63 @@ class SignupControllerTest extends AbstractApiTestCase
         $this->post(['email' => 'rate-limit-over@example.test', 'source' => 'newsletter', 'recaptcha' => 'fake']);
 
         $this->assertResponseStatusCode(Response::HTTP_TOO_MANY_REQUESTS, $this->client->getResponse());
+    }
+
+    public function testSignupRejectsTypoEmailWithSuggestion(): void
+    {
+        $this->post(['email' => 'user@gmai.com', 'source' => 'newsletter', 'recaptcha' => 'fake']);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+
+        $body = json_decode($this->client->getResponse()->getContent(), true);
+        self::assertSame('error', $body['status']);
+        self::assertCount(1, $body['violations']);
+
+        $violation = $body['violations'][0];
+        self::assertSame('email', $violation['propertyPath']);
+        self::assertSame('email_typo_suggestion', $violation['code']);
+        self::assertSame('user@gmail.com', $violation['parameters']['{{ suggestion }}']);
+        self::assertSame('user@gmai.com', $violation['parameters']['{{ email }}']);
+
+        $this->manager->clear();
+        self::assertNull($this->getAdherentRepository()->findOneByEmail('user@gmai.com'));
+    }
+
+    public function testSignupBypassesTypoWithForceEmail(): void
+    {
+        $this->post([
+            'email' => 'user@gmai.com',
+            'source' => 'newsletter',
+            'recaptcha' => 'fake',
+            'force_email' => true,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        self::assertNotNull($this->getAdherentRepository()->findOneByEmail('user@gmai.com'));
+    }
+
+    public function testSignupRejectsNonExistentDomain(): void
+    {
+        // `.con` is not a real TLD: NoDNSRecord ⇒ ERROR via strictDnsErrors: true ⇒ 400.
+        $this->post([
+            'email' => 'user@gmaill-fantome-pas-de-mx.con',
+            'source' => 'newsletter',
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+    }
+
+    public function testSignupOnReservedDomainSucceedsWithEmptyBody(): void
+    {
+        // example.test ⇒ LocalOrReservedDomain ⇒ WARNING ⇒ filtered by SignupController.
+        // Body stays 'null' (contract pinned, not exposed as warnings[]).
+        $this->post(['email' => 'reserved-domain@example.test', 'source' => 'newsletter', 'recaptcha' => 'fake']);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+        self::assertSame('null', $this->client->getResponse()->getContent());
     }
 
     protected function setUp(): void
