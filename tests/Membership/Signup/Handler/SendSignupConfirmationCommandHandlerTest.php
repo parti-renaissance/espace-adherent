@@ -13,6 +13,7 @@ use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\Signup\Command\SendSignupConfirmationCommand;
 use App\Membership\Signup\Handler\SendSignupConfirmationCommandHandler;
+use App\Membership\Signup\SignupCode;
 use App\Security\Http\LoginLink\LoginLinkHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -42,7 +43,7 @@ class SendSignupConfirmationCommandHandlerTest extends TestCase
             ->with(
                 $adherent,
                 true,
-                SendSignupConfirmationCommandHandler::SIGNUP_CODE_LENGTH,
+                SignupCode::LENGTH,
             )
             ->willReturn($token)
         ;
@@ -87,7 +88,7 @@ class SendSignupConfirmationCommandHandlerTest extends TestCase
             ->with(
                 $adherent,
                 true,
-                SendSignupConfirmationCommandHandler::SIGNUP_CODE_LENGTH,
+                SignupCode::LENGTH,
             )
             ->willReturn($token)
         ;

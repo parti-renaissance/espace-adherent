@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
 use App\Entity\PostAddress;
 use App\Membership\ActivityPositionsEnum;
+use App\Membership\Signup\SignupCode;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,6 +121,36 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         $this->assertResponseStatusCode(Response::HTTP_TOO_MANY_REQUESTS, $this->client->getResponse());
     }
 
+    public function testActivateExhaustedPerAccountRetryBudgetRejectsEvenValidCode(): void
+    {
+        // activation_account_retry = 3/min, keyed by adherent UUID and consumed inside checkCode()
+        // BEFORE the code lookup. createPendingAdherent() resets it, so this adherent starts with a
+        // full quota of 3. The IP limiter (10/min) stays well under, so it cannot explain a rejection.
+        $adherent = $this->createPendingAdherent('activate-account-limiter@example.test');
+        $code = $this->generateCode($adherent);
+
+        // Three wrong attempts exhaust the per-account budget (failedAttempts stays < 5, so the code
+        // itself is NOT revoked — only the account retry budget is spent).
+        for ($i = 1; $i <= 3; ++$i) {
+            $this->post(['email' => $adherent->getEmailAddress(), 'code' => '000']);
+            $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        }
+
+        // The 4th attempt carries the VALID code: only the per-account limiter can reject it here
+        // (the IP limiter allows 10/min). A 400 + still-PENDING adherent proves the limiter is wired.
+        $this->post(['email' => $adherent->getEmailAddress(), 'code' => $code->value]);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        $body = json_decode((string) $this->client->getResponse()->getContent(), true);
+        self::assertSame(['error' => 'invalid_or_expired'], $body);
+
+        $this->manager->clear();
+        self::assertTrue(
+            $this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress())->isPending(),
+            'A valid code presented after the per-account retry budget is exhausted must NOT enable the account.'
+        );
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -174,7 +205,7 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         return self::getContainer()->get(ActivationCodeManager::class)->generate(
             $adherent,
             force: true,
-            codeLength: 3,
+            codeLength: SignupCode::LENGTH,
         );
     }
 }

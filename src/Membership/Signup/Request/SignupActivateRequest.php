@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership\Signup\Request;
 
+use App\Membership\Signup\SignupCode;
 use App\Validator\StrictEmail;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +19,7 @@ class SignupActivateRequest
     }
 
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^\d{3}$/')]
+    #[Assert\Regex(pattern: SignupCode::PATTERN)]
     #[Groups(['signup:write'])]
     public ?string $code = null;
 }
