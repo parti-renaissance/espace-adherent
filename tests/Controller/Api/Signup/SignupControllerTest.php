@@ -170,8 +170,10 @@ class SignupControllerTest extends AbstractApiTestCase
             '{"email": "broken", '
         );
 
-        // Malformed payload must be a clean 400, never a 500.
+        // Malformed payload must be a clean 400, never a 500 — and in the same RFC 7807 shape as the
+        // #[MapRequestPayload] siblings (/signup/activate, /signup/resend-code).
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        SignupApiErrorAssertions::assertBadRequestErrorShape($this->client->getResponse());
     }
 
     public function testRejectsInvalidEmailReturns400(): void

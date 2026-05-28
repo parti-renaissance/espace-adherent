@@ -10,17 +10,15 @@ use App\Membership\Signup\Request\SignupResendCodeRequest;
 use App\RateLimiter\ExponentialBackoffPolicy;
 use App\Repository\AdherentActivationCodeRepository;
 use App\Repository\AdherentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/signup/resend-code', name: 'api_signup_resend_code', methods: ['POST'])]
-class SignupResendCodeController extends AbstractController
+class SignupResendCodeController extends AbstractSignupController
 {
     private const BACKOFF_WINDOW_HOURS = 24;
     private const BACKOFF_BASE_SECONDS = 30;
@@ -39,9 +37,7 @@ class SignupResendCodeController extends AbstractController
         #[MapRequestPayload(serializationContext: ['groups' => ['signup:write']])]
         SignupResendCodeRequest $payload,
     ): Response {
-        if (!$this->signupCodeAttemptLimiter->create($request->getClientIp() ?? 'unknown')->consume()->isAccepted()) {
-            throw new TooManyRequestsHttpException();
-        }
+        $this->enforceIpRateLimit($this->signupCodeAttemptLimiter, $request);
 
         $adherent = $this->adherentRepository->findOneByEmail((string) $payload->email);
 

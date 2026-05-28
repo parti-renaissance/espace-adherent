@@ -12,10 +12,14 @@ use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
- * Cross-endpoint contract: the three signup endpoints relying on #[MapRequestPayload]
- * must surface the SAME Symfony-native error shape (RFC 7807) for the SAME class of
- * payload failure. A divergence here would mean one controller wires the attribute
- * differently — that is exactly the regression this test must catch.
+ * Cross-endpoint contract: the two signup endpoints relying on #[MapRequestPayload]
+ * (/signup/activate, /signup/resend-code) must surface the SAME Symfony-native error
+ * shape (RFC 7807) for the SAME class of payload failure. A divergence there would mean
+ * one controller wires the attribute differently — exactly the regression this guards.
+ *
+ * The main /signup endpoint deliberately does NOT use #[MapRequestPayload] and keeps a
+ * distinct legacy 400 shape; that divergence is pinned by
+ * testSignupEndpointUsesDistinctLegacyValidationShape() so it stays intentional.
  */
 #[Group('functional')]
 #[Group('api')]
@@ -52,7 +56,7 @@ class SignupApiPayloadErrorShapeTest extends AbstractApiTestCase
     #[DataProvider('provideValidPayloadByEndpoint')]
     public function testInvalidEmailProducesUniformValidationShapeAcrossEndpoints(string $url, array $payload): void
     {
-        // Same kind of constraint failure (invalid email) → same envelope on all three endpoints.
+        // Same kind of constraint failure (invalid email) → same envelope on both endpoints.
         $payload['email'] = 'not-an-email';
         $this->post($url, $payload);
 
@@ -60,11 +64,23 @@ class SignupApiPayloadErrorShapeTest extends AbstractApiTestCase
         SignupApiErrorAssertions::assertValidationErrorShape($this->client->getResponse());
     }
 
+    public function testSignupEndpointUsesDistinctLegacyValidationShape(): void
+    {
+        // /api/signup does NOT use #[MapRequestPayload] (the captcha key is injected between
+        // deserialization and validation), so it diverges ON PURPOSE: HTTP 400 with a string
+        // `status: "error"` instead of the RFC 7807 422 the two sibling endpoints return.
+        $this->post('/api/signup', ['email' => 'not-an-email', 'source' => 'newsletter', 'recaptcha' => 'fake']);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        SignupApiErrorAssertions::assertLegacyValidationErrorShape($this->client->getResponse());
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
 
         self::getContainer()->get('limiter.signup_code_attempt')->create(self::CLIENT_IP)->reset();
+        self::getContainer()->get('limiter.signup')->create(self::CLIENT_IP)->reset();
     }
 
     private function post(string $url, array $payload): void

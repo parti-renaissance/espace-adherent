@@ -9,16 +9,14 @@ use App\Adhesion\Exception\ActivationCodeExceptionInterface;
 use App\Entity\Adherent;
 use App\Membership\Signup\Request\SignupActivateRequest;
 use App\Repository\AdherentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/signup/activate', name: 'api_signup_activate', methods: ['POST'])]
-class SignupActivateController extends AbstractController
+class SignupActivateController extends AbstractSignupController
 {
     private const UNIFORM_ERROR = 'invalid_or_expired';
 
@@ -34,9 +32,7 @@ class SignupActivateController extends AbstractController
         #[MapRequestPayload(serializationContext: ['groups' => ['signup:write']])]
         SignupActivateRequest $payload,
     ): Response {
-        if (!$this->signupCodeAttemptLimiter->create($request->getClientIp() ?? 'unknown')->consume()->isAccepted()) {
-            throw new TooManyRequestsHttpException();
-        }
+        $this->enforceIpRateLimit($this->signupCodeAttemptLimiter, $request);
 
         $adherent = $this->adherentRepository->findOneByEmail((string) $payload->email);
 

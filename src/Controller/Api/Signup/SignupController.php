@@ -11,10 +11,9 @@ use App\Membership\Signup\SignupHandler;
 use App\Recaptcha\FriendlyCaptchaV2ApiClient;
 use App\Repository\SignupSourceRepository;
 use App\Validator\StrictEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -26,7 +25,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route(path: '/signup', name: 'api_signup', methods: ['POST'])]
-class SignupController extends AbstractController
+class SignupController extends AbstractSignupController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
@@ -40,17 +39,15 @@ class SignupController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        if (!$this->signupLimiter->create($request->getClientIp() ?? 'unknown')->consume()->isAccepted()) {
-            throw new TooManyRequestsHttpException();
-        }
+        $this->enforceIpRateLimit($this->signupLimiter, $request);
 
         try {
             /** @var SignupRequest $signupRequest */
             $signupRequest = $this->serializer->deserialize($request->getContent(), SignupRequest::class, JsonEncoder::FORMAT, [
                 AbstractNormalizer::GROUPS => ['signup:write'],
             ]);
-        } catch (SerializerExceptionInterface) {
-            return $this->json(['error' => 'Invalid request payload.'], Response::HTTP_BAD_REQUEST);
+        } catch (SerializerExceptionInterface $exception) {
+            throw new BadRequestHttpException('Invalid request payload.', $exception);
         }
 
         $source = $signupRequest->source

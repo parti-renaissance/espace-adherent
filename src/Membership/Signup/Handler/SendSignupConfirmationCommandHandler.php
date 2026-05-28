@@ -8,6 +8,7 @@ use App\Adhesion\ActivationCodeManager;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\Signup\Command\SendSignupConfirmationCommand;
+use App\Membership\Signup\SignupCode;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
@@ -15,7 +16,6 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 #[AsMessageHandler]
 class SendSignupConfirmationCommandHandler
 {
-    public const SIGNUP_CODE_LENGTH = 3;
     private const MAGIC_LINK_LIFETIME = 86400;
 
     public function __construct(
@@ -38,7 +38,7 @@ class SendSignupConfirmationCommandHandler
         $code = $this->activationCodeManager->generate(
             $adherent,
             force: true,
-            codeLength: self::SIGNUP_CODE_LENGTH,
+            codeLength: SignupCode::LENGTH,
         );
 
         $delivered = $this->transactionalMailer->sendMessage(

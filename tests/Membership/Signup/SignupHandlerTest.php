@@ -290,7 +290,7 @@ class SignupHandlerTest extends TestCase
         $bannedRepo->expects(self::once())->method('countForEmail')->with('john@example.com')->willReturn(0);
 
         $adherentRepo = $this->createMock(AdherentRepository::class);
-        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->willReturn(null);
+        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->with('john@example.com', [Adherent::PENDING, Adherent::ENABLED])->willReturn(null);
         $adherentRepo->expects(self::once())->method('findOneByEmail')->with('john@example.com')->willReturn(null);
 
         $factory = $this->createMock(AdherentFactory::class);
@@ -368,17 +368,17 @@ class SignupHandlerTest extends TestCase
         $created = $this->createStub(Adherent::class);
 
         $bannedRepo = $this->createMock(BannedAdherentRepository::class);
-        $bannedRepo->expects(self::once())->method('countForEmail')->willReturn(0);
+        $bannedRepo->expects(self::once())->method('countForEmail')->with('opt@example.com')->willReturn(0);
 
         $adherentRepo = $this->createMock(AdherentRepository::class);
-        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->willReturn(null);
-        $adherentRepo->expects(self::once())->method('findOneByEmail')->willReturn(null);
+        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->with('opt@example.com', [Adherent::PENDING, Adherent::ENABLED])->willReturn(null);
+        $adherentRepo->expects(self::once())->method('findOneByEmail')->with('opt@example.com')->willReturn(null);
 
         $factory = $this->createMock(AdherentFactory::class);
-        $factory->expects(self::once())->method('createForSignup')->willReturn($created);
+        $factory->expects(self::once())->method('createForSignup')->with('opt@example.com', null, null, null, null, null)->willReturn($created);
 
         $sourceRepository = $this->createMock(EntityRepository::class);
-        $sourceRepository->expects(self::once())->method('findOneBy')->willReturn(null);
+        $sourceRepository->expects(self::once())->method('findOneBy')->with(['adherent' => $created, 'source' => 'newsletter'])->willReturn(null);
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('getRepository')->with(AdherentSignupSource::class)->willReturn($sourceRepository);
@@ -418,17 +418,17 @@ class SignupHandlerTest extends TestCase
         $winner = $this->createStub(Adherent::class);
 
         $bannedRepo = $this->createMock(BannedAdherentRepository::class);
-        $bannedRepo->expects(self::once())->method('countForEmail')->willReturn(0);
+        $bannedRepo->expects(self::once())->method('countForEmail')->with('race@example.com')->willReturn(0);
 
         $adherentRepo = $this->createMock(AdherentRepository::class);
-        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->willReturn(null);
-        $adherentRepo->expects(self::once())->method('findOneByEmail')->willReturn(null);
+        $adherentRepo->expects(self::once())->method('findOneByEmailAndStatus')->with('race@example.com', [Adherent::PENDING, Adherent::ENABLED])->willReturn(null);
+        $adherentRepo->expects(self::once())->method('findOneByEmail')->with('race@example.com')->willReturn(null);
 
         $factory = $this->createMock(AdherentFactory::class);
-        $factory->expects(self::once())->method('createForSignup')->willReturn($created);
+        $factory->expects(self::once())->method('createForSignup')->with('race@example.com', null, null, null, null, null)->willReturn($created);
 
         $sourceRepository1 = $this->createMock(EntityRepository::class);
-        $sourceRepository1->expects(self::once())->method('findOneBy')->willReturn(null);
+        $sourceRepository1->expects(self::once())->method('findOneBy')->with(['adherent' => $created, 'source' => 'event'])->willReturn(null);
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em
@@ -454,7 +454,7 @@ class SignupHandlerTest extends TestCase
         ;
 
         $sourceRepository2 = $this->createMock(EntityRepository::class);
-        $sourceRepository2->expects(self::once())->method('findOneBy')->willReturn(null);
+        $sourceRepository2->expects(self::once())->method('findOneBy')->with(['adherent' => $winner, 'source' => 'event'])->willReturn(null);
 
         $freshManager = $this->createMock(ObjectManager::class);
         $freshManager
