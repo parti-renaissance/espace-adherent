@@ -72,9 +72,10 @@ class SignupHandlerTest extends TestCase
         $handler->handle(new SignupCommand('Banned@Example.com', 'newsletter'));
     }
 
-    public function testHandleExistingActiveSendsConnexionDetails(): void
+    public function testHandleExistingEnabledSendsConnexionDetails(): void
     {
         $existing = $this->createStub(Adherent::class);
+        $existing->method('getStatus')->willReturn(Adherent::ENABLED);
 
         $bannedRepo = $this->createMock(BannedAdherentRepository::class);
         $bannedRepo->expects(self::once())->method('countForEmail')->with('jane@example.com')->willReturn(0);
@@ -132,9 +133,75 @@ class SignupHandlerTest extends TestCase
         $handler->handle(new SignupCommand('Jane@Example.com', 'petition'));
     }
 
+    public function testHandleExistingPendingDispatchesConfirmation(): void
+    {
+        // A PENDING account exists but has never confirmed its email: the second signup must
+        // re-issue a fresh confirmation code, not a connexion magic link.
+        $existing = $this->createStub(Adherent::class);
+        $existing->method('getStatus')->willReturn(Adherent::PENDING);
+
+        $bannedRepo = $this->createMock(BannedAdherentRepository::class);
+        $bannedRepo->expects(self::once())->method('countForEmail')->with('pending@example.com')->willReturn(0);
+
+        $adherentRepo = $this->createMock(AdherentRepository::class);
+        $adherentRepo
+            ->expects(self::once())
+            ->method('findOneByEmailAndStatus')
+            ->with('pending@example.com', [Adherent::PENDING, Adherent::ENABLED])
+            ->willReturn($existing)
+        ;
+        $adherentRepo->expects(self::never())->method('findOneByEmail');
+
+        $sourceRepository = $this->createMock(EntityRepository::class);
+        $sourceRepository
+            ->expects(self::once())
+            ->method('findOneBy')
+            ->with(['adherent' => $existing, 'source' => 'newsletter'])
+            ->willReturn(null)
+        ;
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em
+            ->expects(self::once())
+            ->method('getRepository')
+            ->with(AdherentSignupSource::class)
+            ->willReturn($sourceRepository)
+        ;
+        $em->expects(self::once())->method('persist')->with(self::isInstanceOf(AdherentSignupSource::class));
+        $em->expects(self::once())->method('flush');
+
+        $notifier = $this->createMock(MembershipNotifier::class);
+        $notifier->expects(self::never())->method('sendConnexionDetailsMessage');
+
+        $mailer = $this->createMock(MailerService::class);
+        $mailer->expects(self::never())->method('sendMessage');
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback(static function (SendSignupConfirmationCommand $command) use ($existing): bool {
+                return $command->adherent === $existing;
+            }))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $handler = $this->createHandler([
+            'em' => $em,
+            'adherentRepo' => $adherentRepo,
+            'bannedRepo' => $bannedRepo,
+            'notifier' => $notifier,
+            'mailer' => $mailer,
+            'bus' => $bus,
+        ]);
+
+        $handler->handle(new SignupCommand('Pending@Example.com', 'newsletter'));
+    }
+
     public function testHandleExistingActiveSkipsSourceLogWhenAlreadyRecorded(): void
     {
         $existing = $this->createStub(Adherent::class);
+        $existing->method('getStatus')->willReturn(Adherent::ENABLED);
 
         $bannedRepo = $this->createMock(BannedAdherentRepository::class);
         $bannedRepo->expects(self::once())->method('countForEmail')->with('known@example.com')->willReturn(0);
