@@ -1,0 +1,21 @@
+{# Project override of @SonataAdmin/Helper/render_form_dismissable_errors.html.twig #}
+{# By default, escape error messages (Sonata standard). A constraint can opt-in to HTML #}
+{# rendering by declaring `payload: ['trusted_html' => true]` in its attribute usage. Only #}
+{# violations from such constraints are rendered with |raw — everything else stays escaped. #}
+
+{% for error in form.vars.errors %}
+    {% set is_trusted_html =
+        error.cause is not null
+        and error.cause.constraint is not null
+        and error.cause.constraint.payload is iterable
+        and (error.cause.constraint.payload.trusted_html ?? false)
+    %}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        {% if is_trusted_html %}
+            {{ error.message|raw }}
+        {% else %}
+            {{ error.message }}
+        {% endif %}
+    </div>
+{% endfor %}

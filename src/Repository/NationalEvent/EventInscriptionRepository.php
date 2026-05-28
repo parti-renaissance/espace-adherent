@@ -285,6 +285,44 @@ class EventInscriptionRepository extends ServiceEntityRepository implements Publ
             'status');
     }
 
+    /**
+     * @return EventInscription[]
+     */
+    public function findAdminDuplicates(NationalEvent $event, string $email, string $firstName, string $lastName): array
+    {
+        return $this->createQueryBuilder('ei')
+            ->addSelect('
+                CASE
+                    WHEN ei.status = :status_accepted THEN 1
+                    WHEN ei.status = :status_in_validation THEN 2
+                    WHEN ei.status = :status_pending THEN 3
+                    WHEN ei.status = :status_duplicate THEN 4
+                    WHEN ei.status = :status_refused THEN 5
+                    ELSE 6
+                END AS HIDDEN priority
+            ')
+            ->where('ei.event = :event')
+            ->andWhere('ei.addressEmail = :email')
+            ->andWhere('ei.firstName = :first_name')
+            ->andWhere('ei.lastName = :last_name')
+            ->orderBy('priority', 'ASC')
+            ->addOrderBy('ei.createdAt', 'ASC')
+            ->setParameters(new ArrayCollection([
+                new Parameter('event', $event),
+                new Parameter('email', $email),
+                new Parameter('first_name', $firstName),
+                new Parameter('last_name', $lastName),
+                new Parameter('status_accepted', InscriptionStatusEnum::ACCEPTED),
+                new Parameter('status_in_validation', InscriptionStatusEnum::IN_VALIDATION),
+                new Parameter('status_pending', InscriptionStatusEnum::PENDING),
+                new Parameter('status_duplicate', InscriptionStatusEnum::DUPLICATE),
+                new Parameter('status_refused', InscriptionStatusEnum::REFUSED),
+            ]))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findDuplicate(EventInscription $eventInscription): ?EventInscription
     {
         return $this->createQueryBuilder('ei')

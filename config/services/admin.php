@@ -602,6 +602,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.live_stream'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.agora'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_inscriptions'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_jem_inscriptions'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.alert'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.private_message'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.tally_form'])
