@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Membership\Signup;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
 use App\Mailer\MailerService;
 use App\Membership\AdherentFactory;
@@ -77,5 +78,47 @@ class SignupHandlerFunctionalTest extends AbstractWebTestCase
             }
         }
         self::assertTrue($confirmationDispatched, 'SendSignupConfirmationCommand must be dispatched on the bus.');
+    }
+
+    public function testHandleExistingPendingReDispatchesConfirmationInsteadOfConnexionDetails(): void
+    {
+        $email = 'pending-resignup@example.test';
+
+        $handler = new SignupHandler(
+            $this->manager,
+            static::getContainer()->get('doctrine'),
+            static::getContainer()->get(AdherentRepository::class),
+            static::getContainer()->get(BannedAdherentRepository::class),
+            static::getContainer()->get(AdherentFactory::class),
+            static::getContainer()->get(SubscriptionHandler::class),
+            static::getContainer()->get(MembershipNotifier::class),
+            static::getContainer()->get(MailerService::class),
+            static::getContainer()->get(MessageBusInterface::class),
+        );
+
+        // First call creates the PENDING account; second call simulates the user re-submitting
+        // the signup form because they never received / confirmed the first code.
+        $handler->handle(new SignupCommand($email, 'newsletter'));
+
+        $persisted = static::getContainer()->get(AdherentRepository::class)->findOneByEmail($email);
+        self::assertNotNull($persisted);
+        self::assertSame(Adherent::PENDING, $persisted->getStatus());
+
+        $recorder = static::getContainer()->get(MessageRecorderInterface::class);
+        $beforeSecondCall = \count($recorder->getMessages());
+
+        $handler->handle(new SignupCommand($email, 'newsletter'));
+
+        // A new confirmation command must reach the bus on the second submission. Old behavior
+        // (sendConnexionDetailsMessage) bypasses the bus and would leave this count at zero.
+        $confirmationsAfter = 0;
+        foreach (\array_slice($recorder->getMessages(), $beforeSecondCall) as $envelope) {
+            $message = $envelope->getMessage();
+            if ($message instanceof SendSignupConfirmationCommand && $message->adherent->getEmailAddress() === $email) {
+                ++$confirmationsAfter;
+            }
+        }
+
+        self::assertSame(1, $confirmationsAfter, 'A re-signup on a PENDING account must dispatch a fresh SendSignupConfirmationCommand.');
     }
 }

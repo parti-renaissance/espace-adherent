@@ -22,8 +22,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class SignupHandler
 {
-    private const ACTIVE_STATUSES = [Adherent::PENDING, Adherent::ENABLED];
-
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ManagerRegistry $registry,
@@ -47,13 +45,20 @@ class SignupHandler
             return;
         }
 
-        $activeAdherent = $this->adherentRepository->findOneByEmailAndStatus($email, self::ACTIVE_STATUSES);
+        $activeAdherent = $this->adherentRepository->findOneByEmailAndStatus(
+            $email,
+            [Adherent::PENDING, Adherent::ENABLED]
+        );
 
         if (null !== $activeAdherent) {
             $this->logSourceIfMissing($this->entityManager, $activeAdherent, $command->source);
             $this->entityManager->flush();
 
-            $this->membershipNotifier->sendConnexionDetailsMessage($activeAdherent);
+            if (Adherent::PENDING === $activeAdherent->getStatus()) {
+                $this->bus->dispatch(new SendSignupConfirmationCommand($activeAdherent));
+            } else {
+                $this->membershipNotifier->sendConnexionDetailsMessage($activeAdherent);
+            }
 
             return;
         }

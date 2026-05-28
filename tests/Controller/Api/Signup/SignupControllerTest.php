@@ -333,27 +333,31 @@ class SignupControllerTest extends AbstractApiTestCase
         $this->assertCountMails(0, SignupExcludedAdherentMessage::class);
     }
 
-    public function testSignupExistingPendingSendsMagicLink(): void
+    public function testSignupExistingPendingResendsConfirmation(): void
     {
-        // PENDING is a fully active branch for routing: the user must be invited to log in,
-        // not asked to "sign up again". Without an explicit fixture, build one inline.
+        // A PENDING account never confirmed its email: re-submitting signup must re-issue a fresh
+        // confirmation code, not a magic link.
         $email = 'pending-existing@example.test';
         $this->createAdherentWithStatus($email, Adherent::PENDING);
 
         $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
 
         $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
-        // A bare PENDING account has no "adherent" tag → falls into the sympathizer-style mail.
-        $this->assertCountMails(1, AdhesionAlreadySympathizerMessage::class, $email);
-        $this->assertCountMails(0, SignupConfirmationMessage::class, $email);
+        $this->assertCountMails(1, SignupConfirmationMessage::class, $email);
+        $this->assertCountMails(0, AdhesionAlreadySympathizerMessage::class, $email);
+        $this->assertCountMails(0, AdhesionAlreadyAdherentMessage::class, $email);
         $this->assertCountMails(0, SignupExcludedAdherentMessage::class, $email);
     }
 
     public function testSignupExistingRenaissanceAdherentSendsAdherentMessage(): void
     {
-        // michelle.dufour@example.ch is an ENABLED Renaissance adherent (tag adherent:a_jour_*).
-        // This branch sends AdhesionAlreadyAdherentMessage (different from sympathizer mail).
+        // michelle.dufour@example.ch is a Renaissance adherent (tag adherent:*); the fixture
+        // factory creates her PENDING, so we activate her here to exercise the ENABLED branch
+        // that triggers AdhesionAlreadyAdherentMessage.
         $email = 'michelle.dufour@example.ch';
+        $michelle = $this->getAdherentRepository()->findOneByEmail($email);
+        $michelle->setStatus(Adherent::ENABLED);
+        $this->manager->flush();
 
         $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
 
