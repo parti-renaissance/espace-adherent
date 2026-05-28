@@ -42,7 +42,7 @@ class InscriptionController extends AbstractController
 
     public function __invoke(Request $request, string $app_domain, ?NationalEvent $event = null, ?string $pid = null, #[CurrentUser] ?Adherent $user = null): Response
     {
-        if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
+        if (!$event && !$event = $this->nationalEventRepository->findCurrentOrNext()) {
             return $this->redirectToRoute('renaissance_site');
         }
 

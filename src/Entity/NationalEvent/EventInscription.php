@@ -18,6 +18,8 @@ use App\Api\Filter\OrTextSearchFilter;
 use App\Controller\Api\NationalEvent\GetNextInscriptionForValidationController;
 use App\Controller\Api\NationalEvent\ScanTicketController;
 use App\Entity\Adherent;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
@@ -36,6 +38,7 @@ use App\Normalizer\ImageExposeNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Validator\NationalEventPackage;
+use App\Validator\UniqueAdminNationalEventInscription;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -88,13 +91,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Index(columns: ['event_id', 'created_at'])]
 #[ORM\Table('national_event_inscription')]
-class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface
+#[UniqueAdminNationalEventInscription(groups: ['Admin_creation'], payload: ['trusted_html' => true])]
+class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwareInterface, ImageExposeInterface, TranslatedTagInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use PublicIdTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
     use EntityZoneTrait;
+    use EntityAdministratorBlameableTrait;
 
     public const int CANCELLATION_DELAY_IN_MIN = 30;
 
@@ -118,18 +123,23 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
+    #[Assert\NotBlank(groups: ['Admin_creation'])]
     #[Groups(['event_inscription_read'])]
     #[ORM\Column(length: 6)]
     public ?string $gender = null;
 
+    #[Assert\NotBlank(groups: ['Admin_creation'])]
     #[Groups(['event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $firstName = null;
 
+    #[Assert\NotBlank(groups: ['Admin_creation'])]
     #[Groups(['event_inscription_read', 'event_inscription_read_for_validation', 'event_inscription_scan'])]
     #[ORM\Column]
     public ?string $lastName = null;
 
+    #[Assert\Email(groups: ['Admin_creation'])]
+    #[Assert\NotBlank(groups: ['Admin_creation'])]
     #[Groups(['event_inscription_read'])]
     #[ORM\Column]
     public ?string $addressEmail = null;
@@ -158,6 +168,7 @@ class EventInscription implements \Stringable, ZoneableEntityInterface, ImageAwa
     #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
+    #[Assert\NotBlank(groups: ['Admin_creation'])]
     #[Groups(['event_inscription_read', 'event_inscription_read_for_validation'])]
     #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $birthdate = null;

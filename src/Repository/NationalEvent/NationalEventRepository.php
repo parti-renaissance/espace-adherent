@@ -18,14 +18,30 @@ class NationalEventRepository extends ServiceEntityRepository
         parent::__construct($registry, NationalEvent::class);
     }
 
-    public function findOneForInscriptions(): ?NationalEvent
+    /**
+     * Returns the event currently happening (now between startDate and endDate),
+     * or as a fallback the next one about to start. Used both by the public landing
+     * page and the admin step 1 pre-selection. Sorting by startDate ASC over
+     * endDate >= now naturally yields ongoing events first, then upcoming.
+     */
+    public function findCurrentOrNext(?array $allowedTypes = null, ?array $forbiddenTypes = null): ?NationalEvent
     {
-        return $this->createQueryBuilder('event')
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.endDate >= :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('e.startDate', 'ASC')
             ->setMaxResults(1)
-            ->orderBy('event.startDate', 'DESC')
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if (null !== $allowedTypes && \count($allowedTypes) > 0) {
+            $qb->andWhere('e.type IN (:allowed_types)')->setParameter('allowed_types', $allowedTypes);
+        }
+
+        if (null !== $forbiddenTypes && \count($forbiddenTypes) > 0) {
+            $qb->andWhere('e.type NOT IN (:forbidden_types)')->setParameter('forbidden_types', $forbiddenTypes);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

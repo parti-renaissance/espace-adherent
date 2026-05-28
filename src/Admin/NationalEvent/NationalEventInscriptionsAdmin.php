@@ -22,6 +22,8 @@ use App\Form\NationalEvent\PackageValuesFormType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\Form\TelNumberType;
 use App\Mailchimp\Synchronisation\Command\NationalEventInscriptionChangeCommand;
+use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
+use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\NationalEventTypeEnum;
@@ -47,6 +49,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\NullFilter;
+use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Sonata\Form\Type\DateTimeRangePickerType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -56,6 +59,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
@@ -66,6 +71,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
         private readonly TagTranslator $tagTranslator,
         private readonly EventInscriptionManager $eventInscriptionManager,
         private readonly MessageBusInterface $bus,
+        private readonly NationalEventRepository $nationalEventRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
         parent::__construct();
     }
@@ -73,9 +81,48 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
     public function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
-            ->clearExcept(['list', 'edit', 'export'])
+            ->clearExcept(['list', 'edit', 'export', 'create'])
             ->add('sendTicket', $this->getRouterIdParameter().'/send-ticket')
         ;
+    }
+
+    protected function configurePersistentParameters(): array
+    {
+        if (!$this->hasRequest()) {
+            return [];
+        }
+
+        $eventId = $this->getRequest()->query->get('event');
+        if (null === $eventId || '' === $eventId) {
+            return [];
+        }
+
+        return ['event' => $eventId];
+    }
+
+    protected function createNewInstance(): EventInscription
+    {
+        $eventId = $this->getPersistentParameter('event');
+        if (null === $eventId || '' === $eventId) {
+            throw new NotFoundHttpException('Missing event identifier — should have been pre-validated by createAction.');
+        }
+
+        $event = $this->nationalEventRepository->find($eventId);
+        if (!$event) {
+            throw new NotFoundHttpException(\sprintf('NationalEvent with id "%s" not found.', $eventId));
+        }
+
+        $allowed = $this->getAllowedEventTypes();
+        if (null !== $allowed && !\in_array($event->type, $allowed, true)) {
+            throw new NotFoundHttpException();
+        }
+
+        $forbidden = $this->getForbiddenEventTypes();
+        if (null !== $forbidden && \in_array($event->type, $forbidden, true)) {
+            throw new NotFoundHttpException();
+        }
+
+        return new EventInscription($event);
     }
 
     protected function getAccessMapping(): array
@@ -311,6 +358,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
                 'edit' => [],
                 'inscription_page' => ['template' => 'admin/national_event/list_action_inscription_page.html.twig'],
+                'view_ticket' => ['template' => 'admin/national_event/list_action_view_ticket.html.twig'],
                 'send_ticket' => ['template' => 'admin/national_event/list_action_send_ticket.html.twig'],
             ]])
             ->add('payment', null, [
@@ -343,8 +391,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
                     ->add('firstName', null, ['label' => 'Prénom'])
                     ->add('lastName', null, ['label' => 'Nom'])
+                    ->add('addressEmail', null, ['label' => 'E-mail'])
+                    ->add('birthdate', DatePickerType::class, ['label' => 'Date de naissance', 'years' => range(date('Y') - 100, date('Y'))])
                     ->add('postalCode', null, ['label' => 'Code postal'])
-                    ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
                     ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
                     ->add('isJAM', null, ['label' => 'Jeunes en marche', 'required' => false])
                     ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
@@ -366,10 +415,9 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
                     ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
                 ->end()
                 ->with('Informations additionnelles', ['class' => 'col-md-6'])
-                    ->add('event', null, ['label' => 'Event', 'disabled' => true])
+                    ->add('event', null, ['label' => 'Event', 'disabled' => true, 'help' => $this->buildChangeEventHelp(), 'help_html' => true])
                     ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
                     ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
-                    ->add('addressEmail', null, ['label' => 'E-mail'])
                     ->add('emergencyContactName', null, ['label' => 'Nom du contact d’urgence'])
                     ->add('emergencyContactPhone', TelNumberType::class, ['label' => 'Nom du contact d’urgence'])
                     ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
@@ -404,7 +452,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             ->end()
             ->tab('Billet 🎟️')
                 ->with('', ['class' => 'col-md-6'])
-                    ->add('ticketUuid', null, ['label' => 'Uuid ticket', 'disabled' => true])
+                    ->add('ticketUuid', null, ['label' => 'Uuid ticket', 'disabled' => true, 'help' => $this->buildTicketPreviewHelp($inscription), 'help_html' => true])
                     ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
                     ->add('ticketBracelet', null, ['label' => 'Bracelet', 'required' => false])
                     ->add('ticketBraceletColor', ColorType::class, ['label' => 'Couleur du bracelet', 'required' => false])
@@ -569,12 +617,12 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
         return $query;
     }
 
-    protected function getAllowedEventTypes(): ?array
+    public function getAllowedEventTypes(): ?array
     {
         return null;
     }
 
-    protected function getForbiddenEventTypes(): ?array
+    public function getForbiddenEventTypes(): ?array
     {
         return [NationalEventTypeEnum::JEM];
     }
@@ -598,15 +646,26 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
     }
 
     /** @param EventInscription $object */
+    protected function prePersist(object $object): void
+    {
+        parent::prePersist($object);
+        $this->eventInscriptionManager->enrichInscription($object);
+    }
+
+    /** @param EventInscription $object */
     protected function postPersist(object $object): void
     {
-        $this->dispatchChange($object);
+        $this->eventDispatcher->dispatch(new NewNationalEventInscriptionEvent($object));
     }
 
     /** @param EventInscription $object */
     protected function postUpdate(object $object): void
     {
         $this->dispatchChange($object);
+
+        if ($object->isApproved() && !$object->ticketQRCodeFile) {
+            $this->bus->dispatch(new GenerateTicketQRCodeCommand($object->getUuid()));
+        }
     }
 
     /** @param EventInscription $object */
@@ -618,5 +677,39 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
     private function dispatchChange(EventInscription $eventInscription): void
     {
         $this->bus->dispatch(new NationalEventInscriptionChangeCommand($eventInscription->getUuid()));
+    }
+
+    private function buildChangeEventHelp(): ?string
+    {
+        if (!$this->isCurrentRoute('create')) {
+            return null;
+        }
+
+        $url = $this->urlGenerator->generate($this->getBaseRouteName().'_create');
+
+        return \sprintf('<a href="%s">↩ Changer d\'événement</a>', htmlspecialchars($url, \ENT_QUOTES));
+    }
+
+    private function buildTicketPreviewHelp(?EventInscription $inscription): ?string
+    {
+        if (!$inscription?->isTicketReady()) {
+            return null;
+        }
+
+        $url = $this->urlGenerator->generate(
+            'app_national_event_ticket',
+            ['file' => $inscription->ticketQRCodeFile],
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        );
+        $safeUrl = htmlspecialchars($url, \ENT_QUOTES);
+
+        return \sprintf(
+            '<div style="margin-top:8px"><a href="%s" target="_blank" rel="noopener">'
+            .'<img src="%s" alt="QR billet" style="max-width:180px;border:1px solid #ddd;padding:4px;background:#fff" />'
+            .'</a><br><a href="%s" target="_blank" rel="noopener">Ouvrir le billet</a></div>',
+            $safeUrl,
+            $safeUrl,
+            $safeUrl,
+        );
     }
 }

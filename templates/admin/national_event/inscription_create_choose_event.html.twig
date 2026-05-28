@@ -1,0 +1,40 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block title %}Créer une inscription{% endblock %}
+
+{% block content %}
+    <div class="content-header">
+        <h1>Créer une inscription — étape 1/2</h1>
+        <p class="text-muted" style="margin-top: 6px;">
+            Choisissez l'événement pour lequel créer l'inscription. Les champs du forfait seront chargés à l'étape suivante.
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: {class: 'form-horizontal'}}) }}
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="{{ form.event.vars.id }}">
+                                {{ form.event.vars.label }}
+                            </label>
+                            <div class="col-sm-9">
+                                {{ form_widget(form.event, {attr: {class: 'form-control'}}) }}
+                                {{ form_errors(form.event) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer text-right">
+                        <a href="{{ admin.generateUrl('list') }}" class="btn btn-default">
+                            <i class="fa fa-times"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            Continuer <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

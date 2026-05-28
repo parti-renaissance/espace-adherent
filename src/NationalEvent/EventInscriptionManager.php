@@ -37,11 +37,23 @@ class EventInscriptionManager
         $eventInscription = $existingInscription ?? new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
 
+        $this->enrichInscription($eventInscription);
+
+        $this->entityManager->persist($eventInscription);
+        $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch($existingInscription ? new UpdateNationalEventInscriptionEvent($eventInscription) : new NewNationalEventInscriptionEvent($eventInscription));
+
+        return $eventInscription;
+    }
+
+    public function enrichInscription(EventInscription $eventInscription): void
+    {
         if (!$eventInscription->getPublicId()) {
             $eventInscription->setPublicId($this->meetingInscriptionPublicIdGenerator->generate());
         }
 
-        if ($adherent = $this->adherentRepository->findOneByEmail($eventInscription->addressEmail)) {
+        if ($eventInscription->addressEmail && $adherent = $this->adherentRepository->findOneByEmail($eventInscription->addressEmail)) {
             $eventInscription->adherent = $adherent;
         }
 
@@ -52,13 +64,6 @@ class EventInscriptionManager
         ) {
             $eventInscription->referrer = $referrer;
         }
-
-        $this->entityManager->persist($eventInscription);
-        $this->entityManager->flush();
-
-        $this->eventDispatcher->dispatch($existingInscription ? new UpdateNationalEventInscriptionEvent($eventInscription) : new NewNationalEventInscriptionEvent($eventInscription));
-
-        return $eventInscription;
     }
 
     public function updatePackage(InscriptionRequest $inscriptionRequest, EventInscription $eventInscription): ?Payment
