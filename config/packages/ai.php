@@ -22,7 +22,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'chatbot' => [
                 'platform' => 'ai.platform.vertexai',
                 'model' => [
-                    'name' => 'gemini-2.5-flash-lite',
+                    'name' => 'gemini-3-flash-preview',
                     'options' => [
                         'stream' => true,
                     ],
