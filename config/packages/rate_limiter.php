@@ -27,7 +27,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
             'bot_chatbot' => [
                 'policy' => 'sliding_window',
-                'limit' => 20,
+                'limit' => 60,
                 'interval' => '1 minute',
             ],
             'signup' => [
