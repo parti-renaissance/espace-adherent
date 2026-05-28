@@ -9,7 +9,7 @@ use Symfony\Component\Uid\Uuid;
 
 class SignupConfirmationMessage extends AbstractRenaissanceMessage
 {
-    public static function create(Adherent $adherent, string $magicLink): self
+    public static function create(Adherent $adherent, string $magicLink, string $code): self
     {
         return new self(
             Uuid::v4(),
@@ -19,6 +19,7 @@ class SignupConfirmationMessage extends AbstractRenaissanceMessage
             [
                 'first_name' => self::escape($adherent->getFirstName()),
                 'magic_link' => $magicLink,
+                'code' => $code,
             ],
         );
     }

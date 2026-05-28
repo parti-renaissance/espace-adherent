@@ -22,6 +22,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class ActivationCodeManager
 {
     public const CODE_TTL = 15; // in minutes
+    public const MAX_FAILED_ATTEMPTS = 5;
 
     public function __construct(
         private readonly AdherentActivationCodeRepository $activationCodeRepository,
@@ -31,15 +32,18 @@ class ActivationCodeManager
     ) {
     }
 
-    public function generate(Adherent $adherent, bool $force = false): AdherentActivationCode
-    {
+    public function generate(
+        Adherent $adherent,
+        bool $force = false,
+        int $codeLength = 4,
+    ): AdherentActivationCode {
         if (!$force) {
             $this->checkAbuse($adherent);
         }
 
         $this->invalidateForAdherent($adherent);
 
-        $this->entityManager->persist($token = AdherentActivationCode::create($adherent, self::CODE_TTL));
+        $this->entityManager->persist($token = AdherentActivationCode::create($adherent, self::CODE_TTL, $codeLength));
         $this->entityManager->flush();
 
         return $token;
@@ -47,13 +51,46 @@ class ActivationCodeManager
 
     public function validate(string $codeValue, Adherent $adherent): void
     {
+        $code = $this->checkCode($codeValue, $adherent);
+
+        if (!$adherent->isPending()) {
+            return;
+        }
+
+        $consumed = $this->entityManager->wrapInTransaction(function () use ($adherent, $code): bool {
+            if (0 === $this->activationCodeRepository->markAsUsedIfActive($code)) {
+                return false;
+            }
+            $adherent->enable();
+            $this->entityManager->flush();
+
+            return true;
+        });
+
+        if (!$consumed) {
+            $this->entityManager->refresh($adherent);
+
+            if ($adherent->isPending()) {
+                throw new ActivationCodeRevokedException();
+            }
+
+            return;
+        }
+
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
+    }
+
+    public function checkCode(string $codeValue, Adherent $adherent): AdherentActivationCode
+    {
         $limiter = $this->activationAccountRetryLimiter->create('activation_code.validate.'.$adherent->getUuidAsString());
 
         if (!$limiter->consume()->isAccepted()) {
             throw new ActivationCodeRetryLimitReachedException();
         }
 
-        if (!$code = $this->activationCodeRepository->findOneByCode($codeValue, $adherent)) {
+        if (!$code = $this->activationCodeRepository->findOneActiveByCode($codeValue, $adherent)) {
+            $this->incrementFailedAttemptsForLatest($adherent);
+
             throw new ActivationCodeNotFoundException();
         }
 
@@ -69,19 +106,21 @@ class ActivationCodeManager
             throw new ActivationCodeUsedException();
         }
 
-        if ($adherent->isPending()) {
-            $adherent->enable();
-            $code->usedAt = new \DateTime();
-        }
-
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
+        return $code;
     }
 
     public function invalidateForAdherent(Adherent $adherent): void
     {
         $this->activationCodeRepository->invalidateForAdherent($adherent);
+    }
+
+    private function incrementFailedAttemptsForLatest(Adherent $adherent): void
+    {
+        if (!$latest = $this->activationCodeRepository->findLatestActive($adherent)) {
+            return;
+        }
+
+        $this->activationCodeRepository->incrementFailedAttempts($latest, self::MAX_FAILED_ATTEMPTS);
     }
 
     private function checkAbuse(Adherent $adherent): void

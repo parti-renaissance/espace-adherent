@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace App\Membership\Signup\Handler;
 
+use App\Adhesion\ActivationCodeManager;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\Signup\Command\SendSignupConfirmationCommand;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 #[AsMessageHandler]
 class SendSignupConfirmationCommandHandler
 {
+    public const SIGNUP_CODE_LENGTH = 3;
     private const MAGIC_LINK_LIFETIME = 86400;
 
     public function __construct(
         private readonly MailerService $transactionalMailer,
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
+        private readonly ActivationCodeManager $activationCodeManager,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -30,8 +35,21 @@ class SendSignupConfirmationCommandHandler
             ->getUrl()
         ;
 
-        $this->transactionalMailer->sendMessage(
-            SignupConfirmationMessage::create($adherent, $magicLink)
+        $code = $this->activationCodeManager->generate(
+            $adherent,
+            force: true,
+            codeLength: self::SIGNUP_CODE_LENGTH,
         );
+
+        $delivered = $this->transactionalMailer->sendMessage(
+            SignupConfirmationMessage::create($adherent, $magicLink, $code->value)
+        );
+
+        if (!$delivered) {
+            $this->logger->error('Signup confirmation mail delivery failed.', [
+                'adherent_uuid' => $adherent->getUuidAsString(),
+                'code_id' => $code->getId(),
+            ]);
+        }
     }
 }

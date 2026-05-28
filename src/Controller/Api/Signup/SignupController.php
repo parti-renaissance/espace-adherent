@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Signup;
 
 use App\Address\Address;
+use App\Membership\Signup\Request\SignupRequest;
 use App\Membership\Signup\SignupCommand;
 use App\Membership\Signup\SignupHandler;
 use App\Recaptcha\FriendlyCaptchaV2ApiClient;
