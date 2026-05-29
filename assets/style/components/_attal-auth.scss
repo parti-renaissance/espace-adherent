@@ -1,0 +1,21 @@
+.attal-auth {
+    .re-field-frame {
+        @apply rounded-full;
+        border: none !important;
+
+        input {
+            @apply text-vox-gray-900 text-[14px] font-normal px-4;
+
+            &::placeholder {
+                @apply text-vox-gray-500 text-[14px] font-normal;
+            }
+        }
+    }
+
+    input[type=checkbox] + label,
+    input[type=radio] + label {
+        @apply border-vox-gray-600;
+        border-width: 1.5px;
+        border-style: solid;
+    }
+}

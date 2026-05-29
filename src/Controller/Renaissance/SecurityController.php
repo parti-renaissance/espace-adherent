@@ -25,7 +25,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -55,7 +54,6 @@ class SecurityController extends AbstractController
         Request $request,
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository,
-        TranslatorInterface $translatable,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -78,7 +76,7 @@ class SecurityController extends AbstractController
                 $handler->handle($adherent);
             }
 
-            $this->addFlash('info', $translatable->trans('adherent.reset_password.email_sent', ['%email%' => $email]));
+            $this->addFlash('reset_password_sent', $email);
 
             return $this->redirectToRoute('app_forgot_password');
         }
