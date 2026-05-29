@@ -13,7 +13,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->autowire()
         ->bind('$adherentInterests', '%adherent_interests%')
         ->bind('$mailchimpSignUpHost', '%env(MAILCHIMP_SIGNUP_HOST)%')
-        ->bind('$maxRecipientDriftPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_DRIFT_MAX_PERCENT)%');
+        ->bind('$maxRecipientDriftPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_DRIFT_MAX_PERCENT)%')
+        ->bind('$maxRecipientUndershootPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_UNDERSHOOT_MAX_PERCENT)%')
+    ;
 
     $services->instanceof(App\Mailchimp\Webhook\Handler\WebhookHandlerInterface::class)
         ->tag('app.mailchimp.webhook_handler');

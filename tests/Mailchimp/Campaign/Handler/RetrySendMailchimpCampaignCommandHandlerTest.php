@@ -211,12 +211,17 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
     public static function provideProgressiveDelays(): iterable
     {
-        yield 'retry 0 -> 30s delay' => [0, 30_000];
-        yield 'retry 1 -> 1min delay' => [1, 60_000];
-        yield 'retry 2 -> 5min delay' => [2, 300_000];
-        yield 'retry 3 -> 10min delay' => [3, 600_000];
-        yield 'retry 4 -> 30min delay' => [4, 1_800_000];
-        yield 'retry 5 -> 60min delay' => [5, 3_600_000];
+        yield 'retry 0 -> 30s' => [0, 30_000];
+        yield 'retry 1 -> 1min' => [1, 60_000];
+        yield 'retry 2 -> 1.5min' => [2, 90_000];
+        yield 'retry 3 -> 2min' => [3, 120_000];
+        yield 'retry 4 -> 3min' => [4, 180_000];
+        yield 'retry 5 -> 4min' => [5, 240_000];
+        yield 'retry 6 -> 5min' => [6, 300_000];
+        yield 'retry 7 -> 10min' => [7, 600_000];
+        yield 'retry 8 -> 20min' => [8, 1_200_000];
+        yield 'retry 9 -> 30min' => [9, 1_800_000];
+        yield 'retry 10 -> 60min' => [10, 3_600_000];
     }
 
     #[DataProvider('provideProgressiveDelays')]
@@ -280,7 +285,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
 
     public function testHandlerLogsExhaustedWithoutThrowingAfterMaxRetries(): void
     {
-        $command = new RetrySendMailchimpCampaignCommand(123, 6);
+        $command = new RetrySendMailchimpCampaignCommand(123, 11);
 
         $messageUuid = Uuid::v4();
         $message = $this->createMock(AdherentMessageInterface::class);
@@ -469,7 +474,7 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->expects(self::once())
             ->method('evaluate')
             ->with(self::identicalTo($campaign))
-            ->willReturn(SendDecision::abort('Recipient overshoot: recipient_count=1200 expected=93 max=98', 1200))
+            ->willReturn(SendDecision::abort('Recipient overshoot: recipient_count=1200 prepared=93 max=98', 1200))
         ;
 
         // Manager and retry rescheduling MUST NOT happen for an Abort.
@@ -577,12 +582,76 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         self::assertStringContainsString('recipient_count not available', (string) $history[0]['detail']);
     }
 
-    public function testHandlerForcesSendOnFinalAttemptWhenGuardStillReturnsRetry(): void
+    public function testHandlerAbortsOnFinalAttemptWhenCountUnreadable(): void
     {
-        // countRetry=6 → isFinalAttempt=true. Guard still says Retry → we log error + send anyway.
-        $command = new RetrySendMailchimpCampaignCommand(123, 6);
+        // countRetry=11 → isFinalAttempt=true. An unreadable count (forceSendOnExhaustion=false)
+        // must NOT be blind-sent: abort + alert instead of sending to an unverified audience.
+        $command = new RetrySendMailchimpCampaignCommand(123, 11);
 
-        // Manager returns true here → success branch logs info + returns; getUuid is never read.
+        $messageUuid = Uuid::v4();
+        $message = $this->createMock(AdherentMessageInterface::class);
+        $message->expects(self::atLeastOnce())->method('getUuid')->willReturn($messageUuid);
+
+        $campaign = new MailchimpCampaign($message);
+        $campaign->setExternalId('ext_123');
+        $campaign->setStaticSegmentId(555);
+
+        $this->repository
+            ->expects(self::once())
+            ->method('find')
+            ->willReturn($campaign)
+        ;
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('refresh')
+            ->with(self::identicalTo($campaign))
+        ;
+
+        $this->sendGuard
+            ->expects(self::once())
+            ->method('evaluate')
+            ->with(self::identicalTo($campaign))
+            ->willReturn(SendDecision::retry('recipient_count not readable from Mailchimp.', forceSendOnExhaustion: false))
+        ;
+
+        // Unreadable count on exhaustion → never sent, never rescheduled.
+        $this->manager->expects(self::never())->method('retrySendCampaign');
+        $this->bus->expects(self::never())->method('dispatch');
+
+        $this->entityManager
+            ->expects(self::once())
+            ->method('flush')
+        ;
+
+        $this->logger
+            ->expects(self::once())
+            ->method('error')
+            ->with(
+                '[Mailchimp] Send aborted after retry exhaustion — recipient_count never confirmed',
+                self::callback(function (array $ctx) use ($messageUuid): bool {
+                    return 123 === $ctx['campaignId']
+                        && 'ext_123' === $ctx['externalId']
+                        && str_contains((string) $ctx['reason'], 'not readable')
+                        && $messageUuid->toRfc4122() === $ctx['messageUuid'];
+                }),
+            )
+        ;
+
+        ($this->handler)($command);
+
+        self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
+        $history = $campaign->getRetryHistory();
+        self::assertCount(1, $history);
+        self::assertFalse($history[0]['success']);
+    }
+
+    public function testHandlerForceSendsReadableUndershootOnFinalAttemptAndPersistsCount(): void
+    {
+        // countRetry=11 → isFinalAttempt=true. A readable undershoot is force-sendable: send to the
+        // available count AND persist it (#5), instead of leaving the DB count stale/null.
+        $command = new RetrySendMailchimpCampaignCommand(123, 11);
+
         $message = $this->createStub(AdherentMessageInterface::class);
         $campaign = new MailchimpCampaign($message);
         $campaign->setExternalId('ext_123');
@@ -604,10 +673,9 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->expects(self::once())
             ->method('evaluate')
             ->with(self::identicalTo($campaign))
-            ->willReturn(SendDecision::retry('recipient_count not available yet on Mailchimp.'))
+            ->willReturn(SendDecision::retry('Recipient undershoot: recipient_count=247 prepared=1534 min=1457 — segment likely still propagating.', 247, forceSendOnExhaustion: true))
         ;
 
-        // On the final attempt, even with Retry verdict, we go through the manager.
         $this->manager
             ->expects(self::once())
             ->method('retrySendCampaign')
@@ -620,20 +688,17 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
             ->method('flush')
         ;
 
-        // No further retry dispatched.
         $this->bus->expects(self::never())->method('dispatch');
 
-        $errorLogs = [];
         $this->logger
             ->expects(self::once())
             ->method('error')
             ->with(
                 '[Mailchimp] recipient_count never settled — sending anyway',
-                self::callback(function (array $ctx) use (&$errorLogs): bool {
-                    $errorLogs[] = $ctx;
-
+                self::callback(function (array $ctx): bool {
                     return 123 === $ctx['campaignId']
-                        && str_contains((string) $ctx['reason'], 'recipient_count not available');
+                        && str_contains((string) $ctx['reason'], 'undershoot')
+                        && 247 === $ctx['recipientCount'];
                 }),
             )
         ;
@@ -650,6 +715,6 @@ class RetrySendMailchimpCampaignCommandHandlerTest extends TestCase
         ($this->handler)($command);
 
         self::assertSame(1, $campaign->getRetryCount());
-        self::assertCount(1, $errorLogs);
+        self::assertSame(247, $campaign->getRecipientCount(), 'Force-sent undershoot must persist the count it sent to.');
     }
 }
