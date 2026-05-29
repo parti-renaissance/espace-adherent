@@ -122,7 +122,10 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
             throw new NotFoundHttpException();
         }
 
-        return new EventInscription($event);
+        $inscription = new EventInscription($event);
+        $inscription->utmSource = 'backoffice';
+
+        return $inscription;
     }
 
     protected function getAccessMapping(): array
@@ -383,95 +386,162 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin implements ZoneableAd
         /** @var EventInscription $inscription */
         $inscription = $this->getSubject();
         $currentPackageValues = $inscription->packageValues;
-        $currentEvent = $inscription->event;
+        $event = $inscription->event;
+        $isCreate = $this->isCurrentRoute('create');
 
+        $form->tab('Inscription ❤️');
+
+        // The optional fields below mirror the public inscription form: they are only
+        // shown when the corresponding flag is enabled on the event (create and edit alike).
+        $form->with('Général', ['class' => 'col-md-6']);
         $form
-            ->tab('Inscription ❤️')
-                ->with('Général', ['class' => 'col-md-6'])
-                    ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
-                    ->add('firstName', null, ['label' => 'Prénom'])
-                    ->add('lastName', null, ['label' => 'Nom'])
-                    ->add('addressEmail', null, ['label' => 'E-mail'])
-                    ->add('birthdate', DatePickerType::class, ['label' => 'Date de naissance', 'years' => range(date('Y') - 100, date('Y'))])
-                    ->add('postalCode', null, ['label' => 'Code postal'])
-                    ->add('birthPlace', null, ['label' => 'Lieu de naissance'])
-                    ->add('isJAM', null, ['label' => 'Jeunes en marche', 'required' => false])
-                    ->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false])
-                    ->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false])
-                    ->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false])
-                    ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false])
-                    ->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false])
-                    ->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false])
-                ->end()
-                ->with('Statut', ['class' => 'col-md-6'])
-                    ->add('status', ChoiceType::class, [
-                        'label' => 'Statut',
-                        'choices' => InscriptionStatusEnum::STATUSES,
-                        'choice_label' => fn (string $status) => $status,
-                        'required' => true,
-                    ])
-                    ->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false])
-                    ->add('validationStartedAt', null, ['label' => 'Date de début de validation', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
-                ->end()
-                ->with('Informations additionnelles', ['class' => 'col-md-6'])
-                    ->add('event', null, ['label' => 'Event', 'disabled' => true, 'help' => $this->buildChangeEventHelp(), 'help_html' => true])
-                    ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
-                    ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
-                    ->add('emergencyContactName', null, ['label' => 'Nom du contact d’urgence'])
-                    ->add('emergencyContactPhone', TelNumberType::class, ['label' => 'Nom du contact d’urgence'])
-                    ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
-                    ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
-                ->end()
-            ->end()
-            ->tab('Forfait ✅')
-                ->with('Forfait', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-warning', 'description' => '⚠️ Attention, si vous modifiez le forfait en tant qu\'admin, le prix ne changera pas automatiquement et le statut ne changera pas non plus. Pour obliger une personne à repayer, il faut la passer "En attente de paiement"'])
-                    ->add('packageValues', PackageValuesFormType::class, [
-                        'label' => false,
-                        'package_config' => $currentEvent?->packageConfig,
-                        'current_values' => $currentPackageValues ?? [],
-                        'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($currentEvent),
-                        'from_admin' => true,
-                    ])
-                ->end()
-                ->with('Statut', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-info'])
-                    ->add('paymentStatus', ChoiceType::class, [
-                        'label' => 'Statut du paiement',
-                        'choices' => PaymentStatusEnum::all(),
-                        'choice_label' => fn (PaymentStatusEnum $status) => $status,
-                        'required' => false,
-                    ])
-                    ->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false])
-                    ->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false])
-                    ->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de la réduction', 'required' => false])
-                ->end()
-            ->end()
-            ->tab('Billet 🎟️')
-                ->with('', ['class' => 'col-md-6'])
-                    ->add('ticketUuid', null, ['label' => 'Uuid ticket', 'disabled' => true, 'help' => $this->buildTicketPreviewHelp($inscription), 'help_html' => true])
-                    ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
-                    ->add('ticketBracelet', null, ['label' => 'Bracelet', 'required' => false])
-                    ->add('ticketBraceletColor', ColorType::class, ['label' => 'Couleur du bracelet', 'required' => false])
-                    ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
-                    ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
-                ->end()
-            ->end()
-            ->tab('Détails 📝')
-                ->with('Détail du transport', ['class' => 'col-md-6'])
-                    ->add('transportDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
-                ->end()
-                ->with('Détail d\'hébergement', ['class' => 'col-md-6'])
-                    ->add('accommodationDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
-                ->end()
-                ->with('Détails additionnels', ['class' => 'col-md-6'])
-                    ->add('customDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]])
-                ->end()
-            ->end()
+            ->add('gender', GenderCivilityType::class, ['label' => 'Civilité'])
+            ->add('firstName', null, ['label' => 'Prénom'])
+            ->add('lastName', null, ['label' => 'Nom'])
+            ->add('addressEmail', null, ['label' => 'E-mail'])
+            ->add('birthdate', DatePickerType::class, ['label' => 'Date de naissance', 'years' => range(date('Y') - 100, date('Y'))])
+            ->add('postalCode', null, ['label' => 'Code postal'])
         ;
+
+        if ($event->showBirthPlace) {
+            $form->add('birthPlace', null, ['label' => 'Lieu de naissance']);
+        }
+
+        if ($event->showIsJAM) {
+            $form->add('isJAM', null, ['label' => 'Jeunes en marche', 'required' => false]);
+        }
+
+        if ($event->showTransportNeeds) {
+            $form->add('transportNeeds', null, ['label' => 'Besoin d\'un transport organisé', 'required' => false]);
+        }
+
+        if ($event->showVolunteer) {
+            $form->add('volunteer', null, ['label' => 'Souhaite être bénévole pour aider à l\'organisation', 'required' => false]);
+        }
+
+        if ($event->showAccessibility) {
+            $form->add('accessibility', TextareaType::class, ['label' => 'Handicap visible ou invisible', 'required' => false]);
+        }
+
+        if (!$isCreate) {
+            $form->add('qualities', QualityChoiceType::class, ['label' => 'Qualités', 'required' => false]);
+        }
+        $form->add('phone', TelNumberType::class, ['label' => 'Téléphone', 'required' => false]);
+
+        if ($event->showWithChildren) {
+            $form->add('children', TextareaType::class, ['label' => 'Enfant(s) accompagnant(s)', 'required' => false]);
+        }
+        $form->end();
+
+        $form->with('Statut', ['class' => 'col-md-6']);
+        // On creation, only the two meaningful initial statuses are offered; edition keeps the full lifecycle.
+        $form->add('status', ChoiceType::class, [
+            'label' => 'Statut',
+            'choices' => $isCreate ? [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE] : InscriptionStatusEnum::STATUSES,
+            'choice_label' => fn (string $status) => $status,
+            'required' => true,
+        ]);
+        $form->add('validationComment', TextareaType::class, ['label' => 'Commentaire de validation', 'required' => false]);
+        if (!$isCreate) {
+            $form
+                ->add('validationStartedAt', null, ['label' => 'Date de début de validation', 'widget' => 'single_text', 'disabled' => true])
+                ->add('validationFinishedAt', null, ['label' => 'Date de fin de validation', 'widget' => 'single_text', 'required' => false])
+            ;
+        }
+        $form->end();
+
+        $form->with('Informations additionnelles', ['class' => 'col-md-6']);
+        // The event is kept (read-only) on creation as a reminder of the chosen event;
+        // the other read-only metadata fields are empty on creation, so they are dropped there.
+        $form->add('event', null, ['label' => 'Event', 'disabled' => true, 'help' => $this->buildChangeEventHelp(), 'help_html' => true]);
+        if (!$isCreate) {
+            $form
+                ->add('uuid', null, ['label' => 'Uuid', 'disabled' => true])
+                ->add('publicId', null, ['label' => 'Public ID', 'disabled' => true])
+            ;
+        }
+        if ($event->showEmergencyContact) {
+            $form
+                ->add('emergencyContactName', null, ['label' => 'Nom du contact d’urgence'])
+                ->add('emergencyContactPhone', TelNumberType::class, ['label' => 'Nom du contact d’urgence'])
+            ;
+        }
+        if (!$isCreate) {
+            $form
+                ->add('createdAt', null, ['label' => 'Inscrit le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('updatedAt', null, ['label' => 'Modifié le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('confirmedAt', null, ['label' => 'Présence confirmée le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('canceledAt', null, ['label' => 'Annulée le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
+                ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
+            ;
+        }
+        $form->end();
+
+        $form->end();
+
+        // The package tab only makes sense for package event types, like the public form.
+        if ($event->isPackageEventType()) {
+            $form->tab('Forfait ✅');
+            $form->with('Forfait', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-warning', 'description' => '⚠️ Attention, si vous modifiez le forfait en tant qu\'admin, le prix ne changera pas automatiquement et le statut ne changera pas non plus. Pour obliger une personne à repayer, il faut la passer "En attente de paiement"']);
+            $form->add('packageValues', PackageValuesFormType::class, [
+                'label' => false,
+                'package_config' => $event->packageConfig,
+                'current_values' => $currentPackageValues ?? [],
+                'reserved_places' => $this->eventInscriptionManager->countReservedPlaces($event),
+                'from_admin' => true,
+            ]);
+            $form->end();
+
+            $form->with('Statut', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-info']);
+            $form->add('paymentStatus', ChoiceType::class, [
+                'label' => 'Statut du paiement',
+                'choices' => PaymentStatusEnum::all(),
+                'choice_label' => fn (PaymentStatusEnum $status) => $status,
+                'required' => false,
+            ]);
+            if ($event->showRoommateIdentifier) {
+                $form->add('roommateIdentifier', TextType::class, ['label' => 'Numéro du partenaire', 'required' => false]);
+            }
+            $form->add('amount', TextType::class, ['label' => 'Prix total (en centimes)', 'required' => false]);
+            $form->add('withDiscount', CheckboxType::class, ['label' => 'Bénéficie de la réduction', 'required' => false]);
+            $form->end();
+
+            $form->end();
+        }
+
+        $form->tab('Billet 🎟️');
+        $form->with('', ['class' => 'col-md-6']);
+        if (!$isCreate) {
+            $form->add('ticketUuid', null, ['label' => 'Uuid ticket', 'disabled' => true, 'help' => $this->buildTicketPreviewHelp($inscription), 'help_html' => true]);
+        }
+        $form
+            ->add('ticketCustomDetail', null, ['label' => 'Champ libre (Porte A, Accès B, bracelet rouge, etc.)', 'required' => false])
+            ->add('ticketBracelet', null, ['label' => 'Bracelet', 'required' => false])
+            ->add('ticketBraceletColor', ColorType::class, ['label' => 'Couleur du bracelet', 'required' => false])
+        ;
+        if (!$isCreate) {
+            $form
+                ->add('ticketSentAt', null, ['label' => 'Billet envoyé le', 'widget' => 'single_text', 'disabled' => true])
+                ->add('firstTicketScannedAt', null, ['label' => 'Billet scanné le', 'widget' => 'single_text', 'disabled' => true])
+            ;
+        }
+        $form->end();
+        $form->end();
+
+        $form->tab('Détails 📝');
+        if (!$isCreate) {
+            $form->with('Détail du transport', ['class' => 'col-md-6']);
+            $form->add('transportDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]]);
+            $form->end();
+            $form->with('Détail d\'hébergement', ['class' => 'col-md-6']);
+            $form->add('accommodationDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]]);
+            $form->end();
+        }
+        $form->with('Détails additionnels', ['class' => 'col-md-6']);
+        $form->add('customDetail', TextareaType::class, ['label' => false, 'required' => false, 'attr' => ['rows' => 5]]);
+        $form->end();
+        $form->end();
     }
 
     protected function configureExportFields(): array
