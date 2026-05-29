@@ -15,6 +15,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'base_url' => '%env(ANTISECHE_BASE_URL)%',
                     'api_key' => '%env(ANTISECHE_API_KEY)%',
                     'model_catalog' => 'app.chatbot.antiseche.model_catalog',
+                    'http_client' => 'app.chatbot.antiseche_http_client',
                     'supports_embeddings' => false,
                 ],
             ],
