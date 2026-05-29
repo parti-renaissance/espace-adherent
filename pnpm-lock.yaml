@@ -139,7 +139,7 @@ importers:
         version: 16.0.8(sass@1.100.0)(webpack@5.107.2)
       select2:
         specifier: ^4.0.13
-        version: 4.0.13
+        version: 4.1.0
       stackblur-canvas:
         specifier: ^2.7.0
         version: 2.7.0
@@ -3179,8 +3179,9 @@ packages:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
     engines: {node: '>= 10.13.0'}
 
-  select2@4.0.13:
-    resolution: {integrity: sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw==}
+  select2@4.1.0:
+    resolution: {integrity: sha512-i9KalWOP4/LRRGc8+rj2krNm0ZqP14cV+j1TRCEBSsOhCPkKH8rYZ2MCRXcgvqIqN+llqGci0hj9aVkCMvL0+g==}
+    engines: {node: '>=24'}
 
   semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
@@ -6855,7 +6856,7 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
-  select2@4.0.13: {}
+  select2@4.1.0: {}
 
   semver@5.7.2: {}
 
