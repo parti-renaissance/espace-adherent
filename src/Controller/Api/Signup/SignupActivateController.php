@@ -8,6 +8,7 @@ use App\Adhesion\ActivationCodeManager;
 use App\Adhesion\Exception\ActivationCodeExceptionInterface;
 use App\Entity\Adherent;
 use App\Membership\Signup\Request\SignupActivateRequest;
+use App\OAuth\AuthorizationCodeGenerator;
 use App\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ class SignupActivateController extends AbstractSignupController
         private readonly AdherentRepository $adherentRepository,
         private readonly ActivationCodeManager $activationCodeManager,
         private readonly RateLimiterFactory $signupCodeAttemptLimiter,
+        private readonly AuthorizationCodeGenerator $authorizationCodeGenerator,
     ) {
     }
 
@@ -46,6 +48,16 @@ class SignupActivateController extends AbstractSignupController
             return $this->json(['error' => self::UNIFORM_ERROR], Response::HTTP_BAD_REQUEST);
         }
 
-        return new Response('', Response::HTTP_NO_CONTENT);
+        if (null === $payload->codeChallenge || '' === $payload->codeChallenge) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        $code = $this->authorizationCodeGenerator->generate($adherent, $payload->codeChallenge);
+
+        if (null === $code) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        return $this->json(['code' => $code]);
     }
 }
