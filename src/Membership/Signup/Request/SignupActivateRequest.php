@@ -22,4 +22,12 @@ class SignupActivateRequest
     #[Assert\Regex(pattern: SignupCode::PATTERN)]
     #[Groups(['signup:write'])]
     public ?string $code = null;
+
+    /**
+     * PKCE code challenge (S256). Optional and intentionally NOT format-validated here:
+     * a malformed value must not fail the activation itself — it only means no auto-login
+     * code is minted. The OAuth authorize step rejects an invalid challenge downstream.
+     */
+    #[Groups(['signup:write'])]
+    public ?string $codeChallenge = null;
 }

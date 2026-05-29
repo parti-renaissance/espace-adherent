@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Controller\Api\Signup;
 
 use App\Adhesion\ActivationCodeManager;
+use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
 use App\Entity\PostAddress;
@@ -24,19 +25,138 @@ class SignupActivateControllerTest extends AbstractApiTestCase
 
     private const URL = '/api/signup/activate';
     private const CLIENT_IP = '127.0.0.1';
+    // Valid PKCE verifier (43-128 chars, RFC 7636 charset); the challenge is its S256 hash.
+    private const CODE_VERIFIER = 'fixed-test-code-verifier-0123456789-0123456789-0123456789';
 
-    public function testActivateValidCodeEnablesAdherent(): void
+    public function testActivateValidCodeReturnsAuthorizationCodeAndEnablesAdherent(): void
     {
         $adherent = $this->createPendingAdherent('activate-success@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // A standard OAuth authorization code is handed back so the app can exchange it on
+        // /oauth/v2/token (with its own pinned redirect_uri + code_verifier) without a browser.
+        $body = json_decode((string) $this->client->getResponse()->getContent(), true);
+        self::assertIsArray($body);
+        self::assertArrayHasKey('code', $body);
+        self::assertNotEmpty($body['code']);
+        self::assertArrayNotHasKey('redirect_uri', $body, 'redirect_uri must NOT be echoed: the app sends its own pinned value.');
+
+        $this->manager->clear();
+        $reloaded = $this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress());
+        self::assertTrue($reloaded->isEnabled(), 'PENDING → ENABLED transition must happen on a valid code.');
+    }
+
+    public function testActivationAuthorizationCodeCanBeExchangedForTokens(): void
+    {
+        // End-to-end: the minted code must actually yield tokens via the standard
+        // authorization_code grant + PKCE verifier (no browser, no client secret).
+        $adherent = $this->createPendingAdherent('activate-exchange@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+        ]);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
+
+        $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
+            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => 'http://localhost:8081',
+            'code' => $authorizationCode,
+            'code_verifier' => self::CODE_VERIFIER,
+        ]);
+
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
+        $tokens = json_decode((string) $response->getContent(), true);
+        self::assertNotEmpty($tokens['access_token'] ?? null, 'The minted code must exchange into an access token.');
+        self::assertNotEmpty($tokens['refresh_token'] ?? null);
+    }
+
+    public function testActivationCodeIsUselessWithoutTheMatchingPkceVerifier(): void
+    {
+        // The whole point of PKCE here: an intercepted code cannot be exchanged without the
+        // verifier held only by the legitimate app. A wrong verifier must be rejected.
+        $adherent = $this->createPendingAdherent('activate-pkce-guard@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+        ]);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
+
+        $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
+            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => 'http://localhost:8081',
+            'code' => $authorizationCode,
+            'code_verifier' => 'a-wrong-verifier-0123456789-0123456789-0123456789',
+        ]);
+
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $response);
+        $body = json_decode((string) $response->getContent(), true);
+        self::assertArrayNotHasKey('access_token', $body ?? [], 'A mismatched PKCE verifier must not yield a token.');
+    }
+
+    public function testActivationCodeRequiresAVerifierAtExchange(): void
+    {
+        // Definitive proof the challenge is actually bound to the code: exchanging WITHOUT a
+        // verifier must be rejected. This only happens when the code carries a code_challenge
+        // (league requires the verifier then) — it would succeed if the challenge were dropped.
+        $adherent = $this->createPendingAdherent('activate-pkce-bound@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+        ]);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
+
+        // No code_verifier at all.
+        $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
+            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => 'http://localhost:8081',
+            'code' => $authorizationCode,
+        ]);
+
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $response);
+        $body = json_decode((string) $response->getContent(), true);
+        self::assertArrayNotHasKey('access_token', $body ?? [], 'A code missing its verifier must not yield a token.');
+    }
+
+    public function testActivateValidCodeWithoutChallengeEnablesButReturnsNoCode(): void
+    {
+        // PKCE is mandatory for the auto-login code: without a challenge the account is still
+        // activated, but no authorization code is handed back (no silent non-PKCE downgrade).
+        $adherent = $this->createPendingAdherent('activate-no-challenge@example.test');
         $code = $this->generateCode($adherent);
 
         $this->post(['email' => $adherent->getEmailAddress(), 'code' => $code->value]);
 
         $this->assertResponseStatusCode(Response::HTTP_NO_CONTENT, $this->client->getResponse());
+        self::assertEmpty((string) $this->client->getResponse()->getContent());
 
         $this->manager->clear();
-        $reloaded = $this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress());
-        self::assertTrue($reloaded->isEnabled(), 'PENDING → ENABLED transition must happen on a valid code.');
+        self::assertTrue($this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress())->isEnabled());
     }
 
     public function testActivateWrongCodeReturnsUniformError(): void
@@ -198,6 +318,12 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         ;
 
         return $adherent;
+    }
+
+    private static function codeChallenge(): string
+    {
+        // S256 PKCE challenge = base64url(sha256(verifier)), no padding.
+        return rtrim(strtr(base64_encode(hash('sha256', self::CODE_VERIFIER, true)), '+/', '-_'), '=');
     }
 
     private function generateCode(Adherent $adherent): AdherentActivationCode
