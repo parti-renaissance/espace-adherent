@@ -189,6 +189,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set('app.chatbot.vertexai_http_client', App\Chatbot\Http\VertexAiSseHttpClient::class)
         ->arg('$client', service('http_client'));
 
+    $services->set('app.chatbot.antiseche_http_client', Symfony\Contracts\HttpClient\HttpClientInterface::class)
+        ->factory([service('http_client'), 'withOptions'])
+        ->args([['timeout' => 60]]);
+
     $services->set('app.chatbot.antiseche.model_catalog', Symfony\AI\Platform\Bridge\Generic\ModelCatalog::class)
         ->args([[
             'antiseche-rag' => [
