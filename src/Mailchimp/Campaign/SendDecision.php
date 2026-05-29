@@ -15,6 +15,7 @@ class SendDecision
         public readonly SendDecisionEnum $kind,
         public readonly ?string $reason,
         public readonly ?int $recipientCount,
+        public readonly bool $forceSendOnExhaustion = false,
     ) {
     }
 
@@ -23,9 +24,9 @@ class SendDecision
         return new self(SendDecisionEnum::Send, null, $recipientCount);
     }
 
-    public static function retry(string $reason, ?int $recipientCount = null): self
+    public static function retry(string $reason, ?int $recipientCount = null, bool $forceSendOnExhaustion = false): self
     {
-        return new self(SendDecisionEnum::Retry, $reason, $recipientCount);
+        return new self(SendDecisionEnum::Retry, $reason, $recipientCount, $forceSendOnExhaustion);
     }
 
     public static function abort(string $reason, ?int $recipientCount = null): self

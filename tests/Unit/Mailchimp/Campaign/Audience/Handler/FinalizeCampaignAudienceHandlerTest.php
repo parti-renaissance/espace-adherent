@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
+use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Handler\FinalizeCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
@@ -195,9 +196,8 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
             ->method('aggregateStatusCounts')
             ->with(4242)
             ->willReturn([
-                SegmentMemberStatusEnum::Added->value => 950,
+                SegmentMemberStatusEnum::Added->value => 970,
                 SegmentMemberStatusEnum::Refused->value => 30,
-                SegmentMemberStatusEnum::Errored->value => 20,
             ])
         ;
 
@@ -207,12 +207,63 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $handler = $this->buildHandler($em, $repo, $bus);
         $handler(new FinalizeCampaignAudienceMessage(7));
 
-        self::assertSame(950, $segment->preparedCount);
+        self::assertSame(970, $segment->preparedCount);
         self::assertSame(30, $segment->refusedCount);
-        self::assertSame(20, $segment->erroredCount);
+        self::assertSame(0, $segment->erroredCount);
         self::assertNotNull($segment->builtAt);
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
         self::assertFalse($campaign->isPendingSend());
+    }
+
+    public function testErroredChunksBlockSendAndMarkFailed(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $campaign->markAsPendingSend();
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->expectedCount = 1_000;
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
+        // Single flush after markAsFailed; no markAsReady / auto-send flush.
+        $em->expects(self::once())->method('flush');
+
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $repo->method('existsPending')->willReturn(false);
+        $repo->expects(self::once())
+            ->method('aggregateStatusCounts')
+            ->with(4242)
+            ->willReturn([
+                SegmentMemberStatusEnum::Added->value => 600,
+                SegmentMemberStatusEnum::Errored->value => 400,
+            ])
+        ;
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('error')
+            ->with(
+                '[AudienceFinalize] Send blocked: preparation completed with errored chunks',
+                self::callback(function (array $ctx): bool {
+                    return 7 === $ctx['campaign_id'] && 400 === $ctx['errored_count'];
+                }),
+            )
+        ;
+
+        $handler = $this->buildHandler($em, $repo, $bus, $logger);
+        $handler(new FinalizeCampaignAudienceMessage(7));
+
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::PreparationErrors, $campaign->getBlockReason());
+        self::assertFalse($campaign->isPendingSend());
+        self::assertSame(600, $segment->preparedCount);
+        self::assertSame(400, $segment->erroredCount);
     }
 
     public function testPendingSendDispatchesSendCommandAndClearsFlag(): void

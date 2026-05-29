@@ -13,21 +13,38 @@ use App\Mailchimp\Driver;
  * Two concerns:
  *  1. The remote campaign must still point to the saved segment we configured for it
  *     (`getCampaignSavedSegmentId` == local `staticSegmentId`).
- *  2. The remote `recipient_count` must be within an acceptable drift above the local
- *     `expectedCount`. Overshooting means the segment is polluted (e.g. a previous wipe failed
- *     and stale members survived) → block the send to prevent a mass email to the wrong audience.
+ *  2. The remote `recipient_count` is bounded against the local `preparedCount` (the members we
+ *     successfully pushed to the segment and Mailchimp acked), with two independent tolerances:
+ *      - OVERSHOOT above `preparedCount * (1 + maxRecipientDriftPercent%)`: the segment is polluted
+ *        (e.g. a previous wipe failed and stale members survived) → ABORT, to prevent a mass email
+ *        to the wrong audience.
+ *      - UNDERSHOOT below `preparedCount * (1 - maxRecipientUndershootPercent%)`: Mailchimp has not
+ *        finished propagating the bulk member-add into the campaign audience yet (eventual
+ *        consistency) → RETRY so the count can settle. The retry chain re-reads it on each attempt;
+ *        once exhausted it sends to whatever is available — an undershoot only reaches fewer
+ *        *legitimate* recipients, never a wrong audience, so a partial send is acceptable.
  *
- * Undershoot is NOT handled here. Mailchimp itself rejects `actions/send` with a "campaign not
- * ready" error while it is still computing the audience; that error path already triggers the
- * existing retry/backoff via `Manager::sendMailchimpCampaign()` returning false. So we trust
- * Mailchimp's own readiness signal instead of trying to detect it from `recipient_count`.
+ * An unreadable `recipient_count` (transient API error) also RETRIES, but is NOT force-sendable on
+ * exhaustion: we never verified the audience, so blind-sending could reach a wrong one.
+ *
+ * Reference is `preparedCount`, NOT `expectedCount`: the latter includes emails refused/errored
+ * at push time that legitimately will not receive the campaign.
  */
 class MailchimpCampaignSendGuard
 {
     public function __construct(
         private readonly Driver $driver,
         private readonly int $maxRecipientDriftPercent,
+        private readonly int $maxRecipientUndershootPercent,
     ) {
+        if ($maxRecipientDriftPercent < 0) {
+            throw new \InvalidArgumentException(\sprintf('maxRecipientDriftPercent must be >= 0, got %d.', $maxRecipientDriftPercent));
+        }
+
+        // >= 100 would drive the undershoot floor to <= 0, disabling the readiness gate entirely.
+        if ($maxRecipientUndershootPercent < 0 || $maxRecipientUndershootPercent >= 100) {
+            throw new \InvalidArgumentException(\sprintf('maxRecipientUndershootPercent must be in [0, 100), got %d.', $maxRecipientUndershootPercent));
+        }
     }
 
     public function evaluate(MailchimpCampaign $campaign): SendDecision
@@ -46,26 +63,35 @@ class MailchimpCampaignSendGuard
             return SendDecision::abort(\sprintf('Segment mismatch: local=%s remote=%s', $localSegmentId ?? 'null', $remoteSegmentId ?? 'null'));
         }
 
-        // 2. Reference count = the SQL audience size committed at preparation time.
-        $expected = $campaign->getMailchimpStaticSegment()?->expectedCount;
+        // 2. Reference count = members we successfully pushed and Mailchimp acknowledged (added).
+        $prepared = $campaign->getMailchimpStaticSegment()?->preparedCount;
 
-        if (null === $expected || $expected <= 0) {
-            return SendDecision::abort('expectedCount missing or zero at send time.');
+        if (null === $prepared || $prepared <= 0) {
+            return SendDecision::abort('preparedCount missing or zero at send time.');
         }
 
         // 3. Real recipient count Mailchimp will actually send to.
         $recipientCount = $this->driver->getCampaignRecipientCount($externalId);
 
         if (null === $recipientCount) {
-            // Couldn't read the safety counter (transient API/network blip). Retry; if it stays
-            // null over MAX_RETRIES, the existing exhaustion path force-sends with a Sentry error.
+            // Couldn't read the safety counter (transient API/network blip). Retry, but do NOT
+            // force-send on exhaustion: we never verified the audience size.
             return SendDecision::retry('recipient_count not readable from Mailchimp.');
         }
 
-        $maxAllowed = (int) ceil($expected * (1 + $this->maxRecipientDriftPercent / 100));
+        $maxAllowed = (int) ceil($prepared * (1 + $this->maxRecipientDriftPercent / 100));
+        $minAllowed = (int) floor($prepared * (1 - $this->maxRecipientUndershootPercent / 100));
 
+        // Overshoot: more recipients than we pushed → polluted segment → never send.
         if ($recipientCount > $maxAllowed) {
-            return SendDecision::abort(\sprintf('Recipient overshoot: recipient_count=%d expected=%d max=%d', $recipientCount, $expected, $maxAllowed), $recipientCount);
+            return SendDecision::abort(\sprintf('Recipient overshoot: recipient_count=%d prepared=%d max=%d', $recipientCount, $prepared, $maxAllowed), $recipientCount);
+        }
+
+        // Undershoot: fewer recipients than we pushed → segment still propagating on Mailchimp's
+        // side → retry so the count can settle. Force-sendable on exhaustion: an undershoot only
+        // reaches a subset of legitimate recipients.
+        if ($recipientCount < $minAllowed) {
+            return SendDecision::retry(\sprintf('Recipient undershoot: recipient_count=%d prepared=%d min=%d — segment likely still propagating.', $recipientCount, $prepared, $minAllowed), $recipientCount, true);
         }
 
         return SendDecision::send($recipientCount);

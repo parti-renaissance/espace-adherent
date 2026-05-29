@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\Audience\Handler;
 
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
@@ -86,6 +87,23 @@ class FinalizeCampaignAudienceHandler
         $staticSegment->builtAt = $builtAt;
         if (null !== $staticSegment->buildStartedAt) {
             $staticSegment->buildDurationMs = (int) (($builtAt->format('U.u') - $staticSegment->buildStartedAt->format('U.u')) * 1000);
+        }
+
+        // Errored chunks are infrastructure push failures (NOT legitimate refusals): the Mailchimp
+        // segment is incomplete through no fault of the audience. Never auto-send a partial audience
+        // caused by errors — block and alert so a human re-prepares or investigates.
+        if ($staticSegment->erroredCount > 0) {
+            $this->logger->error('[AudienceFinalize] Send blocked: preparation completed with errored chunks', [
+                'campaign_id' => $campaign->getId(),
+                'errored_count' => $staticSegment->erroredCount,
+                'prepared_count' => $staticSegment->preparedCount,
+                'expected_count' => $staticSegment->expectedCount,
+            ]);
+
+            $campaign->markAsFailed(BlockReasonEnum::PreparationErrors);
+            $this->entityManager->flush();
+
+            return;
         }
 
         $campaign->markAsReady();

@@ -152,7 +152,7 @@ class SendMailchimpCampaignCommandHandlerTest extends TestCase
         $sendGuard->expects(self::once())
             ->method('evaluate')
             ->with(self::identicalTo($campaign))
-            ->willReturn(SendDecision::abort('Recipient overshoot: recipient_count=1200 expected=93 max=98', 1200))
+            ->willReturn(SendDecision::abort('Recipient overshoot: recipient_count=1200 prepared=93 max=98', 1200))
         ;
 
         $manager = $this->createMock(Manager::class);

@@ -16,8 +16,12 @@ class MailchimpCampaignSendGuardTest extends TestCase
 {
     private const string EXTERNAL_ID = 'mc-campaign-abc';
     private const int SEGMENT_ID = 555;
-    private const int EXPECTED_COUNT = 93;
-    private const int THRESHOLD_PERCENT = 5; // max overshoot = ceil(93 * 1.05) = 98
+    private const int PREPARED_COUNT = 93;
+    // Bounds around preparedCount=93 with the two tolerances below:
+    //   overshoot block above ceil(93 * 1.05) = 98
+    //   undershoot retry below floor(93 * 0.95) = 88
+    private const int DRIFT_PERCENT = 5;
+    private const int UNDERSHOOT_PERCENT = 5;
 
     public function testMissingExternalIdAborts(): void
     {
@@ -52,9 +56,9 @@ class MailchimpCampaignSendGuardTest extends TestCase
         self::assertStringContainsString('Segment mismatch', $decision->reason);
     }
 
-    public function testMissingExpectedCountAborts(): void
+    public function testMissingPreparedCountAborts(): void
     {
-        $campaign = $this->buildCampaign(expectedCount: null);
+        $campaign = $this->buildCampaign(preparedCount: null);
 
         $driver = $this->createMock(Driver::class);
         $driver
@@ -68,7 +72,7 @@ class MailchimpCampaignSendGuardTest extends TestCase
         $decision = $this->buildGuard($driver)->evaluate($campaign);
 
         self::assertSame(SendDecisionEnum::Abort, $decision->kind);
-        self::assertStringContainsString('expectedCount', $decision->reason);
+        self::assertStringContainsString('preparedCount', $decision->reason);
     }
 
     public function testNullRecipientCountRetries(): void
@@ -83,40 +87,124 @@ class MailchimpCampaignSendGuardTest extends TestCase
         self::assertNull($decision->recipientCount);
     }
 
-    public function testZeroRecipientCountSends(): void
+    public function testZeroRecipientCountRetries(): void
     {
-        // Mailchimp returning recipient_count=0 is NOT a guard concern: if MC is still computing
-        // the audience, its own `actions/send` response will reject the send with "not ready" and
-        // the existing retry chain handles it. The guard only stops the send on overshoot.
+        // Mailchimp reporting recipient_count=0 while we prepared 93 means the segment members
+        // have not propagated yet on Mailchimp's side. Retry so the count can settle instead of
+        // sending to nobody.
         $campaign = $this->buildCampaign();
 
         $driver = $this->driverReturningRecipientCount(0);
 
         $decision = $this->buildGuard($driver)->evaluate($campaign);
 
-        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(SendDecisionEnum::Retry, $decision->kind);
         self::assertSame(0, $decision->recipientCount);
     }
 
-    public function testSignificantUndershootSends(): void
+    public function testSignificantUndershootRetries(): void
     {
-        // expectedCount=93, recipient=10. Massive undershoot, but the guard does NOT block here:
-        // if MC is still computing it will reject the actual send → retry kicks in; if MC accepts,
-        // that count is authoritative (MC says there are 10 recipients) and we proceed.
+        // The production incident in miniature: preparedCount=93 but Mailchimp only reports 10
+        // because it has not finished indexing the bulk member-add into the campaign audience.
+        // The guard must NOT send the partial audience — it retries until the count settles.
         $campaign = $this->buildCampaign();
 
         $driver = $this->driverReturningRecipientCount(10);
 
         $decision = $this->buildGuard($driver)->evaluate($campaign);
 
-        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(SendDecisionEnum::Retry, $decision->kind);
         self::assertSame(10, $decision->recipientCount);
+        self::assertStringContainsString('undershoot', $decision->reason);
+    }
+
+    public function testJustBelowUndershootFloorRetries(): void
+    {
+        $campaign = $this->buildCampaign();
+        // floor(93 * 0.95) = 88 → 87 is just below the floor.
+        $driver = $this->driverReturningRecipientCount(87);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Retry, $decision->kind);
+        self::assertSame(87, $decision->recipientCount);
+    }
+
+    public function testUndershootRetryIsForceSendableOnExhaustion(): void
+    {
+        $campaign = $this->buildCampaign();
+        $driver = $this->driverReturningRecipientCount(10);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Retry, $decision->kind);
+        self::assertTrue($decision->forceSendOnExhaustion, 'A readable undershoot may be force-sent once retries are exhausted.');
+    }
+
+    public function testUnreadableCountRetryIsNotForceSendableOnExhaustion(): void
+    {
+        $campaign = $this->buildCampaign();
+        $driver = $this->driverReturningRecipientCount(null);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Retry, $decision->kind);
+        self::assertFalse($decision->forceSendOnExhaustion, 'An unreadable count must never be blind-sent on exhaustion.');
+    }
+
+    public function testAtUndershootFloorSends(): void
+    {
+        $campaign = $this->buildCampaign();
+        // floor(93 * 0.95) = 88 inclusive.
+        $driver = $this->driverReturningRecipientCount(88);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(88, $decision->recipientCount);
+    }
+
+    public function testMinorDecayWithinToleranceSends(): void
+    {
+        // Legitimate decay between push and send (a few unsubscribes/cleans) keeps the count just
+        // under preparedCount. This is the fully-propagated happy path — send, don't retry.
+        $campaign = $this->buildCampaign();
+
+        $driver = $this->driverReturningRecipientCount(90);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(90, $decision->recipientCount);
+    }
+
+    public function testExactMatchSends(): void
+    {
+        $campaign = $this->buildCampaign();
+        $driver = $this->driverReturningRecipientCount(self::PREPARED_COUNT);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(self::PREPARED_COUNT, $decision->recipientCount);
+    }
+
+    public function testAtOvershootThresholdSends(): void
+    {
+        $campaign = $this->buildCampaign();
+        // ceil(93 * 1.05) = 98 inclusive.
+        $driver = $this->driverReturningRecipientCount(98);
+
+        $decision = $this->buildGuard($driver)->evaluate($campaign);
+
+        self::assertSame(SendDecisionEnum::Send, $decision->kind);
+        self::assertSame(98, $decision->recipientCount);
     }
 
     public function testOvershootAborts(): void
     {
         $campaign = $this->buildCampaign();
-        // expectedCount=93, threshold=5% → max=98; 99 overshoots.
+        // preparedCount=93, threshold=5% → max=98; 99 overshoots → segment is polluted, block.
         $driver = $this->driverReturningRecipientCount(99);
 
         $decision = $this->buildGuard($driver)->evaluate($campaign);
@@ -126,38 +214,15 @@ class MailchimpCampaignSendGuardTest extends TestCase
         self::assertStringContainsString('overshoot', $decision->reason);
     }
 
-    public function testJustAtThresholdSends(): void
-    {
-        $campaign = $this->buildCampaign();
-        // expectedCount=93, threshold=5% → ceil(93*1.05) = 98 inclusive.
-        $driver = $this->driverReturningRecipientCount(98);
-
-        $decision = $this->buildGuard($driver)->evaluate($campaign);
-
-        self::assertSame(SendDecisionEnum::Send, $decision->kind);
-        self::assertSame(98, $decision->recipientCount);
-    }
-
-    public function testExactMatchSends(): void
-    {
-        $campaign = $this->buildCampaign();
-        $driver = $this->driverReturningRecipientCount(self::EXPECTED_COUNT);
-
-        $decision = $this->buildGuard($driver)->evaluate($campaign);
-
-        self::assertSame(SendDecisionEnum::Send, $decision->kind);
-        self::assertSame(self::EXPECTED_COUNT, $decision->recipientCount);
-    }
-
     private function buildGuard(Driver $driver): MailchimpCampaignSendGuard
     {
-        return new MailchimpCampaignSendGuard($driver, self::THRESHOLD_PERCENT);
+        return new MailchimpCampaignSendGuard($driver, self::DRIFT_PERCENT, self::UNDERSHOOT_PERCENT);
     }
 
     private function buildCampaign(
         ?string $externalId = self::EXTERNAL_ID,
         ?int $segmentId = self::SEGMENT_ID,
-        ?int $expectedCount = self::EXPECTED_COUNT,
+        ?int $preparedCount = self::PREPARED_COUNT,
     ): MailchimpCampaign {
         $message = $this->createStub(AdherentMessageInterface::class);
         $campaign = new MailchimpCampaign($message);
@@ -171,14 +236,15 @@ class MailchimpCampaignSendGuardTest extends TestCase
 
         $segment = new MailchimpStaticSegment($campaign);
         $segment->mailchimpSegmentId = $segmentId;
-        $segment->expectedCount = $expectedCount;
+        $segment->expectedCount = self::PREPARED_COUNT;
+        $segment->preparedCount = $preparedCount;
         $campaign->setMailchimpStaticSegment($segment);
 
         return $campaign;
     }
 
     /**
-     * Driver mock that goes through segment-id check OK and returns the given recipient count.
+     * Driver mock that goes through the segment-id check OK and returns the given recipient count.
      */
     private function driverReturningRecipientCount(?int $recipientCount): Driver
     {

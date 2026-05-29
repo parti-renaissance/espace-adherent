@@ -10,4 +10,5 @@ enum BlockReasonEnum: string
     case MailchimpUnavailable = 'mailchimp_unavailable';
     case AlreadySent = 'already_sent';
     case Conflict = 'conflict';
+    case PreparationErrors = 'preparation_errors';
 }
