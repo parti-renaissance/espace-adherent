@@ -115,7 +115,7 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
 
         DummyAntisecheAgent::willReturn(new TextResult('ok'));
 
-        for ($i = 1; $i <= 20; ++$i) {
+        for ($i = 1; $i <= 60; ++$i) {
             $this->postJson(['message' => "req $i", 'agent_id' => 'antiseche'], $accessToken);
             $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         }
