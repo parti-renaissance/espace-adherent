@@ -322,7 +322,7 @@ class LoadAppHitData extends AbstractLoadPostAddressData implements DependentFix
         $hit->activitySessionUuid = $activitySessionUuid;
         $hit->openType = null;
 
-        $hit->objectType = $objectType;
+        $hit->objectType = $objectType?->value;
         $hit->objectId = $objectId;
 
         $hit->source = $source;

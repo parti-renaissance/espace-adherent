@@ -98,7 +98,7 @@ class AppHitRepository extends ServiceEntityRepository
             ->andWhere('h.objectId = :object_id')
             ->setParameters(new ArrayCollection([
                 new Parameter('event_type', $eventType),
-                new Parameter('object_type', $targetType),
+                new Parameter('object_type', $targetType->value),
                 new Parameter('object_id', $targetUuid),
             ]))
             ->orderBy('h.createdAt', 'DESC')

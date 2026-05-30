@@ -77,7 +77,7 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
         $appHit->adherent = $adherent;
         $appHit->eventType = $eventType;
         $appHit->source = $source;
-        $appHit->objectType = TargetTypeEnum::Publication;
+        $appHit->objectType = TargetTypeEnum::Publication->value;
         $appHit->objectId = $objectId;
         $appHit->appDate = new \DateTime();
         $appHit->activitySessionUuid = Uuid::v4();

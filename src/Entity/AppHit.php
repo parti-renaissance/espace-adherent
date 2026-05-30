@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\AppSession\SystemEnum;
 use App\JeMengage\Hit\EventTypeEnum;
 use App\JeMengage\Hit\SourceGroupEnum;
-use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AppHitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -58,8 +57,8 @@ class AppHit
     public ?string $openType = null;
 
     #[Groups(['hit:write'])]
-    #[ORM\Column(nullable: true, enumType: TargetTypeEnum::class)]
-    public ?TargetTypeEnum $objectType = null;
+    #[ORM\Column(nullable: true)]
+    public ?string $objectType = null;
 
     #[Groups(['hit:write'])]
     #[ORM\Column(nullable: true)]
@@ -121,7 +120,7 @@ class AppHit
             $this->adherent?->getId(),
             $this->activitySessionUuid->toRfc4122(),
             $this->eventType->value,
-            $this->objectType?->value,
+            $this->objectType,
             $this->objectId,
             $this->source,
             $this->appDate->format('Y-m-d H:i:s'),

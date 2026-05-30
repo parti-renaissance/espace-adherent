@@ -50,7 +50,7 @@ class SaveAppHitCommandHandler
         }
 
         if (
-            TargetTypeEnum::Event === $hit->objectType
+            TargetTypeEnum::Event->value === $hit->objectType
             && $hit->objectId
             && !Uuid::isValid($hit->objectId)
             && $event = $this->eventRepository->findOneBySlug($hit->objectId)

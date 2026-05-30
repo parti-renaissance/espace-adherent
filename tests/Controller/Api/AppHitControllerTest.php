@@ -8,10 +8,12 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadAdherentMessageData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventData;
+use App\Entity\AppHit;
 use App\JeMengage\Hit\Stats\AggregatorInterface;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
+use App\Repository\AppHitRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -459,6 +461,45 @@ class AppHitControllerTest extends AbstractApiTestCase
             ],
             'visible_count' => 4,
         ], $stats->jsonSerialize());
+    }
+
+    public function testHitWithUnknownObjectTypeIsPersisted(): void
+    {
+        $date = new \DateTime()->format(\DATE_ATOM);
+        $sessionUuid = self::SESSION_UUID;
+        $objectId = 'ad6c97b9-3b3a-4c0a-9b9e-8e1f2a3b4c5d';
+
+        // "idea" is not part of TargetTypeEnum: the object-type taxonomy is owned by the
+        // mobile app. The hit must land in DB as-is instead of crashing the message handler
+        // (routed to the sync transport in the test env).
+        $this->client->request(Request::METHOD_POST, self::URL, [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_AUTHORIZATION' => "Bearer $this->accessToken",
+        ], <<<JSON
+            {
+              "event_type": "impression",
+              "activity_session_uuid": "$sessionUuid",
+              "app_date": "$date",
+              "app_version": "5.19.0#1",
+              "app_system": "web",
+              "object_type": "idea",
+              "object_id": "$objectId",
+              "source": "page_timeline"
+            }
+            JSON
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_ACCEPTED, $this->client->getResponse());
+
+        $this->getEntityManager(AppHit::class)->clear();
+
+        /** @var AppHit|null $hit */
+        $hit = $this->get(AppHitRepository::class)->findOneBy(['objectType' => 'idea']);
+
+        self::assertNotNull($hit, 'A hit with an unknown object_type must be persisted');
+        self::assertSame('idea', $hit->objectType);
+        self::assertSame($objectId, $hit->objectId);
+        self::assertSame('idea', $hit->raw['object_type'] ?? null, 'The raw payload keeps the original value');
     }
 
     protected function setUp(): void

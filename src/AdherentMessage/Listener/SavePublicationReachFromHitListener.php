@@ -25,7 +25,7 @@ class SavePublicationReachFromHitListener implements EventSubscriberInterface
     {
         $hit = $event->hit;
 
-        if (TargetTypeEnum::Publication !== $hit->objectType || !$hit->isImpression()) {
+        if (TargetTypeEnum::Publication->value !== $hit->objectType || !$hit->isImpression()) {
             return;
         }
 

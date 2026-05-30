@@ -346,7 +346,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         $hit->adherent = $this->adherent;
         $hit->activitySessionUuid = Uuid::v4();
         $hit->appDate = $appDate ?? new \DateTime('-5 minutes');
-        $hit->objectType = $objectType;
+        $hit->objectType = $objectType?->value;
         $hit->objectId = $objectId;
         $hit->source = $source;
         $hit->buttonName = $buttonName;
