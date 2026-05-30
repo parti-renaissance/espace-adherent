@@ -209,7 +209,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setStatus($eventInscription->status)
             ->setUtmSource($eventInscription->utmSource)
             ->setUtmCampaign($eventInscription->utmCampaign)
-            ->setZones(new ArrayCollection($this->zoneRepository->findByPostalCode($eventInscription->postalCode)))
+            ->setZones(new ArrayCollection($eventInscription->postalCode ? $this->zoneRepository->findByPostalCode($eventInscription->postalCode) : []))
         ;
     }
 
