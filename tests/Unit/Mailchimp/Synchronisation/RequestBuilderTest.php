@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp\Synchronisation;
 
 use App\Adherent\Tag\TagTranslator;
+use App\Entity\NationalEvent\EventInscription;
+use App\Entity\NationalEvent\NationalEvent;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Contact\MarketingConsentStatusEnum;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
@@ -22,10 +24,12 @@ final class RequestBuilderTest extends TestCase
 {
     private RequestBuilder $requestBuilder;
     private SmsOptOutRepository&MockObject $smsOptOutRepository;
+    private ZoneRepository&MockObject $zoneRepository;
 
     protected function setUp(): void
     {
         $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
+        $this->zoneRepository = $this->createMock(ZoneRepository::class);
 
         $this->requestBuilder = new RequestBuilder(
             $this->createMock(MailchimpObjectIdMapping::class),
@@ -33,7 +37,7 @@ final class RequestBuilderTest extends TestCase
             $this->createMock(ElectedRepresentativeAdherentMandateRepository::class),
             $this->createMock(DonationRepository::class),
             $this->createMock(TagTranslator::class),
-            $this->createMock(ZoneRepository::class),
+            $this->zoneRepository,
             $this->createMock(TranslatorInterface::class),
             $this->smsOptOutRepository,
         );
@@ -182,5 +186,42 @@ final class RequestBuilderTest extends TestCase
         self::assertArrayHasKey('email_channel', $data);
         self::assertSame($email, $data['email_channel']['email']);
         self::assertSame('denied', $data['email_channel']['marketing_consent']['status']);
+    }
+
+    public function testUpdateFromNationalEventInscriptionWithoutPostalCodeDoesNotQueryZones(): void
+    {
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
+
+        $result = $this->requestBuilder->updateFromNationalEventInscription($this->createEventInscription(null));
+
+        self::assertSame($this->requestBuilder, $result);
+    }
+
+    public function testUpdateFromNationalEventInscriptionWithPostalCodeQueriesZones(): void
+    {
+        $this->zoneRepository
+            ->expects(self::once())
+            ->method('findByPostalCode')
+            ->with('75001')
+            ->willReturn([])
+        ;
+
+        $this->requestBuilder->updateFromNationalEventInscription($this->createEventInscription('75001'));
+    }
+
+    private function createEventInscription(?string $postalCode): EventInscription
+    {
+        $event = new NationalEvent();
+        $event->updateSlug('national-event');
+
+        $inscription = new EventInscription($event);
+        $inscription->setCreatedAt(new \DateTime());
+        $inscription->addressEmail = 'inscription@example.com';
+        $inscription->postalCode = $postalCode;
+
+        return $inscription;
     }
 }
