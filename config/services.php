@@ -115,7 +115,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$telegramChatIdNominations', '%env(TELEGRAM_CHAT_ID_NOMINATIONS)%')
         ->bind('$referralHost', '%env(REFERRAL_HOST)%')
         ->bind('$updateCleanedContactToken', '%env(UPDATE_CLEANED_CONTACT_TOKEN)%')
-        ->bind('$updateCleanedContactApiToken', '%env(UPDATE_CLEANED_CONTACT_API_TOKEN)%');
+        ->bind('$updateCleanedContactApiToken', '%env(UPDATE_CLEANED_CONTACT_API_TOKEN)%')
+        ->bind('$socialNetworkFeedWebhookKey', '%env(SOCIAL_NETWORK_FEED_WEBHOOK_KEY)%')
+    ;
 
     $services->instanceof(App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface::class)
         ->tag('app.adherent.unregistration.handler');
