@@ -9,6 +9,8 @@ use App\Adherent\Tag\TagEnum;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
+use App\Entity\AdherentSignupSource;
+use App\Entity\SignupSource;
 use App\Membership\AdherentFactory;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
@@ -16,6 +18,7 @@ use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
 use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use App\Repository\AdherentRepository;
+use App\Repository\AdherentSignupSourceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -26,6 +29,7 @@ class CreateAccountCommandHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AdherentRepository $adherentRepository,
+        private readonly AdherentSignupSourceRepository $adherentSignupSourceRepository,
         private readonly AdherentFactory $adherentFactory,
         private readonly MembershipNotifier $membershipNotifier,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -75,6 +79,10 @@ class CreateAccountCommandHandler
 
         if (!$currentUser->tags) {
             $currentUser->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+        }
+
+        if (!$this->adherentSignupSourceRepository->existsFor($currentUser, SignupSource::CODE_RENAISSANCE)) {
+            $this->entityManager->persist(new AdherentSignupSource($currentUser, SignupSource::CODE_RENAISSANCE));
         }
 
         $this->entityManager->flush();
