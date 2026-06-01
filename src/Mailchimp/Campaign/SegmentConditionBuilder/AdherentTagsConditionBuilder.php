@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\SegmentFilterInterface;
@@ -53,7 +54,10 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
             throw new InvalidAdherentTagValueException($tag);
         }
 
-        if (!str_contains($tag, ':')) {
+        // A flat hierarchical root (e.g. "adherent", "elu") keeps the " - " boundary so the
+        // Mailchimp "contains" match stays scoped to its children and does not substring-match
+        // another family's label. Flat leaf tags (e.g. "sympathisant") match their exact label.
+        if (TagEnum::isHierarchicalRoot($tag)) {
             $label .= ' - ';
         }
 

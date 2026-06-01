@@ -12,7 +12,7 @@
                 object.hasActiveMembership() ? '#8e681e' : '#0f72bd',
             ) }}
             {% set displayed_tags = displayed_tags|merge([tag]) %}
-        {% elseif tag starts with 'sympathisant:' %}
+        {% elseif tag starts with 'sympathisant' %}
             {{ ui.label(
                 translate_tag(tag, false),
                 '#e3f8ff',

@@ -39,14 +39,20 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
 
                 $orX = $qb->expr()->orX();
 
-                $condition = match ($value->getType()) {
-                    ContainsOperatorType::TYPE_NOT_CONTAINS => 'NOT LIKE',
-                    default => 'LIKE',
-                };
+                $notContains = ContainsOperatorType::TYPE_NOT_CONTAINS === $value->getType();
 
                 foreach ($value->getValue() as $index => $choice) {
-                    $orX->add($alias.'.tags '.$condition.' :tag_'.$field.'_'.$index);
-                    $qb->setParameter('tag_'.$field.'_'.$index, '%'.(str_contains($choice, ':') ? $choice : $choice.':').'%');
+                    $exactParam = 'tag_exact_'.$field.'_'.$index;
+                    $childParam = 'tag_child_'.$field.'_'.$index;
+
+                    if ($notContains) {
+                        $orX->add(\sprintf('(FIND_IN_SET(:%s, %s.tags) = 0 AND %s.tags NOT LIKE :%s)', $exactParam, $alias, $alias, $childParam));
+                    } else {
+                        $orX->add(\sprintf('(FIND_IN_SET(:%s, %s.tags) > 0 OR %s.tags LIKE :%s)', $exactParam, $alias, $alias, $childParam));
+                    }
+
+                    $qb->setParameter($exactParam, $choice);
+                    $qb->setParameter($childParam, '%'.$choice.':%');
                 }
 
                 $qb->andWhere($orX);

@@ -19,12 +19,6 @@ class TagEnum extends Enum
     public const ADHERENT_NOT_UP_TO_DATE_TAG_PATTERN = self::ADHERENT_NOT_UP_TO_DATE.':annee_%s';
 
     public const SYMPATHISANT = 'sympathisant';
-    public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
-    public const SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE = 'sympathisant:compte_avecvous_jemengage';
-    public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
-    public const SYMPATHISANT_AUTRE_PARTI = 'sympathisant:autre_parti';
-    public const SYMPATHISANT_BESOIN_D_EUROPE = 'sympathisant:besoin_d_europe';
-    public const SYMPATHISANT_ENSEMBLE2024 = 'sympathisant:ensemble2024';
 
     public const ELU = 'elu';
     public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';
@@ -63,12 +57,6 @@ class TagEnum extends Enum
 
         return $adherentOnly ? $adherentTags : array_merge($adherentTags, [
             self::SYMPATHISANT,
-            self::SYMPATHISANT_ADHESION_INCOMPLETE,
-            self::SYMPATHISANT_COMPTE_EM,
-            self::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE,
-            self::SYMPATHISANT_AUTRE_PARTI,
-            self::SYMPATHISANT_BESOIN_D_EUROPE,
-            self::SYMPATHISANT_ENSEMBLE2024,
         ]);
     }
 
@@ -115,6 +103,17 @@ class TagEnum extends Enum
     public static function getMainLevel(string $tag): string
     {
         return explode(':', $tag)[0];
+    }
+
+    /**
+     * A flat tag whose ":" descendants (not the tag itself) are stored on adherents.
+     * Such a parent needs a boundary when matched in a substring context (e.g. Mailchimp
+     * "contains"). Flat *leaf* tags stored directly (e.g. SYMPATHISANT) are not roots and
+     * match their exact label — adding a new childless tag requires no change here.
+     */
+    public static function isHierarchicalRoot(string $tag): bool
+    {
+        return \in_array($tag, [self::ADHERENT, self::ELU, self::NATIONAL_EVENT], true);
     }
 
     public static function getNationalEventTag(string $eventSlug, bool $isPresent): string

@@ -354,7 +354,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                 'label' => $this->generateTagLabel($tag),
             ];
 
-            if (str_starts_with($tag, TagEnum::ADHERENT.':') || str_starts_with($tag, TagEnum::SYMPATHISANT.':')) {
+            if (str_starts_with($tag, TagEnum::ADHERENT.':') || str_starts_with($tag, TagEnum::SYMPATHISANT)) {
                 $adherentTags[] = $tagData;
             } elseif (str_starts_with($tag, TagEnum::ELU.':')) {
                 $electTags[] = $tagData;

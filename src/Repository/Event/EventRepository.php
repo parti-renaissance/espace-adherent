@@ -410,7 +410,6 @@ class EventRepository extends ServiceEntityRepository
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS adherents_up_to_date_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS adherents_not_up_to_date_count,
                     SUM(IF(a.tags LIKE ?, 1, 0)) AS sympathizers_count,
-                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count,
                     SUM(IF(a.id IS NULL, 1, 0)) AS citizens_count
                 FROM events e2
                 INNER JOIN events_registrations er ON er.event_id = e2.id
@@ -421,14 +420,12 @@ class EventRepository extends ServiceEntityRepository
                 e.participants_count = t.participants_count,
                 e.adherents_up_to_date_count = t.adherents_up_to_date_count,
                 e.adherents_not_up_to_date_count = t.adherents_not_up_to_date_count,
-                e.members_em_count = t.members_em_count,
                 e.sympathizers_count = t.sympathizers_count,
                 e.citizens_count = t.citizens_count',
             [
                 TagEnum::getAdherentYearTag().'%',
                 TagEnum::ADHERENT_NOT_UP_TO_DATE.'%',
                 TagEnum::SYMPATHISANT.'%',
-                TagEnum::SYMPATHISANT_COMPTE_EM.'%',
             ]
         );
     }
