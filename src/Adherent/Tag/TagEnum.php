@@ -8,6 +8,9 @@ use MyCLabs\Enum\Enum;
 
 class TagEnum extends Enum
 {
+    public const CONTACT = 'contact';
+    public const USER = 'user';
+    public const SYMPATHISANT = 'sympathisant';
     public const ADHERENT = 'adherent';
 
     public const ADHERENT_YEAR_TAG_PATTERN = self::ADHERENT.':a_jour_%s';
@@ -17,8 +20,6 @@ class TagEnum extends Enum
 
     public const ADHERENT_NOT_UP_TO_DATE = self::ADHERENT.':plus_a_jour';
     public const ADHERENT_NOT_UP_TO_DATE_TAG_PATTERN = self::ADHERENT_NOT_UP_TO_DATE.':annee_%s';
-
-    public const SYMPATHISANT = 'sympathisant';
 
     public const ELU = 'elu';
     public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';
@@ -57,6 +58,8 @@ class TagEnum extends Enum
 
         return $adherentOnly ? $adherentTags : array_merge($adherentTags, [
             self::SYMPATHISANT,
+            self::CONTACT,
+            self::USER,
         ]);
     }
 

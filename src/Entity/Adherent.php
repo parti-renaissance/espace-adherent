@@ -577,6 +577,9 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $forcedMembership = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $signupAccount = false;
+
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $finishedAdhesionSteps = [];
 

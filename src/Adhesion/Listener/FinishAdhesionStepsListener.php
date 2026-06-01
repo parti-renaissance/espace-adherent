@@ -37,6 +37,7 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
 
         if (
             !$adherent instanceof Adherent
+            || $adherent->signupAccount
             || $adherent->isFullyCompletedAdhesion()
             || $this->security->isGranted('IS_IMPERSONATOR')
         ) {

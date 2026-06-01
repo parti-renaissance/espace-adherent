@@ -26,10 +26,18 @@ class RefreshTagsListener implements EventSubscriberInterface
             UserEvents::USER_CREATED => 'updateAdherentTags',
             UserEvents::USER_VALIDATED => 'updateAdherentTags',
             UserEvents::USER_UPDATED_IN_ADMIN => 'updateAdherentTags',
+            UserEvents::USER_UPDATED => 'refreshSignupAccountTags',
 
             NewNationalEventInscriptionEvent::class => 'postEventInscription',
             UpdateNationalEventInscriptionEvent::class => 'postEventInscription',
         ];
+    }
+
+    public function refreshSignupAccountTags(UserEvent $event): void
+    {
+        if ($event->getAdherent()->signupAccount) {
+            $this->dispatch($event->getAdherent());
+        }
     }
 
     public function postEventInscription(NationalEventInscriptionEventInterface $event): void

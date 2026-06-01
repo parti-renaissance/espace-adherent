@@ -1299,6 +1299,8 @@ adherent.tag._label_.elu_a_jour: Adhérent élu à jour
 adherent.tag._filter_.elu_a_jour: Élu à jour
 adherent.tag.plus_a_jour: Plus à jour
 adherent.tag.sympathisant: Membre
+adherent.tag.contact: Contact
+adherent.tag.user: Utilisateur simple
 adherent.tag.elu: Élu
 adherent.tag.attente_declaration: En attente de déclaration
 adherent.tag.cotisation_ok: À jour de cotisation
