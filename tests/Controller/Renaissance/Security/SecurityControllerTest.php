@@ -36,7 +36,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => $email,
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -67,7 +67,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => $username,
             '_password' => $password,
         ]));
@@ -151,7 +151,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-text-status--error'));
-        $this->assertStringContainsString('Si un compte toto@example.org existe, vous recevrez un email dans quelques instants. Cliquez sur le bouton qu\'il contient pour changer votre mot de passe. Si vous n\'avez rien reçu, vérifiez votre saisie avant de réessayer', $crawler->text());
+        $this->assertStringContainsString('Si toto@example.org existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu\'il contient pour changer votre mot de passe.Si vous n\'avez rien reçu, vérifiez votre saisie avant de réessayer', $crawler->text());
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordMessage::class, 'toto@example.org'), 'No email should have been sent to unknown account.');
     }
 
@@ -173,7 +173,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-text-status--error'));
-        $this->assertStringContainsString("Si un compte carl999@example.fr existe, vous recevrez un email dans quelques instants. Cliquez sur le bouton qu'il contient pour changer votre mot de passe. Si vous n'avez rien reçu, vérifiez votre saisie avant de réessayer.", $crawler->text());
+        $this->assertStringContainsString("Si carl999@example.fr existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu'il contient pour changer votre mot de passe.Si vous n'avez rien reçu, vérifiez votre saisie avant de réessayer.", $crawler->text());
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }

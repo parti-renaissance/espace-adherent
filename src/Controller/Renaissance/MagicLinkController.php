@@ -10,6 +10,7 @@ use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\Repository\AdherentRepository;
+use App\Security\LoginThemeResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,6 +30,7 @@ class MagicLinkController extends AbstractController
         AdherentRepository $adherentRepository,
         MailerService $transactionalMailer,
         TranslatorInterface $translator,
+        LoginThemeResolver $themeResolver,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -57,10 +59,10 @@ class MagicLinkController extends AbstractController
             return $this->redirectToRoute('app_user_get_magic_link');
         }
 
-        return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
+        return $this->render(\sprintf('security/%s/user_magic_link.html.twig', $themeResolver->resolve($request)), ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request, Security $security): Response
+    public function connectViaMagicLinkAction(Request $request, Security $security, LoginThemeResolver $themeResolver): Response
     {
         $currentUser = $this->getUser();
 
@@ -88,7 +90,7 @@ class MagicLinkController extends AbstractController
             return $this->redirectToRoute('vox_app_redirect');
         }
 
-        return $this->render('security/renaissance_connect_magic_link.html.twig', [
+        return $this->render(\sprintf('security/%s/connect_magic_link.html.twig', $themeResolver->resolve($request)), [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),
             'hash' => $request->query->get('hash'),

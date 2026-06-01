@@ -28,7 +28,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
         When I fill in the following:
             | _username | carl999@example.fr |
             | _password | secret!12345       |
-        And I press "Je me connecte"
+        And I press "Me connecter"
         Then I should be on "/oauth/v2/auth"
         And the response status code should be 200
         And I should see "Je me connecte à Coalition App avec mon compte En Marche."

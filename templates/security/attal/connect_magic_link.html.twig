@@ -1,0 +1,21 @@
+{% extends 'security/attal/layout.html.twig' %}
+
+{% block title 'Connexion en cours' %}
+
+{% block security_content %}
+    <div class="relative flex h-6 w-6 items-center justify-center self-center">
+        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vox-blue-600 opacity-75"></div>
+        <div class="relative inline-flex rounded-full h-5 w-5 bg-vox-blue-600"></div>
+    </div>
+
+    <div class="font-semibold text-vox-blue-600 mt-6 lg:mt-10 animate-pulse self-center">Connexion...</div>
+
+    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link') }}" method="POST" class="hidden">
+        <input type="hidden" name="expires" value="{{ expires }}">
+        <input type="hidden" name="user" value="{{ user }}">
+        <input type="hidden" name="hash" value="{{ hash }}">
+        <input type="hidden" name="_target_path" value="{{ target_path }}">
+
+        <button type="submit">Continuer</button>
+    </form>
+{% endblock %}

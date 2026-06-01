@@ -16,6 +16,7 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
+use App\Security\LoginThemeResolver;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,8 +29,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/connexion', name: 'app_renaissance_login', methods: ['GET', 'POST'])]
-    public function loginAction(AuthenticationUtils $securityUtils): Response
+    public function loginAction(Request $request, AuthenticationUtils $securityUtils, LoginThemeResolver $themeResolver): Response
     {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -43,17 +43,17 @@ class SecurityController extends AbstractController
             '_username' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render('security/renaissance_user_login.html.twig', [
+        return $this->render(\sprintf('security/%s/user_login.html.twig', $themeResolver->resolve($request)), [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
     }
 
-    #[Route(path: '/mot-de-passe-oublie', name: 'app_forgot_password', methods: ['GET', 'POST'])]
     public function retrieveForgotPasswordAction(
         Request $request,
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository,
+        LoginThemeResolver $themeResolver,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -81,12 +81,11 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_forgot_password');
         }
 
-        return $this->render('security/renaissance_forgot_password.html.twig', [
+        return $this->render(\sprintf('security/%s/forgot_password.html.twig', $themeResolver->resolve($request)), [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route(path: '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}', name: 'app_adherent_reset_password', methods: ['GET', 'POST'])]
     public function resetPasswordAction(
         Request $request,
         #[MapEntity(expr: 'repository.findOneByUuid(adherent_uuid)')]
@@ -95,6 +94,7 @@ class SecurityController extends AbstractController
         AdherentResetPasswordToken $resetPasswordToken,
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
+        LoginThemeResolver $themeResolver,
     ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('vox_app_redirect');
@@ -129,7 +129,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render('security/renaissance_reset_password.html.twig', [
+        return $this->render(\sprintf('security/%s/reset_password.html.twig', $themeResolver->resolve($request)), [
             'form' => $form->createView(),
         ]);
     }

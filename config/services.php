@@ -47,6 +47,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('vox_host', '%env(VOX_HOST)%');
 
+    $parameters->set('user_campaigne_host', '%env(USER_CAMPAIGNE_HOST)%');
+
     $parameters->set('procuration_host', '%env(PROCURATION_HOST)%');
 
     $parameters->set('renaissance_host', '%env(RENAISSANCE_HOST)%');
@@ -93,6 +95,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$adminRenaissanceHost', '%admin_renaissance_host%')
         ->bind('$jemengageHost', '%env(JEMENGAGE_HOST)%')
         ->bind('$userVoxHost', '%user_vox_host%')
+        ->bind('$userCampaigneHost', '%user_campaigne_host%')
         ->bind('$invalidEmailHashKey', '%env(INVALID_EMAIL_HASH_KEY)%')
         ->bind('$unlayerDefaultTemplateId', '%env(int:UNLAYER_DEFAULT_TEMPLATE_ID)%')
         ->bind('$goCardlessApiKey', '%env(GOCARDLESS_API_KEY)%')

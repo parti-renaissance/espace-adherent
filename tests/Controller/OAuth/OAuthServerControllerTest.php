@@ -210,7 +210,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => 'carl999@example.fr',
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -288,7 +288,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
     public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
     {
         $this->client->request(Request::METHOD_GET, '/connexion');
-        $this->client->submit($this->client->getCrawler()->selectButton('Je me connecte')->form([
+        $this->client->submit($this->client->getCrawler()->selectButton('Me connecter')->form([
             '_username' => 'carl999@example.fr',
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -312,7 +312,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => 'carl999@example.fr',
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -332,7 +332,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => 'carl999@example.fr',
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -350,7 +350,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_username' => 'president-ad@renaissance-dev.fr',
             '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));

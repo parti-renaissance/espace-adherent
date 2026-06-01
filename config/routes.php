@@ -16,7 +16,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'GET',
         ])
         ->requirements([
-            'app_domain' => '%admin_renaissance_host%|%user_vox_host%',
+            'app_domain' => '%admin_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
         ]);
 
     $routingConfigurator->add('app_user_get_magic_link', '/demander-un-lien-magique')
@@ -30,7 +30,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%app_renaissance_host%|%user_vox_host%',
+            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
         ]);
 
     $routingConfigurator->add('app_user_connect_with_magic_link', '/connexion-avec-un-lien-magique')
@@ -44,7 +44,49 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%app_renaissance_host%|%user_vox_host%',
+            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
+        ]);
+
+    $routingConfigurator->add('app_renaissance_login', '/connexion')
+        ->host('{app_domain}')
+        ->controller('App\Controller\Renaissance\SecurityController::loginAction')
+        ->defaults([
+            'app_domain' => '%user_vox_host%',
+        ])
+        ->methods([
+            'GET',
+            'POST',
+        ])
+        ->requirements([
+            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
+        ]);
+
+    $routingConfigurator->add('app_forgot_password', '/mot-de-passe-oublie')
+        ->host('{app_domain}')
+        ->controller('App\Controller\Renaissance\SecurityController::retrieveForgotPasswordAction')
+        ->defaults([
+            'app_domain' => '%user_vox_host%',
+        ])
+        ->methods([
+            'GET',
+            'POST',
+        ])
+        ->requirements([
+            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
+        ]);
+
+    $routingConfigurator->add('app_adherent_reset_password', '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}')
+        ->host('{app_domain}')
+        ->controller('App\Controller\Renaissance\SecurityController::resetPasswordAction')
+        ->defaults([
+            'app_domain' => '%user_vox_host%',
+        ])
+        ->methods([
+            'GET',
+            'POST',
+        ])
+        ->requirements([
+            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
         ]);
 
     $routingConfigurator->import('../src/Controller/AssetsController.php', 'attribute')
