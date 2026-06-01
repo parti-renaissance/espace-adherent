@@ -87,4 +87,60 @@ class AdherentStatusTagGeneratorTest extends TestCase
             $this->generator->generate($adherent, []),
         );
     }
+
+    public function testSignupAccountNeverLoggedReturnsContact(): void
+    {
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->signupAccount = true;
+        $adherent->method('getLastLoggedAt')->willReturn(null);
+
+        self::assertSame([TagEnum::CONTACT], $this->createGenerator()->generate($adherent, []));
+    }
+
+    public function testSignupAccountAlreadyLoggedReturnsUser(): void
+    {
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->signupAccount = true;
+        $adherent->method('getLastLoggedAt')->willReturn(new \DateTime('2026-05-29 10:00:00'));
+
+        self::assertSame([TagEnum::USER], $this->createGenerator()->generate($adherent, []));
+    }
+
+    public function testSignupAccountWithBirthdateReturnsSympathisant(): void
+    {
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->signupAccount = true;
+        // birthdate wins over lastLoggedAt: a filled profile promotes to the single sympathizer/member tag.
+        $adherent->method('getBirthdate')->willReturn(new \DateTime('1990-01-01'));
+        $adherent->method('getLastLoggedAt')->willReturn(new \DateTime('2026-05-29 10:00:00'));
+
+        self::assertSame([TagEnum::SYMPATHISANT], $this->createGenerator()->generate($adherent, []));
+    }
+
+    public function testSignupAccountWithCotisationReturnsAdherentTagNotContact(): void
+    {
+        $currentYear = (int) date('Y');
+
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->signupAccount = true;
+
+        // A signup account that cotised must be tagged as an adherent: the cotisation branch wins.
+        $generator = $this->createGenerator([$currentYear => 1]);
+
+        self::assertSame(
+            [\sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear)],
+            $generator->generate($adherent, [])
+        );
+    }
+
+    private function createGenerator(array $cotisationByYear = []): AdherentStatusTagGenerator
+    {
+        $donationRepository = $this->createStub(DonationRepository::class);
+        $donationRepository->method('countCotisationByYearForAdherent')->willReturn($cotisationByYear);
+
+        $paymentRepository = $this->createStub(PaymentRepository::class);
+        $paymentRepository->method('getTotalPaymentByYearForAdherent')->willReturn([]);
+
+        return new AdherentStatusTagGenerator($donationRepository, $paymentRepository);
+    }
 }

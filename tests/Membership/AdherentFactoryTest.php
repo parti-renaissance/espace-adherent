@@ -51,6 +51,14 @@ class AdherentFactoryTest extends TestCase
         self::assertSame('Paris', $adherent->getPostAddress()->getCityName());
     }
 
+    public function testCreateForSignupMarksSignupAccountAndLeavesSourceNull(): void
+    {
+        $adherent = $this->createFactory()->createForSignup('flag@example.com');
+
+        self::assertTrue($adherent->signupAccount);
+        self::assertNull($adherent->getSource());
+    }
+
     private function createFactory(): AdherentFactory
     {
         // createForSignup creates a passwordless account, so the hasher is never invoked. It is still

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\App\Membership\Signup;
 
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
+use App\Adherent\Tag\TagEnum;
+use App\AppSession\Command\UpdateAdherentLastLoginCommand;
+use App\AppSession\Handler\UpdateAdherentLastLoginCommandHandler;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -107,6 +112,81 @@ class SignupActivationFlowTest extends AbstractApiTestCase
             [Response::HTTP_UNAUTHORIZED, Response::HTTP_FOUND],
             'a consumed magic link must not authenticate a second time, got '.$this->client->getResponse()->getStatusCode()
         );
+    }
+
+    public function testSignupAccountIsMarkedThenContactThenUserOnFirstLogin(): void
+    {
+        $email = 'signup-tagging@example.test';
+
+        // Pin the kernel: the status-tag refresh runs synchronously in test (AsyncRefreshAdherentTagCommand
+        // is routed to sync://), so we can assert the resulting tag within the same process.
+        $this->client->disableReboot();
+
+        // 1. Signup flags the account as a signup origin; no status tag yet (no refresh at signup).
+        $this->postSignup($email);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($adherent->signupAccount, 'a /api/signup account must be flagged signupAccount');
+        self::assertFalse($adherent->hasTag(TagEnum::USER), 'no user tag before any login');
+
+        // 2. Magic-link activation enables the account. The login_link firewall uses the default success
+        //    handler (NOT our AuthenticationSuccessHandler), so lastLoggedAt stays null → tag = contact.
+        $magicLink = $this->extractMagicLinkFromSentMail($email);
+        $this->postMagicLink($magicLink);
+
+        $this->manager->clear();
+        $activated = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($activated->isEnabled(), 'magic link consumption must enable the account');
+        self::assertNull($activated->getLastLoggedAt(), 'activation alone must not record a login');
+        self::assertTrue($activated->hasTag(TagEnum::CONTACT), 'activation keeps the account contact');
+        self::assertFalse($activated->hasTag(TagEnum::USER));
+
+        // 3. First real login records lastLoggedAt (app/OAuth session path) → promotes contact → user.
+        self::getContainer()->get(UpdateAdherentLastLoginCommandHandler::class)(
+            new UpdateAdherentLastLoginCommand($activated->getUuid())
+        );
+
+        $this->manager->clear();
+        $promoted = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($promoted->hasTag(TagEnum::USER), 'first login must promote contact → user');
+        self::assertFalse($promoted->hasTag(TagEnum::CONTACT));
+        // A signup user without a filled profile (no birthdate) is NOT a sympathizer yet.
+        self::assertFalse($promoted->isRenaissanceSympathizer(), 'user must not be tagged sympathisant');
+    }
+
+    public function testSignupAccountIsPromotedToSympathizerWhenProfileFilled(): void
+    {
+        $email = 'signup-sympathizer@example.test';
+
+        // Pin the kernel: the status-tag refresh runs synchronously in test (sync://), and the
+        // USER_UPDATED listener must survive across requests.
+        $this->client->disableReboot();
+
+        // Signup + magic-link activation → contact.
+        $this->postSignup($email);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+        $magicLink = $this->extractMagicLinkFromSentMail($email);
+        $this->postMagicLink($magicLink);
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($adherent->signupAccount, 'a /api/signup account must be flagged signupAccount');
+        self::assertTrue($adherent->hasTag(TagEnum::CONTACT), 'activation keeps the account contact');
+
+        // Filling the profile (birthdate) makes the signup account a sympathizer once its tags are
+        // refreshed. The USER_UPDATED → RefreshTagsListener wiring is covered by RefreshTagsListenerTest;
+        // here we drive the refresh directly (routed sync:// in test) to assert the end-to-end tag result.
+        $adherent->setBirthdate(new \DateTime('1990-01-01'));
+        $this->manager->flush();
+        self::getContainer()->get(MessageBusInterface::class)->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
+
+        $this->manager->clear();
+        $sympathizer = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($sympathizer->hasTag(TagEnum::SYMPATHISANT), 'a filled birthdate promotes the signup account to sympathisant');
+        self::assertTrue($sympathizer->isRenaissanceSympathizer(), 'sympathisant makes the account a Renaissance sympathizer');
+        self::assertFalse($sympathizer->hasTag(TagEnum::CONTACT), 'sympathisant supersedes contact');
     }
 
     protected function setUp(): void

@@ -96,6 +96,18 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             }
         }
 
+        if ($adherent->signupAccount) {
+            if (null !== $adherent->getBirthdate()) {
+                return [TagEnum::SYMPATHISANT];
+            }
+
+            if (null !== $adherent->getLastLoggedAt()) {
+                return [TagEnum::USER];
+            }
+
+            return [TagEnum::CONTACT];
+        }
+
         return [TagEnum::SYMPATHISANT];
     }
 }

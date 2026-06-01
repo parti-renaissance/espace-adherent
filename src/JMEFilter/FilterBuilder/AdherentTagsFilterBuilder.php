@@ -11,7 +11,10 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
     protected function init(): void
     {
-        $this->tags = TagEnum::getAdherentTags();
+        $this->tags = array_values(array_diff(
+            TagEnum::getAdherentTags(),
+            [TagEnum::CONTACT, TagEnum::USER],
+        ));
         $this->fieldName = 'adherent_tags';
         $this->fieldLabel = 'Labels adhérent';
         $this->placeholder = 'Tous mes contacts';

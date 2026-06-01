@@ -131,6 +131,8 @@ class AdherentFactory
             phone: $phone,
         );
 
+        $adherent->signupAccount = true;
+
         if (null !== $address) {
             $adherent->setPostAddress($this->addressFactory->createFlexible(
                 $address->getCountry(),
