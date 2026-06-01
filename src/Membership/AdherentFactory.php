@@ -102,7 +102,7 @@ class AdherentFactory
             nationality: $membershipRequest->nationality,
         );
 
-        $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+        $adherent->tags = [TagEnum::SYMPATHISANT];
         $adherent->setPapUserRole(true);
 
         if ($membershipRequest->originalEmail && $membershipRequest->originalEmail === $adherent->getEmailAddress()) {

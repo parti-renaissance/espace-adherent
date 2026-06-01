@@ -7,7 +7,6 @@ namespace App\Adherent\Tag\TagGenerator;
 use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
-use App\Membership\MembershipSourceEnum;
 use App\Repository\Contribution\PaymentRepository;
 use App\Repository\DonationRepository;
 
@@ -33,7 +32,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
         }
 
         if ($adherent->isOtherPartyMembership()) {
-            return [TagEnum::SYMPATHISANT_AUTRE_PARTI];
+            return [TagEnum::SYMPATHISANT];
         }
 
         $countCotisationByYear = $this->donationRepository->countCotisationByYearForAdherent($adherent);
@@ -97,22 +96,6 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             }
         }
 
-        if (\in_array($adherent->getSource(), [MembershipSourceEnum::AVECVOUS, MembershipSourceEnum::JEMENGAGE])) {
-            return [TagEnum::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE];
-        }
-
-        if ($adherent->isBesoinDEuropeUser()) {
-            return [TagEnum::SYMPATHISANT_BESOIN_D_EUROPE];
-        }
-
-        if (MembershipSourceEnum::LEGISLATIVE === $adherent->getSource()) {
-            return [TagEnum::SYMPATHISANT_ENSEMBLE2024];
-        }
-
-        if (!$adherent->isV2() && $adherent->getRegisteredAt() < new \DateTime('2022-09-17')) {
-            return [TagEnum::SYMPATHISANT_COMPTE_EM];
-        }
-
-        return [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+        return [TagEnum::SYMPATHISANT];
     }
 }

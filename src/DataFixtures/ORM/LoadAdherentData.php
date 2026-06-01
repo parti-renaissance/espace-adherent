@@ -127,7 +127,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33111223344',
             'registered_at' => '2016-11-16 20:45:33',
         ]);
-        $adherent2->tags = [TagEnum::SYMPATHISANT_COMPTE_EM];
+        $adherent2->tags = [TagEnum::SYMPATHISANT];
         $adherent2->setSubscriptionTypes($subscriptionTypes);
         $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL, SubscriptionType::class));
 
@@ -1020,7 +1020,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+        $adherent->tags = [TagEnum::SYMPATHISANT];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $this->addReference('coalitions-user-1', $adherent);
@@ -1123,7 +1123,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1978-02-12',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+        $adherent->tags = [TagEnum::SYMPATHISANT];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);

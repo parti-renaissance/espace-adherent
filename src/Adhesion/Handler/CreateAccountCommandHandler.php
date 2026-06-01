@@ -78,7 +78,7 @@ class CreateAccountCommandHandler
         $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
 
         if (!$currentUser->tags) {
-            $currentUser->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
+            $currentUser->tags = [TagEnum::SYMPATHISANT];
         }
 
         if (!$this->adherentSignupSourceRepository->existsFor($currentUser, SignupSource::CODE_RENAISSANCE)) {
