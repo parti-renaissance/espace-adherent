@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Repository\AdherentSignupSourceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AdherentSignupSourceRepository::class)]
 #[ORM\Table(name: 'adherent_signup_source')]
 #[ORM\UniqueConstraint(columns: ['adherent_id', 'source'])]
 class AdherentSignupSource

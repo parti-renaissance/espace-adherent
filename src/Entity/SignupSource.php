@@ -15,6 +15,8 @@ class SignupSource
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    public const CODE_RENAISSANCE = 'renaissance';
+
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[a-zA-Z0-9_]+$/', message: 'Le code doit être alphanumérique (lettres, chiffres, underscore).')]
     #[ORM\Column(length: 100, unique: true)]
