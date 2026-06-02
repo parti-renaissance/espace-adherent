@@ -16,7 +16,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'GET',
         ])
         ->requirements([
-            'app_domain' => '%admin_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%admin_renaissance_host%|%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('app_user_get_magic_link', '/demander-un-lien-magique')
@@ -30,7 +30,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('app_user_connect_with_magic_link', '/connexion-avec-un-lien-magique')
@@ -44,7 +44,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%app_renaissance_host%|%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('app_renaissance_login', '/connexion')
@@ -58,7 +58,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('app_forgot_password', '/mot-de-passe-oublie')
@@ -72,7 +72,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('app_adherent_reset_password', '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}')
@@ -86,7 +86,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'POST',
         ])
         ->requirements([
-            'app_domain' => '%user_vox_host%|%user_campaigne_host%',
+            'app_domain' => '%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->import('../src/Controller/AssetsController.php', 'attribute')
@@ -123,7 +123,7 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
             'app_domain' => '%user_vox_host%',
         ])
         ->requirements([
-            'app_domain' => '%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%',
+            'app_domain' => '%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%|%user_campaign_host%',
         ])
         ->host('{app_domain}');
 
@@ -191,6 +191,9 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->add('renaissance_site', '/')
         ->host('%renaissance_host%');
 
+    $routingConfigurator->add('campaign_site', '/')
+        ->host('%campaign_site_host%');
+
     $routingConfigurator->add('legislative_site', '/')
         ->host('%legislative_host%');
 
@@ -198,7 +201,13 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
         ->host('%vox_host%');
 
     $routingConfigurator->add('vox_app_redirect', '/app')
-        ->host('%user_vox_host%')
+        ->host('{app_domain}')
+        ->defaults([
+            'app_domain' => '%user_vox_host%',
+        ])
+        ->requirements([
+            'app_domain' => '%user_vox_host%|%user_campaign_host%',
+        ])
         ->controller(App\Controller\OAuth\RedirectAppController::class)
         ->methods([
             'GET',
@@ -260,10 +269,14 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
         ]);
 
     $routingConfigurator->add('user_renaissance_redirect', '/')
-        ->host('%user_vox_host%')
+        ->host('{app_domain}')
         ->controller(Symfony\Bundle\FrameworkBundle\Controller\RedirectController::class)
         ->defaults([
             'route' => 'app_renaissance_login',
+            'app_domain' => '%user_vox_host%',
+        ])
+        ->requirements([
+            'app_domain' => '%user_vox_host%|%user_campaign_host%',
         ]);
 
     $routingConfigurator->add('renaissance_qr_code', '/{uuid}')

@@ -10,6 +10,7 @@ final class AppCodeEnum extends Enum
 {
     public const PLATFORM = 'platform';
     public const RENAISSANCE = 'renaissance';
+    public const CAMPAIGN = 'campaign';
     public const BESOIN_D_EUROPE = 'besoindeurope';
     public const LEGISLATIVE = 'legislative';
     public const VOX = 'vox';
@@ -25,6 +26,6 @@ final class AppCodeEnum extends Enum
 
     public static function isMobileApp(?string $appCode): bool
     {
-        return \in_array($appCode, [self::BESOIN_D_EUROPE, self::LEGISLATIVE, self::VOX]);
+        return \in_array($appCode, [self::BESOIN_D_EUROPE, self::LEGISLATIVE, self::VOX, self::CAMPAIGN]);
     }
 }
