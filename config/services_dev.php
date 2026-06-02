@@ -48,4 +48,12 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(Tests\App\Test\Firebase\DummyMessaging::class);
 
     $services->alias(Kreait\Firebase\Contract\Messaging::class, Tests\App\Test\Firebase\DummyMessaging::class);
+
+    $services->set(Tests\App\Test\Video\InMemoryVideoTranscoder::class);
+
+    $services->alias(App\Video\Transcoding\VideoTranscoderInterface::class, Tests\App\Test\Video\InMemoryVideoTranscoder::class);
+
+    $services->set(Tests\App\Test\Video\NoOpVideoSourceArchiver::class);
+
+    $services->alias(App\Video\Storage\VideoSourceArchiverInterface::class, Tests\App\Test\Video\NoOpVideoSourceArchiver::class);
 };

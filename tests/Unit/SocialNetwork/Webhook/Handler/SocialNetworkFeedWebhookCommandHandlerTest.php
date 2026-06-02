@@ -7,18 +7,22 @@ namespace Tests\App\Unit\SocialNetwork\Webhook\Handler;
 use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Repository\SocialNetworkFeedRepository;
+use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Webhook\Command\SocialNetworkFeedWebhookCommand;
 use App\SocialNetwork\Webhook\Handler\SocialNetworkFeedWebhookCommandHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
 {
     private SocialNetworkFeedRepository&MockObject $repository;
     private EntityManagerInterface&MockObject $entityManager;
     private LoggerInterface&MockObject $logger;
+    private MessageBusInterface&MockObject $bus;
     private SocialNetworkFeedWebhookCommandHandler $handler;
 
     protected function setUp(): void
@@ -26,11 +30,13 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         $this->repository = $this->createMock(SocialNetworkFeedRepository::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->bus = $this->createMock(MessageBusInterface::class);
 
         $this->handler = new SocialNetworkFeedWebhookCommandHandler(
             $this->repository,
             $this->entityManager,
             $this->logger,
+            $this->bus,
         );
     }
 
@@ -55,7 +61,13 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
                 return true;
             }))
         ;
-        $this->entityManager->expects(self::once())->method('flush');
+        $this->entityManager->expects(self::once())->method('flush')
+            ->willReturnCallback(function () use (&$persisted): void {
+                foreach ($persisted->videos as $video) {
+                    $video->id ??= 1;
+                }
+            });
+        $this->bus->expects(self::once())->method('dispatch')->willReturnCallback(static fn (object $message) => new Envelope($message));
 
         ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
 
@@ -112,7 +124,13 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         ;
 
         $this->entityManager->expects(self::once())->method('persist')->with($existing);
-        $this->entityManager->expects(self::once())->method('flush');
+        $this->entityManager->expects(self::once())->method('flush')
+            ->willReturnCallback(function () use ($existing): void {
+                foreach ($existing->videos as $video) {
+                    $video->id ??= 1;
+                }
+            });
+        $this->bus->expects(self::once())->method('dispatch')->willReturnCallback(static fn (object $message) => new Envelope($message));
 
         ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
 
@@ -128,6 +146,7 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         $this->repository->expects(self::never())->method('findOneByScraperId');
         $this->entityManager->expects(self::never())->method('persist');
         $this->entityManager->expects(self::never())->method('flush');
+        $this->bus->expects(self::never())->method('dispatch');
         $this->logger
             ->expects(self::once())
             ->method('error')
@@ -139,6 +158,31 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
             'post_id' => 'post-123',
             'platform' => 'twitter',
         ]));
+    }
+
+    public function testDispatchesTranscodeCommandForVideoWithStreamUrl(): void
+    {
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn(null);
+
+        $persisted = null;
+        $this->entityManager->expects(self::once())->method('persist')->willReturnCallback(function (SocialNetworkFeed $feed) use (&$persisted): void {
+            $persisted = $feed;
+        });
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use (&$persisted): void {
+            foreach ($persisted->videos as $video) {
+                $video->id ??= 1;
+            }
+        });
+        $this->logger->expects(self::never())->method('error');
+
+        $this->bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback(static fn (TranscodeSocialNetworkVideoCommand $command): bool => 1 === $command->socialNetworkFeedVideoId
+                && 'https://cdn/stream.m3u8' === $command->sourceUri))
+            ->willReturn(new Envelope(new \stdClass()));
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
     }
 
     private function completePayload(): array

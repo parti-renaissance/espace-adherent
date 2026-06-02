@@ -57,6 +57,7 @@
         "giggsey/libphonenumber-for-php": "^8.13",
         "gocardless/gocardless-pro": "^7.0",
         "google/cloud-storage": "^1.23",
+        "google/cloud-video-transcoder": "^1.4",
         "google/cloud-vision": "^1.2",
         "jwage/phpamqplib-messenger": "^0.10.0",
         "kreait/firebase-bundle": "^6.0",

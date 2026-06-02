@@ -1,0 +1,5 @@
+{% if object.status.value == 'FAILED' and object.originalPath %}
+    <a href="{{ admin.generateObjectUrl('relaunch', object) }}" class="btn btn-sm btn-warning" title="Relancer le transcodage">
+        <i class="fa fa-refresh"></i> Relancer
+    </a>
+{% endif %}

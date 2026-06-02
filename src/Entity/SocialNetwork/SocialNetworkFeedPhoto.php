@@ -21,7 +21,7 @@ class SocialNetworkFeedPhoto
     /**
      * Internal identifier of the photo from the external scraping tool.
      */
-    #[ORM\Column(name: 'scraper_id', type: 'integer', nullable: true, options: ['unsigned' => true])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     public ?int $scraperId = null;
 
     #[ORM\Column(nullable: true, options: ['unsigned' => true])]

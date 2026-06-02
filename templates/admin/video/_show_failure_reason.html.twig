@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% if object.status.value == 'FAILED' and object.failureReason %}
+        <span class="text-danger">{{ object.failureReason }}</span>
+    {% else %}
+        <em class="text-muted">—</em>
+    {% endif %}
+{% endblock %}

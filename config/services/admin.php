@@ -176,7 +176,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     ;
     $services
         ->set('app.admin.video', App\Admin\VideoAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Video::class, 'label' => 'Vidéos', 'group' => 'Communication'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Video::class, 'controller' => App\Controller\Admin\VideoCRUDController::class, 'label' => 'Vidéos', 'group' => 'Communication'])
     ;
     $services
         ->set('app.admin.general_meeting_report', App\Admin\GeneralMeetingReportAdmin::class)

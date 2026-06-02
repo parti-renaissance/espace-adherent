@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\SocialNetwork;
 
+use App\Entity\Video;
+use App\Repository\SocialNetworkFeedVideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: SocialNetworkFeedVideoRepository::class)]
 class SocialNetworkFeedVideo
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
@@ -38,6 +40,9 @@ class SocialNetworkFeedVideo
 
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $streamUrl = null;
+
+    #[ORM\OneToOne]
+    public ?Video $video = null;
 
     public function __construct(SocialNetworkFeed $feed)
     {

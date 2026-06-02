@@ -120,6 +120,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$updateCleanedContactToken', '%env(UPDATE_CLEANED_CONTACT_TOKEN)%')
         ->bind('$updateCleanedContactApiToken', '%env(UPDATE_CLEANED_CONTACT_API_TOKEN)%')
         ->bind('$socialNetworkFeedWebhookKey', '%env(SOCIAL_NETWORK_FEED_WEBHOOK_KEY)%')
+        ->bind('$transcoderProjectId', '%env(GCLOUD_PROJECT_ID)%')
+        ->bind('$transcoderLocation', '%env(GCLOUD_TRANSCODER_LOCATION)%')
+        ->bind('$videoOutputBucket', '%env(key:host:url:MEDIA_CDN_BASE_URL)%')
+        ->bind('$gcloudBucket', '%env(GCLOUD_BUCKET)%')
+        ->bind('$scraperSourceBuckets', '%env(SCRAPER_SOURCE_BUCKETS)%')
     ;
 
     $services->instanceof(App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface::class)
@@ -182,6 +187,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             __DIR__.'/../src/Exception',
             __DIR__.'/../src/Kernel.php',
         ]);
+
+    $services->set(Google\Cloud\Storage\StorageClient::class)->lazy();
+    $services->set(Google\Cloud\Video\Transcoder\V1\Client\TranscoderServiceClient::class)->lazy();
+    $services->alias(App\Video\Transcoding\VideoTranscoderInterface::class, App\Video\Transcoding\GcpVideoTranscoder::class);
+    $services->alias(App\Video\Storage\VideoSourceArchiverInterface::class, App\Video\Storage\GcsVideoSourceArchiver::class);
 
     $services->set(App\Twig\AssetRuntime::class)
         ->arg('$appVersion', '%env(APP_VERSION)%')
