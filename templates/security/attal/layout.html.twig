@@ -1,0 +1,26 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block body_classes 'min-h-screen flex justify-center items-center bg-vox-gray-50' %}
+
+{% block flash_message '' %}
+
+{% block content %}
+    <section class="attal-auth font-publicsans text-vox-gray-900 flex flex-col items-stretch px-6 py-10 w-full max-w-[420px]">
+        <a href="{{ path('renaissance_site') }}" class="self-center mb-8 lg:mb-10 hover:opacity-80 transition-opacity" title="Attal Président 2027">
+            <img src="{{ asset('/images/attal/logo-attal-president-2027.svg') }}" alt="Attal Président 2027" class="h-[72px] lg:h-[88px] w-auto" />
+        </a>
+
+        <h1 class="mb-6 flex flex-col items-center gap-2 font-plaak uppercase text-vox-gray-900 tracking-tight font-bold text-[28px] lg:text-[32px] leading-none">
+            {% block security_block_title '' %}
+        </h1>
+
+        {{ include('renaissance/partials/flashes.html.twig', {wrapper_class: 'mb-6'}) }}
+
+        {% block security_content '' %}
+
+        <footer class="text-center mt-10 text-[14px] leading-[22px] text-vox-gray-600">
+            Besoin d’aide ?<br />
+            Écrivez-nous à <a href="mailto:contact@attalpresident.fr" class="text-vox-blue-600 hover:underline">contact@attalpresident.fr</a>
+        </footer>
+    </section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'security/attal/layout.html.twig' %}
+
+{% block title 'Connectez-vous avec vos identifiants' %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block security_block_title %}
+    <span>Je me connecte</span>
+    <span class="bg-vox-yellow-200 px-2 py-1 whitespace-nowrap">avec mon compte</span>
+{% endblock %}
+
+{% block security_content %}
+    <p class="text-center font-semibold text-[16px] leading-[1.5] text-vox-gray-900 mb-6">
+        Vous pouvez utiliser un compte Renaissance ou Attal Président.
+    </p>
+
+    {{ form_start(form, {attr: {class: 'flex flex-col gap-4 w-full'}}) }}
+        {% if error %}
+            <twig:ReParagraphStatus status="error" icon>
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </twig:ReParagraphStatus>
+        {% endif %}
+
+        <div class="flex flex-col gap-2">
+            {{ form_row(form._username, {
+                attr: {
+                    placeholder: 'Adresse email',
+                    validate: "['required']",
+                    autocomplete: 'email',
+                }, label: false}) }}
+
+            {{ form_row(form._password, {attr: {
+                placeholder: 'Mot de passe',
+                validate: "['required']",
+            }, label: false}) }}
+        </div>
+
+        {{ form_row(form._remember_me, {label: 'Se souvenir de moi'}) }}
+
+        <div class="flex items-center justify-between text-[14px] font-semibold">
+            <a href="{{ path('app_forgot_password') }}" class="text-vox-blue-600 hover:underline">Mot de passe oublié ?</a>
+            <a href="{{ path('app_adhesion_index') }}" class="text-vox-blue-600 hover:underline">Je crée un compte</a>
+        </div>
+
+        <twig:ReButton color="blue" class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-vox-blue-600 text-white hover:enabled:bg-vox-blue-700">Je me connecte</twig:ReButton>
+
+        <twig:ReButton
+            tag="a"
+            href="{{ path('app_user_get_magic_link') }}"
+            stroke
+            color="blue"
+            icon="link-2"
+            class="w-full rounded-full py-3.5 text-[16px] font-semibold text-vox-blue-600 border-0 hover:enabled:bg-vox-blue-50"
+        >Je me connecte avec un lien</twig:ReButton>
+    {{ form_end(form) }}
+{% endblock %}
