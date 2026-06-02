@@ -16,7 +16,6 @@
 /public/css/cropper.min.css
 /public/bundles/
 /public/built/
-/public/select2/
 /.tmp
 /compose.override.yml
 /gcloud-service-key.json
