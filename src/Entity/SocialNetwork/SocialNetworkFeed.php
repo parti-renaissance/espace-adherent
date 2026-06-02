@@ -21,7 +21,7 @@ class SocialNetworkFeed
     /**
      * Internal identifier from the external scraping tool. Used as the upsert key.
      */
-    #[ORM\Column(name: 'scraper_id', type: 'integer', unique: true, options: ['unsigned' => true])]
+    #[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
     public int $scraperId;
 
     /**
@@ -63,13 +63,13 @@ class SocialNetworkFeed
     /**
      * @var Collection<int, SocialNetworkFeedVideo>
      */
-    #[ORM\OneToMany(mappedBy: 'feed', targetEntity: SocialNetworkFeedVideo::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SocialNetworkFeedVideo::class, mappedBy: 'feed', cascade: ['persist'], orphanRemoval: true)]
     public Collection $videos;
 
     /**
      * @var Collection<int, SocialNetworkFeedPhoto>
      */
-    #[ORM\OneToMany(mappedBy: 'feed', targetEntity: SocialNetworkFeedPhoto::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SocialNetworkFeedPhoto::class, mappedBy: 'feed', cascade: ['persist'], orphanRemoval: true)]
     public Collection $photos;
 
     public function __construct()

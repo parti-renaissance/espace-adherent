@@ -8,11 +8,13 @@ use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedPhoto;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Repository\SocialNetworkFeedRepository;
+use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Webhook\Command\SocialNetworkFeedWebhookCommand;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class SocialNetworkFeedWebhookCommandHandler
@@ -21,6 +23,7 @@ class SocialNetworkFeedWebhookCommandHandler
         private readonly SocialNetworkFeedRepository $repository,
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface $logger,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -48,6 +51,19 @@ class SocialNetworkFeedWebhookCommandHandler
             $this->logger->info('[SocialNetworkFeed webhook] concurrent insert, will retry as update.', ['scraper_id' => $scraperId]);
 
             throw $exception;
+        }
+
+        $this->dispatchTranscoding($feed);
+    }
+
+    private function dispatchTranscoding(SocialNetworkFeed $feed): void
+    {
+        foreach ($feed->videos as $video) {
+            if (null === $video->streamUrl) {
+                continue;
+            }
+
+            $this->bus->dispatch(new TranscodeSocialNetworkVideoCommand($video->id, $video->streamUrl));
         }
     }
 

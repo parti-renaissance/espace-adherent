@@ -8,6 +8,8 @@ use App\Entity\VideoStatusEnum;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -15,6 +17,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class VideoAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('relaunch', $this->getRouterIdParameter().'/relaunch');
+    }
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'relaunch' => AdminPermissionMap::PERMISSION_EDIT,
+        ];
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form
@@ -24,6 +38,8 @@ class VideoAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'class' => VideoStatusEnum::class,
                     'choice_label' => fn (VideoStatusEnum $case) => 'video.status.'.strtolower($case->value),
+                    'disabled' => true,
+                    'help' => 'Piloté par le pipeline de transcodage.',
                 ])
                 ->add('duration', IntegerType::class, [
                     'label' => 'Durée (s)',
@@ -84,6 +100,7 @@ class VideoAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                     'edit' => [],
+                    'relaunch' => ['template' => 'admin/video/list_action_relaunch.html.twig'],
                     'delete' => [],
                 ],
             ])
@@ -105,6 +122,10 @@ class VideoAdmin extends AbstractAdmin
                 ->add('status', null, [
                     'label' => 'Statut',
                     'template' => 'admin/video/_status_label_show.html.twig',
+                ])
+                ->add('failureReason', null, [
+                    'label' => 'Erreur de transcodage',
+                    'template' => 'admin/video/_show_failure_reason.html.twig',
                 ])
                 ->add('duration', null, ['label' => 'Durée (s)'])
                 ->add('dimensions', null, [

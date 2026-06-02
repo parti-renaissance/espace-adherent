@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['video_read']],
 )]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -58,6 +59,22 @@ class Video implements \Stringable, EntityAdministratorBlameableInterface
     #[Groups(['video_read'])]
     #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     public ?int $height = null;
+
+    // gs:// URI of the source video on the scraper bucket. Stable idempotency key of the transcoding pipeline.
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    public ?string $sourceUri = null;
+
+    // Path of our durable copy of the source inside GCLOUD_BUCKET. Transcoder input and relaunch source.
+    #[ORM\Column(nullable: true)]
+    public ?string $originalPath = null;
+
+    // Resource name of the current GCP Transcoder job.
+    #[ORM\Column(nullable: true)]
+    public ?string $transcodingJobName = null;
+
+    // Transcoder error message, set when status is FAILED.
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $failureReason = null;
 
     public function __construct(?Uuid $uuid = null)
     {
