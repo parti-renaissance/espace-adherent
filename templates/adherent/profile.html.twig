@@ -4,15 +4,9 @@
 
 {% block page_title 'Informations générales' %}
 
-{% block stylesheets %}
-    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
 
     {% import 'javascript.js.twig' as js %}
 
@@ -27,7 +21,6 @@
             App.runProfileUpdatePage();
 
             {{ js.address(form.postAddress) }}
-            $('.select2').select2({theme: 'default em-form'});
         });
     </script>
 {% endblock %}
@@ -133,7 +126,7 @@
             <div class="em-form__row">
                 <div class="em-form__group">
                     {{ form_label(form.mandates, 'adherent.mandate.label') }}
-                    {{ form_widget(form.mandates, {attr: {class: 'select2'}}) }}
+                    {{ form_widget(form.mandates) }}
                     {{ form_errors(form.mandates) }}
 
                     <p class="help__text b__nudge--top-10">Cette information est seulement déclarative et facilitera le lien entre votre compte adhérent et vos mandats.</p>
