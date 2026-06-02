@@ -12,6 +12,7 @@ class FeatureEnum extends Enum
     public const CONTACTS = 'contacts';
     public const CONTACTS_EXPORT = 'contacts_export';
     public const CHATBOT = 'chatbot';
+    public const AI_ANTISECHE = 'ai_antiseche';
     public const MESSAGES = 'messages';
     public const PUBLICATIONS = 'publications';
     public const PUBLICATIONS_CADRES = 'publications_cadres';
@@ -49,6 +50,7 @@ class FeatureEnum extends Enum
         self::CONTACTS,
         self::CONTACTS_EXPORT,
         self::CHATBOT,
+        self::AI_ANTISECHE,
         self::MESSAGES,
         self::PUBLICATIONS,
         self::PUBLICATIONS_CADRES,
@@ -102,6 +104,28 @@ class FeatureEnum extends Enum
         return [
             self::EVENTS,
             self::ACTIONS,
+            self::AI_ANTISECHE,
         ];
+    }
+
+    public static function getChatbotFeatures(): array
+    {
+        return [self::AI_ANTISECHE];
+    }
+
+    public static function getAgentIdForFeature(string $feature): ?string
+    {
+        return match ($feature) {
+            self::AI_ANTISECHE => 'antiseche',
+            default => null,
+        };
+    }
+
+    public static function getFeatureForAgentId(string $agentId): ?string
+    {
+        return match ($agentId) {
+            'antiseche' => self::AI_ANTISECHE,
+            default => null,
+        };
     }
 }

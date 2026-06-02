@@ -25,7 +25,7 @@ use Symfony\Component\Uid\Uuid;
     ],
     routePrefix: '/v3/ai',
     normalizationContext: ['groups' => ['chatbot:thread_read']],
-    security: "is_granted('REQUEST_SCOPE_GRANTED', 'chatbot')"
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'chatbot') or is_granted('REQUEST_SCOPE_GRANTED', 'ai_antiseche')"
 )]
 #[ORM\Entity(repositoryClass: ThreadRepository::class)]
 #[ORM\Table(name: 'chatbot_thread')]

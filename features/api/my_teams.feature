@@ -218,7 +218,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions"]
+                    "features": ["events", "actions", "ai_antiseche"]
                 },
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
@@ -336,7 +336,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions"]
+                    "features": ["events", "actions", "ai_antiseche"]
                 },
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
@@ -494,6 +494,7 @@ Feature:
                                     "contacts",
                                     "contacts_export",
                                     "chatbot",
+                                    "ai_antiseche",
                                     "messages",
                                     "publications",
                                     "publications_cadres",
@@ -587,6 +588,7 @@ Feature:
                                     "contacts",
                                     "contacts_export",
                                     "chatbot",
+                                    "ai_antiseche",
                                     "messages",
                                     "publications",
                                     "publications_cadres",

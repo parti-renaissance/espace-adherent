@@ -20,7 +20,7 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
     {
         // Thread 1: owned by canary tester (president-ad-1), 25 messages for pagination testing
         $adherent1 = $this->getReference('president-ad-1', Adherent::class);
-        $thread1 = new Thread($adherent1, 'chatbot', 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
+        $thread1 = new Thread($adherent1, 'antiseche', 'Mon premier thread', Uuid::fromString(self::THREAD_1_UUID));
 
         $base = new \DateTime('2026-03-01 10:00:00');
         for ($i = 1; $i <= 25; ++$i) {

@@ -18,6 +18,7 @@ use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Chatbot\DummyAgent;
+use Tests\App\Test\Chatbot\DummyAntisecheAgent;
 
 #[Group('functional')]
 #[Group('api')]
@@ -31,21 +32,24 @@ class PostMessageControllerTest extends AbstractApiTestCase
         parent::setUp();
 
         DummyAgent::reset();
+        DummyAntisecheAgent::reset();
         $this->resetChatbotRateLimiter();
     }
 
     private function resetChatbotRateLimiter(): void
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        self::getContainer()
-            ->get('limiter.bot_chatbot')
-            ->create('chatbot_chatbot_'.$adherent->getUuid()->toRfc4122())
-            ->reset();
+        $limiter = self::getContainer()->get('limiter.bot_chatbot');
+
+        foreach (['chatbot', 'antiseche'] as $agentId) {
+            $limiter->create('chatbot_'.$agentId.'_'.$adherent->getUuid()->toRfc4122())->reset();
+        }
     }
 
     protected function tearDown(): void
     {
         DummyAgent::reset();
+        DummyAntisecheAgent::reset();
 
         parent::tearDown();
     }
@@ -126,14 +130,14 @@ class PostMessageControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->authenticateWithChatbotAccess();
 
-        DummyAgent::willReturn(new TextResult('Bonjour, comment puis-je vous aider ?'));
+        DummyAntisecheAgent::willReturn(new TextResult('Bonjour, comment puis-je vous aider ?'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Bonjour le bot',
-            'agent_id' => 'chatbot',
+            'agent_id' => 'antiseche',
         ]));
 
         $response = $this->client->getResponse();
@@ -163,7 +167,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $accessToken = $this->authenticateWithChatbotAccess();
 
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        $thread = new Thread($adherent, 'chatbot');
+        $thread = new Thread($adherent, 'antiseche');
         for ($i = 1; $i <= 9; ++$i) {
             $date = new \DateTime('-'.(20 - $i).' minutes');
             $thread->addUserMessage("User question $i", $date);
@@ -172,7 +176,7 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->manager->persist($thread);
         $this->manager->flush();
 
-        DummyAgent::willReturn(new TextResult('Réponse finale'));
+        DummyAntisecheAgent::willReturn(new TextResult('Réponse finale'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -180,13 +184,13 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $thread->getUuid()->toRfc4122(),
             'message' => 'Final question',
-            'agent_id' => 'chatbot',
+            'agent_id' => 'antiseche',
         ]));
 
         $response = $this->client->getResponse();
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
 
-        $calls = DummyAgent::getCalls();
+        $calls = DummyAntisecheAgent::getCalls();
         self::assertCount(1, $calls);
         $contextBag = $calls[0]->getMessages();
 
@@ -201,20 +205,20 @@ class PostMessageControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->authenticateWithChatbotAccess();
 
-        DummyAgent::willReturn(new TextResult('Réponse 1'));
+        DummyAntisecheAgent::willReturn(new TextResult('Réponse 1'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Premier message',
-            'agent_id' => 'chatbot',
+            'agent_id' => 'antiseche',
         ]));
 
         $threadUuid = $this->client->getResponse()->headers->get('X-Chatbot-Thread-UUID');
         $this->assertNotEmpty($threadUuid);
 
-        DummyAgent::willReturn(new TextResult('Réponse 2'));
+        DummyAntisecheAgent::willReturn(new TextResult('Réponse 2'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -222,13 +226,13 @@ class PostMessageControllerTest extends AbstractApiTestCase
         ], json_encode([
             'thread_id' => $threadUuid,
             'message' => 'Deuxième message',
-            'agent_id' => 'chatbot',
+            'agent_id' => 'antiseche',
         ]));
 
         $response = $this->client->getResponse();
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
 
-        $calls = DummyAgent::getCalls();
+        $calls = DummyAntisecheAgent::getCalls();
         self::assertCount(2, $calls);
         $secondCallBag = $calls[1]->getMessages();
 
@@ -257,11 +261,9 @@ class PostMessageControllerTest extends AbstractApiTestCase
         $this->assertCount(2, $userMessages);
     }
 
-    public function testMissingAgentIdDefaultsToChatbot(): void
+    public function testMissingAgentIdDefaultsToChatbotAndIsForbidden(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
-
-        DummyAgent::willReturn(new TextResult('réponse chatbot par défaut'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -270,25 +272,22 @@ class PostMessageControllerTest extends AbstractApiTestCase
             'message' => 'Salut',
         ]));
 
-        $response = $this->client->getResponse();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
-
-        $calls = DummyAgent::getCalls();
-        self::assertCount(1, $calls, 'Sans agent_id explicite, chatbot doit être appelé par défaut');
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        self::assertCount(0, DummyAgent::getCalls(), 'Sans agent_id, le défaut chatbot est refusé (403)');
     }
 
     public function testBotErrorDoesNotPreventResponse(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
 
-        DummyAgent::willThrow(new \RuntimeException('API Error'));
+        DummyAntisecheAgent::willThrow(new \RuntimeException('API Error'));
 
         $this->client->request('POST', '/api/v3/ai/chat', [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
             'message' => 'Message provoquant une erreur',
-            'agent_id' => 'chatbot',
+            'agent_id' => 'antiseche',
         ]));
 
         $response = $this->client->getResponse();

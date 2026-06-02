@@ -13,6 +13,7 @@ class DummyAntisecheAgent implements AgentInterface
 {
     private static ?ResultInterface $nextResult = null;
     private static ?\Throwable $nextException = null;
+    private static array $calls = [];
 
     public function __construct(mixed ...$ignored)
     {
@@ -34,6 +35,12 @@ class DummyAntisecheAgent implements AgentInterface
     {
         self::$nextResult = null;
         self::$nextException = null;
+        self::$calls = [];
+    }
+
+    public static function getCalls(): array
+    {
+        return self::$calls;
     }
 
     public function getName(): string
@@ -43,6 +50,8 @@ class DummyAntisecheAgent implements AgentInterface
 
     public function call(MessageBag $messages, array $options = []): ResultInterface
     {
+        self::$calls[] = $messages;
+
         if (self::$nextException) {
             throw self::$nextException;
         }
