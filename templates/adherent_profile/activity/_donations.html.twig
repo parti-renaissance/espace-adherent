@@ -40,7 +40,7 @@
             {% for donation in donations_history %}
                 <tr>
                     <td>{{ donation.date|format_datetime('medium', 'none') }}</td>
-                    <td>{{ donation.amountInEuros }} €</td>
+                    <td>{{ donation.amount }} €</td>
                     <td>{{ donation.isSubscription ? 'Don mensuel' : 'Don ponctuel' }}</td>
                     <td>{{ ('donation.type.' ~ donation.type)|trans }}</td>
                 </tr>

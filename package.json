@@ -7,8 +7,8 @@
     "lint": "eslint front/**/*.js assets/**/*.js eslint.config.mjs",
     "lint:fix": "pnpm lint --fix",
     "lint:watch": "pnpm lint --watch",
-    "prettier": "prettier --check features .github config",
-    "prettier:fix": "prettier --write features .github config"
+    "prettier": "prettier --check features .github",
+    "prettier:fix": "prettier --write features .github"
   },
   "dependencies": {
     "@babel/core": "^7.24.6",
