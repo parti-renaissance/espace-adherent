@@ -8,11 +8,9 @@ use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Entity\Video;
 use App\Entity\VideoStatusEnum;
 use App\Repository\SocialNetworkFeedVideoRepository;
-use App\Repository\VideoRepository;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\Video\Storage\VideoSourceArchiverInterface;
 use App\Video\Transcoding\VideoTranscodingLauncher;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +20,6 @@ class TranscodeSocialNetworkVideoCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly VideoRepository $videoRepository,
         private readonly SocialNetworkFeedVideoRepository $socialNetworkFeedVideoRepository,
         private readonly VideoSourceArchiverInterface $archiver,
         private readonly VideoTranscodingLauncher $launcher,
@@ -35,27 +32,20 @@ class TranscodeSocialNetworkVideoCommandHandler
     {
         $feedVideo = $this->socialNetworkFeedVideoRepository->find($command->socialNetworkFeedVideoId);
 
-        $video = $this->videoRepository->findOneBySourceUri($command->sourceUri);
+        if (null === $feedVideo) {
+            return;
+        }
+
+        $video = $feedVideo->video;
 
         if (null === $video) {
             $video = new Video();
             $video->sourceUri = $command->sourceUri;
             $video->title = $this->buildTitle($feedVideo);
-            $video->width = $feedVideo?->width;
-            $video->height = $feedVideo?->height;
-            $this->entityManager->persist($video);
-
-            try {
-                $this->entityManager->flush();
-            } catch (UniqueConstraintViolationException $exception) {
-                $this->logger->info('[Video transcode] concurrent creation, will retry.', ['source_uri' => $command->sourceUri]);
-
-                throw $exception;
-            }
-        }
-
-        if (null !== $feedVideo && $feedVideo->video !== $video) {
+            $video->width = $feedVideo->width;
+            $video->height = $feedVideo->height;
             $feedVideo->video = $video;
+            $this->entityManager->persist($video);
             $this->entityManager->flush();
         }
 
@@ -91,14 +81,14 @@ class TranscodeSocialNetworkVideoCommandHandler
         $this->launcher->launch($video, \sprintf('gs://%s/%s', $this->gcloudBucket, $video->originalPath));
     }
 
-    private function buildTitle(?SocialNetworkFeedVideo $feedVideo): string
+    private function buildTitle(SocialNetworkFeedVideo $feedVideo): string
     {
-        $source = trim((string) ($feedVideo?->feed->description ?? $feedVideo?->feed->username ?? ''));
+        $source = trim($feedVideo->feed->description ?? $feedVideo->feed->username ?? '');
 
         if ('' === $source) {
             $source = 'Video';
         }
 
-        return mb_substr($source, 0, 255);
+        return mb_substr($source, 0, 100);
     }
 }

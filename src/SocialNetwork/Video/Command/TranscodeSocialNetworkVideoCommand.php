@@ -18,7 +18,7 @@ class TranscodeSocialNetworkVideoCommand implements AsynchronousMessageInterface
 
     public function getLockKey(): string
     {
-        return 'video_transcode_'.sha1($this->sourceUri);
+        return 'video_transcode_feed_video_'.$this->socialNetworkFeedVideoId;
     }
 
     public function getLockTtl(): int

@@ -42,6 +42,15 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'visibility_handler' => 'flysystem.adapter.gcloud.visibility.uniform',
                 ],
             ],
+            'media.storage' => [
+                'adapter' => 'gcloud',
+                'public_url' => '%env(MEDIA_CDN_BASE_URL)%',
+                'options' => [
+                    'client' => Google\Cloud\Storage\StorageClient::class,
+                    'bucket' => '%env(key:host:url:MEDIA_CDN_BASE_URL)%',
+                    'visibility_handler' => 'flysystem.adapter.gcloud.visibility.uniform',
+                ],
+            ],
         ],
     ]);
 };

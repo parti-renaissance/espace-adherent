@@ -21,9 +21,4 @@ class VideoRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Video::class);
     }
-
-    public function findOneBySourceUri(string $sourceUri): ?Video
-    {
-        return $this->findOneBy(['sourceUri' => $sourceUri]);
-    }
 }

@@ -24,6 +24,18 @@ use Symfony\Component\Uid\Uuid;
 #[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
 class GetTimelineFeedsController extends AbstractController
 {
+    /**
+     * Feed types exposed in the JeMengage mobile timeline, passed to Algolia as tag filters.
+     */
+    private const array TIMELINE_FEED_TYPES = [
+        TimelineFeedTypeEnum::NEWS,
+        TimelineFeedTypeEnum::EVENT,
+        TimelineFeedTypeEnum::ACTION,
+        TimelineFeedTypeEnum::PUBLICATION,
+        TimelineFeedTypeEnum::TRANSACTIONAL_MESSAGE,
+        TimelineFeedTypeEnum::SOCIAL_NETWORK_POST,
+    ];
+
     public function __construct(private readonly ZoneRepository $zoneRepository)
     {
     }
@@ -194,13 +206,7 @@ class GetTimelineFeedsController extends AbstractController
             $this->buildScopeTargetClause($user),
         ]);
 
-        $tagFilters = [[
-            TimelineFeedTypeEnum::NEWS,
-            TimelineFeedTypeEnum::EVENT,
-            TimelineFeedTypeEnum::ACTION,
-            TimelineFeedTypeEnum::PUBLICATION,
-            TimelineFeedTypeEnum::TRANSACTIONAL_MESSAGE,
-        ]];
+        $tagFilters = [self::TIMELINE_FEED_TYPES];
 
         return $this->json($dataProvider->findItems($user, $page, $parts, $tagFilters));
     }

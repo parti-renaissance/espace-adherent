@@ -17,6 +17,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'public_user_file.storage' => [
                 'adapter' => 'memory',
             ],
+            'media.storage' => [
+                'adapter' => 'memory',
+            ],
         ],
     ]);
 };

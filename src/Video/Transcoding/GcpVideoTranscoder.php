@@ -33,14 +33,12 @@ class GcpVideoTranscoder implements VideoTranscoderInterface
             'labels' => ['video_uuid' => $videoUuid],
         ]);
 
-        $parent = $this->client->locationName($this->transcoderProjectId, $this->transcoderLocation);
+        $parent = $this->client::locationName($this->transcoderProjectId, $this->transcoderLocation);
 
         // The Transcoder API does not accept a client-supplied job id (CreateJobRequest exposes only
         // parent + job), so creation is not idempotent at the API level. Idempotency is enforced
-        // upstream by the unique Video.sourceUri and the per-source message lock.
-        $createdJob = $this->client->createJob(CreateJobRequest::build($parent, $job));
-
-        return $createdJob->getName();
+        // upstream by the per-message lock and the caller's status guard (launch happens once per Video).
+        return $this->client->createJob(CreateJobRequest::build($parent, $job))->getName();
     }
 
     public function getJob(string $jobName): TranscodingJobStatus

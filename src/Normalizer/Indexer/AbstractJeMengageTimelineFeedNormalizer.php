@@ -28,6 +28,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'address' => $this->getAddress($object),
             'post_address' => $this->getPostAddress($object),
             'image' => $this->getImage($object),
+            'media' => $this->getMedia($object),
             'url' => $this->getUrl($object),
             'live_url' => $this->getLiveUrl($object),
             'media_type' => $this->getMediaType($object),
@@ -68,7 +69,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
         return [
             'uuid' => $author?->getUuidAsString(),
-            'first_name' => $author?->getFirstName(),
+            'first_name' => $this->getAuthorFirstName($author, $object),
             'last_name' => $author?->getLastName(),
             'role' => $this->getAuthorRole($object),
             'instance' => $this->getAuthorInstance($object),
@@ -83,6 +84,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     private function getType(): string
     {
         return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
+    }
+
+    protected function getAuthorFirstName(?Adherent $author, object $object): ?string
+    {
+        return $author?->getFirstName();
     }
 
     protected function getCategory(object $object): ?string
@@ -136,6 +142,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getImage(object $object): ?array
+    {
+        return null;
+    }
+
+    protected function getMedia(object $object): ?array
     {
         return null;
     }
