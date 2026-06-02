@@ -9,7 +9,9 @@ use App\Entity\VideoStatusEnum;
 use App\Repository\VideoRepository;
 use App\Video\Transcoding\Command\CheckVideoTranscodingStatusCommand;
 use App\Video\Transcoding\Handler\CheckVideoTranscodingStatusCommandHandler;
+use App\Video\Transcoding\TranscodedVideoProbeInterface;
 use App\Video\Transcoding\TranscodingJobStatus;
+use App\Video\Transcoding\VideoMediaInfo;
 use App\Video\Transcoding\VideoTranscoderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -46,17 +48,21 @@ final class CheckVideoTranscodingStatusCommandHandlerTest extends TestCase
             ->expects(self::once())
             ->method('getJob')
             ->with(self::JOB)
-            ->willReturn(new TranscodingJobStatus(VideoStatusEnum::READY, width: 720, height: 1280));
+            ->willReturn(new TranscodingJobStatus(VideoStatusEnum::READY));
+
+        $probe = $this->createMock(TranscodedVideoProbeInterface::class);
+        $probe->expects(self::once())->method('probe')->with($video)->willReturn(new VideoMediaInfo(720, 1280, 42));
 
         $this->entityManager->expects(self::once())->method('flush');
         $this->bus->expects(self::never())->method('dispatch');
 
-        $this->handle(new CheckVideoTranscodingStatusCommand(self::UUID, self::JOB, time()));
+        $this->handle(new CheckVideoTranscodingStatusCommand(self::UUID, self::JOB, time()), $probe);
 
         self::assertSame(VideoStatusEnum::READY, $video->status);
         self::assertSame('videos/'.self::UUID, $video->mediaPath);
         self::assertSame(720, $video->width);
         self::assertSame(1280, $video->height);
+        self::assertSame(42, $video->duration);
     }
 
     public function testFailedJobStoresFailureReason(): void
@@ -162,8 +168,10 @@ final class CheckVideoTranscodingStatusCommandHandlerTest extends TestCase
             ->willReturn($video);
     }
 
-    private function handle(CheckVideoTranscodingStatusCommand $command): void
+    private function handle(CheckVideoTranscodingStatusCommand $command, ?TranscodedVideoProbeInterface $probe = null): void
     {
-        (new CheckVideoTranscodingStatusCommandHandler($this->entityManager, $this->videoRepository, $this->transcoder, $this->bus))($command);
+        $probe ??= $this->createStub(TranscodedVideoProbeInterface::class);
+
+        (new CheckVideoTranscodingStatusCommandHandler($this->entityManager, $this->videoRepository, $this->transcoder, $probe, $this->bus))($command);
     }
 }

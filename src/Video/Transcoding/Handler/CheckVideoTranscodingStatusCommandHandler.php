@@ -7,6 +7,7 @@ namespace App\Video\Transcoding\Handler;
 use App\Entity\VideoStatusEnum;
 use App\Repository\VideoRepository;
 use App\Video\Transcoding\Command\CheckVideoTranscodingStatusCommand;
+use App\Video\Transcoding\TranscodedVideoProbeInterface;
 use App\Video\Transcoding\VideoTranscoderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -23,6 +24,7 @@ class CheckVideoTranscodingStatusCommandHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly VideoRepository $videoRepository,
         private readonly VideoTranscoderInterface $transcoder,
+        private readonly TranscodedVideoProbeInterface $probe,
         private readonly MessageBusInterface $bus,
     ) {
     }
@@ -45,9 +47,11 @@ class CheckVideoTranscodingStatusCommandHandler
         if (VideoStatusEnum::READY === $status->state) {
             $video->status = VideoStatusEnum::READY;
             $video->mediaPath = 'videos/'.$command->videoUuid;
-            $video->width ??= $status->width;
-            $video->height ??= $status->height;
-            $video->duration ??= $status->duration;
+
+            $mediaInfo = $this->probe->probe($video);
+            $video->width ??= $mediaInfo->width;
+            $video->height ??= $mediaInfo->height;
+            $video->duration ??= $mediaInfo->duration;
             $this->entityManager->flush();
 
             return;

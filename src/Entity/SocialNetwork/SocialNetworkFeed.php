@@ -48,6 +48,30 @@ class SocialNetworkFeed
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $avatarImageUrl = null;
 
+    /**
+     * Path of the main image copied to our public bucket, relative to the public storage.
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $publicImagePath = null;
+
+    /**
+     * Path of the avatar image copied to our public bucket, relative to the public storage.
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $publicAvatarImagePath = null;
+
+    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
+    public ?int $imageWidth = null;
+
+    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
+    public ?int $imageHeight = null;
+
+    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
+    public ?int $avatarWidth = null;
+
+    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
+    public ?int $avatarHeight = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $url = null;
 

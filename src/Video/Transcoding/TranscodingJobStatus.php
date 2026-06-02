@@ -14,9 +14,6 @@ class TranscodingJobStatus
     public function __construct(
         public readonly VideoStatusEnum $state,
         public readonly ?string $error = null,
-        public readonly ?int $width = null,
-        public readonly ?int $height = null,
-        public readonly ?int $duration = null,
     ) {
     }
 }

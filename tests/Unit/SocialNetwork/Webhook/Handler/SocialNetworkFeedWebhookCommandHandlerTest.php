@@ -7,6 +7,8 @@ namespace Tests\App\Unit\SocialNetwork\Webhook\Handler;
 use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Repository\SocialNetworkFeedRepository;
+use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedImagesCommand;
+use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedPhotoCommand;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Webhook\Command\SocialNetworkFeedWebhookCommand;
 use App\SocialNetwork\Webhook\Handler\SocialNetworkFeedWebhookCommandHandler;
@@ -24,6 +26,9 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
     private LoggerInterface&MockObject $logger;
     private MessageBusInterface&MockObject $bus;
     private SocialNetworkFeedWebhookCommandHandler $handler;
+
+    /** @var list<object> */
+    private array $dispatched = [];
 
     protected function setUp(): void
     {
@@ -43,31 +48,20 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
     public function testCreatesFeedFromCompletePayload(): void
     {
         $this->logger->expects(self::never())->method('error');
-
-        $this->repository
-            ->expects(self::once())
-            ->method('findOneByScraperId')
-            ->with(12345)
-            ->willReturn(null)
-        ;
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn(null);
 
         $persisted = null;
-        $this->entityManager
-            ->expects(self::once())
-            ->method('persist')
+        $this->entityManager->expects(self::once())->method('persist')
             ->with(self::callback(function (SocialNetworkFeed $feed) use (&$persisted): bool {
                 $persisted = $feed;
 
                 return true;
-            }))
-        ;
+            }));
         $this->entityManager->expects(self::once())->method('flush')
             ->willReturnCallback(function () use (&$persisted): void {
-                foreach ($persisted->videos as $video) {
-                    $video->id ??= 1;
-                }
+                $this->assignPersistedIds($persisted);
             });
-        $this->bus->expects(self::once())->method('dispatch')->willReturnCallback(static fn (object $message) => new Envelope($message));
+        $this->captureDispatchedMessages();
 
         ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
 
@@ -115,22 +109,14 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         self::assertCount(2, $existing->videos);
 
         $this->logger->expects(self::never())->method('error');
-
-        $this->repository
-            ->expects(self::once())
-            ->method('findOneByScraperId')
-            ->with(12345)
-            ->willReturn($existing)
-        ;
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
 
         $this->entityManager->expects(self::once())->method('persist')->with($existing);
         $this->entityManager->expects(self::once())->method('flush')
             ->willReturnCallback(function () use ($existing): void {
-                foreach ($existing->videos as $video) {
-                    $video->id ??= 1;
-                }
+                $this->assignPersistedIds($existing);
             });
-        $this->bus->expects(self::once())->method('dispatch')->willReturnCallback(static fn (object $message) => new Envelope($message));
+        $this->captureDispatchedMessages();
 
         ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
 
@@ -169,20 +155,80 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
             $persisted = $feed;
         });
         $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use (&$persisted): void {
-            foreach ($persisted->videos as $video) {
-                $video->id ??= 1;
-            }
+            $this->assignPersistedIds($persisted);
         });
         $this->logger->expects(self::never())->method('error');
-
-        $this->bus
-            ->expects(self::once())
-            ->method('dispatch')
-            ->with(self::callback(static fn (TranscodeSocialNetworkVideoCommand $command): bool => 1 === $command->socialNetworkFeedVideoId
-                && 'https://cdn/stream.m3u8' === $command->sourceUri))
-            ->willReturn(new Envelope(new \stdClass()));
+        $this->captureDispatchedMessages();
 
         ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        $transcode = $this->dispatchedOfType(TranscodeSocialNetworkVideoCommand::class);
+        self::assertCount(1, $transcode);
+        self::assertSame(1, $transcode[0]->socialNetworkFeedVideoId);
+        self::assertSame('https://cdn/stream.m3u8', $transcode[0]->sourceUri);
+    }
+
+    public function testDispatchesImageArchivingCommands(): void
+    {
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn(null);
+
+        $persisted = null;
+        $this->entityManager->expects(self::once())->method('persist')->willReturnCallback(function (SocialNetworkFeed $feed) use (&$persisted): void {
+            $persisted = $feed;
+        });
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use (&$persisted): void {
+            $this->assignPersistedIds($persisted);
+        });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        $images = $this->dispatchedOfType(PublishSocialNetworkFeedImagesCommand::class);
+        self::assertCount(1, $images);
+        self::assertSame(1, $images[0]->feedId);
+
+        $photos = $this->dispatchedOfType(PublishSocialNetworkFeedPhotoCommand::class);
+        self::assertCount(1, $photos);
+        self::assertSame(2, $photos[0]->photoId);
+        self::assertSame('https://cdn/photo.jpg', $photos[0]->src);
+    }
+
+    private function captureDispatchedMessages(): void
+    {
+        $this->bus->expects(self::atLeastOnce())->method('dispatch')->willReturnCallback(function (object $message): Envelope {
+            $this->dispatched[] = $message;
+
+            return new Envelope($message);
+        });
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $class
+     *
+     * @return list<T>
+     */
+    private function dispatchedOfType(string $class): array
+    {
+        return array_values(array_filter($this->dispatched, static fn (object $message): bool => $message instanceof $class));
+    }
+
+    private function assignPersistedIds(SocialNetworkFeed $feed): void
+    {
+        // The DB id is protected (EntityIdentityTrait); simulate post-flush id assignment.
+        (function (): void {
+            $this->id = 1;
+        })->call($feed);
+
+        foreach ($feed->videos as $video) {
+            $video->id ??= 1;
+        }
+
+        foreach ($feed->photos as $photo) {
+            $photo->id ??= 2;
+        }
     }
 
     private function completePayload(): array
