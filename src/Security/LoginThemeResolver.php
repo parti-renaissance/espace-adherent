@@ -11,7 +11,7 @@ class LoginThemeResolver
     public const THEME_ATTAL = 'attal';
     public const THEME_RENAISSANCE = 'renaissance';
 
-    public function __construct(private readonly string $userCampaigneHost)
+    public function __construct(private readonly string $userCampaignHost)
     {
     }
 
@@ -19,6 +19,6 @@ class LoginThemeResolver
     {
         $host = $request->attributes->get('app_domain', $request->getHost());
 
-        return $host === $this->userCampaigneHost ? self::THEME_ATTAL : self::THEME_RENAISSANCE;
+        return $host === $this->userCampaignHost ? self::THEME_ATTAL : self::THEME_RENAISSANCE;
     }
 }
