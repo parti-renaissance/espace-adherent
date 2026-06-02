@@ -9,12 +9,10 @@ use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Entity\Video;
 use App\Entity\VideoStatusEnum;
 use App\Repository\SocialNetworkFeedVideoRepository;
-use App\Repository\VideoRepository;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Video\Handler\TranscodeSocialNetworkVideoCommandHandler;
 use App\Video\Storage\VideoSourceArchiverInterface;
 use App\Video\Transcoding\VideoTranscodingLauncher;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +25,6 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
     private const string BUCKET = 'app-bucket';
 
     private EntityManagerInterface $entityManager;
-    private VideoRepository&MockObject $videoRepository;
     private SocialNetworkFeedVideoRepository&MockObject $feedVideoRepository;
     private VideoSourceArchiverInterface&MockObject $archiver;
     private VideoTranscodingLauncher&MockObject $launcher;
@@ -37,18 +34,16 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
     {
         // Providers (no interaction assertion) are stubs; verified collaborators are mocks.
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
-        $this->videoRepository = $this->createMock(VideoRepository::class);
         $this->feedVideoRepository = $this->createMock(SocialNetworkFeedVideoRepository::class);
         $this->archiver = $this->createMock(VideoSourceArchiverInterface::class);
         $this->launcher = $this->createMock(VideoTranscodingLauncher::class);
         $this->logger = $this->createStub(LoggerInterface::class);
     }
 
-    public function testCreatesVideoLinksItArchivesSourceAndLaunches(): void
+    public function testCreatesOwnVideoArchivesSourceAndLaunches(): void
     {
         $feedVideo = $this->feedVideo('campaign post');
         $this->expectFeedVideoLookup($feedVideo);
-        $this->expectVideoLookup(null);
 
         $this->archiver
             ->expects(self::once())
@@ -80,27 +75,26 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
         self::assertSame($launched, $feedVideo->video);
     }
 
-    public function testExistingReadyVideoIsLinkedButNotRelaunched(): void
+    public function testExistingReadyVideoIsNotRelaunched(): void
     {
         $feedVideo = $this->feedVideo('post');
-        $existing = $this->video(VideoStatusEnum::READY, 'scraper-source/videos/abc.mp4');
+        $feedVideo->video = $this->video(VideoStatusEnum::READY, 'scraper-source/videos/abc.mp4');
         $this->expectFeedVideoLookup($feedVideo);
-        $this->expectVideoLookup($existing);
 
         $this->archiver->expects(self::never())->method('archive');
         $this->launcher->expects(self::never())->method('launch');
 
         $this->handle();
 
-        self::assertSame($existing, $feedVideo->video);
+        self::assertSame(VideoStatusEnum::READY, $feedVideo->video->status);
     }
 
     public function testProcessingVideoWithoutOriginalPathArchivesAndLaunches(): void
     {
         $feedVideo = $this->feedVideo('post');
         $existing = $this->video(VideoStatusEnum::PROCESSING, null);
+        $feedVideo->video = $existing;
         $this->expectFeedVideoLookup($feedVideo);
-        $this->expectVideoLookup($existing);
 
         $this->archiver->expects(self::once())->method('archive')->with(self::SOURCE, self::anything());
         $this->launcher->expects(self::once())->method('launch')->with($existing, self::anything());
@@ -113,8 +107,8 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
         $feedVideo = $this->feedVideo('post');
         $existing = $this->video(VideoStatusEnum::PROCESSING, 'scraper-source/videos/abc.mp4');
         $existing->transcodingJobName = 'projects/1/locations/europe-west1/jobs/running';
+        $feedVideo->video = $existing;
         $this->expectFeedVideoLookup($feedVideo);
-        $this->expectVideoLookup($existing);
 
         // No duplicate job, no re-archive: only the poll is re-armed.
         $this->archiver->expects(self::never())->method('archive');
@@ -128,7 +122,6 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
     {
         $feedVideo = $this->feedVideo('post');
         $this->expectFeedVideoLookup($feedVideo);
-        $this->expectVideoLookup(null);
 
         $this->archiver
             ->expects(self::once())
@@ -144,19 +137,12 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
         self::assertStringContainsString('Source archiving rejected', (string) $feedVideo->video->failureReason);
     }
 
-    public function testConcurrentCreationRethrowsToRetry(): void
+    public function testMissingFeedVideoIsANoOp(): void
     {
-        $this->expectFeedVideoLookup($this->feedVideo('post'));
-        $this->expectVideoLookup(null);
-
-        $this->entityManager
-            ->method('flush')
-            ->willThrowException($this->createStub(UniqueConstraintViolationException::class));
+        $this->feedVideoRepository->expects(self::once())->method('find')->with(self::SNFV_ID)->willReturn(null);
 
         $this->archiver->expects(self::never())->method('archive');
         $this->launcher->expects(self::never())->method('launch');
-
-        $this->expectException(UniqueConstraintViolationException::class);
 
         $this->handle();
     }
@@ -168,15 +154,6 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
             ->method('find')
             ->with(self::SNFV_ID)
             ->willReturn($feedVideo);
-    }
-
-    private function expectVideoLookup(?Video $video): void
-    {
-        $this->videoRepository
-            ->expects(self::once())
-            ->method('findOneBySourceUri')
-            ->with(self::SOURCE)
-            ->willReturn($video);
     }
 
     private function feedVideo(string $description): SocialNetworkFeedVideo
@@ -206,7 +183,6 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
     {
         $handler = new TranscodeSocialNetworkVideoCommandHandler(
             $this->entityManager,
-            $this->videoRepository,
             $this->feedVideoRepository,
             $this->archiver,
             $this->launcher,

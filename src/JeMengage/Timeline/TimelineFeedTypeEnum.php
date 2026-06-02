@@ -14,6 +14,7 @@ use App\Entity\Jecoute\Riposte;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
+use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\TimelineItemPrivateMessage;
 use MyCLabs\Enum\Enum;
 
@@ -28,6 +29,7 @@ class TimelineFeedTypeEnum extends Enum
     public const ACTION = 'action';
     public const PUBLICATION = 'publication';
     public const TRANSACTIONAL_MESSAGE = 'transactional_message';
+    public const SOCIAL_NETWORK_POST = 'social_network_post';
 
     public const CLASS_MAPPING = [
         News::class => self::NEWS,
@@ -41,5 +43,6 @@ class TimelineFeedTypeEnum extends Enum
         Action::class => self::ACTION,
         AdherentMessage::class => self::PUBLICATION,
         TimelineItemPrivateMessage::class => self::TRANSACTIONAL_MESSAGE,
+        SocialNetworkFeed::class => self::SOCIAL_NETWORK_POST,
     ];
 }

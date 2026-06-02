@@ -6,6 +6,8 @@ namespace App\Entity\SocialNetwork;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
+use App\EntityListener\AlgoliaIndexListener;
 use App\Repository\SocialNetworkFeedRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SocialNetworkFeedRepository::class)]
-class SocialNetworkFeed
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
+class SocialNetworkFeed implements IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -84,16 +87,27 @@ class SocialNetworkFeed
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $rawJson = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    public bool $published = false;
+
+    /**
+     * When we flagged this feed as published on our side. Stored for audit only, never read back.
+     */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $publishedAt = null;
+
     /**
      * @var Collection<int, SocialNetworkFeedVideo>
      */
     #[ORM\OneToMany(targetEntity: SocialNetworkFeedVideo::class, mappedBy: 'feed', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     public Collection $videos;
 
     /**
      * @var Collection<int, SocialNetworkFeedPhoto>
      */
     #[ORM\OneToMany(targetEntity: SocialNetworkFeedPhoto::class, mappedBy: 'feed', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     public Collection $photos;
 
     public function __construct()
@@ -110,11 +124,6 @@ class SocialNetworkFeed
         }
     }
 
-    public function clearVideos(): void
-    {
-        $this->videos->clear();
-    }
-
     public function addPhoto(SocialNetworkFeedPhoto $photo): void
     {
         if (!$this->photos->contains($photo)) {
@@ -122,8 +131,8 @@ class SocialNetworkFeed
         }
     }
 
-    public function clearPhotos(): void
+    public function isIndexable(): bool
     {
-        $this->photos->clear();
+        return $this->published;
     }
 }

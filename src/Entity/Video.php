@@ -60,8 +60,7 @@ class Video implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     public ?int $height = null;
 
-    // gs:// URI of the source video on the scraper bucket. Stable idempotency key of the transcoding pipeline.
-    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     public ?string $sourceUri = null;
 
     // Path of our durable copy of the source inside GCLOUD_BUCKET. Transcoder input and relaunch source.

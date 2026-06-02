@@ -10,6 +10,7 @@ use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Repository\SocialNetworkFeedRepository;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedImagesCommand;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedPhotoCommand;
+use App\SocialNetwork\Publication\Command\CheckSocialNetworkFeedPublicationCommand;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Webhook\Command\SocialNetworkFeedWebhookCommand;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -57,6 +58,10 @@ class SocialNetworkFeedWebhookCommandHandler
 
         $this->dispatchTranscoding($feed);
         $this->dispatchImagePublishing($feed);
+
+        if (!$feed->published) {
+            $this->bus->dispatch(new CheckSocialNetworkFeedPublicationCommand($feed->getId(), time()));
+        }
     }
 
     private function dispatchTranscoding(SocialNetworkFeed $feed): void
@@ -72,12 +77,17 @@ class SocialNetworkFeedWebhookCommandHandler
 
     private function dispatchImagePublishing(SocialNetworkFeed $feed): void
     {
-        if (null !== $feed->imageUrl || null !== $feed->avatarImageUrl) {
+        // Only dispatch when there is uncopied media: a public path stays null until copied, and the
+        // hydration/upsert above resets it whenever the source changes. Avoids no-op messages on
+        // re-delivery of an already-copied post.
+        if ((null !== $feed->imageUrl && null === $feed->publicImagePath)
+            || (null !== $feed->avatarImageUrl && null === $feed->publicAvatarImagePath)
+        ) {
             $this->bus->dispatch(new PublishSocialNetworkFeedImagesCommand($feed->getId()));
         }
 
         foreach ($feed->photos as $photo) {
-            if (null === $photo->src) {
+            if (null === $photo->src || null !== $photo->publicSrc) {
                 continue;
             }
 
@@ -92,42 +102,131 @@ class SocialNetworkFeedWebhookCommandHandler
         $feed->platform = (string) $payload['platform'];
         $feed->username = $payload['username'] ?? null;
         $feed->description = $payload['description'] ?? null;
-        $feed->imageUrl = $payload['image_url'] ?? null;
-        $feed->avatarImageUrl = $payload['avatar_image_url'] ?? null;
+
+        // A changed source URL drops the stale public copy so it is re-published (same idempotent
+        // strategy as the photo/video upsert below).
+        $imageUrl = $payload['image_url'] ?? null;
+        if ($feed->imageUrl !== $imageUrl) {
+            $feed->publicImagePath = null;
+        }
+        $feed->imageUrl = $imageUrl;
+
+        $avatarImageUrl = $payload['avatar_image_url'] ?? null;
+        if ($feed->avatarImageUrl !== $avatarImageUrl) {
+            $feed->publicAvatarImagePath = null;
+        }
+        $feed->avatarImageUrl = $avatarImageUrl;
+
         $feed->url = $payload['url'] ?? null;
         $feed->score = isset($payload['score']) ? (int) $payload['score'] : null;
         $feed->datePublished = $this->parseDate($payload['date_published'] ?? null);
 
         $feed->rawJson = $payload;
 
-        $feed->clearVideos();
-        foreach ($payload['videos'] ?? [] as $videoData) {
+        $this->upsertVideos($feed, \is_array($payload['videos'] ?? null) ? $payload['videos'] : []);
+        $this->upsertPhotos($feed, \is_array($payload['photos'] ?? null) ? $payload['photos'] : []);
+    }
+
+    /**
+     * Upserts feed videos by scraper id: existing rows are updated in place (preserving the
+     * transcoded Video link), new ones are created, and rows absent from the payload are removed.
+     * A changed stream URL for the same scraper id drops the stale Video link for reprocessing.
+     *
+     * @param array<int, mixed> $videosData
+     */
+    private function upsertVideos(SocialNetworkFeed $feed, array $videosData): void
+    {
+        $existingByScraperId = [];
+        foreach ($feed->videos as $video) {
+            if (null !== $video->scraperId) {
+                $existingByScraperId[$video->scraperId] = $video;
+            }
+        }
+
+        $kept = [];
+        foreach ($videosData as $videoData) {
             if (!\is_array($videoData)) {
                 continue;
             }
 
-            $video = new SocialNetworkFeedVideo($feed);
-            $video->scraperId = isset($videoData['id']) ? (int) $videoData['id'] : null;
+            $scraperId = isset($videoData['id']) ? (int) $videoData['id'] : null;
+            $streamUrl = $videoData['stream_url'] ?? null;
+
+            $video = (null !== $scraperId && isset($existingByScraperId[$scraperId]))
+                ? $existingByScraperId[$scraperId]
+                : new SocialNetworkFeedVideo($feed);
+
+            if ($video->streamUrl !== $streamUrl) {
+                $video->video = null;
+            }
+
+            $video->scraperId = $scraperId;
             $video->videoType = $videoData['video_type'] ?? null;
             $video->width = isset($videoData['width']) ? (int) $videoData['width'] : null;
             $video->height = isset($videoData['height']) ? (int) $videoData['height'] : null;
             $video->bitrate = isset($videoData['bitrate']) ? (int) $videoData['bitrate'] : null;
-            $video->streamUrl = $videoData['stream_url'] ?? null;
+            $video->streamUrl = $streamUrl;
+
             $feed->addVideo($video);
+            $kept[spl_object_id($video)] = true;
         }
 
-        $feed->clearPhotos();
-        foreach ($payload['photos'] ?? [] as $photoData) {
+        foreach ($feed->videos->toArray() as $video) {
+            if (!isset($kept[spl_object_id($video)])) {
+                $feed->videos->removeElement($video);
+            }
+        }
+    }
+
+    /**
+     * Upserts feed photos by scraper id (same strategy as upsertVideos). A changed source URL for
+     * the same scraper id drops the stale public copy so it is re-published.
+     *
+     * NOTE: intentional duplication with upsertVideos — the two entities have divergent field
+     * mappings and only these two call sites; a generic helper would add closures/complexity for no
+     * real reuse gain (KISS).
+     *
+     * @param array<int, mixed> $photosData
+     */
+    private function upsertPhotos(SocialNetworkFeed $feed, array $photosData): void
+    {
+        $existingByScraperId = [];
+        foreach ($feed->photos as $photo) {
+            if (null !== $photo->scraperId) {
+                $existingByScraperId[$photo->scraperId] = $photo;
+            }
+        }
+
+        $kept = [];
+        foreach ($photosData as $photoData) {
             if (!\is_array($photoData)) {
                 continue;
             }
 
-            $photo = new SocialNetworkFeedPhoto($feed);
-            $photo->scraperId = isset($photoData['id']) ? (int) $photoData['id'] : null;
+            $scraperId = isset($photoData['id']) ? (int) $photoData['id'] : null;
+            $src = $photoData['src'] ?? null;
+
+            $photo = (null !== $scraperId && isset($existingByScraperId[$scraperId]))
+                ? $existingByScraperId[$scraperId]
+                : new SocialNetworkFeedPhoto($feed);
+
+            if ($photo->src !== $src) {
+                $photo->publicSrc = null;
+            }
+
+            $photo->scraperId = $scraperId;
             $photo->width = isset($photoData['width']) ? (int) $photoData['width'] : null;
             $photo->height = isset($photoData['height']) ? (int) $photoData['height'] : null;
-            $photo->src = $photoData['src'] ?? null;
+            $photo->src = $src;
+
             $feed->addPhoto($photo);
+            $kept[spl_object_id($photo)] = true;
+        }
+
+        foreach ($feed->photos->toArray() as $photo) {
+            if (!isset($kept[spl_object_id($photo)])) {
+                $feed->photos->removeElement($photo);
+            }
         }
     }
 

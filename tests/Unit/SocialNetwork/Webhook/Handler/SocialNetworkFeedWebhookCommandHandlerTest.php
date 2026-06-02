@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\App\Unit\SocialNetwork\Webhook\Handler;
 
 use App\Entity\SocialNetwork\SocialNetworkFeed;
+use App\Entity\SocialNetwork\SocialNetworkFeedPhoto;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
+use App\Entity\Video;
 use App\Repository\SocialNetworkFeedRepository;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedImagesCommand;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedPhotoCommand;
@@ -127,6 +129,109 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         self::assertCount(1, $existing->photos);
     }
 
+    public function testReDeliveryPreservesCopiedMediaForUnchangedSource(): void
+    {
+        $existing = $this->existingFeedWithMedia('https://cdn/photo.jpg', 'https://cdn/stream.m3u8');
+        $existing->photos->first()->publicSrc = 'social-feed/copied.jpg';
+        $transcoded = $existing->videos->first()->video;
+
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
+        $this->entityManager->expects(self::once())->method('persist')->with($existing);
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use ($existing): void {
+            $this->assignPersistedIds($existing);
+        });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        // Same scraper ids and unchanged source URLs: already-copied media is preserved.
+        self::assertCount(1, $existing->photos);
+        self::assertSame('social-feed/copied.jpg', $existing->photos->first()->publicSrc);
+        self::assertCount(1, $existing->videos);
+        self::assertSame($transcoded, $existing->videos->first()->video);
+    }
+
+    public function testReDeliveryResetsCopyWhenSourceChanged(): void
+    {
+        // Same scraper ids as the payload (20 / 10) but different source URLs.
+        $existing = $this->existingFeedWithMedia('https://cdn/old-photo.jpg', 'https://cdn/old-stream.m3u8');
+        $existing->photos->first()->publicSrc = 'social-feed/stale.jpg';
+
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
+        $this->entityManager->expects(self::once())->method('persist')->with($existing);
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use ($existing): void {
+            $this->assignPersistedIds($existing);
+        });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        self::assertNull($existing->photos->first()->publicSrc);
+        self::assertNull($existing->videos->first()->video);
+    }
+
+    public function testReDeliveryRemovesMediaAbsentFromPayload(): void
+    {
+        $existing = $this->existingFeedWithMedia('https://cdn/photo.jpg', 'https://cdn/stream.m3u8');
+        $orphan = new SocialNetworkFeedPhoto($existing);
+        $orphan->scraperId = 99;
+        $orphan->src = 'https://cdn/gone.jpg';
+        $existing->addPhoto($orphan);
+        self::assertCount(2, $existing->photos);
+
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
+        $this->entityManager->expects(self::once())->method('persist')->with($existing);
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use ($existing): void {
+            $this->assignPersistedIds($existing);
+        });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        // The photo absent from the new payload (scraper id 99) is dropped.
+        self::assertCount(1, $existing->photos);
+        self::assertSame(20, $existing->photos->first()->scraperId);
+    }
+
+    public function testAlreadyCopiedMediaIsNotRedispatched(): void
+    {
+        $existing = new SocialNetworkFeed();
+        $existing->scraperId = 12345;
+        $existing->postId = 'post-123';
+        $existing->platform = 'twitter';
+        $existing->imageUrl = 'https://cdn/img.jpg';
+        $existing->publicImagePath = 'social-feed/img.jpg'; // already copied
+
+        $photo = new SocialNetworkFeedPhoto($existing);
+        $photo->scraperId = 20;
+        $photo->src = 'https://cdn/photo.jpg';
+        $photo->publicSrc = 'social-feed/photo.jpg'; // already copied
+        $existing->addPhoto($photo);
+
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
+        $this->entityManager->expects(self::once())->method('persist')->with($existing);
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use ($existing): void {
+            $this->assignPersistedIds($existing);
+        });
+        $this->captureDispatchedMessages();
+
+        // Same media, unchanged sources.
+        ($this->handler)(new SocialNetworkFeedWebhookCommand([
+            'id' => 12345,
+            'post_id' => 'post-123',
+            'platform' => 'twitter',
+            'image_url' => 'https://cdn/img.jpg',
+            'photos' => [['id' => 20, 'src' => 'https://cdn/photo.jpg']],
+        ]));
+
+        self::assertCount(0, $this->dispatchedOfType(PublishSocialNetworkFeedImagesCommand::class));
+        self::assertCount(0, $this->dispatchedOfType(PublishSocialNetworkFeedPhotoCommand::class));
+    }
+
     public function testSkipsIncompletePayload(): void
     {
         $this->repository->expects(self::never())->method('findOneByScraperId');
@@ -229,6 +334,27 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         foreach ($feed->photos as $photo) {
             $photo->id ??= 2;
         }
+    }
+
+    private function existingFeedWithMedia(string $photoSrc, string $streamUrl): SocialNetworkFeed
+    {
+        $feed = new SocialNetworkFeed();
+        $feed->scraperId = 12345;
+        $feed->postId = 'post-123';
+        $feed->platform = 'twitter';
+
+        $photo = new SocialNetworkFeedPhoto($feed);
+        $photo->scraperId = 20;
+        $photo->src = $photoSrc;
+        $feed->addPhoto($photo);
+
+        $video = new SocialNetworkFeedVideo($feed);
+        $video->scraperId = 10;
+        $video->streamUrl = $streamUrl;
+        $video->video = new Video();
+        $feed->addVideo($video);
+
+        return $feed;
     }
 
     private function completePayload(): array

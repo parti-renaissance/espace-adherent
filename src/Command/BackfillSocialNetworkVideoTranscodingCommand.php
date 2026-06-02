@@ -20,7 +20,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * before the transcoding feature was deployed: a stream URL is set but no Video is linked yet.
  *
  * Re-dispatches the same idempotent message the webhook fan-out uses, so it is safe to run
- * (and re-run): find-or-create by Video.sourceUri (UNIQUE) plus the message lock prevent duplicates.
+ * (and re-run): a Video is created once per feed video (SocialNetworkFeedVideo.video) and the
+ * per-feed-video message lock prevents duplicate transcodes.
  */
 #[AsCommand(
     name: 'app:social-network:backfill-video-transcoding',
