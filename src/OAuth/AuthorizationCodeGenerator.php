@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\OAuth;
 
 use App\Entity\Adherent;
+use App\Entity\OAuth\Client;
 use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use Nyholm\Psr7\Response;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 class AuthorizationCodeGenerator
 {
@@ -22,18 +24,21 @@ class AuthorizationCodeGenerator
     ) {
     }
 
-    public function generate(Adherent $user, string $codeChallenge): ?string
+    public function generate(Adherent $user, string $codeChallenge, string $clientId, string $redirectUri): ?string
     {
-        $client = $this->clientRepository->getVoxClient();
-        $redirectUri = current($client->getRedirectUris());
+        if (!Uuid::isValid($clientId)) {
+            return null;
+        }
 
-        if (false === $redirectUri) {
+        $client = $this->clientRepository->findOneByUuid($clientId);
+
+        if (!$client instanceof Client) {
             return null;
         }
 
         $authorizeRequest = Request::create('/oauth/v2/auth', Request::METHOD_GET, [
             'response_type' => 'code',
-            'client_id' => (string) $client->getUuid(),
+            'client_id' => $clientId,
             'redirect_uri' => $redirectUri,
             'scope' => implode(' ', $client->getUserScopes(true)),
             'code_challenge' => $codeChallenge,

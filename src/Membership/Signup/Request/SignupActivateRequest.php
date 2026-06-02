@@ -23,11 +23,25 @@ class SignupActivateRequest
     #[Groups(['signup:write'])]
     public ?string $code = null;
 
-    /**
-     * PKCE code challenge (S256). Optional and intentionally NOT format-validated here:
-     * a malformed value must not fail the activation itself — it only means no auto-login
-     * code is minted. The OAuth authorize step rejects an invalid challenge downstream.
-     */
+    /** PKCE code challenge (S256) */
     #[Groups(['signup:write'])]
     public ?string $codeChallenge = null;
+
+    #[Groups(['signup:write'])]
+    public ?string $clientId = null;
+
+    #[Groups(['signup:write'])]
+    public ?string $redirectUri = null;
+
+    public function wantsAuthorizationCode(): bool
+    {
+        return '' !== (string) $this->codeChallenge;
+    }
+
+    public function hasCompleteAuthorizationCodeRequest(): bool
+    {
+        return $this->wantsAuthorizationCode()
+            && '' !== (string) $this->clientId
+            && '' !== (string) $this->redirectUri;
+    }
 }

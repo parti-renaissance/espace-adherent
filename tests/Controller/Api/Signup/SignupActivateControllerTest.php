@@ -27,6 +27,10 @@ class SignupActivateControllerTest extends AbstractApiTestCase
     private const CLIENT_IP = '127.0.0.1';
     // Valid PKCE verifier (43-128 chars, RFC 7636 charset); the challenge is its S256 hash.
     private const CODE_VERIFIER = 'fixed-test-code-verifier-0123456789-0123456789-0123456789';
+    // The calling app's client_id + a redirect_uri registered for it (CLIENT_13 fixture). Both are
+    // now sent by the front and bind the minted code: they must match at the /oauth/token exchange.
+    private const CLIENT_ID = LoadClientData::CLIENT_13_UUID;
+    private const REDIRECT_URI = 'http://localhost:8081';
 
     public function testActivateValidCodeReturnsAuthorizationCodeAndEnablesAdherent(): void
     {
@@ -37,6 +41,8 @@ class SignupActivateControllerTest extends AbstractApiTestCase
             'email' => $adherent->getEmailAddress(),
             'code' => $code->value,
             'code_challenge' => self::codeChallenge(),
+            'client_id' => self::CLIENT_ID,
+            'redirect_uri' => self::REDIRECT_URI,
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -65,14 +71,16 @@ class SignupActivateControllerTest extends AbstractApiTestCase
             'email' => $adherent->getEmailAddress(),
             'code' => $code->value,
             'code_challenge' => self::codeChallenge(),
+            'client_id' => self::CLIENT_ID,
+            'redirect_uri' => self::REDIRECT_URI,
         ]);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
 
         $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
-            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'client_id' => self::CLIENT_ID,
             'grant_type' => 'authorization_code',
-            'redirect_uri' => 'http://localhost:8081',
+            'redirect_uri' => self::REDIRECT_URI,
             'code' => $authorizationCode,
             'code_verifier' => self::CODE_VERIFIER,
         ]);
@@ -95,14 +103,16 @@ class SignupActivateControllerTest extends AbstractApiTestCase
             'email' => $adherent->getEmailAddress(),
             'code' => $code->value,
             'code_challenge' => self::codeChallenge(),
+            'client_id' => self::CLIENT_ID,
+            'redirect_uri' => self::REDIRECT_URI,
         ]);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
 
         $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
-            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'client_id' => self::CLIENT_ID,
             'grant_type' => 'authorization_code',
-            'redirect_uri' => 'http://localhost:8081',
+            'redirect_uri' => self::REDIRECT_URI,
             'code' => $authorizationCode,
             'code_verifier' => 'a-wrong-verifier-0123456789-0123456789-0123456789',
         ]);
@@ -125,15 +135,17 @@ class SignupActivateControllerTest extends AbstractApiTestCase
             'email' => $adherent->getEmailAddress(),
             'code' => $code->value,
             'code_challenge' => self::codeChallenge(),
+            'client_id' => self::CLIENT_ID,
+            'redirect_uri' => self::REDIRECT_URI,
         ]);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $authorizationCode = json_decode((string) $this->client->getResponse()->getContent(), true)['code'];
 
         // No code_verifier at all.
         $this->client->request(Request::METHOD_POST, '/oauth/v2/token', [
-            'client_id' => LoadClientData::CLIENT_13_UUID,
+            'client_id' => self::CLIENT_ID,
             'grant_type' => 'authorization_code',
-            'redirect_uri' => 'http://localhost:8081',
+            'redirect_uri' => self::REDIRECT_URI,
             'code' => $authorizationCode,
         ]);
 
@@ -151,6 +163,52 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         $code = $this->generateCode($adherent);
 
         $this->post(['email' => $adherent->getEmailAddress(), 'code' => $code->value]);
+
+        $this->assertResponseStatusCode(Response::HTTP_NO_CONTENT, $this->client->getResponse());
+        self::assertEmpty((string) $this->client->getResponse()->getContent());
+
+        $this->manager->clear();
+        self::assertTrue($this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress())->isEnabled());
+    }
+
+    public function testActivateWithChallengeButWithoutClientReturnsBadRequest(): void
+    {
+        // Opting into the auto-login flow (challenge present) but omitting client_id/redirect_uri is a
+        // malformed request: it must fail loud with a 400 so a front integration bug surfaces instead
+        // of silently yielding no code. The account is still activated, and the error code is distinct
+        // from the activation error so the front does NOT replay the single-use code.
+        $adherent = $this->createPendingAdherent('activate-no-client@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        $body = json_decode((string) $this->client->getResponse()->getContent(), true);
+        self::assertSame(['error' => 'invalid_authorization_request'], $body);
+
+        // The malformed auto-login params must not roll back the activation itself.
+        $this->manager->clear();
+        self::assertTrue($this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress())->isEnabled());
+    }
+
+    public function testActivateWithUnknownClientIdEnablesButReturnsNoCode(): void
+    {
+        // A well-formed but unknown client_id cannot mint a code (no client to bind it to), yet the
+        // account is still activated — a misconfigured front must not block activation.
+        $adherent = $this->createPendingAdherent('activate-unknown-client@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+            'client_id' => 'ffffffff-ffff-4fff-8fff-ffffffffffff',
+            'redirect_uri' => self::REDIRECT_URI,
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_NO_CONTENT, $this->client->getResponse());
         self::assertEmpty((string) $this->client->getResponse()->getContent());

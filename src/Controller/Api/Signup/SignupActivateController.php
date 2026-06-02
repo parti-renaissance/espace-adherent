@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SignupActivateController extends AbstractSignupController
 {
     private const UNIFORM_ERROR = 'invalid_or_expired';
+    private const INVALID_AUTHORIZATION_REQUEST = 'invalid_authorization_request';
 
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
@@ -48,11 +49,20 @@ class SignupActivateController extends AbstractSignupController
             return $this->json(['error' => self::UNIFORM_ERROR], Response::HTTP_BAD_REQUEST);
         }
 
-        if (null === $payload->codeChallenge || '' === $payload->codeChallenge) {
+        if (!$payload->wantsAuthorizationCode()) {
             return new Response('', Response::HTTP_NO_CONTENT);
         }
 
-        $code = $this->authorizationCodeGenerator->generate($adherent, $payload->codeChallenge);
+        if (!$payload->hasCompleteAuthorizationCodeRequest()) {
+            return $this->json(['error' => self::INVALID_AUTHORIZATION_REQUEST], Response::HTTP_BAD_REQUEST);
+        }
+
+        $code = $this->authorizationCodeGenerator->generate(
+            $adherent,
+            (string) $payload->codeChallenge,
+            (string) $payload->clientId,
+            (string) $payload->redirectUri,
+        );
 
         if (null === $code) {
             return new Response('', Response::HTTP_NO_CONTENT);
