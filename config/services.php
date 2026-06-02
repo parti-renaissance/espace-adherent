@@ -191,7 +191,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(Google\Cloud\Storage\StorageClient::class)->lazy();
     $services->set(Google\Cloud\Video\Transcoder\V1\Client\TranscoderServiceClient::class)->lazy();
     $services->alias(App\Video\Transcoding\VideoTranscoderInterface::class, App\Video\Transcoding\GcpVideoTranscoder::class);
+    $services->alias(App\Video\Transcoding\TranscodedVideoProbeInterface::class, App\Video\Transcoding\HlsTranscodedVideoProbe::class);
     $services->alias(App\Video\Storage\VideoSourceArchiverInterface::class, App\Video\Storage\GcsVideoSourceArchiver::class);
+    $services->alias(App\SocialNetwork\Image\Storage\FeedImagePublisherInterface::class, App\SocialNetwork\Image\Storage\FlysystemFeedImagePublisher::class);
 
     $services->set(App\Twig\AssetRuntime::class)
         ->arg('$appVersion', '%env(APP_VERSION)%')

@@ -33,6 +33,12 @@ class SocialNetworkFeedPhoto
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $src = null;
 
+    /**
+     * Path of this photo copied to our public bucket, relative to the public storage.
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    public ?string $publicSrc = null;
+
     public function __construct(SocialNetworkFeed $feed)
     {
         $this->feed = $feed;

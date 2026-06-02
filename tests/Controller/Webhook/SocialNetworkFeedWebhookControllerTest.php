@@ -59,6 +59,35 @@ class SocialNetworkFeedWebhookControllerTest extends AbstractRenaissanceWebTestC
         self::assertSame('https://cdn/p.jpg', $feed->photos->first()->src);
     }
 
+    public function testValidKeyArchivesFeedImages(): void
+    {
+        $imageUrl = 'gs://re-social-posts-rs-scrapper-staging-content/bronze/twitter/1/media/img.jpg';
+        $avatarUrl = 'gs://re-social-posts-rs-scrapper-staging-content/bronze/twitter/1/media/avatar.jpg';
+        $photoSrc = 'gs://re-social-posts-rs-scrapper-staging-content/bronze/twitter/1/media/photo.jpg';
+
+        $this->postJson(self::VALID_URL, [
+            'id' => 778899,
+            'post_id' => 'tweet-archive',
+            'platform' => 'twitter',
+            'image_url' => $imageUrl,
+            'avatar_image_url' => $avatarUrl,
+            'photos' => [
+                ['id' => 1, 'src' => $photoSrc],
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        // Archiving messages are routed sync in tests and processed through the No-Op publisher.
+        $feed = $this->getFeedRepository()->findOneByScraperId(778899);
+
+        self::assertInstanceOf(SocialNetworkFeed::class, $feed);
+        self::assertSame('social-feed/'.sha1($imageUrl).'.jpg', $feed->publicImagePath);
+        self::assertSame('social-feed/'.sha1($avatarUrl).'.jpg', $feed->publicAvatarImagePath);
+        self::assertCount(1, $feed->photos);
+        self::assertSame('social-feed/'.sha1($photoSrc).'.jpg', $feed->photos->first()->publicSrc);
+    }
+
     public function testInvalidKeyDoesNotPersist(): void
     {
         $this->postJson('/social-network-feed/wrong-key', [

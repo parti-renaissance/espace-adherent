@@ -7,6 +7,7 @@ namespace App\Entity\SocialNetwork;
 use App\Entity\Video;
 use App\Repository\SocialNetworkFeedVideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: SocialNetworkFeedVideoRepository::class)]
 class SocialNetworkFeedVideo
@@ -16,7 +17,7 @@ class SocialNetworkFeedVideo
     #[ORM\Id]
     public ?int $id = null;
 
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: SocialNetworkFeed::class, inversedBy: 'videos')]
     public SocialNetworkFeed $feed;
 
@@ -41,6 +42,7 @@ class SocialNetworkFeedVideo
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $streamUrl = null;
 
+    #[JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\OneToOne]
     public ?Video $video = null;
 

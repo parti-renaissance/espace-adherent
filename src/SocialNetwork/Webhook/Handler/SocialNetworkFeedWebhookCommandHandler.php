@@ -8,6 +8,8 @@ use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedPhoto;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Repository\SocialNetworkFeedRepository;
+use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedImagesCommand;
+use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedPhotoCommand;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Webhook\Command\SocialNetworkFeedWebhookCommand;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -54,6 +56,7 @@ class SocialNetworkFeedWebhookCommandHandler
         }
 
         $this->dispatchTranscoding($feed);
+        $this->dispatchImagePublishing($feed);
     }
 
     private function dispatchTranscoding(SocialNetworkFeed $feed): void
@@ -64,6 +67,21 @@ class SocialNetworkFeedWebhookCommandHandler
             }
 
             $this->bus->dispatch(new TranscodeSocialNetworkVideoCommand($video->id, $video->streamUrl));
+        }
+    }
+
+    private function dispatchImagePublishing(SocialNetworkFeed $feed): void
+    {
+        if (null !== $feed->imageUrl || null !== $feed->avatarImageUrl) {
+            $this->bus->dispatch(new PublishSocialNetworkFeedImagesCommand($feed->getId()));
+        }
+
+        foreach ($feed->photos as $photo) {
+            if (null === $photo->src) {
+                continue;
+            }
+
+            $this->bus->dispatch(new PublishSocialNetworkFeedPhotoCommand($photo->id, $photo->src));
         }
     }
 

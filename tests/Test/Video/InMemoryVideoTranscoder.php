@@ -21,6 +21,6 @@ class InMemoryVideoTranscoder implements VideoTranscoderInterface
 
     public function getJob(string $jobName): TranscodingJobStatus
     {
-        return new TranscodingJobStatus(VideoStatusEnum::READY, width: 720, height: 720);
+        return new TranscodingJobStatus(VideoStatusEnum::READY);
     }
 }

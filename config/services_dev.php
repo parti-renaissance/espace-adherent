@@ -53,7 +53,15 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->alias(App\Video\Transcoding\VideoTranscoderInterface::class, Tests\App\Test\Video\InMemoryVideoTranscoder::class);
 
+    $services->set(Tests\App\Test\Video\NoOpTranscodedVideoProbe::class);
+
+    $services->alias(App\Video\Transcoding\TranscodedVideoProbeInterface::class, Tests\App\Test\Video\NoOpTranscodedVideoProbe::class);
+
     $services->set(Tests\App\Test\Video\NoOpVideoSourceArchiver::class);
 
     $services->alias(App\Video\Storage\VideoSourceArchiverInterface::class, Tests\App\Test\Video\NoOpVideoSourceArchiver::class);
+
+    $services->set(Tests\App\Test\SocialNetwork\Image\NoOpFeedImagePublisher::class);
+
+    $services->alias(App\SocialNetwork\Image\Storage\FeedImagePublisherInterface::class, Tests\App\Test\SocialNetwork\Image\NoOpFeedImagePublisher::class);
 };
