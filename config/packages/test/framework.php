@@ -10,9 +10,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             null,
         ]);
 
-    $services->set('cache.rate_limiter', Symfony\Component\Cache\Adapter\ArrayAdapter::class)
-        ->public();
-
     $containerConfigurator->extension('framework', [
         'test' => true,
         'session' => [
