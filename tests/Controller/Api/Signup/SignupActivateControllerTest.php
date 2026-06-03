@@ -60,6 +60,24 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         self::assertTrue($reloaded->isEnabled(), 'PENDING → ENABLED transition must happen on a valid code.');
     }
 
+    public function testActivateWithCustomSchemeRedirectUriReturnsAuthorizationCode(): void
+    {
+        $adherent = $this->createPendingAdherent('activate-custom-scheme@example.test');
+        $code = $this->generateCode($adherent);
+
+        $this->post([
+            'email' => $adherent->getEmailAddress(),
+            'code' => $code->value,
+            'code_challenge' => self::codeChallenge(),
+            'client_id' => self::CLIENT_ID,
+            'redirect_uri' => 'vox-dev://',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $body = json_decode((string) $this->client->getResponse()->getContent(), true);
+        self::assertNotEmpty($body['code'] ?? null, 'A custom-scheme redirect_uri must still yield an authorization code.');
+    }
+
     public function testActivationAuthorizationCodeCanBeExchangedForTokens(): void
     {
         // End-to-end: the minted code must actually yield tokens via the standard
