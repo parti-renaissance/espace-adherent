@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Entity\Video;
 use App\Entity\VideoStatusEnum;
 use App\Video\Transcoding\Command\RelaunchVideoTranscodingCommand;
+use App\Video\Transcoding\TranscoderCapacityDeferral;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,9 +20,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 /**
  * Re-runs transcoding from the durable archived source (Video.originalPath) for a set of videos.
  *
- * Two use cases, selected by --status:
- *  - failed: replay videos that failed transcoding (e.g. after fixing IAM or job config);
- *  - ready:  re-transcode already published videos after a TranscodingJobConfigFactory change.
+ * Use cases, selected by --status:
+ *  - failed:  replay videos that failed transcoding (e.g. after fixing IAM or job config, or a capacity give-up);
+ *  - ready:   re-transcode already published videos after a TranscodingJobConfigFactory change;
+ *  - pending: recover orphans left PENDING when a capacity-deferral message was lost (crash) or
+ *             dead-lettered. Requires --older-than >= the deferral horizon so a still-live deferral
+ *             chain (different lock key than relaunch) is never raced into a duplicate job.
  *
  * The job writes to the same gs://OUTPUT_BUCKET/videos/<uuid>/ prefix, overwriting the previous output.
  * Only videos with a non-null originalPath are eligible (others are not part of this pipeline and the
@@ -39,6 +43,7 @@ class RetranscodeVideosCommand extends Command
     private const array STATUS_MAP = [
         'failed' => VideoStatusEnum::FAILED,
         'ready' => VideoStatusEnum::READY,
+        'pending' => VideoStatusEnum::PENDING,
     ];
 
     private SymfonyStyle $io;
@@ -55,6 +60,7 @@ class RetranscodeVideosCommand extends Command
         $this
             ->addOption('status', null, InputOption::VALUE_REQUIRED, 'Which videos to re-transcode: '.implode('|', array_keys(self::STATUS_MAP)), 'failed')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Cap the number of videos re-transcoded (quota/cost and timeline-impact safety).')
+            ->addOption('older-than', null, InputOption::VALUE_REQUIRED, 'Only re-transcode videos not updated in the last N minutes (0 = no age filter). Mandatory and >= the deferral horizon for --status=pending.', '0')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Show how many videos would be re-transcoded without dispatching.')
         ;
     }
@@ -73,7 +79,14 @@ class RetranscodeVideosCommand extends Command
         }
 
         $limit = (int) $input->getOption('limit');
+        $olderThanMinutes = (int) $input->getOption('older-than');
         $dryRun = (bool) $input->getOption('dry-run');
+
+        // PENDING orphans share no lock key with a still-live ingest deferral chain, so only recover those
+        // older than the deferral horizon — by then any live chain has ended (success or FAILED give-up).
+        if ('pending' === $statusOption && $olderThanMinutes < TranscoderCapacityDeferral::DEFERRAL_HORIZON_MINUTES) {
+            throw new \InvalidArgumentException(\sprintf('--status=pending requires --older-than >= %d (the deferral horizon) to avoid racing in-flight transcoding messages.', TranscoderCapacityDeferral::DEFERRAL_HORIZON_MINUTES));
+        }
 
         $queryBuilder = $this->entityManager
             ->getRepository(Video::class)
@@ -83,6 +96,13 @@ class RetranscodeVideosCommand extends Command
             ->setParameter('status', self::STATUS_MAP[$statusOption])
             ->orderBy('v.id', 'ASC')
         ;
+
+        if ($olderThanMinutes > 0) {
+            $queryBuilder
+                ->andWhere('v.updatedAt < :threshold')
+                ->setParameter('threshold', new \DateTimeImmutable(\sprintf('-%d minutes', $olderThanMinutes)))
+            ;
+        }
 
         if ($limit > 0) {
             $queryBuilder->setMaxResults($limit);
@@ -107,6 +127,14 @@ class RetranscodeVideosCommand extends Command
         if (!$this->io->confirm(\sprintf('Re-transcode %d "%s" video(s)? They will leave the timeline until done.', $total, $statusOption), false)) {
             return self::FAILURE;
         }
+
+        // Clear the no-audio flag so a config-change re-transcode (--status=ready) regenerates with audio;
+        // the reactive retry will drop audio again only if the source is genuinely silent. Flushed before
+        // dispatch so the relaunch (routed sync in tests) reads the reset value.
+        foreach ($videos as $video) {
+            $video->transcodeWithoutAudio = false;
+        }
+        $this->entityManager->flush();
 
         $this->io->progressStart($total);
 

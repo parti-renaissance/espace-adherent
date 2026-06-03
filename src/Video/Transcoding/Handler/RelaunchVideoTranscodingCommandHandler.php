@@ -7,6 +7,8 @@ namespace App\Video\Transcoding\Handler;
 use App\Entity\VideoStatusEnum;
 use App\Repository\VideoRepository;
 use App\Video\Transcoding\Command\RelaunchVideoTranscodingCommand;
+use App\Video\Transcoding\Exception\TranscoderAtCapacityException;
+use App\Video\Transcoding\TranscoderCapacityDeferral;
 use App\Video\Transcoding\VideoTranscodingLauncher;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -17,6 +19,7 @@ class RelaunchVideoTranscodingCommandHandler
     public function __construct(
         private readonly VideoRepository $videoRepository,
         private readonly VideoTranscodingLauncher $launcher,
+        private readonly TranscoderCapacityDeferral $capacityDeferral,
         private readonly LoggerInterface $logger,
         private readonly string $gcloudBucket,
     ) {
@@ -37,6 +40,11 @@ class RelaunchVideoTranscodingCommandHandler
         }
 
         $video->failureReason = null;
-        $this->launcher->launch($video, \sprintf('gs://%s/%s', $this->gcloudBucket, $video->originalPath));
+
+        try {
+            $this->launcher->launch($video, \sprintf('gs://%s/%s', $this->gcloudBucket, $video->originalPath));
+        } catch (TranscoderAtCapacityException $exception) {
+            $this->capacityDeferral->deferOrFail($command, $video, $exception);
+        }
     }
 }

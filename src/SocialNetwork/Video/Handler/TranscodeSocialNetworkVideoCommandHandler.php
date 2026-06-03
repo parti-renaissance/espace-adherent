@@ -10,6 +10,8 @@ use App\Entity\VideoStatusEnum;
 use App\Repository\SocialNetworkFeedVideoRepository;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\Video\Storage\VideoSourceArchiverInterface;
+use App\Video\Transcoding\Exception\TranscoderAtCapacityException;
+use App\Video\Transcoding\TranscoderCapacityDeferral;
 use App\Video\Transcoding\VideoTranscodingLauncher;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -23,6 +25,7 @@ class TranscodeSocialNetworkVideoCommandHandler
         private readonly SocialNetworkFeedVideoRepository $socialNetworkFeedVideoRepository,
         private readonly VideoSourceArchiverInterface $archiver,
         private readonly VideoTranscodingLauncher $launcher,
+        private readonly TranscoderCapacityDeferral $capacityDeferral,
         private readonly LoggerInterface $logger,
         private readonly string $gcloudBucket,
     ) {
@@ -78,7 +81,11 @@ class TranscodeSocialNetworkVideoCommandHandler
             $this->entityManager->flush();
         }
 
-        $this->launcher->launch($video, \sprintf('gs://%s/%s', $this->gcloudBucket, $video->originalPath));
+        try {
+            $this->launcher->launch($video, \sprintf('gs://%s/%s', $this->gcloudBucket, $video->originalPath));
+        } catch (TranscoderAtCapacityException $exception) {
+            $this->capacityDeferral->deferOrFail($command, $video, $exception);
+        }
     }
 
     private function buildTitle(SocialNetworkFeedVideo $feedVideo): string

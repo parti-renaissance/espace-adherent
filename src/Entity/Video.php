@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['video_read']],
 )]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
+#[ORM\Index(fields: ['status'])]
 class Video implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -74,6 +75,15 @@ class Video implements \Stringable, EntityAdministratorBlameableInterface
     // Transcoder error message, set when status is FAILED.
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $failureReason = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $transcodeWithoutAudio = false;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $transcodingStartedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $transcodingFinishedAt = null;
 
     public function __construct(?Uuid $uuid = null)
     {

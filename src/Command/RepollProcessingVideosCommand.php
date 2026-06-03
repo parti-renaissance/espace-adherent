@@ -41,6 +41,7 @@ class RepollProcessingVideosCommand extends Command
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Cap the number of videos re-polled.')
+            ->addOption('older-than', null, InputOption::VALUE_REQUIRED, 'Only re-poll videos not updated in the last N minutes (0 = no age filter).', '0')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Show how many videos would be re-polled without dispatching.')
         ;
     }
@@ -53,6 +54,7 @@ class RepollProcessingVideosCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $limit = (int) $input->getOption('limit');
+        $olderThanMinutes = (int) $input->getOption('older-than');
         $dryRun = (bool) $input->getOption('dry-run');
 
         $queryBuilder = $this->entityManager
@@ -63,6 +65,16 @@ class RepollProcessingVideosCommand extends Command
             ->setParameter('status', VideoStatusEnum::PROCESSING)
             ->orderBy('v.id', 'ASC')
         ;
+
+        // A live poll chain flushes the video on its terminal transition, so a recently-updated video
+        // likely still has one: skip it to avoid spawning a second chain (re-poll stays idempotent, but
+        // this keeps it quiet). A dead chain leaves updatedAt frozen, so it ages in and gets re-armed.
+        if ($olderThanMinutes > 0) {
+            $queryBuilder
+                ->andWhere('v.updatedAt < :threshold')
+                ->setParameter('threshold', new \DateTimeImmutable(\sprintf('-%d minutes', $olderThanMinutes)))
+            ;
+        }
 
         if ($limit > 0) {
             $queryBuilder->setMaxResults($limit);
@@ -84,7 +96,8 @@ class RepollProcessingVideosCommand extends Command
             return self::SUCCESS;
         }
 
-        if (!$this->io->confirm(\sprintf('Re-poll %d video(s) stuck in PROCESSING?', $total), false)) {
+        // Skip the prompt when run non-interactively (scheduler) so the re-poll can proceed unattended.
+        if ($input->isInteractive() && !$this->io->confirm(\sprintf('Re-poll %d video(s) stuck in PROCESSING?', $total), false)) {
             return self::FAILURE;
         }
 

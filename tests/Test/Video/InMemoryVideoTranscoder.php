@@ -14,7 +14,7 @@ use App\Video\Transcoding\VideoTranscoderInterface;
  */
 class InMemoryVideoTranscoder implements VideoTranscoderInterface
 {
-    public function createJob(string $inputUri, string $outputUri, string $videoUuid): string
+    public function createJob(string $inputUri, string $outputUri, string $videoUuid, bool $withAudio = true): string
     {
         return 'fake-job/'.$videoUuid;
     }
