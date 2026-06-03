@@ -41,6 +41,25 @@ class SocialNetworkFeedRepository extends ServiceEntityRepository
     }
 
     /**
+     * Feeds whose author_name column has not been filled yet (predate the column). The raw payload is
+     * already stored, so the name is read back from it in PHP (no JSON SQL function dependency).
+     *
+     * @return SocialNetworkFeed[]
+     */
+    public function findWithMissingAuthorName(?int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->where('f.authorName IS NULL')
+            ->orderBy('f.id', 'ASC');
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Number of photos that have a source but have not been copied to our bucket yet.
      * Committed read so it stays race-safe across the parallel copy handlers.
      */

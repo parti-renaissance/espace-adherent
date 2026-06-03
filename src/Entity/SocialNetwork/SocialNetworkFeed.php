@@ -39,6 +39,9 @@ class SocialNetworkFeed implements IndexableEntityInterface
     #[ORM\Column(nullable: true)]
     public ?string $username = null;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $authorName = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
@@ -95,6 +98,12 @@ class SocialNetworkFeed implements IndexableEntityInterface
      */
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $publishedAt = null;
+
+    #[ORM\Column(nullable: true, enumType: SocialNetworkFeedPublicationFailure::class)]
+    public ?SocialNetworkFeedPublicationFailure $publicationFailure = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $publicationFailedAt = null;
 
     /**
      * @var Collection<int, SocialNetworkFeedVideo>

@@ -46,12 +46,18 @@ class CheckSocialNetworkFeedPublicationCommandHandler
         if ($this->readinessChecker->isReadyToPublish($feed)) {
             $feed->published = true;
             $feed->publishedAt = new \DateTimeImmutable();
+            $feed->publicationFailure = null;
+            $feed->publicationFailedAt = null;
             $this->entityManager->flush();
 
             return;
         }
 
         if (time() > $command->startedAt + self::DEADLINE_SECONDS) {
+            $feed->publicationFailure = $this->readinessChecker->getBlockingReason($feed);
+            $feed->publicationFailedAt = new \DateTimeImmutable();
+            $this->entityManager->flush();
+
             return;
         }
 

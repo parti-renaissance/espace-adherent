@@ -50,7 +50,13 @@ class SocialNetworkFeedNormalizer extends AbstractJeMengageTimelineFeedNormalize
     }
 
     /** @param SocialNetworkFeed $object */
-    protected function getAuthorFirstName(?Adherent $author, object $object): ?string
+    protected function getAuthorName(?Adherent $author, object $object): ?string
+    {
+        return $object->authorName;
+    }
+
+    /** @param SocialNetworkFeed $object */
+    protected function getAuthorUsername(object $object): ?string
     {
         return $object->username;
     }

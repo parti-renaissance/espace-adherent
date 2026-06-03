@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\SocialNetwork\Publication\Handler;
 
 use App\Entity\SocialNetwork\SocialNetworkFeed;
+use App\Entity\SocialNetwork\SocialNetworkFeedPublicationFailure;
 use App\Repository\SocialNetworkFeedRepository;
 use App\SocialNetwork\Publication\Command\CheckSocialNetworkFeedPublicationCommand;
 use App\SocialNetwork\Publication\Handler\CheckSocialNetworkFeedPublicationCommandHandler;
@@ -64,13 +65,17 @@ final class CheckSocialNetworkFeedPublicationCommandHandlerTest extends TestCase
         ($this->handler)(new CheckSocialNetworkFeedPublicationCommand(1, time()));
     }
 
-    public function testPublishesWhenReady(): void
+    public function testPublishesWhenReadyAndClearsStaleFailure(): void
     {
         $feed = new SocialNetworkFeed();
+        // A superseded attempt had recorded a failure; publishing must clear it.
+        $feed->publicationFailure = SocialNetworkFeedPublicationFailure::VideoNotTranscoded;
+        $feed->publicationFailedAt = new \DateTimeImmutable('-1 hour');
 
         $this->repository->expects(self::once())->method('find')->with(1)->willReturn($feed);
         $this->entityManager->expects(self::once())->method('refresh')->with($feed);
         $this->readinessChecker->expects(self::once())->method('isReadyToPublish')->with($feed)->willReturn(true);
+        $this->readinessChecker->expects(self::never())->method('getBlockingReason');
         $this->entityManager->expects(self::once())->method('flush');
         $this->bus->expects(self::never())->method('dispatch');
 
@@ -78,6 +83,8 @@ final class CheckSocialNetworkFeedPublicationCommandHandlerTest extends TestCase
 
         self::assertTrue($feed->published);
         self::assertInstanceOf(\DateTimeImmutable::class, $feed->publishedAt);
+        self::assertNull($feed->publicationFailure);
+        self::assertNull($feed->publicationFailedAt);
     }
 
     public function testRedispatchesWhenNotReadyBeforeDeadline(): void
@@ -104,17 +111,23 @@ final class CheckSocialNetworkFeedPublicationCommandHandlerTest extends TestCase
         self::assertFalse($feed->published);
     }
 
-    public function testStopsAtDeadlineWhenNotReady(): void
+    public function testRecordsFailureAtDeadlineWhenNotReady(): void
     {
         $feed = new SocialNetworkFeed();
 
         $this->repository->expects(self::once())->method('find')->with(1)->willReturn($feed);
         $this->entityManager->expects(self::once())->method('refresh')->with($feed);
         $this->readinessChecker->expects(self::once())->method('isReadyToPublish')->with($feed)->willReturn(false);
-        $this->entityManager->expects(self::never())->method('flush');
+        $this->readinessChecker->expects(self::once())->method('getBlockingReason')->with($feed)
+            ->willReturn(SocialNetworkFeedPublicationFailure::VideoNotTranscoded);
+        $this->entityManager->expects(self::once())->method('flush');
         $this->bus->expects(self::never())->method('dispatch');
 
         // startedAt far enough in the past to exceed the 2h deadline.
         ($this->handler)(new CheckSocialNetworkFeedPublicationCommand(1, time() - 8000));
+
+        self::assertFalse($feed->published);
+        self::assertSame(SocialNetworkFeedPublicationFailure::VideoNotTranscoded, $feed->publicationFailure);
+        self::assertInstanceOf(\DateTimeImmutable::class, $feed->publicationFailedAt);
     }
 }

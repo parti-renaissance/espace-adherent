@@ -97,6 +97,8 @@ class BackfillSocialNetworkFeedPublicationCommand extends Command
         // Reset to null so the bytes are re-copied to the media bucket (they live in the old bucket).
         $feed->publicImagePath = null;
         $feed->publicAvatarImagePath = null;
+        $feed->publicationFailure = null;
+        $feed->publicationFailedAt = null;
 
         foreach ($feed->photos as $photo) {
             $photo->publicSrc = null;

@@ -7,6 +7,7 @@ namespace Tests\App\Unit\Command;
 use App\Command\BackfillSocialNetworkFeedPublicationCommand;
 use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedPhoto;
+use App\Entity\SocialNetwork\SocialNetworkFeedPublicationFailure;
 use App\Repository\SocialNetworkFeedRepository;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedImagesCommand;
 use App\SocialNetwork\Image\Command\PublishSocialNetworkFeedPhotoCommand;
@@ -24,6 +25,8 @@ final class BackfillSocialNetworkFeedPublicationCommandTest extends TestCase
         $feed = new SocialNetworkFeed();
         $feed->imageUrl = 'https://cdn/img.jpg';
         $feed->publicImagePath = 'social-feed/old.jpg';
+        $feed->publicationFailure = SocialNetworkFeedPublicationFailure::ImageNotCopied;
+        $feed->publicationFailedAt = new \DateTimeImmutable('-1 hour');
         (function (): void { $this->id = 42; })->call($feed);
 
         $photo = new SocialNetworkFeedPhoto($feed);
@@ -54,6 +57,9 @@ final class BackfillSocialNetworkFeedPublicationCommandTest extends TestCase
         // Paths reset so the copy handlers re-publish to the media bucket.
         self::assertNull($feed->publicImagePath);
         self::assertNull($photo->publicSrc);
+        // A fresh attempt window is armed, so any previous failure is cleared.
+        self::assertNull($feed->publicationFailure);
+        self::assertNull($feed->publicationFailedAt);
 
         $dispatchedTypes = array_map(static fn (object $message): string => $message::class, $dispatched);
         self::assertContains(PublishSocialNetworkFeedImagesCommand::class, $dispatchedTypes);
