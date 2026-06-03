@@ -71,6 +71,8 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'uuid' => $author?->getUuidAsString(),
             'first_name' => $this->getAuthorFirstName($author, $object),
             'last_name' => $author?->getLastName(),
+            'name' => $this->getAuthorName($author, $object),
+            'username' => $this->getAuthorUsername($object),
             'role' => $this->getAuthorRole($object),
             'instance' => $this->getAuthorInstance($object),
             'instance_key' => $this->getAuthorInstanceKey($object),
@@ -89,6 +91,22 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     protected function getAuthorFirstName(?Adherent $author, object $object): ?string
     {
         return $author?->getFirstName();
+    }
+
+    protected function getAuthorName(?Adherent $author, object $object): ?string
+    {
+        if (null === $author) {
+            return null;
+        }
+
+        $name = trim($author->getFirstName().' '.$author->getLastName());
+
+        return '' === $name ? null : $name;
+    }
+
+    protected function getAuthorUsername(object $object): ?string
+    {
+        return null;
     }
 
     protected function getCategory(object $object): ?string

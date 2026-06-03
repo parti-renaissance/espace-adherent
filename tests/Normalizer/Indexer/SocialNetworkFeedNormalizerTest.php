@@ -26,10 +26,33 @@ final class SocialNetworkFeedNormalizerTest extends TestCase
         $result = $this->createNormalizer()->normalize($feed);
 
         self::assertSame('', $result['title']);
-        self::assertSame('renaissance', $result['author']['first_name']);
+        self::assertSame('renaissance', $result['author']['username']);
         self::assertTrue($result['is_national']);
         self::assertNull($result['image']);
         self::assertSame(['network' => 'instagram', 'type' => 'text', 'items' => []], $result['media']);
+    }
+
+    public function testAuthorExposesNameAndUsernameButNoFirstLastName(): void
+    {
+        $feed = $this->createFeed();
+        $feed->authorName = 'Renaissance Officiel';
+        $feed->username = 'renaissance';
+
+        $author = $this->createNormalizer()->normalize($feed)['author'];
+
+        // name/username carry the social account identity; first/last name stay null (no Adherent author).
+        self::assertSame('Renaissance Officiel', $author['name']);
+        self::assertSame('renaissance', $author['username']);
+        self::assertNull($author['first_name']);
+        self::assertNull($author['last_name']);
+    }
+
+    public function testAuthorNameIsNullWhenAbsentFromFeed(): void
+    {
+        $author = $this->createNormalizer()->normalize($this->createFeed())['author'];
+
+        self::assertNull($author['name']);
+        self::assertNull($author['username']);
     }
 
     public function testSinglePhotoPostExposesImageAndPhotoType(): void

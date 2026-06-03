@@ -6,6 +6,7 @@ namespace Tests\App\Unit\SocialNetwork\Webhook\Handler;
 
 use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\SocialNetwork\SocialNetworkFeedPhoto;
+use App\Entity\SocialNetwork\SocialNetworkFeedPublicationFailure;
 use App\Entity\SocialNetwork\SocialNetworkFeedVideo;
 use App\Entity\Video;
 use App\Repository\SocialNetworkFeedRepository;
@@ -72,6 +73,7 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         self::assertSame('post-123', $persisted->postId);
         self::assertSame('twitter', $persisted->platform);
         self::assertSame('john', $persisted->username);
+        self::assertSame('John Doe', $persisted->authorName);
         self::assertSame('hello world', $persisted->description);
         self::assertSame('https://cdn/img.jpg', $persisted->imageUrl);
         self::assertSame('https://cdn/avatar.jpg', $persisted->avatarImageUrl);
@@ -127,6 +129,31 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         self::assertCount(1, $existing->videos);
         self::assertSame(10, $existing->videos->first()->scraperId);
         self::assertCount(1, $existing->photos);
+    }
+
+    public function testReDeliveryClearsPreviousPublicationFailure(): void
+    {
+        $existing = new SocialNetworkFeed();
+        $existing->scraperId = 12345;
+        $existing->postId = 'old-post';
+        $existing->platform = 'twitter';
+        // A previous attempt timed out and recorded a failure.
+        $existing->publicationFailure = SocialNetworkFeedPublicationFailure::VideoNotTranscoded;
+        $existing->publicationFailedAt = new \DateTimeImmutable('-1 hour');
+
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')->with(12345)->willReturn($existing);
+        $this->entityManager->expects(self::once())->method('persist')->with($existing);
+        $this->entityManager->expects(self::once())->method('flush')->willReturnCallback(function () use ($existing): void {
+            $this->assignPersistedIds($existing);
+        });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($this->completePayload()));
+
+        // A re-delivery is a fresh publication attempt: the stale failure is cleared.
+        self::assertNull($existing->publicationFailure);
+        self::assertNull($existing->publicationFailedAt);
     }
 
     public function testReDeliveryPreservesCopiedMediaForUnchangedSource(): void
@@ -364,6 +391,7 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
             'post_id' => 'post-123',
             'platform' => 'twitter',
             'username' => 'john',
+            'name' => 'John Doe',
             'description' => 'hello world',
             'date_published' => '2026-05-07T13:46:16.384Z',
             'image_url' => 'https://cdn/img.jpg',
