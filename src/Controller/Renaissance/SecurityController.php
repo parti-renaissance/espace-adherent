@@ -16,7 +16,6 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
-use App\Security\LoginThemeResolver;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,7 +28,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
-    public function loginAction(Request $request, AuthenticationUtils $securityUtils, LoginThemeResolver $themeResolver): Response
+    use SecurityThemeTrait;
+
+    public function loginAction(Request $request, AuthenticationUtils $securityUtils, AuthAppUrlManager $appUrlManager): Response
     {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -43,7 +44,7 @@ class SecurityController extends AbstractController
             '_username' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render(\sprintf('security/%s/user_login.html.twig', $themeResolver->resolve($request)), [
+        return $this->renderSecurityTheme($request, $appUrlManager, 'user_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
@@ -53,7 +54,7 @@ class SecurityController extends AbstractController
         Request $request,
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository,
-        LoginThemeResolver $themeResolver,
+        AuthAppUrlManager $appUrlManager,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -81,7 +82,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_forgot_password');
         }
 
-        return $this->render(\sprintf('security/%s/forgot_password.html.twig', $themeResolver->resolve($request)), [
+        return $this->renderSecurityTheme($request, $appUrlManager, 'forgot_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -94,7 +95,6 @@ class SecurityController extends AbstractController
         AdherentResetPasswordToken $resetPasswordToken,
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
-        LoginThemeResolver $themeResolver,
     ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('vox_app_redirect');
@@ -129,7 +129,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render(\sprintf('security/%s/reset_password.html.twig', $themeResolver->resolve($request)), [
+        return $this->renderSecurityTheme($request, $appUrlManager, 'reset_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }

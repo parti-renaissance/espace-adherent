@@ -43,8 +43,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('formation_auth_start_url', '%env(FORMATION_URL)%/auth/oauth2/login.php?id=1&wantsurl=%2F');
 
-    $parameters->set('legislative_host', '%env(LEGISLATIVE_HOST)%');
-
     $parameters->set('vox_host', '%env(VOX_HOST)%');
 
     $parameters->set('user_campaign_host', '%env(USER_CAMPAIGN_HOST)%');

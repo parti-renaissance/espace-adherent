@@ -391,7 +391,6 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
             'post_id' => 'post-123',
             'platform' => 'twitter',
             'username' => 'john',
-            'name' => 'John Doe',
             'description' => 'hello world',
             'date_published' => '2026-05-07T13:46:16.384Z',
             'image_url' => 'https://cdn/img.jpg',
@@ -416,7 +415,7 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
                     'src' => 'https://cdn/photo.jpg',
                 ],
             ],
-            'raw_json' => ['foo' => 'bar'],
+            'raw_json' => ['name' => 'John Doe', 'foo' => 'bar'],
         ];
     }
 }

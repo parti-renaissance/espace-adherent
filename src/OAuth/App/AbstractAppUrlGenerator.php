@@ -20,6 +20,10 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
 
     public function guessAppCodeFromRequest(Request $request): ?string
     {
+        if ($request->attributes->get('app_domain', $request->getHost()) === $this->getAppHost()) {
+            return static::getAppCode();
+        }
+
         return null;
     }
 

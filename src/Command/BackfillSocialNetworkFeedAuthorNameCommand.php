@@ -62,7 +62,7 @@ class BackfillSocialNetworkFeedAuthorNameCommand extends Command
 
         $fillable = [];
         foreach ($feeds as $feed) {
-            $name = $feed->rawJson['name'] ?? null;
+            $name = $feed->rawJson['raw_json']['name'] ?? null;
             if (\is_string($name) && '' !== $name) {
                 $fillable[] = [$feed, $name];
             }

@@ -16,7 +16,7 @@ final class BackfillSocialNetworkFeedAuthorNameCommandTest extends TestCase
     public function testFillsAuthorNameFromStoredRawPayload(): void
     {
         $feed = new SocialNetworkFeed();
-        $feed->rawJson = ['id' => 1, 'name' => 'Jean Dupont'];
+        $feed->rawJson = ['id' => 1, 'raw_json' => ['name' => 'Jean Dupont']];
 
         $repository = $this->createMock(SocialNetworkFeedRepository::class);
         $repository->expects(self::once())->method('findWithMissingAuthorName')->with(null)->willReturn([$feed]);
@@ -51,7 +51,7 @@ final class BackfillSocialNetworkFeedAuthorNameCommandTest extends TestCase
     public function testDryRunReportsWithoutWriting(): void
     {
         $feed = new SocialNetworkFeed();
-        $feed->rawJson = ['name' => 'Jean Dupont'];
+        $feed->rawJson = ['raw_json' => ['name' => 'Jean Dupont']];
 
         $repository = $this->createMock(SocialNetworkFeedRepository::class);
         $repository->expects(self::once())->method('findWithMissingAuthorName')->with(null)->willReturn([$feed]);

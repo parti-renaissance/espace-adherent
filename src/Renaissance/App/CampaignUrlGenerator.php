@@ -46,15 +46,6 @@ class CampaignUrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('app_renaissance_login');
     }
 
-    public function guessAppCodeFromRequest(Request $request): ?string
-    {
-        if ($request->attributes->get('app_domain', $request->getHost()) === $this->userCampaignHost) {
-            return static::getAppCode();
-        }
-
-        return null;
-    }
-
     public function generateLogout(): string
     {
         return $this->urlGenerator->generate('logout', ['app_domain' => $this->userCampaignHost], UrlGeneratorInterface::ABSOLUTE_URL);

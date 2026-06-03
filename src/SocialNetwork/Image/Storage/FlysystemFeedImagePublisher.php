@@ -40,7 +40,9 @@ class FlysystemFeedImagePublisher implements FeedImagePublisherInterface
         $path = $this->expectedPath($sourceGcsUri);
 
         if ($this->mediaStorage->fileExists($path)) {
-            return new PublishedImage($path);
+            $dimensions = getimagesizefromstring($this->mediaStorage->read($path)) ?: [];
+
+            return new PublishedImage($path, $dimensions[0] ?? null, $dimensions[1] ?? null);
         }
 
         $gcsObject = $this->storage->bucket($bucket)->object($object);

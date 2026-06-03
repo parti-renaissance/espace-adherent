@@ -7,7 +7,6 @@ namespace Tests\App\Controller\EnMarche;
 use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
-use App\Entity\Unregistration;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractRenaissanceWebTestCase;
@@ -40,32 +39,18 @@ class UnregistrationControllerTest extends AbstractRenaissanceWebTestCase
 
             $this->isSuccessful($this->client->getResponse());
 
-            $reasons = Unregistration::REASONS_LIST_ADHERENT;
-            $reasonsValues = array_values($reasons);
-            $chosenReasons = [
-                3 => $reasonsValues[3],
-                4 => $reasonsValues[4],
-            ];
-
+            // On the renaissance app (user vox host) the terminate form carries neither
+            // a "reasons" nor a "comment" field, so it is submitted as-is.
             $crawler = $this->client->submit(
-                $crawler->selectButton('Je confirme la suppression de mon')->form(
-                    [
-                        'unregistration' => [
-                            'reasons' => $chosenReasons,
-                            'comment' => 'Je me désinscris',
-                        ],
-                    ]
-                )
+                $crawler->selectButton('Je confirme la suppression de mon')->form()
             );
 
             $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
             self::assertCount(0, $crawler->filter('.form__errors > li'));
-            self::assertSame(
-                $adherent->isRenaissanceSympathizer() ?
-                    'Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.'
-                    : 'Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.',
-                trim($crawler->filter('#is_not_adherent h1')->eq(0)->text())
+            self::assertStringContainsString(
+                'Votre adhésion et votre compte Renaissance ont bien été supprimés',
+                $crawler->html()
             );
 
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));

@@ -6,7 +6,7 @@ namespace App\SocialNetwork\Image\Storage;
 
 /**
  * Result of publishing an image to the public bucket: its public path and, when available, its
- * pixel dimensions (null when the object already existed and was not re-downloaded).
+ * pixel dimensions (null only when they could not be determined from the image content).
  */
 class PublishedImage
 {
