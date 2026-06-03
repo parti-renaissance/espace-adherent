@@ -94,6 +94,10 @@ class EventProcessor extends AbstractFeedProcessor
             'author_scope' => $item['author']['scope'] ?? null,
         ]);
 
+        if ($item['editable']) {
+            $item['edit_link'] = true;
+        }
+
         return $item;
     }
 }
