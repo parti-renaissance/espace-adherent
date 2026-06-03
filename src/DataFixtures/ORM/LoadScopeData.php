@@ -70,7 +70,7 @@ class LoadScopeData extends Fixture
             ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE, FeatureEnum::ELECTED_REPRESENTATIVE]),
             ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
             ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
-            ScopeEnum::MILITANT => [FeatureEnum::EVENTS, FeatureEnum::ACTIONS],
+            ScopeEnum::MILITANT => [FeatureEnum::EVENTS, FeatureEnum::ACTIONS, FeatureEnum::AI_ANTISECHE],
             ScopeEnum::PAP,
             ScopeEnum::MEETING_SCANNER,
             ScopeEnum::PHONING => [],

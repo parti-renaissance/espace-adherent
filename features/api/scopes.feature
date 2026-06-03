@@ -62,7 +62,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions"]
+                    "features": ["events", "actions", "ai_antiseche"]
                 },
                 {
                     "code": "national_communication",
@@ -105,6 +105,7 @@ Feature:
                         "contacts",
                         "contacts_export",
                         "chatbot",
+                        "ai_antiseche",
                         "publications",
                         "publications_cadres",
                         "events",
@@ -289,6 +290,7 @@ Feature:
                     "contacts",
                     "contacts_export",
                     "chatbot",
+                    "ai_antiseche",
                     "publications",
                     "publications_cadres",
                     "events",
@@ -372,7 +374,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions"]
+                    "features": ["events", "actions", "ai_antiseche"]
                 },
                 {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
@@ -675,6 +677,7 @@ Feature:
                     "contacts",
                     "contacts_export",
                     "chatbot",
+                    "ai_antiseche",
                     "messages",
                     "publications",
                     "publications_cadres",
@@ -744,6 +747,7 @@ Feature:
                     "contacts",
                     "contacts_export",
                     "chatbot",
+                    "ai_antiseche",
                     "messages",
                     "publications",
                     "publications_cadres",

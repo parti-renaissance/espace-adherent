@@ -37,10 +37,6 @@ class PostMessageController extends AbstractController
 
     public function __invoke(Request $request, ChatbotManager $chatbotManager, #[CurrentUser] Adherent $user): StreamedResponse
     {
-        if (!$this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CHATBOT])) {
-            throw $this->createAccessDeniedException();
-        }
-
         try {
             $data = $request->toArray();
             $message = isset($data['message']) && \is_string($data['message']) ? trim($data['message']) : '';
@@ -60,6 +56,11 @@ class PostMessageController extends AbstractController
 
         if (!$this->agents->has($agentId)) {
             throw new BadRequestHttpException('agent_id manquant ou invalide.');
+        }
+
+        $agentFeature = FeatureEnum::getFeatureForAgentId($agentId);
+        if (!$agentFeature || !$this->authorizationChecker->isFeatureGranted($request, $user, [$agentFeature])) {
+            throw $this->createAccessDeniedException();
         }
 
         $limit = $this->botChatbotLimiter->create('chatbot_'.$agentId.'_'.$user->getUuid()->toRfc4122())->consume(1);

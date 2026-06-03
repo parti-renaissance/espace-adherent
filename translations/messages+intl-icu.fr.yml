@@ -1213,6 +1213,7 @@ scope.feature.publications: Publications (beta)
 scope.feature.publications_cadres: Publication aux cadres
 scope.feature.events: Événements
 scope.feature.chatbot: ChatBot
+scope.feature.ai_antiseche: Nuit IA
 scope.feature.my_team: Mon équipe
 scope.feature.my_team_custom_role: 'Mon équipe : rôle personnalisé'
 scope.feature.mobile_app: Application Mobile

@@ -52,7 +52,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions'],
+                'features' => ['events', 'actions', 'ai_antiseche'],
             ],
             [
                 'code' => 'national_communication',
@@ -120,7 +120,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions'],
+                'features' => ['events', 'actions', 'ai_antiseche'],
             ],
             [
                 'code' => 'pap',
@@ -165,7 +165,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions'],
+                'features' => ['events', 'actions', 'ai_antiseche'],
             ],
         ]];
         yield [LoadAdherentData::ADHERENT_20_UUID, [
@@ -186,7 +186,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions'],
+                'features' => ['events', 'actions', 'ai_antiseche'],
             ],
             [
                 'code' => 'municipal_pilot',
