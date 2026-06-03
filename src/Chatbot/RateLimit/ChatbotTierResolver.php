@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace App\Chatbot\RateLimit;
 
-use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 
 class ChatbotTierResolver
 {
-    private const CADRE_NATIONAL_ROLES = [
+    private const string DELEGATED_ROLE_PREFIX = 'ROLE_DELEGATED_';
+
+    /** @var string[] */
+    private const array CADRE_ROLES = [
         'ROLE_NATIONAL',
         'ROLE_DEPUTY',
         'ROLE_SENATOR',
         'ROLE_FDE_COORDINATOR',
-    ];
-
-    private const CADRE_LOCAL_ROLES = [
         'ROLE_REGIONAL_COORDINATOR',
         'ROLE_REGIONAL_DELEGATE',
         'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY',
         'ROLE_HOST',
+        'ROLE_SUPERVISOR',
         'ROLE_ANIMATOR',
+        'ROLE_CORRESPONDENT',
+        'ROLE_PROCURATION_MANAGER',
+        'ROLE_JECOUTE_MANAGER',
     ];
 
     public function resolve(?Adherent $adherent): ChatbotUserTier
@@ -30,38 +33,29 @@ class ChatbotTierResolver
             return ChatbotUserTier::Public;
         }
 
-        if ($this->hasAnyRole($adherent, self::CADRE_NATIONAL_ROLES)) {
-            return ChatbotUserTier::CadreNational;
+        if ($this->isCadre($adherent)) {
+            return ChatbotUserTier::Cadre;
         }
 
-        if ($this->hasAnyRole($adherent, self::CADRE_LOCAL_ROLES)) {
-            return ChatbotUserTier::CadreLocal;
-        }
-
-        if ($adherent->hasTag(TagEnum::getAdherentYearTag())) {
+        if ($adherent->hasActiveMembership()) {
             return ChatbotUserTier::AdherentAJour;
         }
 
-        if ($adherent->hasTag(TagEnum::ADHERENT)) {
+        if ($adherent->isRenaissanceAdherent()) {
             return ChatbotUserTier::Adherent;
         }
 
-        if ($adherent->hasTag(TagEnum::SYMPATHISANT)) {
+        if ($adherent->isRenaissanceSympathizer()) {
             return ChatbotUserTier::Sympathisant;
         }
 
-        return ChatbotUserTier::UserSimple;
+        return ChatbotUserTier::Contact;
     }
 
-    /**
-     * @param string[] $roles
-     */
-    private function hasAnyRole(Adherent $adherent, array $roles): bool
+    private function isCadre(Adherent $adherent): bool
     {
-        $adherentRoles = $adherent->getRoles();
-
-        foreach ($roles as $role) {
-            if (\in_array($role, $adherentRoles, true)) {
+        foreach ($adherent->getRoles() as $role) {
+            if (\in_array($role, self::CADRE_ROLES, true) || str_starts_with($role, self::DELEGATED_ROLE_PREFIX)) {
                 return true;
             }
         }

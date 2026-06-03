@@ -14,7 +14,10 @@ use Symfony\Component\RateLimiter\Storage\CacheStorage;
 
 class ChatbotRateLimitChecker
 {
-    private const GLOBAL_BUCKET_KEY = 'chatbot_global';
+    private const string GLOBAL_BUCKET_KEY = 'chatbot_global';
+
+    /** @var string[] */
+    private const array RATE_LIMITED_AGENTS = ['antiseche'];
 
     /** @var array<string, RateLimiterFactory> */
     private array $factories = [];
@@ -28,6 +31,10 @@ class ChatbotRateLimitChecker
 
     public function check(Adherent $adherent, string $agent): void
     {
+        if (!\in_array($agent, self::RATE_LIMITED_AGENTS, true)) {
+            return;
+        }
+
         $tier = $this->tierResolver->resolve($adherent);
 
         foreach (ChatbotRateLimitPeriod::cases() as $period) {
@@ -44,7 +51,7 @@ class ChatbotRateLimitChecker
 
         foreach (ChatbotRateLimitPeriod::cases() as $period) {
             $tierLimit = ChatbotRateLimitConfig::getTierLimit($tier, $period);
-            if (null !== $tierLimit) {
+            if ($tierLimit > 0) {
                 $rateLimit = $this->getFactory($this->tierId($tier, $period), $tierLimit, $period)
                     ->create($userKey)
                     ->consume(1);
@@ -55,7 +62,7 @@ class ChatbotRateLimitChecker
             }
 
             $globalLimit = ChatbotRateLimitConfig::getGlobalLimit($period);
-            if (null !== $globalLimit) {
+            if ($globalLimit > 0) {
                 $rateLimit = $this->getFactory($this->globalId($period), $globalLimit, $period)
                     ->create(self::GLOBAL_BUCKET_KEY)
                     ->consume(1);

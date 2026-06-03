@@ -7,23 +7,21 @@ namespace App\Chatbot\RateLimit;
 enum ChatbotUserTier: string
 {
     case Public = 'public';
-    case UserSimple = 'user_simple';
+    case Contact = 'contact';
     case Sympathisant = 'sympathisant';
     case Adherent = 'adherent';
     case AdherentAJour = 'adherent_a_jour';
-    case CadreLocal = 'cadre_local';
-    case CadreNational = 'cadre_national';
+    case Cadre = 'cadre';
 
     public function label(): string
     {
         return match ($this) {
             self::Public => 'Public',
-            self::UserSimple => 'Utilisateur simple',
+            self::Contact => 'Contact',
             self::Sympathisant => 'Sympathisant',
             self::Adherent => 'Adhérent',
             self::AdherentAJour => 'Adhérent à jour',
-            self::CadreLocal => 'Cadre local',
-            self::CadreNational => 'Cadre national',
+            self::Cadre => 'Cadre',
         };
     }
 }

@@ -23,168 +23,73 @@ class ChatbotTierResolverTest extends TestCase
         self::assertSame(ChatbotUserTier::Public, $this->resolver->resolve(null));
     }
 
-    public function testNationalRoleReturnsCadreNational(): void
+    public function testResponsibilityRoleReturnsCadre(): void
     {
-        $adherent = $this->makeAdherent(['ROLE_NATIONAL'], []);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
+        foreach (['ROLE_ANIMATOR', 'ROLE_HOST', 'ROLE_DEPUTY', 'ROLE_NATIONAL', 'ROLE_CORRESPONDENT'] as $role) {
+            self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($this->makeAdherent(roles: [$role])));
+        }
     }
 
-    public function testDeputyReturnsCadreNational(): void
+    public function testDelegatedAccessReturnsCadre(): void
     {
-        $adherent = $this->makeAdherent(['ROLE_DEPUTY'], []);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($this->makeAdherent(roles: ['ROLE_DELEGATED_ANIMATOR'])));
     }
 
-    public function testSenatorReturnsCadreNational(): void
+    public function testTechnicalRoleIsNotCadre(): void
     {
-        $adherent = $this->makeAdherent(['ROLE_SENATOR'], []);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
-    }
-
-    public function testFdeCoordinatorReturnsCadreNational(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_FDE_COORDINATOR'], []);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
-    }
-
-    public function testRegionalCoordinatorReturnsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_REGIONAL_COORDINATOR'], []);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testHostReturnsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_HOST'], []);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testAnimatorReturnsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_ANIMATOR'], []);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testPresidentDepartmentalAssemblyReturnsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY'], []);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testRegionalDelegateReturnsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_REGIONAL_DELEGATE'], []);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testAdherentAJourReturnsAdherentAJour(): void
-    {
-        $year = date('Y');
-        $adherent = $this->makeAdherent([], ['adherent:a_jour_'.$year]);
+        $adherent = $this->makeAdherent(roles: ['ROLE_PAP_USER', 'ROLE_CANARY_TESTER'], activeMembership: true);
 
         self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($adherent));
     }
 
-    public function testAdherentTagButNotUpToDateReturnsAdherent(): void
+    public function testActiveMembershipReturnsAdherentAJour(): void
     {
-        $adherent = $this->makeAdherent([], ['adherent']);
-
-        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($this->makeAdherent(activeMembership: true)));
     }
 
-    public function testAdherentNotUpToDateTagReturnsAdherent(): void
+    public function testAdherentReturnsAdherent(): void
     {
-        $adherent = $this->makeAdherent([], ['adherent:plus_a_jour']);
-
-        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($this->makeAdherent(renaissanceAdherent: true)));
     }
 
-    public function testSympathisantReturnsSympathisant(): void
+    public function testSympathizerReturnsSympathisant(): void
     {
-        $adherent = $this->makeAdherent([], ['sympathisant']);
-
-        self::assertSame(ChatbotUserTier::Sympathisant, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::Sympathisant, $this->resolver->resolve($this->makeAdherent(sympathizer: true)));
     }
 
-    public function testSympathisantSubtagReturnsSympathisant(): void
+    public function testNoMembershipReturnsContact(): void
     {
-        $adherent = $this->makeAdherent([], ['sympathisant:compte_em']);
-
-        self::assertSame(ChatbotUserTier::Sympathisant, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::Contact, $this->resolver->resolve($this->makeAdherent()));
     }
 
-    public function testNoTagsNoRolesReturnsUserSimple(): void
+    public function testCadreBeatsActiveMembership(): void
     {
-        $adherent = $this->makeAdherent([], []);
+        $adherent = $this->makeAdherent(roles: ['ROLE_ANIMATOR'], activeMembership: true, renaissanceAdherent: true);
 
-        self::assertSame(ChatbotUserTier::UserSimple, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($adherent));
     }
 
-    public function testCadreNationalBeatsAdherentAJour(): void
+    public function testActiveMembershipBeatsAdherent(): void
     {
-        $year = date('Y');
-        $adherent = $this->makeAdherent(['ROLE_NATIONAL'], ['adherent:a_jour_'.$year]);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
-    }
-
-    public function testCadreLocalBeatsAdherent(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_HOST'], ['adherent']);
-
-        self::assertSame(ChatbotUserTier::CadreLocal, $this->resolver->resolve($adherent));
-    }
-
-    public function testCadreNationalBeatsCadreLocal(): void
-    {
-        $adherent = $this->makeAdherent(['ROLE_DEPUTY', 'ROLE_HOST'], []);
-
-        self::assertSame(ChatbotUserTier::CadreNational, $this->resolver->resolve($adherent));
-    }
-
-    public function testAdherentAJourBeatsAdherent(): void
-    {
-        $year = date('Y');
-        $adherent = $this->makeAdherent([], ['adherent', 'adherent:a_jour_'.$year]);
+        $adherent = $this->makeAdherent(activeMembership: true, renaissanceAdherent: true);
 
         self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($adherent));
-    }
-
-    public function testAdherentBeatsSympathisant(): void
-    {
-        $adherent = $this->makeAdherent([], ['sympathisant', 'adherent']);
-
-        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($adherent));
     }
 
     /**
-     * @param string[] $extraRoles
-     * @param string[] $tags
+     * @param string[] $roles
      */
-    private function makeAdherent(array $extraRoles, array $tags): Adherent
-    {
+    private function makeAdherent(
+        array $roles = [],
+        bool $activeMembership = false,
+        bool $renaissanceAdherent = false,
+        bool $sympathizer = false,
+    ): Adherent {
         $adherent = $this->createStub(Adherent::class);
-        $adherent->method('getRoles')->willReturn(array_merge(['ROLE_USER'], $extraRoles));
-        $adherent->method('hasTag')->willReturnCallback(
-            function (string $searchTag) use ($tags): bool {
-                foreach ($tags as $storedTag) {
-                    if (str_starts_with($storedTag, $searchTag)) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        );
+        $adherent->method('getRoles')->willReturn(array_merge(['ROLE_USER'], $roles));
+        $adherent->method('hasActiveMembership')->willReturn($activeMembership);
+        $adherent->method('isRenaissanceAdherent')->willReturn($renaissanceAdherent);
+        $adherent->method('isRenaissanceSympathizer')->willReturn($sympathizer);
 
         return $adherent;
     }

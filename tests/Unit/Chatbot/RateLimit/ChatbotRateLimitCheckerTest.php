@@ -23,87 +23,83 @@ class ChatbotRateLimitCheckerTest extends TestCase
         $this->cache = new ArrayAdapter();
     }
 
-    public function testUserSimpleConsumesUpToMinuteLimitThenIsRejected(): void
+    public function testContactConsumesUpToMinuteLimitThenIsRejected(): void
     {
-        $checker = $this->buildChecker(ChatbotUserTier::UserSimple);
+        $checker = $this->buildChecker(ChatbotUserTier::Contact);
         $adherent = $this->buildAdherent();
 
         for ($i = 1; $i <= 3; ++$i) {
-            $checker->check($adherent, 'chatbot');
+            $checker->check($adherent, 'antiseche');
         }
 
         try {
-            $checker->check($adherent, 'chatbot');
+            $checker->check($adherent, 'antiseche');
             self::fail('Expected ChatbotRateLimitExceededException');
         } catch (ChatbotRateLimitExceededException $exception) {
             self::assertSame(ChatbotRateLimitExceededException::SCOPE_USER, $exception->scope);
             self::assertSame(ChatbotRateLimitPeriod::Minute, $exception->period);
-            self::assertSame(ChatbotUserTier::UserSimple, $exception->tier);
+            self::assertSame(ChatbotUserTier::Contact, $exception->tier);
             self::assertSame(3, $exception->limit);
             self::assertGreaterThanOrEqual(1, $exception->retryAfter);
         }
     }
 
-    public function testCadreNationalHasHigherMinuteLimit(): void
+    public function testCadreHasHigherMinuteLimit(): void
     {
-        $checker = $this->buildChecker(ChatbotUserTier::CadreNational);
+        $checker = $this->buildChecker(ChatbotUserTier::Cadre);
         $adherent = $this->buildAdherent();
 
         for ($i = 1; $i <= 10; ++$i) {
-            $checker->check($adherent, 'chatbot');
+            $checker->check($adherent, 'antiseche');
         }
 
         $this->expectException(ChatbotRateLimitExceededException::class);
-        $checker->check($adherent, 'chatbot');
+        $checker->check($adherent, 'antiseche');
     }
 
     public function testCountersAreSeparatedByUser(): void
     {
-        $checker = $this->buildChecker(ChatbotUserTier::UserSimple);
+        $checker = $this->buildChecker(ChatbotUserTier::Contact);
         $userA = $this->buildAdherent();
         $userB = $this->buildAdherent();
 
         for ($i = 1; $i <= 3; ++$i) {
-            $checker->check($userA, 'chatbot');
+            $checker->check($userA, 'antiseche');
         }
 
-        $checker->check($userB, 'chatbot');
-        $checker->check($userB, 'chatbot');
+        $checker->check($userB, 'antiseche');
+        $checker->check($userB, 'antiseche');
 
         $this->expectException(ChatbotRateLimitExceededException::class);
-        $checker->check($userA, 'chatbot');
+        $checker->check($userA, 'antiseche');
     }
 
-    public function testCountersAreSeparatedByAgent(): void
+    public function testChatbotAgentIsNotRateLimited(): void
     {
-        $checker = $this->buildChecker(ChatbotUserTier::UserSimple);
+        $checker = $this->buildChecker(ChatbotUserTier::Contact);
         $adherent = $this->buildAdherent();
 
-        for ($i = 1; $i <= 3; ++$i) {
+        for ($i = 1; $i <= 200; ++$i) {
             $checker->check($adherent, 'chatbot');
         }
 
-        $checker->check($adherent, 'antiseche');
-        $checker->check($adherent, 'antiseche');
-
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
-    public function testExceptionMessageIncludesTierAndLimit(): void
+    public function testMinuteLimitMessage(): void
     {
-        $checker = $this->buildChecker(ChatbotUserTier::UserSimple);
+        $checker = $this->buildChecker(ChatbotUserTier::Contact);
         $adherent = $this->buildAdherent();
 
         for ($i = 1; $i <= 3; ++$i) {
-            $checker->check($adherent, 'chatbot');
+            $checker->check($adherent, 'antiseche');
         }
 
         try {
-            $checker->check($adherent, 'chatbot');
+            $checker->check($adherent, 'antiseche');
             self::fail('Expected ChatbotRateLimitExceededException');
         } catch (ChatbotRateLimitExceededException $exception) {
-            self::assertStringContainsString('Utilisateur simple', $exception->getMessage());
-            self::assertStringContainsString('3/min', $exception->getMessage());
+            self::assertStringContainsString('limite de questions pour cette minute', $exception->getMessage());
         }
     }
 
