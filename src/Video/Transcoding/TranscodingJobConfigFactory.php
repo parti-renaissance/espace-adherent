@@ -29,51 +29,62 @@ class TranscodingJobConfigFactory
     private const string PREVIEW_MUX_KEY = 'preview';
     private const string THUMBNAIL_FILE_PREFIX = 'thumbnail';
 
-    public function create(): JobConfig
+    public function create(bool $withAudio = true): JobConfig
     {
+        $elementaryStreams = [
+            new ElementaryStream([
+                'key' => self::VIDEO_STREAM_KEY,
+                'video_stream' => new VideoStream([
+                    'h264' => new H264CodecSettings([
+                        'height_pixels' => 720,
+                        'width_pixels' => 0, // 0 keeps the source aspect ratio (portrait, square or landscape)
+                        'bitrate_bps' => 2_000_000,
+                        'frame_rate' => 30,
+                        'pixel_format' => 'yuv420p',
+                        'rate_control_mode' => 'vbr',
+                        'crf_level' => 21,
+                        'gop_duration' => new Duration(['seconds' => 2]),
+                        'vbv_size_bits' => 2_000_000,
+                        'vbv_fullness_bits' => 1_800_000,
+                        'entropy_coder' => 'cabac',
+                        'profile' => 'main',
+                        'preset' => 'veryfast',
+                    ]),
+                ]),
+            ]),
+        ];
+
+        // Mux streams reference the audio stream only when the source has audio. A silent source rejects
+        // a config that maps an audio track ("atom atom0 ... with an audio track"), so the reactive retry
+        // re-runs with $withAudio = false (driven by Video::$transcodeWithoutAudio).
+        $muxElementaryStreams = [self::VIDEO_STREAM_KEY];
+
+        if ($withAudio) {
+            $elementaryStreams[] = new ElementaryStream([
+                'key' => self::AUDIO_STREAM_KEY,
+                'audio_stream' => new AudioStream([
+                    'codec' => 'aac',
+                    'bitrate_bps' => 128_000,
+                    'channel_count' => 2,
+                    'sample_rate_hertz' => 48_000,
+                ]),
+            ]);
+            $muxElementaryStreams[] = self::AUDIO_STREAM_KEY;
+        }
+
         return new JobConfig([
-            'elementary_streams' => [
-                new ElementaryStream([
-                    'key' => self::VIDEO_STREAM_KEY,
-                    'video_stream' => new VideoStream([
-                        'h264' => new H264CodecSettings([
-                            'height_pixels' => 720,
-                            'width_pixels' => 0, // 0 keeps the source aspect ratio (portrait, square or landscape)
-                            'bitrate_bps' => 2_000_000,
-                            'frame_rate' => 30,
-                            'pixel_format' => 'yuv420p',
-                            'rate_control_mode' => 'vbr',
-                            'crf_level' => 21,
-                            'gop_duration' => new Duration(['seconds' => 2]),
-                            'vbv_size_bits' => 2_000_000,
-                            'vbv_fullness_bits' => 1_800_000,
-                            'entropy_coder' => 'cabac',
-                            'profile' => 'main',
-                            'preset' => 'veryfast',
-                        ]),
-                    ]),
-                ]),
-                new ElementaryStream([
-                    'key' => self::AUDIO_STREAM_KEY,
-                    'audio_stream' => new AudioStream([
-                        'codec' => 'aac',
-                        'bitrate_bps' => 128_000,
-                        'channel_count' => 2,
-                        'sample_rate_hertz' => 48_000,
-                    ]),
-                ]),
-            ],
+            'elementary_streams' => $elementaryStreams,
             'mux_streams' => [
                 new MuxStream([
                     'key' => self::PREVIEW_MUX_KEY,
                     'file_name' => Video::FILE_NAME_PREVIEW,
                     'container' => 'mp4',
-                    'elementary_streams' => [self::VIDEO_STREAM_KEY, self::AUDIO_STREAM_KEY],
+                    'elementary_streams' => $muxElementaryStreams,
                 ]),
                 new MuxStream([
                     'key' => self::HLS_MUX_KEY,
                     'container' => 'ts',
-                    'elementary_streams' => [self::VIDEO_STREAM_KEY, self::AUDIO_STREAM_KEY],
+                    'elementary_streams' => $muxElementaryStreams,
                 ]),
             ],
             'manifests' => [

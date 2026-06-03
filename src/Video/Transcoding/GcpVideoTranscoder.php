@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Video\Transcoding;
 
 use App\Entity\VideoStatusEnum;
+use Google\ApiCore\Serializer;
 use Google\Cloud\Video\Transcoder\V1\Client\TranscoderServiceClient;
 use Google\Cloud\Video\Transcoder\V1\CreateJobRequest;
 use Google\Cloud\Video\Transcoder\V1\GetJobRequest;
@@ -21,14 +22,20 @@ class GcpVideoTranscoder implements VideoTranscoderInterface
         private readonly string $transcoderProjectId,
         private readonly string $transcoderLocation,
     ) {
+        // The REST transport parses the getJob response with pure-PHP mergeFromJsonString. A FAILED job
+        // carries error.details with a google.rpc.BadRequest Any, which is eagerly unpacked during the
+        // parse — but this code path never loads gax's Serializer, whose load-time side effect would
+        // register those types in the descriptor pool. Without this preload getJob() throws
+        // "Class google.rpc.BadRequest hasn't been added to descriptor pool" on every failed job.
+        Serializer::loadKnownMetadataTypes();
     }
 
-    public function createJob(string $inputUri, string $outputUri, string $videoUuid): string
+    public function createJob(string $inputUri, string $outputUri, string $videoUuid, bool $withAudio = true): string
     {
         $job = new Job([
             'input_uri' => $inputUri,
             'output_uri' => $outputUri,
-            'config' => $this->configFactory->create(),
+            'config' => $this->configFactory->create($withAudio),
             'ttl_after_completion_days' => self::TTL_AFTER_COMPLETION_DAYS,
             'labels' => ['video_uuid' => $videoUuid],
         ]);

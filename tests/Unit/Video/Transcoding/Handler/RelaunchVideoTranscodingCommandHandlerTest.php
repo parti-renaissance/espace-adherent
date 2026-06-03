@@ -8,7 +8,9 @@ use App\Entity\Video;
 use App\Entity\VideoStatusEnum;
 use App\Repository\VideoRepository;
 use App\Video\Transcoding\Command\RelaunchVideoTranscodingCommand;
+use App\Video\Transcoding\Exception\TranscoderAtCapacityException;
 use App\Video\Transcoding\Handler\RelaunchVideoTranscodingCommandHandler;
+use App\Video\Transcoding\TranscoderCapacityDeferral;
 use App\Video\Transcoding\VideoTranscodingLauncher;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,12 +24,15 @@ final class RelaunchVideoTranscodingCommandHandlerTest extends TestCase
 
     private VideoRepository&MockObject $videoRepository;
     private VideoTranscodingLauncher&MockObject $launcher;
+    private TranscoderCapacityDeferral $capacityDeferral;
     private LoggerInterface&MockObject $logger;
 
     protected function setUp(): void
     {
         $this->videoRepository = $this->createMock(VideoRepository::class);
         $this->launcher = $this->createMock(VideoTranscodingLauncher::class);
+        // Stub by default; replaced by a mock only in the test that verifies the deferral is invoked.
+        $this->capacityDeferral = $this->createStub(TranscoderCapacityDeferral::class);
         $this->logger = $this->createMock(LoggerInterface::class);
     }
 
@@ -92,6 +97,35 @@ final class RelaunchVideoTranscodingCommandHandlerTest extends TestCase
         $this->handle();
     }
 
+    public function testAtCapacityDelegatesToDeferral(): void
+    {
+        $video = new Video(Uuid::fromString(self::UUID));
+        $video->status = VideoStatusEnum::FAILED;
+        $video->originalPath = 'scraper-source/videos/'.self::UUID.'.mp4';
+        $this->expectVideoLookup($video);
+
+        $this->launcher
+            ->expects(self::once())
+            ->method('launch')
+            ->with($video, self::anything())
+            ->willThrowException(TranscoderAtCapacityException::reactive());
+
+        // The handler delegates to the deferral (which owns logging); it does not log here itself.
+        $this->logger->expects(self::never())->method('warning');
+
+        $deferral = $this->createMock(TranscoderCapacityDeferral::class);
+        $deferral
+            ->expects(self::once())
+            ->method('deferOrFail')
+            ->with(
+                self::isInstanceOf(RelaunchVideoTranscodingCommand::class),
+                $video,
+                self::isInstanceOf(TranscoderAtCapacityException::class),
+            );
+
+        $this->handle($deferral);
+    }
+
     private function expectVideoLookup(?Video $video): void
     {
         $this->videoRepository
@@ -101,9 +135,9 @@ final class RelaunchVideoTranscodingCommandHandlerTest extends TestCase
             ->willReturn($video);
     }
 
-    private function handle(): void
+    private function handle(?TranscoderCapacityDeferral $capacityDeferral = null): void
     {
-        (new RelaunchVideoTranscodingCommandHandler($this->videoRepository, $this->launcher, $this->logger, self::BUCKET))(
+        (new RelaunchVideoTranscodingCommandHandler($this->videoRepository, $this->launcher, $capacityDeferral ?? $this->capacityDeferral, $this->logger, self::BUCKET))(
             new RelaunchVideoTranscodingCommand(self::UUID),
         );
     }

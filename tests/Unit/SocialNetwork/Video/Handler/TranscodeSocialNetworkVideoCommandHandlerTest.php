@@ -12,6 +12,8 @@ use App\Repository\SocialNetworkFeedVideoRepository;
 use App\SocialNetwork\Video\Command\TranscodeSocialNetworkVideoCommand;
 use App\SocialNetwork\Video\Handler\TranscodeSocialNetworkVideoCommandHandler;
 use App\Video\Storage\VideoSourceArchiverInterface;
+use App\Video\Transcoding\Exception\TranscoderAtCapacityException;
+use App\Video\Transcoding\TranscoderCapacityDeferral;
 use App\Video\Transcoding\VideoTranscodingLauncher;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,15 +30,18 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
     private SocialNetworkFeedVideoRepository&MockObject $feedVideoRepository;
     private VideoSourceArchiverInterface&MockObject $archiver;
     private VideoTranscodingLauncher&MockObject $launcher;
+    private TranscoderCapacityDeferral $capacityDeferral;
     private LoggerInterface $logger;
 
     protected function setUp(): void
     {
-        // Providers (no interaction assertion) are stubs; verified collaborators are mocks.
+        // Providers (no interaction assertion) are stubs; verified collaborators are mocks. The deferral
+        // is a stub here and replaced by a mock only in the test that verifies it is invoked.
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->feedVideoRepository = $this->createMock(SocialNetworkFeedVideoRepository::class);
         $this->archiver = $this->createMock(VideoSourceArchiverInterface::class);
         $this->launcher = $this->createMock(VideoTranscodingLauncher::class);
+        $this->capacityDeferral = $this->createStub(TranscoderCapacityDeferral::class);
         $this->logger = $this->createStub(LoggerInterface::class);
     }
 
@@ -137,6 +142,36 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
         self::assertStringContainsString('Source archiving rejected', (string) $feedVideo->video->failureReason);
     }
 
+    public function testAtCapacityDelegatesToDeferral(): void
+    {
+        $feedVideo = $this->feedVideo('post');
+        $existing = $this->video(VideoStatusEnum::PENDING, 'scraper-source/videos/abc.mp4');
+        $feedVideo->video = $existing;
+        $this->expectFeedVideoLookup($feedVideo);
+
+        $this->archiver->expects(self::never())->method('archive');
+        $this->launcher
+            ->expects(self::once())
+            ->method('launch')
+            ->with($existing, self::anything())
+            ->willThrowException(TranscoderAtCapacityException::reactive());
+
+        $deferral = $this->createMock(TranscoderCapacityDeferral::class);
+        $deferral
+            ->expects(self::once())
+            ->method('deferOrFail')
+            ->with(
+                self::isInstanceOf(TranscodeSocialNetworkVideoCommand::class),
+                $existing,
+                self::isInstanceOf(TranscoderAtCapacityException::class),
+            );
+
+        $this->handle($deferral);
+
+        // The handler swallows the exception (acks the message); the deferral owns the next step.
+        self::assertSame(VideoStatusEnum::PENDING, $existing->status);
+    }
+
     public function testMissingFeedVideoIsANoOp(): void
     {
         $this->feedVideoRepository->expects(self::once())->method('find')->with(self::SNFV_ID)->willReturn(null);
@@ -179,13 +214,14 @@ final class TranscodeSocialNetworkVideoCommandHandlerTest extends TestCase
         return $video;
     }
 
-    private function handle(): void
+    private function handle(?TranscoderCapacityDeferral $capacityDeferral = null): void
     {
         $handler = new TranscodeSocialNetworkVideoCommandHandler(
             $this->entityManager,
             $this->feedVideoRepository,
             $this->archiver,
             $this->launcher,
+            $capacityDeferral ?? $this->capacityDeferral,
             $this->logger,
             self::BUCKET,
         );

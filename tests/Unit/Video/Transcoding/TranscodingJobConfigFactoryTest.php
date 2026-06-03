@@ -43,4 +43,23 @@ final class TranscodingJobConfigFactoryTest extends TestCase
         self::assertCount(1, $spriteSheets);
         self::assertSame('thumbnail', $spriteSheets[0]->getFilePrefix());
     }
+
+    public function testCreateWithoutAudioOmitsAudioStreamAndMapping(): void
+    {
+        $config = new TranscodingJobConfigFactory()->create(false);
+
+        // Only the video elementary stream remains.
+        $elementaryStreams = $config->getElementaryStreams();
+        self::assertCount(1, $elementaryStreams);
+        self::assertSame('video-stream', $elementaryStreams[0]->getKey());
+
+        // No mux stream references an audio key (which would be orphan and fail the job).
+        foreach ($config->getMuxStreams() as $mux) {
+            self::assertSame(['video-stream'], iterator_to_array($mux->getElementaryStreams()));
+        }
+
+        // Manifest and thumbnail are unaffected.
+        self::assertCount(1, $config->getManifests());
+        self::assertCount(1, $config->getSpriteSheets());
+    }
 }

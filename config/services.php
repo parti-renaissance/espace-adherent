@@ -126,6 +126,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$videoOutputBucket', '%env(key:host:url:MEDIA_CDN_BASE_URL)%')
         ->bind('$gcloudBucket', '%env(GCLOUD_BUCKET)%')
         ->bind('$scraperSourceBuckets', '%env(SCRAPER_SOURCE_BUCKETS)%')
+        ->bind('$maxConcurrentTranscodingJobs', '%env(int:TRANSCODER_MAX_CONCURRENT_JOBS)%')
     ;
 
     $services->instanceof(App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface::class)
