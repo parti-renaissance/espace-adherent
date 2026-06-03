@@ -9,8 +9,8 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
-use App\Security\LoginThemeResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,6 +22,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MagicLinkController extends AbstractController
 {
+    use SecurityThemeTrait;
+
     public const ROUTE_NAME = 'app_user_connect_with_magic_link';
 
     public function getMagicLinkAction(
@@ -30,7 +32,7 @@ class MagicLinkController extends AbstractController
         AdherentRepository $adherentRepository,
         MailerService $transactionalMailer,
         TranslatorInterface $translator,
-        LoginThemeResolver $themeResolver,
+        AuthAppUrlManager $appUrlManager,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -59,10 +61,10 @@ class MagicLinkController extends AbstractController
             return $this->redirectToRoute('app_user_get_magic_link');
         }
 
-        return $this->render(\sprintf('security/%s/user_magic_link.html.twig', $themeResolver->resolve($request)), ['form' => $form->createView()]);
+        return $this->renderSecurityTheme($request, $appUrlManager, 'user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request, Security $security, LoginThemeResolver $themeResolver): Response
+    public function connectViaMagicLinkAction(Request $request, Security $security, AuthAppUrlManager $appUrlManager): Response
     {
         $currentUser = $this->getUser();
 
@@ -90,7 +92,7 @@ class MagicLinkController extends AbstractController
             return $this->redirectToRoute('vox_app_redirect');
         }
 
-        return $this->render(\sprintf('security/%s/connect_magic_link.html.twig', $themeResolver->resolve($request)), [
+        return $this->renderSecurityTheme($request, $appUrlManager, 'connect_magic_link.html.twig', [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),
             'hash' => $request->query->get('hash'),

@@ -101,7 +101,7 @@ class SocialNetworkFeedWebhookCommandHandler
         $feed->postId = (string) $payload['post_id'];
         $feed->platform = (string) $payload['platform'];
         $feed->username = $payload['username'] ?? null;
-        $feed->authorName = $payload['name'] ?? null;
+        $feed->authorName = $payload['raw_json']['name'] ?? null;
         $feed->description = $payload['description'] ?? null;
         $feed->publicationFailure = null;
         $feed->publicationFailedAt = null;

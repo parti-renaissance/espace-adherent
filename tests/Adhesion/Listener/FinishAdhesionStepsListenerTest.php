@@ -6,7 +6,9 @@ namespace Tests\App\Adhesion\Listener;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Listener\FinishAdhesionStepsListener;
+use App\AppCodeEnum;
 use App\Entity\Adherent;
+use App\OAuth\App\AuthAppUrlManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,7 +33,7 @@ class FinishAdhesionStepsListenerTest extends TestCase
         $urlGenerator->expects(self::never())->method('generate');
 
         $event = $this->createMainRequestEvent('vox_app_redirect');
-        new FinishAdhesionStepsListener($security, $urlGenerator)->onRequestEvent($event);
+        new FinishAdhesionStepsListener($security, $urlGenerator, $this->createAppUrlManager(null))->onRequestEvent($event);
 
         self::assertNull($event->getResponse());
     }
@@ -60,7 +62,7 @@ class FinishAdhesionStepsListenerTest extends TestCase
         ;
 
         $event = $this->createMainRequestEvent('vox_app_redirect');
-        new FinishAdhesionStepsListener($security, $urlGenerator)->onRequestEvent($event);
+        new FinishAdhesionStepsListener($security, $urlGenerator, $this->createAppUrlManager(null))->onRequestEvent($event);
 
         self::assertInstanceOf(RedirectResponse::class, $event->getResponse());
     }
@@ -79,7 +81,28 @@ class FinishAdhesionStepsListenerTest extends TestCase
         $urlGenerator->expects(self::never())->method('generate');
 
         $event = $this->createMainRequestEvent('vox_app_redirect');
-        new FinishAdhesionStepsListener($security, $urlGenerator)->onRequestEvent($event);
+        new FinishAdhesionStepsListener($security, $urlGenerator, $this->createAppUrlManager(null))->onRequestEvent($event);
+
+        self::assertNull($event->getResponse());
+    }
+
+    public function testCampaignHostIsNotRedirected(): void
+    {
+        // An incomplete adhesion that would normally be redirected...
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->signupAccount = false;
+        $adherent->method('isFullyCompletedAdhesion')->willReturn(false);
+
+        $security = $this->createStub(Security::class);
+        $security->method('getUser')->willReturn($adherent);
+        $security->method('isGranted')->willReturn(false);
+
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->expects(self::never())->method('generate');
+
+        $event = $this->createMainRequestEvent('vox_app_redirect');
+        // ...is left untouched when the request belongs to the campaign app.
+        new FinishAdhesionStepsListener($security, $urlGenerator, $this->createAppUrlManager(AppCodeEnum::CAMPAIGN))->onRequestEvent($event);
 
         self::assertNull($event->getResponse());
     }
@@ -94,5 +117,13 @@ class FinishAdhesionStepsListenerTest extends TestCase
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
+    }
+
+    private function createAppUrlManager(?string $appCode): AuthAppUrlManager
+    {
+        $appUrlManager = $this->createStub(AuthAppUrlManager::class);
+        $appUrlManager->method('getAppCodeFromRequest')->willReturn($appCode);
+
+        return $appUrlManager;
     }
 }

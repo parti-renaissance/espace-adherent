@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Adhesion\Listener;
 
 use App\Adhesion\AdhesionStepEnum;
+use App\AppCodeEnum;
 use App\Entity\Adherent;
+use App\OAuth\App\AuthAppUrlManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,6 +19,7 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
     public function __construct(
         private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly AuthAppUrlManager $appUrlManager,
     ) {
     }
 
@@ -30,6 +33,10 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (!$event->isMainRequest() || !\in_array($request->attributes->get('_route'), ['vox_app_redirect', 'app_front_oauth_authorize'])) {
+            return;
+        }
+
+        if (AppCodeEnum::CAMPAIGN === $this->appUrlManager->getAppCodeFromRequest($request)) {
             return;
         }
 

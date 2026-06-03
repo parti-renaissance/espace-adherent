@@ -48,21 +48,25 @@ class FlysystemFeedImagePublisherTest extends TestCase
         $this->createPublisher($storage, $public)->publish('gs://evil-bucket/secret.json');
     }
 
-    public function testPublishSkipsDownloadWhenAlreadyExists(): void
+    public function testPublishReadsDimensionsFromExistingFileWithoutDownloadingSource(): void
     {
-        $uri = 'gs://scraper-a/bronze/1/0.jpg';
+        $uri = 'gs://scraper-a/bronze/1/0.png';
+        $path = 'social-feed/'.sha1($uri).'.png';
+        $content = base64_decode(self::PNG_1X1);
+
         $storage = $this->createMock(StorageClient::class);
         $storage->expects(self::never())->method('bucket');
 
         $public = $this->createMock(FilesystemOperator::class);
-        $public->expects(self::once())->method('fileExists')->with('social-feed/'.sha1($uri).'.jpg')->willReturn(true);
+        $public->expects(self::once())->method('fileExists')->with($path)->willReturn(true);
         $public->expects(self::never())->method('write');
+        $public->expects(self::once())->method('read')->with($path)->willReturn($content);
 
         $published = $this->createPublisher($storage, $public)->publish($uri);
 
-        self::assertSame('social-feed/'.sha1($uri).'.jpg', $published->path);
-        self::assertNull($published->width);
-        self::assertNull($published->height);
+        self::assertSame($path, $published->path);
+        self::assertSame(1, $published->width);
+        self::assertSame(1, $published->height);
     }
 
     public function testPublishRejectsObjectExceedingSizeMetadataWithoutDownloading(): void
