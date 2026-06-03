@@ -36,6 +36,7 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
+        "ext-protobuf": "*",
         "ext-zip": "*",
         "algolia/search-bundle": "^8.1",
         "api-platform/doctrine-orm": "^4.3",

@@ -12,11 +12,12 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Regression for the descriptor-pool crash: getJob() on a FAILED job whose error.details carry a
- * google.rpc.BadRequest used to throw "Class google.rpc.BadRequest hasn't been added to descriptor
- * pool" because the REST response parse eagerly unpacks the Any while that type is unregistered.
- * GcpVideoTranscoder preloads the gax known metadata types to register them; these tests prove the
- * crash exists without the preload and is fixed with it (run in isolated processes because the
- * protobuf descriptor pool is a global singleton).
+ * google.rpc.BadRequest used to throw while parsing the REST response, which eagerly unpacks the Any
+ * for that type while it is unregistered. The exact message depends on the protobuf runtime: pure-PHP
+ * reports "Class google.rpc.BadRequest hasn't been added to descriptor pool", the C extension reports
+ * "Type was not found". GcpVideoTranscoder preloads the gax known metadata types to register them;
+ * these tests prove the crash exists without the preload and is fixed with it (run in isolated
+ * processes because the protobuf descriptor pool is a global singleton).
  */
 final class TranscoderErrorDetailsPoolTest extends TestCase
 {
@@ -26,7 +27,7 @@ final class TranscoderErrorDetailsPoolTest extends TestCase
     public function testParsingFailedJobErrorDetailsThrowsWithoutPreload(): void
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/descriptor pool/');
+        $this->expectExceptionMessageMatches('/descriptor pool|Type was not found/');
 
         new Job()->mergeFromJsonString(self::FAILED_JOB_JSON);
     }
