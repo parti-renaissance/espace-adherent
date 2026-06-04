@@ -105,7 +105,7 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
         self::assertCount(0, $bot);
     }
 
-    public function testRateLimitReturns429(): void
+    public function testRateLimitEmitsErrorInStream(): void
     {
         $accessToken = $this->authenticateWithChatbotAccess();
 
@@ -118,7 +118,13 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
 
         $this->postJson(['message' => '11ème', 'agent_id' => 'antiseche'], $accessToken);
 
-        $this->assertResponseStatusCode(Response::HTTP_TOO_MANY_REQUESTS, $this->client->getResponse());
+        $response = $this->client->getResponse();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
+
+        $body = $this->client->getInternalResponse()->getContent();
+        self::assertStringContainsString('limite de questions pour cette minute', $body);
+        self::assertStringContainsString('retry_after', $body);
+        self::assertStringNotContainsString('data: "ok"', $body);
     }
 
     public function testUnknownAgentIdReturns400(): void
