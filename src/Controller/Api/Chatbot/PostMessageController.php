@@ -6,6 +6,7 @@ namespace App\Controller\Api\Chatbot;
 
 use App\Chatbot\ChatbotManager;
 use App\Chatbot\RateLimit\ChatbotRateLimitChecker;
+use App\Chatbot\RateLimit\Exception\ChatbotRateLimitExceededException;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
@@ -24,6 +25,14 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class PostMessageController extends AbstractController
 {
     private const MAX_MESSAGE_LENGTH = 4000;
+
+    private const array STREAM_HEADERS = [
+        'Content-Type' => 'text/event-stream; charset=utf-8',
+        'Cache-Control' => 'no-cache',
+        'X-Accel-Buffering' => 'no',
+        'x-vercel-ai-ui-message-stream' => 'v1',
+        'Connection' => 'keep-alive',
+    ];
 
     public function __construct(
         #[AutowireLocator('ai.agent', indexAttribute: 'name')]
@@ -62,7 +71,11 @@ class PostMessageController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $this->rateLimitChecker->check($user, $agentId);
+        try {
+            $this->rateLimitChecker->check($user, $agentId);
+        } catch (ChatbotRateLimitExceededException $exception) {
+            return $this->streamRateLimitError($exception);
+        }
 
         $agent = $this->agents->get($agentId);
         $thread = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
@@ -124,13 +137,25 @@ class PostMessageController extends AbstractController
                     }
                 }
             }
-        }, 200, [
-            'Content-Type' => 'text/event-stream; charset=utf-8',
-            'Cache-Control' => 'no-cache',
-            'X-Accel-Buffering' => 'no',
-            'x-vercel-ai-ui-message-stream' => 'v1',
-            'Connection' => 'keep-alive',
+        }, 200, self::STREAM_HEADERS + [
             'X-Chatbot-Thread-UUID' => $thread->getUuid()->toRfc4122(),
         ]);
+    }
+
+    private function streamRateLimitError(ChatbotRateLimitExceededException $exception): StreamedResponse
+    {
+        return new StreamedResponse(function () use ($exception): void {
+            $payload = json_encode([
+                'error' => $exception->getMessage(),
+                'retry_after' => $exception->retryAfter,
+            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE);
+
+            echo 'data: '.$payload."\n\n";
+
+            if (ob_get_level() > 0) {
+                ob_flush();
+            }
+            flush();
+        }, 200, self::STREAM_HEADERS);
     }
 }
