@@ -8,7 +8,7 @@ use Algolia\SearchBundle\SearchService as SearchServiceInterface;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AlgoliaIndexedEntityManager
+class AlgoliaIndexedEntityManager implements AlgoliaIndexerInterface
 {
     public function __construct(
         private readonly SearchServiceInterface $algolia,

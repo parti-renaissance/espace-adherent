@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\EntityListener;
 
-use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Algolia\AlgoliaIndexerInterface;
 use App\Entity\AlgoliaIndexedEntityInterface;
 
 class AlgoliaIndexListener
 {
-    public function __construct(private readonly AlgoliaIndexedEntityManager $manager)
+    public function __construct(private readonly AlgoliaIndexerInterface $manager)
     {
     }
 

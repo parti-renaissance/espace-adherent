@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin\Extension;
 
-use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Algolia\AlgoliaIndexerInterface;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AlgoliaIndexedEntityAdminExtension extends AbstractAdminExtension
 {
-    public function __construct(private readonly AlgoliaIndexedEntityManager $algoliaManager)
+    public function __construct(private readonly AlgoliaIndexerInterface $algoliaManager)
     {
     }
 
