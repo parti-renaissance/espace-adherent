@@ -102,6 +102,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$openAIApiKey', '%env(OPENAI_API_KEY)%')
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
         ->bind('$mediaCdnBaseUrl', '%env(MEDIA_CDN_BASE_URL)%')
+        ->bind('$timelineIndexerBaseUrl', '%env(TIMELINE_INDEXER_URL)%')
         ->bind('$friendlyCaptchaNewsletterSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%')
         ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
         ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
@@ -194,6 +195,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->alias(App\Video\Transcoding\TranscodedVideoProbeInterface::class, App\Video\Transcoding\HlsTranscodedVideoProbe::class);
     $services->alias(App\Video\Storage\VideoSourceArchiverInterface::class, App\Video\Storage\GcsVideoSourceArchiver::class);
     $services->alias(App\SocialNetwork\Image\Storage\FeedImagePublisherInterface::class, App\SocialNetwork\Image\Storage\FlysystemFeedImagePublisher::class);
+    $services->alias(App\Algolia\AlgoliaIndexerInterface::class, App\Algolia\AlgoliaIndexedEntityManager::class);
 
     $services->set(App\Twig\AssetRuntime::class)
         ->arg('$appVersion', '%env(APP_VERSION)%')

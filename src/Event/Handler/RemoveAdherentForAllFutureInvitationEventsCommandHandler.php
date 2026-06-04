@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Event\Handler;
 
-use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Algolia\AlgoliaIndexerInterface;
 use App\Entity\Agora;
 use App\Entity\Committee;
 use App\Entity\Event\RegistrationStatusEnum;
@@ -25,7 +25,7 @@ class RemoveAdherentForAllFutureInvitationEventsCommandHandler
         private readonly CommitteeRepository $committeeRepository,
         private readonly EventRepository $eventRepository,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
-        private readonly AlgoliaIndexedEntityManager $algoliaManager,
+        private readonly AlgoliaIndexerInterface $algoliaManager,
     ) {
     }
 

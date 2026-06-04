@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\JeMengage\Timeline\Handler;
 
-use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Algolia\AlgoliaIndexerInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\JeMengage\Timeline\Command\IndexAllItemsForAuthorCommand;
@@ -18,7 +18,7 @@ class IndexAllItemsForAuthorCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AlgoliaIndexedEntityManager $algoliaManager,
+        private readonly AlgoliaIndexerInterface $algoliaManager,
     ) {
     }
 
