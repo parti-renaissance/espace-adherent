@@ -27,12 +27,22 @@ class AuthorizationCodeGenerator
     public function generate(Adherent $user, string $codeChallenge, string $clientId, string $redirectUri): ?string
     {
         if (!Uuid::isValid($clientId)) {
+            $this->logger->error('Cannot mint an authorization code after signup activation: client_id is not a valid UUID.', [
+                'adherent' => $user->getUuidAsString(),
+                'client_id' => $clientId,
+            ]);
+
             return null;
         }
 
         $client = $this->clientRepository->findOneByUuid($clientId);
 
         if (!$client instanceof Client) {
+            $this->logger->error('Cannot mint an authorization code after signup activation: no OAuth client matches the given client_id.', [
+                'adherent' => $user->getUuidAsString(),
+                'client_id' => $clientId,
+            ]);
+
             return null;
         }
 
