@@ -64,7 +64,7 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         $this->manager->flush();
         $this->enableRanker();
 
-        $payload = $this->requestTimeline($token);
+        $payload = $this->requestTimeline($token, 0, 'sess-123');
 
         // Order is the indexer authority (A, MISSING, B); the orphan (no local row) is skipped -> [A, B].
         self::assertCount(2, $payload['hits']);
@@ -73,24 +73,46 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
 
         self::assertSame(2, $payload['nbHits']);
         self::assertSame(0, $payload['page']);
-        self::assertSame(1, $payload['nbPages']);
+        // With a session_id the total is unknown: while the indexer returns items, nbPages claims one more page.
+        self::assertSame(2, $payload['nbPages']);
         self::assertSame(10, $payload['hitsPerPage']);
     }
 
-    public function testCanaryPageBeyondFirstReturnsEmptyEnvelope(): void
+    public function testCanaryWithoutSessionUsesServerFallbackCursorAndPaginates(): void
     {
         $token = $this->canaryToken();
         $this->insertFeed(self::UUID_A, 'Indexer item A');
+        $this->insertFeed(self::UUID_B, 'Indexer item B');
         $this->manager->flush();
         $this->enableRanker();
 
-        $payload = $this->requestTimeline($token, 1);
+        // No session_id from the app: the controller mints a server-side fallback cursor (TimelineSessionResolver,
+        // persisted in cache) so legacy apps still paginate instead of being capped to a single page. nbPages = 2
+        // proves a cursor was supplied (pagination mode), not the single-page degrade (which would be nbPages = 1).
+        $payload = $this->requestTimeline($token);
 
-        self::assertSame([], $payload['hits']);
-        self::assertSame(0, $payload['nbHits']);
+        self::assertCount(2, $payload['hits']);
+        self::assertSame(0, $payload['page']);
+        self::assertSame(2, $payload['nbPages']);
+    }
+
+    public function testCanaryWithSessionRelaysSubsequentPagesInsteadOfEmpty(): void
+    {
+        $token = $this->canaryToken();
+        $this->insertFeed(self::UUID_A, 'Indexer item A');
+        $this->insertFeed(self::UUID_B, 'Indexer item B');
+        $this->manager->flush();
+        $this->enableRanker();
+
+        // page 1 relays a fresh get_items call (the indexer owns the cursor) and serves the returned batch
+        // instead of an empty envelope. nbPages = page + 2 (the indexer returned items).
+        $payload = $this->requestTimeline($token, 1, 'sess-123');
+
+        self::assertCount(2, $payload['hits']);
+        self::assertSame('Indexer item A', $payload['hits'][0]['title']);
+        self::assertSame('Indexer item B', $payload['hits'][1]['title']);
         self::assertSame(1, $payload['page']);
-        self::assertSame(1, $payload['nbPages']);
-        self::assertSame(10, $payload['hitsPerPage']);
+        self::assertSame(3, $payload['nbPages']);
     }
 
     public function testCanaryFallsBackToAlgoliaWhenRankerFails(): void
@@ -131,9 +153,14 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         );
     }
 
-    private function requestTimeline(string $token, int $page = 0): array
+    private function requestTimeline(string $token, int $page = 0, ?string $sessionId = null): array
     {
-        $this->client->request(Request::METHOD_GET, self::ENDPOINT.'?page='.$page, [], [], [
+        $uri = self::ENDPOINT.'?page='.$page;
+        if (null !== $sessionId) {
+            $uri .= '&session_id='.$sessionId;
+        }
+
+        $this->client->request(Request::METHOD_GET, $uri, [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $token",
         ]);
 
