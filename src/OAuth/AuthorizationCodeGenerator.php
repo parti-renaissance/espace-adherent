@@ -62,7 +62,10 @@ class AuthorizationCodeGenerator
             return null;
         }
 
-        parse_str((string) parse_url($response->getHeaderLine('location'), \PHP_URL_QUERY), $params);
+        $location = $response->getHeaderLine('location');
+        $separatorPosition = strpos($location, '?');
+        $queryString = false === $separatorPosition ? '' : substr($location, $separatorPosition + 1);
+        parse_str($queryString, $params);
         $code = $params['code'] ?? null;
 
         if (!\is_string($code) || '' === $code) {
