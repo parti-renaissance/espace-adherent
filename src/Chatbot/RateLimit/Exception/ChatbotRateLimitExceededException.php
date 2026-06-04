@@ -38,7 +38,7 @@ class ChatbotRateLimitExceededException extends TooManyRequestsHttpException
             $retryAfter,
             $limit,
             null,
-            '🚦 Le bot est victime de son succès : il a atteint sa capacité maximale pour aujourd\'hui. Ce n\'est pas vous, c\'est nous. Le service repart demain.',
+            'Le bot est victime de son succès : il a atteint sa capacité maximale pour aujourd\'hui. Ce n\'est pas vous, c\'est nous. Le service repart demain.',
         );
     }
 
@@ -61,12 +61,12 @@ class ChatbotRateLimitExceededException extends TooManyRequestsHttpException
     private static function buildTierMessage(ChatbotUserTier $tier, ChatbotRateLimitPeriod $period, int $limit): string
     {
         if (0 === $limit) {
-            return \sprintf('🔒 L\'accès au chatbot n\'est pas autorisé pour votre profil (%s).', $tier->label());
+            return \sprintf('L\'accès au chatbot n\'est pas autorisé pour votre profil (%s).', $tier->label());
         }
 
         return match ($period) {
-            ChatbotRateLimitPeriod::Minute => '⏱️ Vous avez atteint votre limite de questions pour cette minute. Patientez quelques instants et reposez votre question.',
-            ChatbotRateLimitPeriod::Hour => '🔄 Vous avez atteint votre limite de questions pour cette heure. Le compteur repart bientôt, repassez d\'ici peu.',
+            ChatbotRateLimitPeriod::Minute => 'Vous avez atteint votre limite de questions pour cette minute. Patientez quelques instants et reposez votre question.',
+            ChatbotRateLimitPeriod::Hour => 'Vous avez atteint votre limite de questions pour cette heure. Le compteur repart bientôt, repassez d\'ici peu.',
             ChatbotRateLimitPeriod::Day => self::buildDayMessage($tier),
         };
     }
@@ -74,9 +74,9 @@ class ChatbotRateLimitExceededException extends TooManyRequestsHttpException
     private static function buildDayMessage(ChatbotUserTier $tier): string
     {
         if (\in_array($tier, self::UPSELL_TIERS, true)) {
-            return '📅 Vous avez atteint votre limite de questions pour aujourd\'hui, le compteur repart demain. Envie d\'un accès plus large ? Les adhérents disposent d\'un quota nettement plus généreux.';
+            return 'Vous avez atteint votre limite de questions pour aujourd\'hui, le compteur repart demain. Envie d\'un accès plus large ? Les adhérents disposent d\'un quota nettement plus généreux.';
         }
 
-        return '📅 Vous avez atteint votre limite de questions pour aujourd\'hui. Le compteur repart demain.';
+        return 'Vous avez atteint votre limite de questions pour aujourd\'hui. Le compteur repart demain.';
     }
 }
