@@ -118,13 +118,13 @@ importers:
         version: 6.15.2
       react:
         specifier: ^19.2.1
-        version: 19.2.6
+        version: 19.2.7
       react-dom:
         specifier: ^19.2.1
-        version: 19.2.6(react@19.2.6)
+        version: 19.2.7(react@19.2.7)
       react-zoom-pan-pinch:
         specifier: ^3.7.0
-        version: 3.7.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        version: 3.7.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       regenerator-runtime:
         specifier: ^0.14.1
         version: 0.14.1
@@ -3014,10 +3014,10 @@ packages:
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
-  react-dom@19.2.6:
-    resolution: {integrity: sha512-0prMI+hvBbPjsWnxDLxlCGyM8PN6UuWjEUCYmZhO67xIV9Xasa/r/vDnq+Xyq4Lo27g8QSbO5YzARu0D1Sps3g==}
+  react-dom@19.2.7:
+    resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
     peerDependencies:
-      react: ^19.2.6
+      react: ^19.2.7
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -3029,8 +3029,8 @@ packages:
       react: '*'
       react-dom: '*'
 
-  react@19.2.6:
-    resolution: {integrity: sha512-sfWGGfavi0xr8Pg0sVsyHMAOziVYKgPLNrS7ig+ivMNb3wbCBw3KxtflsGBAwD3gYQlE/AEZsTLgToRrSCjb0Q==}
+  react@19.2.7:
+    resolution: {integrity: sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -6686,19 +6686,19 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  react-dom@19.2.6(react@19.2.6):
+  react-dom@19.2.7(react@19.2.7):
     dependencies:
-      react: 19.2.6
+      react: 19.2.7
       scheduler: 0.27.0
 
   react-is@16.13.1: {}
 
-  react-zoom-pan-pinch@3.7.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+  react-zoom-pan-pinch@3.7.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
-      react: 19.2.6
-      react-dom: 19.2.6(react@19.2.6)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
 
-  react@19.2.6: {}
+  react@19.2.7: {}
 
   read-cache@1.0.0:
     dependencies:
