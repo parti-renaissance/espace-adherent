@@ -9,12 +9,14 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\DataProvider;
+use App\JeMengage\Timeline\Indexer\IndexerTimelineProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
+use App\JeMengage\Timeline\UserScopeTargetResolver;
 use App\Repository\Geo\ZoneRepository;
-use App\Scope\ScopeEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -36,14 +38,27 @@ class GetTimelineFeedsController extends AbstractController
         TimelineFeedTypeEnum::SOCIAL_NETWORK_POST,
     ];
 
-    public function __construct(private readonly ZoneRepository $zoneRepository)
-    {
+    public function __construct(
+        private readonly ZoneRepository $zoneRepository,
+        private readonly UserScopeTargetResolver $scopeTargetResolver,
+        private readonly IndexerTimelineProvider $indexerTimelineProvider,
+    ) {
     }
 
     public function __invoke(#[CurrentUser] Adherent $user, Request $request, DataProvider $dataProvider): JsonResponse
     {
         if (($page = $request->query->getInt('page')) < 0) {
             $page = 0;
+        }
+
+        // Canary users read the feed from the external indexer instead of Algolia; view params
+        // (?zone/?committee/?instance) are intentionally ignored for them in v1.
+        if ($user->canaryTester) {
+            try {
+                return $this->json($this->indexerTimelineProvider->findItems($user, $page));
+            } catch (\RuntimeException $exception) {
+                throw new ServiceUnavailableHttpException(null, 'Timeline indexer unavailable.', $exception);
+            }
         }
 
         $userId = $user->getId();
@@ -240,56 +255,10 @@ class GetTimelineFeedsController extends AbstractController
     {
         $clause = '(NOT type:publication OR audience.scope_targets:false';
 
-        foreach ($this->getUserScopeTargetKeys($user) as $key) {
+        foreach ($this->scopeTargetResolver->resolve($user) as $key) {
             $clause .= ' OR audience.include:"scope_targets:'.$key.'"';
         }
 
         return $clause.')';
-    }
-
-    /**
-     * Returns all scope_targets keys for the user:
-     * - Direct roles: "{role}"
-     * - Team memberships: "{role}:{member_role}" + "{role}:*" (wildcard)
-     *
-     * @return string[]
-     */
-    private function getUserScopeTargetKeys(Adherent $user): array
-    {
-        $keys = [];
-
-        // Direct zone-based roles
-        foreach ($user->getZoneBasedRoles() as $zoneBasedRole) {
-            if ($type = $zoneBasedRole->getType()) {
-                $keys[] = $type;
-            }
-        }
-
-        // Direct roles outside ZoneBasedRole
-        if ($user->isAnimator()) {
-            $keys[] = ScopeEnum::ANIMATOR;
-        }
-        if ($user->isPresidentOfAgora()) {
-            $keys[] = ScopeEnum::AGORA_PRESIDENT;
-        }
-        if ($user->isGeneralSecretaryOfAgora()) {
-            $keys[] = ScopeEnum::AGORA_GENERAL_SECRETARY;
-        }
-        if ($user->hasNationalRole()) {
-            $keys[] = ScopeEnum::NATIONAL;
-        }
-
-        // Team memberships via delegated accesses
-        foreach ($user->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            $type = $delegatedAccess->getType();
-            $roleCode = $delegatedAccess->roleCode;
-
-            if ($type && $roleCode) {
-                $keys[] = $type.':'.$roleCode;
-                $keys[] = $type.':*';
-            }
-        }
-
-        return array_values(array_unique($keys));
     }
 }

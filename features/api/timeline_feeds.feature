@@ -83,7 +83,7 @@ Feature:
             """
 
     Scenario: As a logged-in user with multiple zone-based roles (president_departmental_assembly) I can get timeline feeds
-        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/je-mengage/timeline_feeds"
         Then the response status code should be 200
         And the response should be in JSON
@@ -145,7 +145,7 @@ Feature:
             """
 
     Scenario: editable on a timeline action falls back to "all my scopes with ACTIONS feature" without ?scope=
-        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/je-mengage/timeline_feeds"
         Then the response status code should be 200
         And the JSON nodes should match:

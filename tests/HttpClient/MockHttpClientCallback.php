@@ -11,9 +11,11 @@ class MockHttpClientCallback
 {
     public function __invoke(string $method, string $url, array $options = []): ResponseInterface
     {
+        // A host without a fixture file yields a benign empty 200 rather than crashing: e.g. the timeline
+        // indexer push (now always enabled) targets its real host, which has no fixture and needs no body.
         $body = $this->loadFixtures(parse_url($url));
 
-        return new MockResponse($body);
+        return new MockResponse($body ?? '');
     }
 
     private function loadFixtures(array $urlParts): ?string

@@ -102,7 +102,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$openAIApiKey', '%env(OPENAI_API_KEY)%')
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
         ->bind('$mediaCdnBaseUrl', '%env(MEDIA_CDN_BASE_URL)%')
-        ->bind('$timelineIndexerBaseUrl', '%env(TIMELINE_INDEXER_URL)%')
         ->bind('$friendlyCaptchaNewsletterSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%')
         ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
         ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
@@ -255,7 +254,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(App\AdherentMessage\AdherentMessageManager::class)
         ->arg('$senders', tagged_iterator('app.adherent_message.sender'));
 
-    $services->set(App\JeMengage\Timeline\DataProvider::class)
+    $services->set(App\JeMengage\Timeline\FeedProcessorPipeline::class)
         ->arg('$processors', tagged_iterator('app.timeline.feed_processor'));
 
     $services->set(App\JeMengage\Alert\AlertProvider::class)

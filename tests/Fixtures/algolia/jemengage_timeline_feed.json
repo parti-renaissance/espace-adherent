@@ -203,9 +203,9 @@
       "date": "2026-03-01T10:00:00+01:00",
       "time_zone": "Europe/Paris",
       "author": {
-        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
-        "first_name": "Damien",
-        "last_name": "Durock",
+        "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+        "first_name": "Referent",
+        "last_name": "Referent",
         "role": "Président",
         "instance": "Assemblée départementale",
         "instance_key": "president_departmental_assembly:92",

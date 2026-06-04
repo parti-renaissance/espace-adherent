@@ -86,7 +86,7 @@ class PushTimelineFeedCommandHandlerTest extends AbstractKernelTestCase
         return new PushTimelineFeedCommandHandler(
             $this->manager,
             new IndexerPayloadFactory(new NullLogger()),
-            new IndexerClient($http, 'https://indexer.test', new NullLogger()),
+            new IndexerClient($http, new NullLogger()),
         );
     }
 
