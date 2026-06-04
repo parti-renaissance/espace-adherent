@@ -93,11 +93,12 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(10, $payload['hitsPerPage']);
     }
 
-    public function testCanaryReturns503WhenRankerReturnsUnusablePayload(): void
+    public function testCanaryFallsBackToAlgoliaWhenRankerFails(): void
     {
         $token = $this->canaryToken();
         // The ranker is configured but answers with a payload missing "items": getItems throws a
-        // RuntimeException, which the controller maps to a 503. (An empty TIMELINE_RANKER_URL is a config
+        // RuntimeException. A canary must never break the feed, so the controller silently falls back to
+        // the regular Algolia path instead of returning a 503. (An empty TIMELINE_RANKER_URL is a config
         // error handled upstream — the scoped client fails to build, a 500 — so it is not exercised here.)
         $_SERVER['TIMELINE_RANKER_URL'] = $_ENV['TIMELINE_RANKER_URL'] = self::RANKER_INVALID_URL;
 
@@ -105,7 +106,17 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
             'HTTP_AUTHORIZATION' => "Bearer $token",
         ]);
 
-        self::assertSame(Response::HTTP_SERVICE_UNAVAILABLE, $this->client->getResponse()->getStatusCode());
+        $response = $this->client->getResponse();
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode(), $response->getContent());
+
+        $payload = json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+
+        // Algolia-envelope shape proves the fallback ran: hitsPerPage is 20 there, vs 10 on the indexer path.
+        self::assertArrayHasKey('hits', $payload);
+        self::assertArrayHasKey('nbHits', $payload);
+        self::assertArrayHasKey('page', $payload);
+        self::assertArrayHasKey('nbPages', $payload);
+        self::assertSame(20, $payload['hitsPerPage']);
     }
 
     private function canaryToken(): string

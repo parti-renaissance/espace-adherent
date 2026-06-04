@@ -15,8 +15,8 @@ use Symfony\Component\Uid\Uuid;
  * Canary read path: delegates selection and ordering to the external indexer (POST /get_items), hydrates
  * the documents from the local timeline_feed mirror, applies the existing FeedProcessor chain and returns
  * an Algolia-shaped envelope. V1 is a single top-10 page; pages beyond the first return an empty envelope
- * so the app's infinite scroll stops. Any indexer failure propagates as a RuntimeException (mapped to a
- * 503 by the controller) — there is no Algolia fallback for canary users.
+ * so the app's infinite scroll stops. Any indexer failure propagates as a RuntimeException; the controller
+ * catches it and falls back to the regular Algolia feed, so a canary defect never breaks the timeline.
  */
 class IndexerTimelineProvider
 {

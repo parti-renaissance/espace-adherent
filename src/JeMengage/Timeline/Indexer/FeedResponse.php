@@ -7,7 +7,8 @@ namespace App\JeMengage\Timeline\Indexer;
 /**
  * Typed view over the indexer get_items response. The item order is the indexer ranking authority and
  * must be preserved downstream. An invalid payload (missing items array, or an entry without a usable
- * external_id) throws a domain RuntimeException, mapped to a 503 by the controller.
+ * external_id) throws a domain RuntimeException; for a canary the controller catches it and falls back to
+ * the regular Algolia feed.
  */
 class FeedResponse
 {

@@ -28,7 +28,7 @@ class TimelineRankerClientTest extends TestCase
         [$method, $url, $options] = $requests[0];
         self::assertSame('POST', $method);
         self::assertSame('https://ranker.test/get_items', $url);
-        self::assertSame(42, json_decode($options['body'], true)['user_id']);
+        self::assertSame('42', json_decode($options['body'], true)['user_id']);
         self::assertSame(['a', 'b'], $response->getExternalIds());
     }
 
