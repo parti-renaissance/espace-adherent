@@ -48,7 +48,7 @@ class UserProfile implements \JsonSerializable
     public function jsonSerialize(): array
     {
         $body = [
-            'user_id' => $this->userId,
+            'user_id' => (string) $this->userId,
             'tags' => $this->tags,
             'zones' => $this->zones,
             'committees' => $this->committees,

@@ -46,7 +46,7 @@ final class UserProfileFactoryTest extends TestCase
 
         $body = $this->factory($user, ['national'])->create($user)->jsonSerialize();
 
-        self::assertSame(42, $body['user_id']);
+        self::assertSame('42', $body['user_id']);
         self::assertSame(['jeune', 'militant'], $body['tags']);
         self::assertSame(['region:11', 'city:75056'], $body['zones']);
         self::assertSame([self::COMMITTEE_UUID], $body['committees']);

@@ -13,10 +13,10 @@ use App\JeMengage\Timeline\Indexer\IndexerTimelineProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\JeMengage\Timeline\UserScopeTargetResolver;
 use App\Repository\Geo\ZoneRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -42,6 +42,7 @@ class GetTimelineFeedsController extends AbstractController
         private readonly ZoneRepository $zoneRepository,
         private readonly UserScopeTargetResolver $scopeTargetResolver,
         private readonly IndexerTimelineProvider $indexerTimelineProvider,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -52,12 +53,20 @@ class GetTimelineFeedsController extends AbstractController
         }
 
         // Canary users read the feed from the external indexer instead of Algolia; view params
-        // (?zone/?committee/?instance) are intentionally ignored for them in v1.
+        // (?zone/?committee/?instance) are intentionally ignored for them in v1. If the experimental
+        // ranker fails, the request falls through to the regular Algolia path below — a canary defect
+        // must never deprive the user of a feed.
         if ($user->canaryTester) {
             try {
                 return $this->json($this->indexerTimelineProvider->findItems($user, $page));
             } catch (\RuntimeException $exception) {
-                throw new ServiceUnavailableHttpException(null, 'Timeline indexer unavailable.', $exception);
+                // Canary fallback: the experimental ranker is unavailable — serve the regular Algolia
+                // feed instead of failing, so the user's timeline never breaks.
+                $this->logger->warning('Canary timeline ranker failed, falling back to Algolia.', [
+                    'exception' => $exception,
+                    'user_id' => $user->getId(),
+                ]);
+                // No return/throw: execution falls through to the Algolia path below.
             }
         }
 
