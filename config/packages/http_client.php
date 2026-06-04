@@ -63,6 +63,19 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ogone.client' => [
                     'base_uri' => '%env(OGONE_DIRECT_URL)%',
                 ],
+                'timeline_indexer.client' => [
+                    'base_uri' => '%env(TIMELINE_INDEXER_URL)%',
+                    'headers' => [
+                        'Accept' => 'application/json',
+                    ],
+                ],
+                'timeline_ranker.client' => [
+                    'base_uri' => '%env(TIMELINE_RANKER_URL)%',
+                    'timeout' => 5.0,
+                    'headers' => [
+                        'Accept' => 'application/json',
+                    ],
+                ],
             ],
         ],
     ]);

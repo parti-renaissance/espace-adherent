@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Timeline;
 
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Timeline\TimelineFeedRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * Rows are written via raw DBAL (TimelineFeedWriter) and only ever hydrated by Doctrine on read.
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: TimelineFeedRepository::class)]
 class TimelineFeed
 {
     use EntityIdentityTrait;

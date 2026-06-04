@@ -7,13 +7,12 @@ namespace App\JeMengage\Timeline;
 use Algolia\SearchBundle\SearchService;
 use App\Entity\Adherent;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
-use App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface;
 
 class DataProvider
 {
     public function __construct(
         private readonly SearchService $search,
-        private readonly iterable $processors,
+        private readonly FeedProcessorPipeline $pipeline,
     ) {
     }
 
@@ -26,26 +25,12 @@ class DataProvider
             'tagFilters' => $tagFilters,
         ]);
 
-        $timelineFeeds['hits'] = $this->processItems($user, $timelineFeeds['hits']);
+        $timelineFeeds['hits'] = $this->pipeline->process($user, $timelineFeeds['hits']);
 
         if (isset($timelineFeeds['params'])) {
             unset($timelineFeeds['params']);
         }
 
         return $timelineFeeds;
-    }
-
-    private function processItems(Adherent $user, array $items): array
-    {
-        foreach ($items as &$item) {
-            foreach ($this->processors as $processor) {
-                /** @var FeedProcessorInterface $processor */
-                if ($processor->supports($item, $user)) {
-                    $item = $processor->process($item, $user);
-                }
-            }
-        }
-
-        return $items;
     }
 }

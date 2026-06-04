@@ -23,13 +23,12 @@ class IndexerClientTest extends TestCase
             return new MockResponse('{"external_id":"evt-1","hot_score":1.2,"created":true}');
         }, 'https://indexer.test');
 
-        new IndexerClient($http, 'https://indexer.test', new NullLogger())->index($this->payload());
+        new IndexerClient($http, new NullLogger())->index($this->payload());
 
         self::assertCount(1, $requests);
         [$method, $url, $options] = $requests[0];
         self::assertSame('POST', $method);
         self::assertSame('https://indexer.test/index', $url);
-        self::assertStringContainsString('application/json', implode("\n", $options['headers']));
         self::assertSame('evt-1', json_decode($options['body'], true)['external_id']);
     }
 
@@ -42,7 +41,7 @@ class IndexerClientTest extends TestCase
             return new MockResponse('[]');
         }, 'https://indexer.test');
 
-        new IndexerClient($http, 'https://indexer.test', new NullLogger())->indexBatch([$this->payload('a'), $this->payload('b')]);
+        new IndexerClient($http, new NullLogger())->indexBatch([$this->payload('a'), $this->payload('b')]);
 
         [$url, $options] = $requests[0];
         self::assertSame('https://indexer.test/index/batch', $url);
@@ -61,7 +60,7 @@ class IndexerClientTest extends TestCase
             return new MockResponse('[]');
         }, 'https://indexer.test');
 
-        new IndexerClient($http, 'https://indexer.test', new NullLogger())->indexBatch([]);
+        new IndexerClient($http, new NullLogger())->indexBatch([]);
 
         self::assertSame(0, $requests);
     }
@@ -72,7 +71,7 @@ class IndexerClientTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        new IndexerClient($http, 'https://indexer.test', new NullLogger())->index($this->payload());
+        new IndexerClient($http, new NullLogger())->index($this->payload());
     }
 
     public function testNonRetryableStatusIsLoggedNotThrown(): void
@@ -81,21 +80,7 @@ class IndexerClientTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())->method('error');
 
-        new IndexerClient($http, 'https://indexer.test', $logger)->index($this->payload());
-    }
-
-    public function testNoRequestWhenIndexerUrlNotConfigured(): void
-    {
-        $requests = 0;
-        $http = new MockHttpClient(function () use (&$requests) {
-            ++$requests;
-
-            return new MockResponse('');
-        }, 'https://indexer.test');
-
-        new IndexerClient($http, '', new NullLogger())->index($this->payload());
-
-        self::assertSame(0, $requests, 'Empty TIMELINE_INDEXER_URL disables the push (no-op).');
+        new IndexerClient($http, $logger)->index($this->payload());
     }
 
     private function payload(string $externalId = 'evt-1'): ItemPayload

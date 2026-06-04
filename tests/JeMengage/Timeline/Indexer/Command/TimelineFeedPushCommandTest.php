@@ -89,7 +89,7 @@ class TimelineFeedPushCommandTest extends AbstractKernelTestCase
         return new TimelineFeedPushCommand(
             $this->manager,
             new IndexerPayloadFactory(new NullLogger()),
-            new IndexerClient($http, 'https://indexer.test', new NullLogger()),
+            new IndexerClient($http, new NullLogger()),
         );
     }
 

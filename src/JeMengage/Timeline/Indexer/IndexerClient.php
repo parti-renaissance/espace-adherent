@@ -8,14 +8,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Thin client over the external indexer (call-indexer.txt). Single items go to POST /index, batches
- * to POST /index/batch as a bare JSON array. The Content-Type is set by the `json` option.
- *
- * The base URL is optional: when TIMELINE_INDEXER_URL is empty the indexer is considered disabled
- * and every call is a logged no-op (the mirror still works, only the push is skipped). This is why
- * the request targets the full URL on the default HttpClient rather than a scoped client — a scoped
- * client validates its base_uri at construction and would fail to boot dev/test/CI (and prod before
- * the secret is set).
+ * Thin client over the external indexer (call-indexer.txt). Single items go to POST /index, batches to
+ * POST /index/batch as a bare JSON array. The base URL and Accept header live in the client config: the
+ * framework scoped client timeline_indexer.client (config/packages/http_client.php), autowired here by
+ * argument name ($timelineIndexerClient). TIMELINE_INDEXER_URL must be an origin (scheme + host): the
+ * endpoints are absolute-path references (RFC 3986). The Content-Type is set by the `json` option.
  *
  * Retry policy: 5xx and 429 throw so Messenger retries; other 4xx are logged and swallowed
  * (non-retryable — e.g. a 422 must never loop).
@@ -23,8 +20,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class IndexerClient
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
-        private readonly string $timelineIndexerBaseUrl,
+        private readonly HttpClientInterface $timelineIndexerClient,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -48,16 +44,7 @@ class IndexerClient
 
     private function send(string $path, array $body): void
     {
-        $baseUrl = rtrim(trim($this->timelineIndexerBaseUrl), '/');
-
-        if ('' === $baseUrl) {
-            $this->logger->debug('Timeline indexer URL not configured; push skipped.', ['path' => $path]);
-
-            return;
-        }
-
-        $response = $this->httpClient->request('POST', $baseUrl.$path, [
-            'headers' => ['Accept' => 'application/json'],
+        $response = $this->timelineIndexerClient->request('POST', $path, [
             'json' => $body,
         ]);
 
