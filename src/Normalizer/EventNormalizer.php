@@ -46,6 +46,10 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             }
 
             $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object);
+
+            if ($event['editable']) {
+                $event['edit_link'] = true;
+            }
         }
 
         if ($object instanceof Event && $object->isNational()) {

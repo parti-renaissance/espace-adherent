@@ -172,6 +172,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "editable": true,
+                        "edit_link": true,
                         "user_registered_at": null,
                         "object_state": "full"
                     },
@@ -236,6 +237,7 @@ Feature:
                         "image_url": null,
                         "image": null,
                         "editable": true,
+                        "edit_link": true,
                         "user_registered_at": null,
                         "object_state": "full"
                     }

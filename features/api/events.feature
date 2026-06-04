@@ -653,7 +653,8 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
-                        "editable": true
+                        "editable": true,
+                        "edit_link": true
                     }
                 ]
             }
@@ -950,7 +951,8 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
-                        "editable": true
+                        "editable": true,
+                        "edit_link": true
                     },
                     {
                         "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -1525,6 +1527,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": false
             }
@@ -1728,6 +1731,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": false
             }
@@ -2042,6 +2046,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": true
             }
@@ -2450,6 +2455,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": false
             }
@@ -2545,6 +2551,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": false
             }
@@ -2760,6 +2767,7 @@ Feature:
                 "image_url": null,
                 "image": null,
                 "editable": true,
+                "edit_link": true,
                 "hidden": false,
                 "pinned": false,
                 "object_state": "full"
