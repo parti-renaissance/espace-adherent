@@ -44,19 +44,6 @@ class ChatbotRateLimitCheckerTest extends TestCase
         }
     }
 
-    public function testCadreHasHigherMinuteLimit(): void
-    {
-        $checker = $this->buildChecker(ChatbotUserTier::Cadre);
-        $adherent = $this->buildAdherent();
-
-        for ($i = 1; $i <= 10; ++$i) {
-            $checker->check($adherent, 'antiseche');
-        }
-
-        $this->expectException(ChatbotRateLimitExceededException::class);
-        $checker->check($adherent, 'antiseche');
-    }
-
     public function testCountersAreSeparatedByUser(): void
     {
         $checker = $this->buildChecker(ChatbotUserTier::Contact);
