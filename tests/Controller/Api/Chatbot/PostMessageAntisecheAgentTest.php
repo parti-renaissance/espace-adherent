@@ -39,11 +39,7 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
 
     private function resetChatbotRateLimiter(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
-        self::getContainer()
-            ->get('limiter.bot_chatbot')
-            ->create('chatbot_antiseche_'.$adherent->getUuid()->toRfc4122())
-            ->reset();
+        self::getContainer()->get('cache.rate_limiter')->clear();
     }
 
     protected function tearDown(): void
@@ -115,12 +111,12 @@ class PostMessageAntisecheAgentTest extends AbstractApiTestCase
 
         DummyAntisecheAgent::willReturn(new TextResult('ok'));
 
-        for ($i = 1; $i <= 60; ++$i) {
+        for ($i = 1; $i <= 10; ++$i) {
             $this->postJson(['message' => "req $i", 'agent_id' => 'antiseche'], $accessToken);
             $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         }
 
-        $this->postJson(['message' => '21ème', 'agent_id' => 'antiseche'], $accessToken);
+        $this->postJson(['message' => '11ème', 'agent_id' => 'antiseche'], $accessToken);
 
         $this->assertResponseStatusCode(Response::HTTP_TOO_MANY_REQUESTS, $this->client->getResponse());
     }
