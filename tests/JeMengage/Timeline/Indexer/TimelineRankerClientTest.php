@@ -32,6 +32,37 @@ class TimelineRankerClientTest extends TestCase
         self::assertSame(['a', 'b'], $response->getExternalIds());
     }
 
+    public function testGetItemsForwardsSessionIdAlongsideProfile(): void
+    {
+        $requests = [];
+        $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests) {
+            $requests[] = $options;
+
+            return new MockResponse('{"items":[]}');
+        }, 'https://ranker.test');
+
+        new TimelineRankerClient($http)->getItems($this->profile(), 'sess-123');
+
+        // session_id rides as a sibling of the (server-derived) profile fields in the same JSON body.
+        $body = json_decode($requests[0]['body'], true);
+        self::assertSame('sess-123', $body['session_id']);
+        self::assertSame('42', $body['user_id']);
+    }
+
+    public function testGetItemsOmitsSessionIdWhenNotProvided(): void
+    {
+        $requests = [];
+        $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests) {
+            $requests[] = $options;
+
+            return new MockResponse('{"items":[]}');
+        }, 'https://ranker.test');
+
+        new TimelineRankerClient($http)->getItems($this->profile());
+
+        self::assertArrayNotHasKey('session_id', json_decode($requests[0]['body'], true));
+    }
+
     public function testGetItemsThrowsOnServerError(): void
     {
         $http = new MockHttpClient(new MockResponse('', ['http_code' => 503]), 'https://ranker.test');

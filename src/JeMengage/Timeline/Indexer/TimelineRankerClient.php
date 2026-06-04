@@ -24,10 +24,15 @@ class TimelineRankerClient
     {
     }
 
-    public function getItems(UserProfile $profile): FeedResponse
+    public function getItems(UserProfile $profile, ?string $sessionId = null): FeedResponse
     {
+        $body = $profile->jsonSerialize();
+        if (null !== $sessionId) {
+            $body['session_id'] = $sessionId;
+        }
+
         $response = $this->timelineRankerClient->request('POST', '/get_items', [
-            'json' => $profile,
+            'json' => $body,
         ]);
 
         if ($response->getStatusCode() >= 300) {

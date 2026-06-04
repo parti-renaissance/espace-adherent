@@ -14,14 +14,12 @@ use Symfony\Component\Uid\Uuid;
 /**
  * Canary read path: delegates selection and ordering to the external indexer (POST /get_items), hydrates
  * the documents from the local timeline_feed mirror, applies the existing FeedProcessor chain and returns
- * an Algolia-shaped envelope. V1 is a single top-10 page; pages beyond the first return an empty envelope
- * so the app's infinite scroll stops. Any indexer failure propagates as a RuntimeException; the controller
- * catches it and falls back to the regular Algolia feed, so a canary defect never breaks the timeline.
+ * an Algolia-shaped envelope. Any indexer failure propagates as a RuntimeException; the controller catches
+ * it and falls back to the regular Algolia feed, so a canary defect never breaks the timeline.
  */
 class IndexerTimelineProvider
 {
     private const int PAGE_SIZE = 10;
-    private const int OVER_FETCH = 3;
 
     public function __construct(
         private readonly UserProfileFactory $profileFactory,
@@ -32,33 +30,31 @@ class IndexerTimelineProvider
     ) {
     }
 
-    public function findItems(Adherent $user, int $page): array
+    public function findItems(Adherent $user, int $page, string $sessionId): array
     {
-        if ($page >= 1) {
-            return $this->envelope([], $page);
-        }
+        $response = $this->rankerClient->getItems($this->profileFactory->create($user), $sessionId);
 
-        $response = $this->rankerClient->getItems($this->profileFactory->create($user));
-
-        // Indexer-ranked external_ids, valid UUIDs only, over-fetched to absorb skipped orphans.
+        // Indexer-ranked external_ids, valid UUIDs only, kept in the indexer order (the ranking authority).
+        // No over-fetch/slice: the indexer de-dupes by what it returned for this session, so trimming the
+        // batch here would permanently drop items it has already marked as seen.
         $orderedIds = [];
         foreach ($response->getExternalIds() as $externalId) {
             if (Uuid::isValid($externalId)) {
                 $orderedIds[] = $externalId;
             }
         }
-        $candidateIds = \array_slice($orderedIds, 0, self::PAGE_SIZE * self::OVER_FETCH);
 
         // Hydrate then re-order per the indexer authority (the SQL IN clause does not preserve order);
-        // an indexer item without a local mirror row (depublished/deleted) is skipped silently.
+        // an indexer item without a local mirror row (depublished/deleted) is skipped silently. Skipped
+        // orphans yield a short page — accepted (the next scroll fills in).
         $rowsByUuid = [];
-        foreach ($this->repository->findByUuids($candidateIds) as $row) {
+        foreach ($this->repository->findByUuids($orderedIds) as $row) {
             /** @var TimelineFeed $row */
             $rowsByUuid[$row->getUuid()->toRfc4122()] = $row;
         }
 
         $displays = [];
-        foreach ($candidateIds as $externalId) {
+        foreach ($orderedIds as $externalId) {
             if (isset($rowsByUuid[$externalId])) {
                 $displays[] = $rowsByUuid[$externalId]->display;
             } else {
@@ -66,18 +62,24 @@ class IndexerTimelineProvider
             }
         }
 
-        $hits = \array_slice($this->pipeline->process($user, $displays), 0, self::PAGE_SIZE);
+        $hits = $this->pipeline->process($user, $displays);
 
-        return $this->envelope($hits, $page);
+        // nbPages over an unknown total: while the indexer keeps returning items, claim one more page
+        // (page + 2) so the app keeps scrolling; when it returns none, this is the last page (page + 1).
+        // The signal is keyed on what the indexer returned, not on the hydrated hit count — an all-orphan
+        // batch yields zero hits while the stream is not exhausted.
+        $nbPages = [] !== $orderedIds ? $page + 2 : $page + 1;
+
+        return $this->envelope($hits, $page, $nbPages);
     }
 
-    private function envelope(array $hits, int $page): array
+    private function envelope(array $hits, int $page, int $nbPages): array
     {
         return [
             'hits' => $hits,
             'nbHits' => \count($hits),
             'page' => $page,
-            'nbPages' => 1,
+            'nbPages' => $nbPages,
             'hitsPerPage' => self::PAGE_SIZE,
         ];
     }

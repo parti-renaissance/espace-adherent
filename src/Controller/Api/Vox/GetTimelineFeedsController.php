@@ -10,6 +10,7 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\Indexer\IndexerTimelineProvider;
+use App\JeMengage\Timeline\Indexer\TimelineSessionResolver;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\JeMengage\Timeline\UserScopeTargetResolver;
 use App\Repository\Geo\ZoneRepository;
@@ -42,6 +43,7 @@ class GetTimelineFeedsController extends AbstractController
         private readonly ZoneRepository $zoneRepository,
         private readonly UserScopeTargetResolver $scopeTargetResolver,
         private readonly IndexerTimelineProvider $indexerTimelineProvider,
+        private readonly TimelineSessionResolver $sessionResolver,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -58,7 +60,16 @@ class GetTimelineFeedsController extends AbstractController
         // must never deprive the user of a feed.
         if ($user->canaryTester) {
             try {
-                return $this->json($this->indexerTimelineProvider->findItems($user, $page));
+                $appSessionId = trim((string) $request->query->get('session_id'));
+                $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? null : $appSessionId);
+
+                if ($sessionId) {
+                    return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
+                }
+
+                $this->logger->warning('Canary timeline: no persistent session cursor, falling back to Algolia.', [
+                    'user_id' => $user->getId(),
+                ]);
             } catch (\RuntimeException $exception) {
                 // Canary fallback: the experimental ranker is unavailable — serve the regular Algolia
                 // feed instead of failing, so the user's timeline never breaks.
