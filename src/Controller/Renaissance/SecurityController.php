@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Entity\AdherentResetPasswordToken;
@@ -76,12 +77,12 @@ class SecurityController extends AbstractController
             $email = $form->get('email')->getData();
 
             if ($adherent = $adherentRepository->findOneByEmail($email)) {
-                $handler->handle($adherent);
+                $handler->handle($adherent, $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
             }
 
             $this->addFlash('reset_password_sent', $email);
 
-            return $this->redirectToRoute('app_forgot_password');
+            return $this->redirectToRoute('app_forgot_password', $this->appDomainParams($request));
         }
 
         return $this->renderSecurityTheme($request, $appUrlManager, 'forgot_password.html.twig', [

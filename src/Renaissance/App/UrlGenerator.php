@@ -49,7 +49,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateLoginLink(): string
     {
-        return $this->urlGenerator->generate('app_renaissance_login');
+        return $this->urlGenerator->generate('app_renaissance_login', $this->appHostParam());
     }
 
     public function generateLogout(): string
