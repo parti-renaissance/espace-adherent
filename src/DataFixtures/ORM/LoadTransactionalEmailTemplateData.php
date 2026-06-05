@@ -6,6 +6,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Email\EmailSender;
 use App\Entity\Email\TransactionalEmailTemplate;
+use App\Mailer\Message\Campaign\CampaignWelcomeMessage;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -46,6 +47,12 @@ class LoadTransactionalEmailTemplateData extends Fixture implements DependentFix
         $newsletterConfirmation->sender = $this->getReference(LoadEmailSenderData::SENDER_NE_PAS_REPONDRE_RENAISSANCE, EmailSender::class);
         $newsletterConfirmation->setContent('<!DOCTYPE html><html lang="fr"><body><p>Bienvenue&nbsp;! Confirmez votre inscription : {{confirmation_link}}</p></body></html>');
         $this->addReference(self::REFERENCE_NEWSLETTER_CONFIRMATION, $newsletterConfirmation);
+
+        $manager->persist($campaignWelcome = new TransactionalEmailTemplate());
+        $campaignWelcome->parent = $templateA;
+        $campaignWelcome->identifier = CampaignWelcomeMessage::class;
+        $campaignWelcome->subject = 'Bienvenue !';
+        $campaignWelcome->setContent('<!DOCTYPE html><html lang="fr"><body><p>Bonjour {{first_name}}, bienvenue&nbsp;!</p><p><a href="{{magic_link}}">Accéder à mon espace</a></p></body></html>');
 
         $manager->flush();
     }
