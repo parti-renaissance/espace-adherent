@@ -147,7 +147,8 @@ final class CheckSocialNetworkFeedPublicationCommandHandlerTest extends TestCase
     {
         $feed = new SocialNetworkFeed();
         $feed->platform = 'instagram';
-        $feed->score = 1;
+        // Below the minimum publishable score of 1.
+        $feed->score = 0;
 
         $this->repository->expects(self::once())->method('find')->with(1)->willReturn($feed);
         $this->entityManager->expects(self::never())->method('refresh');
