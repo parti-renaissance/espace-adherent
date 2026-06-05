@@ -31,10 +31,14 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
         ];
 
         if (AppCodeEnum::isMobileApp($appCode)) {
-            if (!$request || !$queryParams['_target_path'] = $request->getSession()->get('_security.main.target_path')) {
-                $queryParams['_target_path'] = $this->urlGenerator->generate('vox_app_redirect');
-            }
             $host = $this->appUrlManager->getUrlGenerator($appCode)->getAppHost();
+
+            if (!$request || !$queryParams['_target_path'] = $request->getSession()->get('_security.main.target_path')) {
+                $queryParams['_target_path'] = $this->urlGenerator->generate(
+                    'vox_app_redirect',
+                    $host ? ['app_domain' => $host] : []
+                );
+            }
         }
 
         $urlParts = parse_url($link->getUrl().'&'.http_build_query($queryParams));
