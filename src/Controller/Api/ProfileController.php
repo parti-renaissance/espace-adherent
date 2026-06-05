@@ -36,6 +36,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,9 +44,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -148,6 +152,8 @@ class ProfileController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         AdherentProfileHandler $handler,
+        #[Autowire(service: 'serializer.name_converter.metadata_aware')]
+        NameConverterInterface $nameConverter,
         Adherent $adherent,
     ): JsonResponse {
         $json = $request->getContent();
@@ -167,7 +173,7 @@ class ProfileController extends AbstractController
             AbstractNormalizer::GROUPS => $groups,
         ]);
 
-        $violations = $validator->validate($adherentProfile, null, ['Default', 'api_put_validation']);
+        $violations = $this->validateSubmittedFields($json, $adherentProfile, $validator, $nameConverter);
 
         if (0 === $violations->count()) {
             $handler->update($adherent, $adherentProfile);
@@ -178,6 +184,42 @@ class ProfileController extends AbstractController
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    private function validateSubmittedFields(
+        string $json,
+        AdherentProfile $adherentProfile,
+        ValidatorInterface $validator,
+        NameConverterInterface $nameConverter,
+    ): ConstraintViolationListInterface {
+        $payload = json_decode($json, true);
+        $payload = \is_array($payload) ? $payload : [];
+
+        $violations = new ConstraintViolationList();
+
+        foreach (new \ReflectionClass(AdherentProfile::class)->getProperties() as $reflectionProperty) {
+            $property = $reflectionProperty->getName();
+            $key = $nameConverter->normalize($property, AdherentProfile::class);
+
+            $submitted = \array_key_exists($key, $payload)
+                // "address" is an alias for "post_address" (see AdherentProfileDenormalizer).
+                || ('postAddress' === $property && \array_key_exists('address', $payload));
+
+            if (!$submitted) {
+                continue;
+            }
+
+            // Email format and uniqueness (incl. the class-level UniqueMembership) live in the api_email_change group.
+            if ('emailAddress' === $property) {
+                $violations->addAll($validator->validate($adherentProfile, null, ['api_email_change']));
+
+                continue;
+            }
+
+            $violations->addAll($validator->validateProperty($adherentProfile, $property, ['Default', 'api_put_validation']));
+        }
+
+        return $violations;
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
