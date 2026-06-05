@@ -823,6 +823,159 @@ Feature:
             }
             """
 
+        # The account is incomplete in database (no gender, birthdate, nationality, full address).
+        # Updating only the notification preferences must still be accepted: a partial update validates
+        # only the submitted field, not the whole pre-filled profile.
+        When I send a "PUT" request to "/api/v3/profile/313bd28f-efc8-57c9-8ab7-2106c8be9699" with body:
+            """
+            {
+                "subscription_types": ["subscribed_emails_movement_information"]
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "gender": null,
+                "birthdate": null,
+                "nationality": null,
+                "post_address": {
+                    "address": "",
+                    "country": "CH"
+                },
+                "subscription_types": [
+                    {
+                        "label": "National",
+                        "code": "subscribed_emails_movement_information"
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a logged-in user I cannot change my email to one already used by another account
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "email_address": "jacques.picard@en-marche.fr"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "email_address",
+                        "message": "Cette adresse email existe déjà."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a logged-in user I cannot update another member's profile
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/a046adbe-9c7b-56a9-a676-6151a6785dda" with body:
+            """
+            {
+                "job": "Ingénieurs"
+            }
+            """
+        Then the response status code should be 403
+
+    Scenario: As an adherent I cannot blank my nationality through a partial update
+        Given I am logged with "renaissance-user-1@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/88c92d85-4e55-4e47-b1ce-b625b7de3871" with body:
+            """
+            {
+                "nationality": ""
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "nationality",
+                        "message": "La nationalité est requise."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a logged-in user a submitted birthdate is still range-checked
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        # Too young (less than 15 years old)
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "birthdate": "2020-01-01"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "birthdate",
+                        "message": "Vous devez être âgé d'au moins 15 ans pour adhérer."
+                    }
+                ]
+            }
+            """
+        # Too old (more than 120 years old, but a date the normalizer still accepts: year >= 1900)
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "birthdate": "1900-01-01"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "birthdate",
+                        "message": "Vous devez être âgé de moins de 120 ans pour adhérer."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a certified adherent my identity fields are read-only while other fields stay editable
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/a046adbe-9c7b-56a9-a676-6151a6785dda" with body:
+            """
+            {
+                "first_name": "Hacker",
+                "last_name": "Hacker",
+                "job": "Ingénieurs"
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "certified": true,
+                "first_name": "Jacques",
+                "last_name": "Picard",
+                "job": "Ingénieurs"
+            }
+            """
+
     Scenario: As a logged-in user I can retrieve the profile available configuration
         Given I am logged with "carl999@example.fr" via OAuth client "Coalition App" with scopes "write:profile"
         When I send a "GET" request to "/api/v3/profile/configuration"
