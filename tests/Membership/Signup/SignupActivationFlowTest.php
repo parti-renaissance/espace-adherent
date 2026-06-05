@@ -8,6 +8,7 @@ use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Adherent\Tag\TagEnum;
 use App\AppSession\Command\UpdateAdherentLastLoginCommand;
 use App\AppSession\Handler\UpdateAdherentLastLoginCommandHandler;
+use App\Mailer\Message\Campaign\CampaignWelcomeMessage;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -205,6 +206,28 @@ class SignupActivationFlowTest extends AbstractApiTestCase
         self::assertTrue($sympathizer->hasTag(TagEnum::SYMPATHISANT), 'a filled birthdate promotes the signup account to sympathisant');
         self::assertTrue($sympathizer->isRenaissanceSympathizer(), 'sympathisant makes the account a Renaissance sympathizer');
         self::assertFalse($sympathizer->hasTag(TagEnum::CONTACT), 'sympathisant supersedes contact');
+    }
+
+    public function testActivatedSignupAccountReceivesCampaignWelcomeMail(): void
+    {
+        $email = 'signup-welcome@example.test';
+
+        $this->postSignup($email);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        self::assertCount(
+            0,
+            $this->getEmailRepository()->findRecipientMessages(CampaignWelcomeMessage::class, $email),
+            'no welcome mail before activation'
+        );
+
+        $this->activateByCode($email);
+
+        self::assertCount(
+            1,
+            $this->getEmailRepository()->findRecipientMessages(CampaignWelcomeMessage::class, $email),
+            'an activated signup account must receive the campaign welcome mail'
+        );
     }
 
     protected function setUp(): void
