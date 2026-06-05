@@ -83,6 +83,19 @@ class TimelineFeedWriter
     }
 
     /**
+     * Counts the rows a sweep would delete for the given threshold — used to show the blast radius
+     * before the destructive DELETE.
+     */
+    public function countStaleBefore(\DateTimeImmutable $threshold): int
+    {
+        return (int) $this->connection->fetchOne(
+            'SELECT COUNT(*) FROM timeline_feed WHERE updated_at < :threshold',
+            ['threshold' => $threshold],
+            ['threshold' => Types::DATETIME_IMMUTABLE],
+        );
+    }
+
+    /**
      * Removes rows untouched since the given threshold — i.e. items a full reindex did not
      * re-upsert because they no longer exist. Live upserts during the rebuild keep their row
      * fresh (updated_at >= threshold), so they survive the sweep.
