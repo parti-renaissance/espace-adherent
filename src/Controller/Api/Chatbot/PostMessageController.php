@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route('/v3/ai/chat', methods: ['POST'])]
 class PostMessageController extends AbstractController
 {
-    private const MAX_MESSAGE_LENGTH = 4000;
+    private const MAX_MESSAGE_LENGTH = 500;
 
     private const array STREAM_HEADERS = [
         'Content-Type' => 'text/event-stream; charset=utf-8',
