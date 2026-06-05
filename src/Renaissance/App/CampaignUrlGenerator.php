@@ -12,8 +12,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CampaignUrlGenerator extends AbstractAppUrlGenerator
 {
-    public function __construct(UrlGeneratorInterface $urlGenerator, private readonly string $userCampaignHost)
-    {
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        private readonly string $userCampaignHost,
+        private readonly string $campaignAppHost,
+    ) {
         parent::__construct($urlGenerator);
     }
 
@@ -54,5 +57,10 @@ class CampaignUrlGenerator extends AbstractAppUrlGenerator
     public function getAppHost(): string
     {
         return $this->userCampaignHost;
+    }
+
+    public function getSpaHost(): string
+    {
+        return $this->campaignAppHost;
     }
 }

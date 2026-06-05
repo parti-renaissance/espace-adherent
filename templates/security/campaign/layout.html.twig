@@ -1,5 +1,9 @@
 {% extends 'base_renaissance.html.twig' %}
 
+{% block favicons %}
+    <link rel="icon" type="image/png" href="{{ asset('favicon-attal.png') }}" sizes="512x512" />
+{% endblock %}
+
 {% block body_classes 'min-h-screen flex justify-center items-center bg-vox-gray-50' %}
 
 {% block flash_message '' %}

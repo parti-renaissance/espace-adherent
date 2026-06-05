@@ -30,5 +30,5 @@
         >M’envoyer un lien</twig:ReButton>
     {{ form_end(form) }}
 
-    <a href="{{ path('app_renaissance_login') }}" class="mt-8 self-center text-vox-blue-600 hover:underline text-[14px] font-semibold">← Page précédente</a>
+    <a href="{{ path('app_renaissance_login', {app_domain: app.request.attributes.get('app_domain', app.request.host)}) }}" class="mt-8 self-center text-vox-blue-600 hover:underline text-[14px] font-semibold">← Page précédente</a>
 {% endblock %}

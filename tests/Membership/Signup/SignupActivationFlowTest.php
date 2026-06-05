@@ -131,15 +131,14 @@ class SignupActivationFlowTest extends AbstractApiTestCase
         self::assertTrue($adherent->signupAccount, 'a /api/signup account must be flagged signupAccount');
         self::assertFalse($adherent->hasTag(TagEnum::USER), 'no user tag before any login');
 
-        // 2. Magic-link activation enables the account. The login_link firewall uses the default success
-        //    handler (NOT our AuthenticationSuccessHandler), so lastLoggedAt stays null → tag = contact.
-        $magicLink = $this->extractMagicLinkFromSentMail($email);
-        $this->postMagicLink($magicLink);
+        // 2. Activation by code (the primary path) enables the account WITHOUT logging in: it never
+        //    authenticates, so lastLoggedAt stays null → the account is a "contact" until its first login.
+        $this->activateByCode($email);
 
         $this->manager->clear();
         $activated = $this->getAdherentRepository()->findOneByEmail($email);
-        self::assertTrue($activated->isEnabled(), 'magic link consumption must enable the account');
-        self::assertNull($activated->getLastLoggedAt(), 'activation alone must not record a login');
+        self::assertTrue($activated->isEnabled(), 'code activation must enable the account');
+        self::assertNull($activated->getLastLoggedAt(), 'code activation must not record a login');
         self::assertTrue($activated->hasTag(TagEnum::CONTACT), 'activation keeps the account contact');
         self::assertFalse($activated->hasTag(TagEnum::USER));
 
@@ -154,6 +153,25 @@ class SignupActivationFlowTest extends AbstractApiTestCase
         self::assertFalse($promoted->hasTag(TagEnum::CONTACT));
         // A signup user without a filled profile (no birthdate) is NOT a sympathizer yet.
         self::assertFalse($promoted->isRenaissanceSympathizer(), 'user must not be tagged sympathisant');
+    }
+
+    public function testMagicLinkConsumptionRecordsLastLogin(): void
+    {
+        $email = 'magiclink-login@example.test';
+
+        $this->client->disableReboot();
+
+        $this->postSignup($email);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        // A magic link is a connection: consuming it records lastLoggedAt — even though this consumption
+        // also activates the PENDING account (recording the login takes precedence, by product decision).
+        $this->postMagicLink($this->extractMagicLinkFromSentMail($email));
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertTrue($adherent->isEnabled(), 'magic link consumption must enable the account');
+        self::assertNotNull($adherent->getLastLoggedAt(), 'consuming a magic link records the login');
     }
 
     public function testSignupAccountIsPromotedToSympathizerWhenProfileFilled(): void
@@ -194,6 +212,10 @@ class SignupActivationFlowTest extends AbstractApiTestCase
         parent::setUp();
 
         self::getContainer()->get('limiter.signup')->create(self::CLIENT_IP)->reset();
+        // /api/signup/activate (used by activateByCode) is guarded by the per-IP signup_code_attempt
+        // limiter, shared on 127.0.0.1 with sibling tests that exhaust it — reset it so activation by
+        // code is not spuriously rate-limited (429).
+        self::getContainer()->get('limiter.signup_code_attempt')->create(self::CLIENT_IP)->reset();
     }
 
     private function postSignup(string $email): void
@@ -229,6 +251,37 @@ class SignupActivationFlowTest extends AbstractApiTestCase
         }
 
         self::fail('magic_link must be present in the Mandrill template variables');
+    }
+
+    private function activateByCode(string $email): void
+    {
+        // Activation by code is the primary path: it enables the account without authenticating. With no
+        // PKCE challenge the endpoint returns 204 and simply flips PENDING → ENABLED (no login recorded).
+        $this->client->request(
+            Request::METHOD_POST,
+            '/api/signup/activate',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => self::CLIENT_IP],
+            json_encode(['email' => $email, 'code' => $this->extractCodeFromSentMail($email)])
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_NO_CONTENT, $this->client->getResponse());
+    }
+
+    private function extractCodeFromSentMail(string $email): string
+    {
+        $emails = $this->getEmailRepository()->findRecipientMessages(SignupConfirmationMessage::class, $email);
+        self::assertCount(1, $emails, 'exactly one SignupConfirmationMessage must be sent to the new signup');
+
+        $payload = json_decode($emails[0]->getRequestPayloadJson(), true);
+        foreach ($payload['message']['global_merge_vars'] as $var) {
+            if ('code' === $var['name']) {
+                return (string) $var['content'];
+            }
+        }
+
+        self::fail('code must be present in the Mandrill template variables');
     }
 
     private function getMagicLink(string $url): void

@@ -11,6 +11,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
+use App\Routing\AppDomainParamsTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,6 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MagicLinkController extends AbstractController
 {
+    use AppDomainParamsTrait;
     use SecurityThemeTrait;
 
     public const ROUTE_NAME = 'app_user_connect_with_magic_link';
@@ -39,7 +41,7 @@ class MagicLinkController extends AbstractController
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            return $this->redirectToRoute('vox_app_redirect');
+            return $this->redirectToRoute('vox_app_redirect', $this->appDomainParams($request));
         }
 
         $form = $this
@@ -51,7 +53,10 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneByEmailAndStatus($email, [Adherent::PENDING, Adherent::ENABLED])) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, appCode: AppCodeEnum::VOX);
+                $appCode = AppCodeEnum::CAMPAIGN === $appUrlManager->getAppCodeFromRequest($request)
+                    ? AppCodeEnum::CAMPAIGN
+                    : AppCodeEnum::VOX;
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, appCode: $appCode);
 
                 $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
             }
@@ -89,7 +94,7 @@ class MagicLinkController extends AbstractController
                 return $this->redirect($redirectUri ?: '/');
             }
 
-            return $this->redirectToRoute('vox_app_redirect');
+            return $this->redirectToRoute('vox_app_redirect', $this->appDomainParams($request));
         }
 
         return $this->renderSecurityTheme($request, $appUrlManager, 'connect_magic_link.html.twig', [

@@ -10,7 +10,7 @@
 
     <div class="font-semibold text-vox-blue-600 mt-6 lg:mt-10 animate-pulse self-center">Connexion...</div>
 
-    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link') }}" method="POST" class="hidden">
+    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link', {app_domain: app.request.attributes.get('app_domain', app.request.host)}) }}" method="POST" class="hidden">
         <input type="hidden" name="expires" value="{{ expires }}">
         <input type="hidden" name="user" value="{{ user }}">
         <input type="hidden" name="hash" value="{{ hash }}">

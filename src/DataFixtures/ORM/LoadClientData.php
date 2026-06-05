@@ -31,6 +31,12 @@ class LoadClientData extends Fixture
     public const CLIENT_14_UUID = '189456f3-7e43-413a-9d83-ad8b6045db50';
     public const CLIENT_15_UUID = 'd4f1f7ea-9c8e-4b1f-9a2c-7f2b3c4d5e6f';
 
+    public function __construct(
+        private readonly string $voxHost,
+        private readonly string $campaignAppHost,
+    ) {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $client1 = new Client(
@@ -194,9 +200,9 @@ class LoadClientData extends Fixture
             'VOX 🇪🇺',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ15',
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
-            ['http://localhost:8081', 'vox-dev://']
+            array_values(array_unique(['http://'.$this->voxHost, 'http://'.$this->campaignAppHost, 'vox-dev://']))
         );
-        $client13->setCode(AppCodeEnum::BESOIN_D_EUROPE);
+        $client13->setCode(AppCodeEnum::VOX);
         $client13->setAskUserForAuthorization(false);
         $client13->addSupportedScope(Scope::JEMARCHE_APP);
         $client13->addSupportedScope(Scope::READ_PROFILE);

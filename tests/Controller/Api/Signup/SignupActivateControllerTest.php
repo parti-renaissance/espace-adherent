@@ -58,6 +58,9 @@ class SignupActivateControllerTest extends AbstractApiTestCase
         $this->manager->clear();
         $reloaded = $this->getAdherentRepository()->findOneByEmail($adherent->getEmailAddress());
         self::assertTrue($reloaded->isEnabled(), 'PENDING → ENABLED transition must happen on a valid code.');
+        // Code activation enables the account but is NOT a login: it does not authenticate the user.
+        // lastLoggedAt is recorded later, when the app exchanges the authorization code for a session.
+        self::assertNull($reloaded->getLastLoggedAt(), 'activating by code must not record a login');
     }
 
     public function testActivateWithCustomSchemeRedirectUriReturnsAuthorizationCode(): void
