@@ -16,6 +16,7 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
+use App\Routing\AppDomainParamsTrait;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,6 +29,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
+    use AppDomainParamsTrait;
     use SecurityThemeTrait;
 
     public function loginAction(Request $request, AuthenticationUtils $securityUtils, AuthAppUrlManager $appUrlManager): Response
@@ -37,7 +39,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            return $this->redirectToRoute('vox_app_redirect');
+            return $this->redirectToRoute('vox_app_redirect', $this->appDomainParams($request));
         }
 
         $form = $this->createForm(LoginType::class, [
@@ -61,7 +63,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            return $this->redirectToRoute('vox_app_redirect');
+            return $this->redirectToRoute('vox_app_redirect', $this->appDomainParams($request));
         }
 
         $form = $this->createFormBuilder()
@@ -97,7 +99,7 @@ class SecurityController extends AbstractController
         AuthAppUrlManager $appUrlManager,
     ): Response {
         if ($this->getUser()) {
-            return $this->redirectToRoute('vox_app_redirect');
+            return $this->redirectToRoute('vox_app_redirect', $this->appDomainParams($request));
         }
 
         if ($resetPasswordToken->getUsageDate()) {

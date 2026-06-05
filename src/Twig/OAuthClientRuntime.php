@@ -19,7 +19,7 @@ class OAuthClientRuntime implements RuntimeExtensionInterface
 
     public function getVoxClient(): ?Client
     {
-        $code = AppCodeEnum::BESOIN_D_EUROPE;
+        $code = AppCodeEnum::VOX;
 
         if (!empty($this->clientIds[$code])) {
             return $this->clientIds[$code];

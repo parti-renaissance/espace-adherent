@@ -194,6 +194,9 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->add('campaign_site', '/')
         ->host('%campaign_site_host%');
 
+    $routingConfigurator->add('campaign_app', '/')
+        ->host('%campaign_app_host%');
+
     $routingConfigurator->add('vox_app', '/')
         ->host('%vox_host%');
 

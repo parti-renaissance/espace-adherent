@@ -37,6 +37,11 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
         return '';
     }
 
+    public function getSpaHost(): string
+    {
+        return '';
+    }
+
     public function generateCreatePasswordLink(
         Adherent $adherent,
         AdherentExpirableTokenInterface $token,

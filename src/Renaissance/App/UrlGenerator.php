@@ -13,12 +13,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UrlGenerator extends AbstractAppUrlGenerator
 {
     private string $appHost;
+    private string $spaHost;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, string $userVoxHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $userVoxHost, string $voxHost)
     {
         parent::__construct($urlGenerator);
 
         $this->appHost = $userVoxHost;
+        $this->spaHost = $voxHost;
     }
 
     public static function getAppCode(): string
@@ -58,5 +60,10 @@ class UrlGenerator extends AbstractAppUrlGenerator
     public function getAppHost(): string
     {
         return $this->appHost;
+    }
+
+    public function getSpaHost(): string
+    {
+        return $this->spaHost;
     }
 }

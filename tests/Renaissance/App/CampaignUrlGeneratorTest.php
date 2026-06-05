@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class CampaignUrlGeneratorTest extends TestCase
 {
     private const CAMPAIGN_HOST = 'campagne.renaissance.code';
+    private const CAMPAIGN_APP_HOST = 'campaign-app.code';
 
     public function testGetAppCode(): void
     {
@@ -21,14 +22,21 @@ class CampaignUrlGeneratorTest extends TestCase
 
     public function testGetAppHostReturnsCampaignHost(): void
     {
-        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame(self::CAMPAIGN_HOST, $generator->getAppHost());
     }
 
+    public function testGetSpaHostReturnsCampaignAppHost(): void
+    {
+        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
+
+        self::assertSame(self::CAMPAIGN_APP_HOST, $generator->getSpaHost());
+    }
+
     public function testGuessAppCodeFromRequestMatchesCampaignHost(): void
     {
-        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         $request = Request::create('https://app.renaissance.code/app');
         $request->attributes->set('app_domain', self::CAMPAIGN_HOST);
@@ -38,7 +46,7 @@ class CampaignUrlGeneratorTest extends TestCase
 
     public function testGuessAppCodeFromRequestReturnsNullOnOtherHost(): void
     {
-        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($this->createStub(UrlGeneratorInterface::class), self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         $request = Request::create('https://app.renaissance.code/app');
 
@@ -54,7 +62,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('app_renaissance_login')
             ->willReturn('/connexion');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('/connexion', $generator->generateLoginLink());
     }
@@ -68,7 +76,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('campaign_site', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('https://campagne.code/');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('https://campagne.code/', $generator->generateHomepageLink());
     }
@@ -82,7 +90,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('vox_app_redirect')
             ->willReturn('/app');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('/app', $generator->generateForLoginSuccess($this->createStub(\App\Entity\Adherent::class)));
     }
@@ -98,7 +106,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('logout', ['app_domain' => self::CAMPAIGN_HOST], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('https://'.self::CAMPAIGN_HOST.'/deconnexion');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('https://'.self::CAMPAIGN_HOST.'/deconnexion', $generator->generateLogout());
     }
@@ -112,7 +120,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('app_renaissance_login')
             ->willReturn('/connexion');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('/connexion', $generator->generateSuccessResetPasswordLink(Request::create('/changer-mot-de-passe/x/y')));
     }
@@ -126,7 +134,7 @@ class CampaignUrlGeneratorTest extends TestCase
             ->with('app_renaissance_adherent_creation_confirmation')
             ->willReturn('/compte-cree');
 
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST);
+        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
 
         self::assertSame('/compte-cree', $generator->generateSuccessResetPasswordLink(Request::create('/changer-mot-de-passe/x/y?is_creation=1')));
     }

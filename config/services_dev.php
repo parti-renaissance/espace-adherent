@@ -10,7 +10,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->defaults()
         ->autowire()
         ->autoconfigure()
-        ->bind('$environment', '%kernel.environment%');
+        ->bind('$environment', '%kernel.environment%')
+        ->bind('$voxHost', '%vox_host%')
+        ->bind('$campaignAppHost', '%campaign_app_host%');
 
     $services->load('App\DataFixtures\\', __DIR__.'/../src/DataFixtures/');
 

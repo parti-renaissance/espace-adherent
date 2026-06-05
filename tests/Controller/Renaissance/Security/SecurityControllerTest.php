@@ -7,6 +7,7 @@ namespace Tests\App\Controller\Renaissance\Security;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
+use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -48,7 +49,47 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $this->client->followRedirect();
-        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://vox.code&scope=jemarche_app%20read:profile%20write:profile', $this->client);
+    }
+
+    public function testMagicLinkRequestedOnVoxHostTargetsVoxDomain(): void
+    {
+        $email = 'carl999@example.fr';
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/demander-un-lien-magique');
+        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => $email]));
+
+        $messages = $this->emailRepository->findRecipientMessages(RenaissanceMagicLinkMessage::class, $email);
+        self::assertCount(1, $messages);
+
+        // Non-regression for the vox branch: a magic link requested on the vox host must keep targeting
+        // the vox auth host. The appCode is derived from the request host (VOX here), so LoginLinkHandler
+        // overrides the link host to the vox generator's auth host — it must not leak onto the campaign host.
+        $payload = json_decode($messages[0]->getRequestPayloadJson(), true);
+        $vars = array_column($payload['message']['merge_vars'][0]['vars'], 'content', 'name');
+        $magicLinkHost = parse_url($vars['magic_link'] ?? '', \PHP_URL_HOST);
+
+        self::assertSame($voxHost, $magicLinkHost, 'Magic link must target the vox auth host.');
+        self::assertNotSame($campaignHost, $magicLinkHost);
+    }
+
+    public function testAlreadyAuthenticatedResetPasswordRedirectsToAppOnSameHost(): void
+    {
+        $adherent = $this->adherentRepository->findOneByEmail('michelle.dufour@example.ch');
+        $token = $this->getAdherentResetPasswordToken($adherent);
+
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        // The "already authenticated" guard in resetPasswordAction must keep the redirect on the current
+        // (vox) host. A relative /app location proves app_domain = current host (an absolute vox URL would
+        // appear if the host leaked). Covers the appDomainParams guard at SecurityController::resetPasswordAction:100,
+        // which the two other guards (loginAction/forgotPassword) already exercise.
+        $this->client->request(Request::METHOD_GET, \sprintf('/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue()));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/app', $this->client);
     }
 
     public static function getAdherentEmails(): array

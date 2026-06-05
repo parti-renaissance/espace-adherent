@@ -632,6 +632,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                     'lifetime' => 600,
                     'failure_path' => 'app_renaissance_login',
                     'default_target_path' => 'vox_app_redirect',
+                    'success_handler' => App\Security\Http\AuthenticationSuccessHandler::class,
                 ],
             ],
         ],

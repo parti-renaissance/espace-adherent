@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Controller\Renaissance\Security;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,43 @@ class CampaignSecurityControllerTest extends AbstractRenaissanceWebTestCase
         //    host (a vox-host target would have produced an absolute URL).
         $this->client->followRedirect();
         $this->assertClientIsRedirectedTo(self::EXPECTED_AUTHORIZE_URL, $this->client);
+    }
+
+    #[DataProvider('getAdherentEmails')]
+    public function testAlreadyAuthenticatedGuardsStayOnCampaignDomain(string $email): void
+    {
+        $this->authenticateAsAdherent($this->client, $email);
+
+        // Guards "already authenticated -> app" must keep the user on the campaign host. A relative
+        // "/app" location proves it: the redirect is built with app_domain = campaign host, so Symfony
+        // emits a relative path. The pre-fix default vox host would have produced an absolute URL.
+        foreach (['/connexion', '/mot-de-passe-oublie', '/demander-un-lien-magique'] as $path) {
+            $this->client->request(Request::METHOD_GET, $path);
+            $this->assertClientIsRedirectedTo('/app', $this->client);
+        }
+    }
+
+    public function testMagicLinkRequestedOnCampaignHostTargetsCampaignDomain(): void
+    {
+        $email = 'carl999@example.fr';
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/demander-un-lien-magique');
+        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => $email]));
+
+        $messages = $this->getEmailRepository()->findRecipientMessages(RenaissanceMagicLinkMessage::class, $email);
+        self::assertCount(1, $messages);
+
+        // The generated magic link targets the campaign auth host (appCode derived from the request
+        // host), not the vox host. The _target_path host inside the link is irrelevant: it is stripped
+        // to a path at consume time (connectViaMagicLinkAction).
+        $payload = json_decode($messages[0]->getRequestPayloadJson(), true);
+        $vars = array_column($payload['message']['merge_vars'][0]['vars'], 'content', 'name');
+        $magicLinkHost = parse_url($vars['magic_link'] ?? '', \PHP_URL_HOST);
+
+        self::assertSame($campaignHost, $magicLinkHost, 'Magic link must target the campaign auth host.');
+        self::assertNotSame($voxHost, $magicLinkHost);
     }
 
     public function testUnauthenticatedAuthorizeRequestRedirectsToCampaignLogin(): void

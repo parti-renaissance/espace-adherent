@@ -7,6 +7,7 @@ namespace App\Controller\OAuth;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\OAuth\ClientRepository;
 use App\Scope\ScopeGeneratorResolver;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ class RedirectAppController extends AbstractController
     public function __construct(
         private readonly string $adminRenaissanceHost,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -47,7 +49,9 @@ class RedirectAppController extends AbstractController
             }
         }
 
-        $redirectUri = current($client->getRedirectUris());
+        $redirectUri = $clientCode
+            ? current($client->getRedirectUris())
+            : $this->resolveRedirectUriForSpaHost($client->getRedirectUris(), $urlGenerator->getSpaHost(), $currentApp);
 
         return $this->redirectToRoute('app_front_oauth_authorize', [
             'app_domain' => $isAdmin ? $this->adminRenaissanceHost : $urlGenerator->getAppHost(),
@@ -57,6 +61,46 @@ class RedirectAppController extends AbstractController
             'scope' => implode(' ', $scopesToUse),
             'state' => $request->query->get('state'),
         ]);
+    }
+
+    private function resolveRedirectUriForSpaHost(array $redirectUris, string $spaHost, ?string $appCode): string
+    {
+        $fallback = current($redirectUris) ?: '';
+
+        if ('' === $spaHost) {
+            return $fallback;
+        }
+
+        $matches = array_values(array_filter($redirectUris, static function (string $uri) use ($spaHost): bool {
+            $parts = parse_url($uri);
+
+            if (empty($parts['scheme']) || empty($parts['host']) || !\in_array($parts['scheme'], ['http', 'https'], true)) {
+                return false;
+            }
+
+            return $parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '') === $spaHost;
+        }));
+
+        if (1 === \count($matches)) {
+            return $matches[0];
+        }
+
+        if (\count($matches) > 1) {
+            $this->logger->warning('Multiple redirect URIs match the SPA host; using the first match.', [
+                'spa_host' => $spaHost,
+                'app_code' => $appCode,
+                'matches' => $matches,
+            ]);
+
+            return $matches[0];
+        }
+
+        $this->logger->warning('No redirect URI matches the SPA host; falling back to the first registered URI.', [
+            'spa_host' => $spaHost,
+            'app_code' => $appCode,
+        ]);
+
+        return $fallback;
     }
 
     public function redirectToState(Request $request): Response

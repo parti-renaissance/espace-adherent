@@ -26,6 +26,6 @@ class ClientRepository extends ServiceEntityRepository
 
     public function getVoxClient(): Client
     {
-        return $this->findOneBy(['code' => AppCodeEnum::BESOIN_D_EUROPE]);
+        return $this->findOneBy(['code' => AppCodeEnum::VOX]);
     }
 }

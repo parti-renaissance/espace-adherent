@@ -158,7 +158,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
                         ->innerJoin(Client::class, 'oauth_client', Join::WITH, 'oauth_client.code = :session_client_code')
                         ->leftJoin("$alias.appSessions", 'active_session_filter', Join::WITH, 'active_session_filter.status = :active_session_filter_status AND active_session_filter.client = oauth_client')
                         ->setParameter('active_session_filter_status', SessionStatusEnum::ACTIVE)
-                        ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
+                        ->setParameter('session_client_code', AppCodeEnum::VOX)
                     ;
 
                     if (\in_array('aucune', $value->getValue(), true)) {
@@ -188,7 +188,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
                         ->innerJoin("$alias.appSessions", 'session_push_subscription', Join::WITH, 'session_push_subscription.status = :subscription_push_filter_status AND session_push_subscription.appSystem IS NOT NULL')
                         ->innerJoin('session_push_subscription.client', 'session_push_subscription_client', Join::WITH, 'session_push_subscription_client.code = :session_client_code')
                         ->setParameter('subscription_push_filter_status', SessionStatusEnum::ACTIVE)
-                        ->setParameter('session_client_code', AppCodeEnum::BESOIN_D_EUROPE)
+                        ->setParameter('session_client_code', AppCodeEnum::VOX)
                     ;
 
                     if ($value->getValue()) {

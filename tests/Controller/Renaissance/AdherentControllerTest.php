@@ -24,7 +24,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/app');
 
-        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://vox.code&scope=jemarche_app%20read:profile%20write:profile', $this->client);
     }
 
     public static function provideProfilePage(): \Generator
