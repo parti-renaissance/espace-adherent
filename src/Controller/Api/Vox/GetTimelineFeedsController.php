@@ -54,31 +54,17 @@ class GetTimelineFeedsController extends AbstractController
             $page = 0;
         }
 
-        // Canary users read the feed from the external indexer instead of Algolia; view params
-        // (?zone/?committee/?instance) are intentionally ignored for them in v1. If the experimental
-        // ranker fails, the request falls through to the regular Algolia path below — a canary defect
-        // must never deprive the user of a feed.
-        if ($user->canaryTester) {
-            try {
-                $appSessionId = trim((string) $request->query->get('session_id'));
-                $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? null : $appSessionId);
+        $appSessionId = trim((string) $request->query->get('session_id'));
+        $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? Uuid::v4()->toRfc4122() : $appSessionId);
 
-                if ($sessionId) {
-                    return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
-                }
-
-                $this->logger->warning('Canary timeline: no persistent session cursor, falling back to Algolia.', [
-                    'user_id' => $user->getId(),
-                ]);
-            } catch (\RuntimeException $exception) {
-                // Canary fallback: the experimental ranker is unavailable — serve the regular Algolia
-                // feed instead of failing, so the user's timeline never breaks.
-                $this->logger->warning('Canary timeline ranker failed, falling back to Algolia.', [
-                    'exception' => $exception,
-                    'user_id' => $user->getId(),
-                ]);
-                // No return/throw: execution falls through to the Algolia path below.
-            }
+        try {
+            return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
+        } catch (\RuntimeException $exception) {
+            $this->logger->warning('Timeline ranker failed, falling back to Algolia.', [
+                'exception' => $exception,
+                'user_id' => $user->getId(),
+            ]);
+            // No return/throw: execution falls through to the Algolia path below.
         }
 
         $userId = $user->getId();

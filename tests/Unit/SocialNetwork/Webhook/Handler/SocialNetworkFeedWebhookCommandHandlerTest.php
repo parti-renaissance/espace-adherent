@@ -101,6 +101,44 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         self::assertSame($persisted, $photo->feed);
     }
 
+    public function testAuthorNamePrefersFullNameOverRawJsonName(): void
+    {
+        $feed = $this->handleAndCapturePersisted([
+            'id' => 1,
+            'post_id' => 'p',
+            'platform' => 'twitter',
+            'full_name' => 'Full Name',
+            'raw_json' => ['name' => 'Raw Name'],
+        ]);
+
+        self::assertSame('Full Name', $feed->authorName);
+    }
+
+    public function testAuthorNameFallsBackToRawJsonNameWhenFullNameIsBlank(): void
+    {
+        $feed = $this->handleAndCapturePersisted([
+            'id' => 1,
+            'post_id' => 'p',
+            'platform' => 'twitter',
+            // Whitespace-only full_name trims to '' and must not shadow the raw_json fallback.
+            'full_name' => '   ',
+            'raw_json' => ['name' => 'Raw Name'],
+        ]);
+
+        self::assertSame('Raw Name', $feed->authorName);
+    }
+
+    public function testAuthorNameIsNullWhenNeitherSourceIsPresent(): void
+    {
+        $feed = $this->handleAndCapturePersisted([
+            'id' => 1,
+            'post_id' => 'p',
+            'platform' => 'twitter',
+        ]);
+
+        self::assertNull($feed->authorName);
+    }
+
     public function testUpdatesExistingFeedAndReplacesMedia(): void
     {
         $existing = new SocialNetworkFeed();
@@ -361,6 +399,35 @@ class SocialNetworkFeedWebhookCommandHandlerTest extends TestCase
         foreach ($feed->photos as $photo) {
             $photo->id ??= 2;
         }
+    }
+
+    /**
+     * Runs the handler on a new feed payload and returns the persisted entity captured at persist().
+     *
+     * @param array<string, mixed> $payload
+     */
+    private function handleAndCapturePersisted(array $payload): SocialNetworkFeed
+    {
+        $this->logger->expects(self::never())->method('error');
+        $this->repository->expects(self::once())->method('findOneByScraperId')
+            ->with((int) $payload['id'])->willReturn(null);
+
+        $persisted = null;
+        $this->entityManager->expects(self::once())->method('persist')
+            ->willReturnCallback(function (SocialNetworkFeed $feed) use (&$persisted): void {
+                $persisted = $feed;
+            });
+        $this->entityManager->expects(self::once())->method('flush')
+            ->willReturnCallback(function () use (&$persisted): void {
+                $this->assignPersistedIds($persisted);
+            });
+        $this->captureDispatchedMessages();
+
+        ($this->handler)(new SocialNetworkFeedWebhookCommand($payload));
+
+        self::assertInstanceOf(SocialNetworkFeed::class, $persisted);
+
+        return $persisted;
     }
 
     private function existingFeedWithMedia(string $photoSrc, string $streamUrl): SocialNetworkFeed

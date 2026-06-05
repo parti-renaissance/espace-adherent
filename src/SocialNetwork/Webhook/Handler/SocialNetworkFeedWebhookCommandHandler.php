@@ -59,9 +59,7 @@ class SocialNetworkFeedWebhookCommandHandler
         $this->dispatchTranscoding($feed);
         $this->dispatchImagePublishing($feed);
 
-        if (!$feed->published) {
-            $this->bus->dispatch(new CheckSocialNetworkFeedPublicationCommand($feed->getId(), time()));
-        }
+        $this->bus->dispatch(new CheckSocialNetworkFeedPublicationCommand($feed->getId(), time()));
     }
 
     private function dispatchTranscoding(SocialNetworkFeed $feed): void
@@ -97,11 +95,16 @@ class SocialNetworkFeedWebhookCommandHandler
 
     private function hydrateFeed(SocialNetworkFeed $feed, array $payload, int $scraperId): void
     {
+        $authorName = trim($payload['full_name'] ?? '');
+        if ('' === $authorName) {
+            $authorName = $payload['raw_json']['name'] ?? null;
+        }
+
         $feed->scraperId = $scraperId;
         $feed->postId = (string) $payload['post_id'];
         $feed->platform = (string) $payload['platform'];
         $feed->username = $payload['username'] ?? null;
-        $feed->authorName = $payload['raw_json']['name'] ?? null;
+        $feed->authorName = $authorName;
         $feed->description = $payload['description'] ?? null;
         $feed->publicationFailure = null;
         $feed->publicationFailedAt = null;

@@ -81,6 +81,17 @@ class TimelineRankerClientTest extends TestCase
         new TimelineRankerClient($http)->getItems($this->profile());
     }
 
+    public function testGetItemsThrowsOnEmptyBody(): void
+    {
+        // An empty (or non-JSON) 200 body is an invalid payload: it must surface as a RuntimeException
+        // so the controller falls back to Algolia instead of 500-ing on the underlying JsonException.
+        $http = new MockHttpClient(new MockResponse(''), 'https://ranker.test');
+
+        $this->expectException(\RuntimeException::class);
+
+        new TimelineRankerClient($http)->getItems($this->profile());
+    }
+
     private function profile(): UserProfile
     {
         return new UserProfile(42, [], [], [], [], [], [], 0, []);
