@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Renaissance\Security;
 
+use App\AppCodeEnum;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
+use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
+use App\OAuth\App\AuthAppUrlManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,6 +103,97 @@ class CampaignSecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         self::assertSame($campaignHost, $magicLinkHost, 'Magic link must target the campaign auth host.');
         self::assertNotSame($voxHost, $magicLinkHost);
+    }
+
+    public function testCampaignLoginAccountCreationLinkTargetsCampaignSpa(): void
+    {
+        $campaignAppHost = static::getContainer()->getParameter('campaign_app_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // "Je crée un compte" must point to the campaign SPA (CAMPAIGN_APP_HOST) /bienvenue page,
+        // where account creation happens in the app.
+        $uri = $crawler->selectLink('Je crée un compte')->link()->getUri();
+        $parts = parse_url($uri);
+        $host = $parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '');
+
+        self::assertSame($campaignAppHost, $host, 'Account-creation link must target the campaign SPA host.');
+        self::assertSame('/bienvenue', $parts['path']);
+    }
+
+    public function testForgotPasswordSubmitStaysOnCampaignDomain(): void
+    {
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Submitting the forgot-password form must redirect back to the same (campaign) page.
+        // The success path redirects to the host-templated app_forgot_password route; without an
+        // explicit app_domain it would default to the vox host and bounce the campaign user away.
+        $this->client->submit($crawler->selectButton('Réinitialiser')->form(), ['form' => ['email' => 'carl999@example.fr']]);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $location = (string) $this->client->getResponse()->headers->get('location');
+        self::assertStringNotContainsString($voxHost, $location, 'Forgot-password submit must not bounce to the vox host.');
+        self::assertStringEndsWith('/mot-de-passe-oublie', $location);
+    }
+
+    public function testForgotPasswordEmailLinkTargetsCampaignDomain(): void
+    {
+        $email = 'carl999@example.fr';
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
+        $this->client->submit($crawler->selectButton('Réinitialiser')->form(), ['form' => ['email' => $email]]);
+
+        $messages = $this->getEmailRepository()->findRecipientMessages(RenaissanceResetPasswordMessage::class, $email);
+        self::assertCount(1, $messages);
+
+        // The reset link inside the email must point to the campaign auth host so the user lands
+        // back on the domain they started from, not the vox host.
+        $payload = json_decode($messages[0]->getRequestPayloadJson(), true);
+        $vars = array_column($payload['message']['global_merge_vars'], 'content', 'name');
+        $resetLinkHost = parse_url($vars['reset_link'] ?? '', \PHP_URL_HOST);
+
+        self::assertSame($campaignHost, $resetLinkHost, 'Reset-password email link must target the campaign auth host.');
+        self::assertNotSame($voxHost, $resetLinkHost);
+    }
+
+    public function testResetPasswordSuccessLinkTargetsCampaignDomain(): void
+    {
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        // Drive the campaign url generator with the router resolving on the campaign host: the
+        // post-reset success link (consumed by SecurityController::resetPasswordAction) must stay
+        // on the campaign domain rather than defaulting back to the vox login page.
+        $router = static::getContainer()->get('router');
+        $router->getContext()->setHost($campaignHost);
+
+        $generator = static::getContainer()->get(AuthAppUrlManager::class)->getUrlGenerator(AppCodeEnum::CAMPAIGN);
+        $link = $generator->generateSuccessResetPasswordLink(new Request());
+
+        self::assertStringNotContainsString($voxHost, $link, 'Post-reset redirect must not bounce to the vox host.');
+        self::assertStringEndsWith('/connexion', $link);
+    }
+
+    public function testMagicLinkRequestSubmitStaysOnCampaignDomain(): void
+    {
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/demander-un-lien-magique');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Same host-stickiness expectation for the magic-link request success path.
+        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => 'carl999@example.fr']));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $location = (string) $this->client->getResponse()->headers->get('location');
+        self::assertStringNotContainsString($voxHost, $location, 'Magic-link request submit must not bounce to the vox host.');
+        self::assertStringEndsWith('/demander-un-lien-magique', $location);
     }
 
     public function testUnauthenticatedAuthorizeRequestRedirectsToCampaignLogin(): void

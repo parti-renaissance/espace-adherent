@@ -63,7 +63,7 @@ class MagicLinkController extends AbstractController
 
             $this->addFlash('info', $translator->trans('adherent.get_magic_link.email_sent', ['%email%' => $email]));
 
-            return $this->redirectToRoute('app_user_get_magic_link');
+            return $this->redirectToRoute('app_user_get_magic_link', $this->appDomainParams($request));
         }
 
         return $this->renderSecurityTheme($request, $appUrlManager, 'user_magic_link.html.twig', ['form' => $form->createView()]);

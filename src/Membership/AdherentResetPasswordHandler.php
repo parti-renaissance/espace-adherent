@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -24,14 +25,14 @@ class AdherentResetPasswordHandler
     ) {
     }
 
-    public function handle(Adherent $adherent): void
+    public function handle(Adherent $adherent, string $appCode = AppCodeEnum::RENAISSANCE): void
     {
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent);
 
         $this->manager->persist($resetPasswordToken);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken, MembershipSourceEnum::RENAISSANCE), UserEvents::USER_FORGOT_PASSWORD);
+        $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken, $appCode), UserEvents::USER_FORGOT_PASSWORD);
     }
 
     public function reset(
