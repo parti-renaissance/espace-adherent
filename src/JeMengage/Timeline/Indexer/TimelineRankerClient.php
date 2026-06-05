@@ -39,6 +39,12 @@ class TimelineRankerClient
             throw new \RuntimeException(\sprintf('Ranker get_items failed with status %d.', $response->getStatusCode()));
         }
 
-        return FeedResponse::fromArray($response->toArray(false));
+        try {
+            $data = $response->toArray(false);
+        } catch (\JsonException $exception) {
+            throw new \RuntimeException('Ranker get_items returned an invalid JSON payload.', 0, $exception);
+        }
+
+        return FeedResponse::fromArray($data);
     }
 }
