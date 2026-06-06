@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership\Signup\Listener;
 
+use App\AppCodeEnum;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Campaign\CampaignWelcomeMessage;
 use App\Membership\Event\UserEvent;
@@ -37,7 +38,7 @@ class SendCampaignWelcomeEmailListener implements EventSubscriberInterface
         }
 
         $magicLink = $this->loginLinkHandler
-            ->createLoginLink($adherent, lifetime: self::MAGIC_LINK_LIFETIME, appCode: $adherent->getSource())
+            ->createLoginLink($adherent, lifetime: self::MAGIC_LINK_LIFETIME, appCode: AppCodeEnum::CAMPAIGN)
             ->getUrl()
         ;
 

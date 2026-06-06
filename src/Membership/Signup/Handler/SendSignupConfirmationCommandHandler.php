@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Membership\Signup\Handler;
 
 use App\Adhesion\ActivationCodeManager;
+use App\AppCodeEnum;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
 use App\Membership\Signup\Command\SendSignupConfirmationCommand;
@@ -31,7 +32,7 @@ class SendSignupConfirmationCommandHandler
         $adherent = $command->adherent;
 
         $magicLink = $this->loginLinkHandler
-            ->createLoginLink($adherent, lifetime: self::MAGIC_LINK_LIFETIME, appCode: $adherent->getSource())
+            ->createLoginLink($adherent, lifetime: self::MAGIC_LINK_LIFETIME, appCode: AppCodeEnum::CAMPAIGN)
             ->getUrl()
         ;
 
