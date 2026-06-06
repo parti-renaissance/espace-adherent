@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership\Signup;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
 use App\Mailer\MailerService;
@@ -57,7 +58,7 @@ class SignupHandler
             if (Adherent::PENDING === $activeAdherent->getStatus()) {
                 $this->bus->dispatch(new SendSignupConfirmationCommand($activeAdherent));
             } else {
-                $this->membershipNotifier->sendConnexionDetailsMessage($activeAdherent);
+                $this->membershipNotifier->sendConnexionDetailsMessage($activeAdherent, AppCodeEnum::CAMPAIGN);
             }
 
             return;

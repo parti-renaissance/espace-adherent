@@ -36,6 +36,9 @@ class FinishAdhesionStepsListener implements EventSubscriberInterface
             return;
         }
 
+        // stop temporarily redirect to adhesion steps
+        return;
+
         if (AppCodeEnum::CAMPAIGN === $this->appUrlManager->getAppCodeFromRequest($request)) {
             return;
         }

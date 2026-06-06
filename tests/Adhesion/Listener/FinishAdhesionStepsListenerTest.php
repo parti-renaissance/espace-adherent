@@ -40,6 +40,10 @@ class FinishAdhesionStepsListenerTest extends TestCase
 
     public function testNonSignupAccountWithIncompleteAdhesionIsRedirected(): void
     {
+        // Skipped: the adhesion-steps diversion is temporarily disabled in FinishAdhesionStepsListener
+        // (early `return`, commit fef3ddab5). Remove this skip when the redirect is restored.
+        self::markTestSkipped('Adhesion-steps diversion temporarily disabled in FinishAdhesionStepsListener.');
+
         $adherent = $this->createStub(Adherent::class);
         $adherent->signupAccount = false;
         $adherent->method('isFullyCompletedAdhesion')->willReturn(false);

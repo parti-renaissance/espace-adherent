@@ -369,6 +369,45 @@ class SignupControllerTest extends AbstractApiTestCase
         $this->assertCountMails(0, SignupConfirmationMessage::class, $email);
     }
 
+    public function testSignupExistingSympathizerMagicLinkTargetsCampaignHost(): void
+    {
+        // The magic link emailed to an existing sympathizer must point at the campaign auth host.
+        // /api/signup is served on the API host, which carries no campaign/vox distinction, so the
+        // target host is decided by the handler (AppCodeEnum::CAMPAIGN), not by the request host.
+        // Without that explicit app code the link fell back to the vox host and bounced the campaign
+        // user. The source ('vox' here) is analytics-only and does NOT influence the host: this pins
+        // that every signup magic link targets the campaign app, whatever the provenance.
+        $email = 'carl999@example.fr';
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $this->post(['email' => $email, 'source' => 'vox', 'recaptcha' => 'fake']);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $magicLinkHost = $this->extractMagicLinkHost(AdhesionAlreadySympathizerMessage::class, $email);
+        self::assertSame($campaignHost, $magicLinkHost, 'Sympathizer magic link must target the campaign host.');
+        self::assertNotSame($voxHost, $magicLinkHost, 'Sympathizer magic link must not bounce to the vox host.');
+    }
+
+    public function testSignupExistingAdherentMagicLinkTargetsCampaignHost(): void
+    {
+        // Same host guarantee for the adherent branch (AdhesionAlreadyAdherentMessage).
+        $email = 'michelle.dufour@example.ch';
+        $michelle = $this->getAdherentRepository()->findOneByEmail($email);
+        $michelle->setStatus(Adherent::ENABLED);
+        $this->manager->flush();
+
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $magicLinkHost = $this->extractMagicLinkHost(AdhesionAlreadyAdherentMessage::class, $email);
+        self::assertSame($campaignHost, $magicLinkHost, 'Adherent magic link must target the campaign host.');
+        self::assertNotSame($voxHost, $magicLinkHost, 'Adherent magic link must not bounce to the vox host.');
+    }
+
     public function testRejectsDisposableEmailReturns400(): void
     {
         // Disposable domains (e.g. 10minutemail.com) are blocklisted by StrictEmail (disposable=true default).
@@ -569,6 +608,19 @@ class SignupControllerTest extends AbstractApiTestCase
             'adherent' => $adherent,
             'source' => $source,
         ]);
+    }
+
+    private function extractMagicLinkHost(string $messageClass, string $email): ?string
+    {
+        $messages = $this->getEmailRepository()->findRecipientMessages($messageClass, $email);
+        self::assertCount(1, $messages);
+
+        // These messages pass their vars as the 5th ctor arg, so the magic link lands in
+        // message.global_merge_vars (not the 6th-arg per-recipient message.merge_vars[0].vars).
+        $payload = json_decode($messages[0]->getRequestPayloadJson(), true);
+        $vars = array_column($payload['message']['global_merge_vars'], 'content', 'name');
+
+        return parse_url($vars['magic_link'] ?? '', \PHP_URL_HOST);
     }
 
     private function createAdherentWithStatus(string $email, string $status): Adherent
