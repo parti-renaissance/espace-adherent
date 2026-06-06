@@ -103,10 +103,6 @@ class MembershipNotifier implements LoggerAwareInterface
             return;
         }
 
-        if ($adherent->isRenaissanceSympathizer()) {
-            $url .= '&_target_path='.$this->urlGenerator->generate('app_adhesion_index');
-        }
-
         $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
     }
 

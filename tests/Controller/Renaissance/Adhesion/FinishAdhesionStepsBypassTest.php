@@ -33,6 +33,11 @@ class FinishAdhesionStepsBypassTest extends AbstractRenaissanceWebTestCase
     #[DataProvider('provideHostExpectations')]
     public function testAdhesionFunnelDiversionDependsOnHost(string $hostParameter, string $expectedFragment, string $forbiddenFragment): void
     {
+        // Skipped: the adhesion-steps diversion is temporarily disabled in FinishAdhesionStepsListener
+        // (early `return`, commit fef3ddab5), so the vox host no longer diverts to /adhesion. Remove
+        // this skip when the redirect is restored.
+        self::markTestSkipped('Adhesion-steps diversion temporarily disabled in FinishAdhesionStepsListener.');
+
         $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter($hostParameter));
         $this->authenticateAsAdherent($this->client, self::INCOMPLETE_ADHERENT_EMAIL);
 

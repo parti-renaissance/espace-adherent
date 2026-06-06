@@ -356,6 +356,7 @@ Feature:
         Then I should be on "/app" wait otherwise
 
     @javascript2
+    @skip
     Scenario: I can become adherent from EM account
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |

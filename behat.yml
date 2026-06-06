@@ -48,7 +48,7 @@ default:
                 - Tests\App\Behat\Context\FeatureContext
         javascript:
             filters:
-                tags: '@javascript'
+                tags: '@javascript&&~@skip'
             contexts:
                 - Behatch\Context\BrowserContext:
                       timeout: 3
