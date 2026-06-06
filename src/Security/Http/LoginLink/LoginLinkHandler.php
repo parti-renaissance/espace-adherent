@@ -34,9 +34,13 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
             $host = $this->appUrlManager->getUrlGenerator($appCode)->getAppHost();
 
             if (!$request || !$queryParams['_target_path'] = $request->getSession()->get('_security.main.target_path')) {
-                $queryParams['_target_path'] = $this->urlGenerator->generate(
-                    'vox_app_redirect',
-                    $host ? ['app_domain' => $host] : []
+                $queryParams['_target_path'] = parse_url(
+                    $this->urlGenerator->generate(
+                        'vox_app_redirect',
+                        $host ? ['app_domain' => $host] : [],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    ),
+                    \PHP_URL_PATH
                 );
             }
         }

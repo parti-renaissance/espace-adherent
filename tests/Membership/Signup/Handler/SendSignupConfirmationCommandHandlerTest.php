@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Membership\Signup\Handler;
 
 use App\Adhesion\ActivationCodeManager;
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
 use App\Entity\PostAddress;
@@ -32,7 +33,7 @@ class SendSignupConfirmationCommandHandlerTest extends TestCase
         $loginLinkHandler
             ->expects(self::once())
             ->method('createLoginLink')
-            ->with($adherent, null, 86400, 'renaissance')
+            ->with($adherent, null, 86400, AppCodeEnum::CAMPAIGN)
             ->willReturn(new LoginLinkDetails($magicLinkUrl, new \DateTimeImmutable('+1 day')))
         ;
 
@@ -77,7 +78,7 @@ class SendSignupConfirmationCommandHandlerTest extends TestCase
         $loginLinkHandler
             ->expects(self::once())
             ->method('createLoginLink')
-            ->with($adherent, null, 86400, 'renaissance')
+            ->with($adherent, null, 86400, AppCodeEnum::CAMPAIGN)
             ->willReturn(new LoginLinkDetails('https://app.example.org/magic', new \DateTimeImmutable('+1 day')))
         ;
 

@@ -93,10 +93,13 @@ class MembershipNotifier implements LoggerAwareInterface
         $url = $this->linkHandler->createLoginLink($adherent, lifetime: 86400, appCode: $appCode)->getUrl();
 
         if ($adherent->isRenaissanceAdherent()) {
+            $appHost = $appCode ? $this->appUrlManager->getUrlGenerator($appCode)->getAppHost() : '';
+            $appDomainParams = '' !== $appHost ? ['app_domain' => $appHost] : [];
+
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(
                 $adherent,
                 $url,
-                $this->urlGenerator->generate('app_forgot_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->urlGenerator->generate('app_forgot_password', $appDomainParams, UrlGeneratorInterface::ABSOLUTE_URL),
                 $url.'&_target_path='.$this->urlGenerator->generate('app_adhesion_index'),
             ));
 

@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
 use App\Entity\PostAddress;
 use App\Entity\SignupSource;
+use App\Mailer\Message\Campaign\CampaignWelcomeMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadySympathizerMessage;
 use App\Mailer\Message\Renaissance\SignupConfirmationMessage;
@@ -384,9 +385,17 @@ class SignupControllerTest extends AbstractApiTestCase
         $this->post(['email' => $email, 'source' => 'vox', 'recaptcha' => 'fake']);
         $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
 
-        $magicLinkHost = $this->extractMagicLinkHost(AdhesionAlreadySympathizerMessage::class, $email);
+        $magicLink = $this->extractLink(AdhesionAlreadySympathizerMessage::class, $email, 'magic_link');
+
+        $magicLinkHost = parse_url($magicLink, \PHP_URL_HOST);
         self::assertSame($campaignHost, $magicLinkHost, 'Sympathizer magic link must target the campaign host.');
         self::assertNotSame($voxHost, $magicLinkHost, 'Sympathizer magic link must not bounce to the vox host.');
+
+        // The magic link is built in a no-request context (worker/API), so generating the host-templated
+        // vox_app_redirect as an ABSOLUTE_PATH used to yield a scheme-relative network path "//host/app";
+        // at consume time that becomes a malformed double-host URL. _target_path must stay a clean /app.
+        parse_str((string) parse_url($magicLink, \PHP_URL_QUERY), $query);
+        self::assertSame('/app', $query['_target_path'] ?? null, 'Magic link _target_path must be a clean /app path, not a network path.');
     }
 
     public function testSignupExistingAdherentMagicLinkTargetsCampaignHost(): void
@@ -403,9 +412,80 @@ class SignupControllerTest extends AbstractApiTestCase
         $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
         $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
 
-        $magicLinkHost = $this->extractMagicLinkHost(AdhesionAlreadyAdherentMessage::class, $email);
+        $magicLinkHost = $this->extractLinkHost(AdhesionAlreadyAdherentMessage::class, $email, 'magic_link');
         self::assertSame($campaignHost, $magicLinkHost, 'Adherent magic link must target the campaign host.');
         self::assertNotSame($voxHost, $magicLinkHost, 'Adherent magic link must not bounce to the vox host.');
+
+        // The forgot-password link (app_forgot_password is host-templated, vox by default) must stay on
+        // the same host as the magic link, or a campaign adherent who clicks it bounces to the vox flow.
+        $forgotPasswordHost = $this->extractLinkHost(AdhesionAlreadyAdherentMessage::class, $email, 'forgot_password_link');
+        self::assertSame($campaignHost, $forgotPasswordHost, 'Adherent forgot-password link must target the campaign host.');
+        self::assertNotSame($voxHost, $forgotPasswordHost, 'Adherent forgot-password link must not bounce to the vox host.');
+    }
+
+    public function testSignupExistingAdherentMagicLinkConsumeRedirectsToWellFormedCampaignApp(): void
+    {
+        // End-to-end: trigger the email via /api/signup, then actually CONSUME the magic link and assert
+        // the post-auth redirect is a well-formed campaign URL. This is the real staging symptom — a
+        // scheme-relative "//host/app" _target_path becomes "http://campaign//campaign/app" at consume
+        // time (HttpUtils prefixes the current scheme+host to anything starting with "/").
+        $email = 'michelle.dufour@example.ch';
+        $michelle = $this->getAdherentRepository()->findOneByEmail($email);
+        $michelle->setStatus(Adherent::ENABLED);
+        $this->manager->flush();
+
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $magicLink = $this->extractLink(AdhesionAlreadyAdherentMessage::class, $email, 'magic_link');
+        $parts = parse_url($magicLink);
+        self::assertSame($campaignHost, $parts['host'], 'precondition: magic link must be on the campaign host');
+
+        // Consume the link on the campaign host as a browser would (login_link is check_post_only).
+        $this->client->setServerParameter('HTTP_HOST', $campaignHost);
+        $this->client->setServerParameter('HTTP_ACCEPT', 'text/html');
+        $this->client->request(Request::METHOD_POST, $parts['path'].'?'.$parts['query']);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $location = (string) $this->client->getResponse()->headers->get('location');
+        self::assertSame('http://'.$campaignHost.'/app', $location, 'Magic-link login must land on a well-formed campaign /app URL (no double host).');
+        self::assertStringNotContainsString($voxHost, $location, 'Magic-link login must not bounce to the vox host.');
+    }
+
+    public function testNewCampaignSignupConfirmationAndWelcomeMagicLinksTargetCampaignHost(): void
+    {
+        // End-to-end campaign signup journey covering both getSource()-as-appCode fixes:
+        //  1. a brand-new signup receives a confirmation email whose magic link is on the campaign host;
+        //  2. consuming it validates the pending account and lands on campaign /app;
+        //  3. validation triggers the campaign welcome email, whose magic link must also be campaign.
+        // Both links used to leak to the vox host (getSource() is never a mobile app code).
+        $email = 'new-campaign-journey@example.test';
+        $campaignHost = static::getContainer()->getParameter('user_campaign_host');
+        $voxHost = static::getContainer()->getParameter('user_vox_host');
+
+        $this->post(['email' => $email, 'source' => 'newsletter', 'recaptcha' => 'fake']);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        // 1. Confirmation email -> campaign host.
+        $confirmationLink = $this->extractLink(SignupConfirmationMessage::class, $email, 'magic_link');
+        self::assertSame($campaignHost, parse_url($confirmationLink, \PHP_URL_HOST), 'Signup confirmation magic link must target the campaign host.');
+
+        // 2. Consume it on the campaign host: the pending account is validated and lands on campaign /app.
+        $parts = parse_url($confirmationLink);
+        $this->client->setServerParameter('HTTP_HOST', $campaignHost);
+        $this->client->setServerParameter('HTTP_ACCEPT', 'text/html');
+        $this->client->request(Request::METHOD_POST, $parts['path'].'?'.$parts['query']);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        self::assertSame('http://'.$campaignHost.'/app', (string) $this->client->getResponse()->headers->get('location'));
+
+        // 3. Validation triggered the campaign welcome email; its magic link must also be campaign.
+        $welcomeLinkHost = $this->extractLinkHost(CampaignWelcomeMessage::class, $email, 'magic_link');
+        self::assertSame($campaignHost, $welcomeLinkHost, 'Campaign welcome magic link must target the campaign host.');
+        self::assertNotSame($voxHost, $welcomeLinkHost, 'Campaign welcome magic link must not bounce to the vox host.');
     }
 
     public function testRejectsDisposableEmailReturns400(): void
@@ -610,17 +690,22 @@ class SignupControllerTest extends AbstractApiTestCase
         ]);
     }
 
-    private function extractMagicLinkHost(string $messageClass, string $email): ?string
+    private function extractLink(string $messageClass, string $email, string $varName): string
     {
         $messages = $this->getEmailRepository()->findRecipientMessages($messageClass, $email);
         self::assertCount(1, $messages);
 
-        // These messages pass their vars as the 5th ctor arg, so the magic link lands in
+        // These messages pass their vars as the 5th ctor arg, so links land in
         // message.global_merge_vars (not the 6th-arg per-recipient message.merge_vars[0].vars).
         $payload = json_decode($messages[0]->getRequestPayloadJson(), true);
         $vars = array_column($payload['message']['global_merge_vars'], 'content', 'name');
 
-        return parse_url($vars['magic_link'] ?? '', \PHP_URL_HOST);
+        return (string) ($vars[$varName] ?? '');
+    }
+
+    private function extractLinkHost(string $messageClass, string $email, string $varName): ?string
+    {
+        return parse_url($this->extractLink($messageClass, $email, $varName), \PHP_URL_HOST);
     }
 
     private function createAdherentWithStatus(string $email, string $status): Adherent
