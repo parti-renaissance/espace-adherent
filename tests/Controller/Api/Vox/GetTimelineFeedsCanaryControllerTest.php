@@ -141,6 +141,39 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(20, $payload['hitsPerPage']);
     }
 
+    public function testNonCanaryUserSkipsRankerEvenWhenItIsAvailable(): void
+    {
+        // Canary off for the environment AND a non-canaryTester user (jacques.picard): the gate must not
+        // fork to the ranker. We make the ranker fully available and seed the very rows it would return, so
+        // the only way to land on Algolia is the gate skipping the indexer outright (not a runtime failure).
+        $originalCanary = $_ENV['ENABLE_CANARY'] ?? null;
+        $_SERVER['ENABLE_CANARY'] = $_ENV['ENABLE_CANARY'] = '0';
+
+        try {
+            $token = $this->nonCanaryToken();
+            $this->insertFeed(self::UUID_A, 'Indexer item A');
+            $this->insertFeed(self::UUID_B, 'Indexer item B');
+            $this->manager->flush();
+            $this->enableRanker();
+
+            $payload = $this->requestTimeline($token, 0, 'sess-123');
+
+            // hitsPerPage 20 is the Algolia envelope (the indexer path returns 10); the ranker-only items
+            // never surface — proof the gate skipped the indexer instead of consulting then falling back.
+            self::assertSame(20, $payload['hitsPerPage']);
+
+            $titles = array_column($payload['hits'], 'title');
+            self::assertNotContains('Indexer item A', $titles);
+            self::assertNotContains('Indexer item B', $titles);
+        } finally {
+            if (null === $originalCanary) {
+                unset($_SERVER['ENABLE_CANARY'], $_ENV['ENABLE_CANARY']);
+            } else {
+                $_SERVER['ENABLE_CANARY'] = $_ENV['ENABLE_CANARY'] = $originalCanary;
+            }
+        }
+    }
+
     private function canaryToken(): string
     {
         return $this->getAccessToken(
@@ -149,6 +182,18 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
             GrantTypeEnum::PASSWORD,
             Scope::JEMARCHE_APP,
             'president-ad@renaissance-dev.fr',
+            LoadAdherentData::DEFAULT_PASSWORD,
+        );
+    }
+
+    private function nonCanaryToken(): string
+    {
+        return $this->getAccessToken(
+            LoadClientData::CLIENT_10_UUID,
+            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
+            GrantTypeEnum::PASSWORD,
+            Scope::JEMARCHE_APP,
+            'jacques.picard@en-marche.fr',
             LoadAdherentData::DEFAULT_PASSWORD,
         );
     }
