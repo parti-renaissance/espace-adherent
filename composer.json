@@ -57,6 +57,7 @@
         "geocoder-php/google-maps-provider": "^4.5",
         "giggsey/libphonenumber-for-php": "^8.13",
         "gocardless/gocardless-pro": "^7.0",
+        "google/auth": "^1.50",
         "google/cloud-storage": "^1.23",
         "google/cloud-video-transcoder": "^1.4",
         "google/cloud-vision": "^1.2",

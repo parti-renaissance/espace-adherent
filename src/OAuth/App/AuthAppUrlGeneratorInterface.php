@@ -16,8 +16,6 @@ interface AuthAppUrlGeneratorInterface
 
     public function generateHomepageLink(): string;
 
-    public function generateForLoginSuccess(Adherent $adherent): string;
-
     public function generateSuccessResetPasswordLink(Request $request): string;
 
     public function generateCreatePasswordLink(

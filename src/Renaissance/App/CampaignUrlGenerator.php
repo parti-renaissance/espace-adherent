@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Renaissance\App;
 
 use App\AppCodeEnum;
-use App\Entity\Adherent;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,11 +27,6 @@ class CampaignUrlGenerator extends AbstractAppUrlGenerator
     public function generateHomepageLink(): string
     {
         return $this->urlGenerator->generate('campaign_site', [], UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    public function generateForLoginSuccess(Adherent $adherent): string
-    {
-        return $this->urlGenerator->generate('vox_app_redirect');
     }
 
     public function generateSuccessResetPasswordLink(Request $request): string
