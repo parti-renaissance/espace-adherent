@@ -773,6 +773,265 @@ Feature:
             }
             """
 
+    Scenario: As a logged-in user a missing or null demographic field never fails and is left unchanged
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        # An empty payload is accepted: every field is optional
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {}
+            """
+        Then the response status code should be 200
+        # gender, birthdate and nationality cannot be cleared: an explicit null is ignored, the stored value stays
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "gender": null,
+                "birthdate": null,
+                "nationality": null
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "gender": "male",
+                "birthdate": "1950-07-08T00:00:00+01:00",
+                "nationality": "FR"
+            }
+            """
+
+    Scenario: As a logged-in user I can change a demographic field to a new valid value
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "gender": "female",
+                "nationality": "DE"
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "gender": "female",
+                "nationality": "DE"
+            }
+            """
+
+    Scenario: A partial update only changes the submitted fields and leaves the others untouched
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "job": "Ingénieurs"
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "first_name": "Carl",
+                "last_name": "Mirabeau",
+                "gender": "male",
+                "nationality": "FR",
+                "birthdate": "1950-07-08T00:00:00+01:00",
+                "phone": {
+                    "country": "FR",
+                    "number": "01 11 22 33 44"
+                },
+                "position": "retired",
+                "job": "Ingénieurs"
+            }
+            """
+
+    Scenario: Optional fields can be set then cleared with null (scalars) or an empty array (collections)
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "job": "Ingénieurs",
+                "activity_area": "Informatique et électronique",
+                "facebook_page_url": "https://facebook.com/johndoe",
+                "declared_mandates": ["maire"],
+                "interests": ["egalite"]
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "job": "Ingénieurs",
+                "activity_area": "Informatique et électronique",
+                "facebook_page_url": "https://facebook.com/johndoe",
+                "declared_mandates": ["maire"],
+                "interests": [
+                    {
+                        "label": "Égalité F/H",
+                        "code": "egalite"
+                    }
+                ]
+            }
+            """
+        # Scalars reset with null, the mandates collection with an empty array, interests with null
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "job": null,
+                "activity_area": null,
+                "facebook_page_url": null,
+                "phone": null,
+                "position": null,
+                "declared_mandates": [],
+                "interests": null
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "job": null,
+                "activity_area": null,
+                "facebook_page_url": null,
+                "phone": null,
+                "position": null,
+                "declared_mandates": [],
+                "interests": []
+            }
+            """
+
+    Scenario: Identity fields cannot be cleared, the API rejects a null value without crashing
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "first_name": null
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "first_name",
+                        "message": "Cette valeur ne doit pas être vide."
+                    }
+                ]
+            }
+            """
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "email_address": null
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "email_address",
+                        "message": "L'adresse email est requise."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As an adherent whose stored profile is incomplete I can still update an unrelated field
+        # This member carries an "adherent:*" tag (so the adherent-only nationality rule applies) but has no
+        # nationality stored. A full-object validation would reject this request on the missing nationality;
+        # the partial validation must only look at the submitted "job" field and let it through.
+        Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/918f07e5-676b-49c0-b76d-72ce01cb2404" with body:
+            """
+            {
+                "job": "Ingénieurs"
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "job": "Ingénieurs",
+                "nationality": null
+            }
+            """
+
+    Scenario: As an adherent whose stored address has no country I can still update my profile
+        # Regression guard: this member's stored post address has a null country. Rebuilding the address
+        # during the update must not crash (PostAddress::createForeignAddress used to require a non-null country).
+        Given I am logged with "audience-filter-tags-adherent-renaissance@audience-filter-test.local" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "PUT" request to "/api/v3/profile/a558e073-1e50-5a36-8d64-205dadd78ee5" with body:
+            """
+            {
+                "job": "Ingénieurs"
+            }
+            """
+        Then the response status code should be 200
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "job": "Ingénieurs"
+            }
+            """
+
+    Scenario: As a logged-in user an invalid field rejects the whole partial update and persists nothing
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        # job is a valid value but birthdate is out of range: the request must fail as a whole and not save job
+        When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+            """
+            {
+                "job": "Ingénieurs",
+                "birthdate": "2020-01-01"
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "birthdate",
+                        "message": "Vous devez être âgé d'au moins 15 ans pour adhérer."
+                    }
+                ]
+            }
+            """
+        Then I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "job": null
+            }
+            """
+
     Scenario: As a non-adherent logged-in user I can update my profile with different validation rules
         Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scopes "read:profile write:profile"
         When I send a "GET" request to "/api/v3/profile/me"

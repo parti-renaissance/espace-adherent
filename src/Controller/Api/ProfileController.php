@@ -66,6 +66,7 @@ class ProfileController extends AbstractController
     ];
 
     private const WRITE_UNCERTIFIED_PROFILE_SERIALIZATION_GROUPS = 'uncertified_profile_write';
+    private const PRESERVE_ON_NULL_PROPERTIES = ['gender', 'birthdate', 'nationality'];
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     #[Route(path: '/me', name: '_show', methods: ['GET'])]
@@ -156,7 +157,16 @@ class ProfileController extends AbstractController
         NameConverterInterface $nameConverter,
         Adherent $adherent,
     ): JsonResponse {
-        $json = $request->getContent();
+        $payload = json_decode($request->getContent(), true);
+        $payload = \is_array($payload) ? $payload : [];
+
+        foreach (self::PRESERVE_ON_NULL_PROPERTIES as $property) {
+            $key = $nameConverter->normalize($property, AdherentProfile::class);
+
+            if (\array_key_exists($key, $payload) && null === $payload[$key]) {
+                unset($payload[$key]);
+            }
+        }
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
@@ -167,13 +177,13 @@ class ProfileController extends AbstractController
             $groups[] = 'empty_profile_data';
         }
 
-        $serializer->deserialize($json, AdherentProfile::class, 'json', context: [
+        $serializer->deserialize(json_encode($payload ?: new \stdClass()), AdherentProfile::class, 'json', context: [
             AbstractNormalizer::OBJECT_TO_POPULATE => $adherentProfile,
             AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
             AbstractNormalizer::GROUPS => $groups,
         ]);
 
-        $violations = $this->validateSubmittedFields($json, $adherentProfile, $validator, $nameConverter);
+        $violations = $this->validateSubmittedFields($payload, $adherentProfile, $validator, $nameConverter);
 
         if (0 === $violations->count()) {
             $handler->update($adherent, $adherentProfile);
@@ -187,14 +197,11 @@ class ProfileController extends AbstractController
     }
 
     private function validateSubmittedFields(
-        string $json,
+        array $payload,
         AdherentProfile $adherentProfile,
         ValidatorInterface $validator,
         NameConverterInterface $nameConverter,
     ): ConstraintViolationListInterface {
-        $payload = json_decode($json, true);
-        $payload = \is_array($payload) ? $payload : [];
-
         $violations = new ConstraintViolationList();
 
         foreach (new \ReflectionClass(AdherentProfile::class)->getProperties() as $reflectionProperty) {
