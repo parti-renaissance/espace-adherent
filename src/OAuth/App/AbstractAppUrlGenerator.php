@@ -27,11 +27,6 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
         return null;
     }
 
-    public function generateForLoginSuccess(Adherent $adherent): string
-    {
-        return $this->generateHomepageLink();
-    }
-
     public function getAppHost(): string
     {
         return '';

@@ -81,20 +81,6 @@ class CampaignUrlGeneratorTest extends TestCase
         self::assertSame('https://campagne.code/', $generator->generateHomepageLink());
     }
 
-    public function testGenerateForLoginSuccessTargetsAppRedirect(): void
-    {
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator
-            ->expects(self::once())
-            ->method('generate')
-            ->with('vox_app_redirect')
-            ->willReturn('/app');
-
-        $generator = new CampaignUrlGenerator($urlGenerator, self::CAMPAIGN_HOST, self::CAMPAIGN_APP_HOST);
-
-        self::assertSame('/app', $generator->generateForLoginSuccess($this->createStub(\App\Entity\Adherent::class)));
-    }
-
     public function testGenerateLogoutPassesCampaignHostAsAppDomain(): void
     {
         // Regression guard: generateLogout() used to reference an undefined

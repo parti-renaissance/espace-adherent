@@ -52,6 +52,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'app.cache.event_notifications' => [
                     'default_lifetime' => 86400,
                 ],
+                'google_auth.id_token_cache' => [
+                    'adapter' => 'cache.adapter.array',
+                ],
             ],
         ],
     ]);
