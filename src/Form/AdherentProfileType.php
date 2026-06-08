@@ -129,6 +129,7 @@ class AdherentProfileType extends AbstractType
 
         $resolver->setDefaults([
             'data_class' => AdherentProfile::class,
+            'validation_groups' => ['Default', 'web_profile_form'],
         ]);
     }
 }

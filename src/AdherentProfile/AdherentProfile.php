@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AdherentProfile implements MembershipInterface
 {
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Default', 'api_put_validation'])]
-    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['web_profile_form'])]
     #[Groups(['profile_write'])]
     private ?string $gender = null;
 
@@ -51,7 +51,7 @@ class AdherentProfile implements MembershipInterface
     private ?string $position = null;
 
     #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'api_put_validation'])]
-    #[Assert\Expression('value or !this.isAdherent', message: 'adherent_profile.nationality.not_blank')]
+    #[Assert\Expression('value or !this.isAdherent', message: 'adherent_profile.nationality.not_blank', groups: ['Default', 'api_put_validation'])]
     #[Groups(['profile_write'])]
     private ?string $nationality = null;
 
@@ -65,7 +65,7 @@ class AdherentProfile implements MembershipInterface
     #[Groups(['profile_write'])]
     private ?PhoneNumber $phone = null;
 
-    #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
+    #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['web_profile_form'])]
     #[Assert\Range(minMessage: 'adherent.birthdate.maximum_required_age', min: '-120 years', groups: ['Default', 'api_put_validation'])]
     #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write', 'empty_profile_data'])]
@@ -192,7 +192,7 @@ class AdherentProfile implements MembershipInterface
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -202,7 +202,7 @@ class AdherentProfile implements MembershipInterface
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -217,9 +217,9 @@ class AdherentProfile implements MembershipInterface
         return $this->postAddress;
     }
 
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress): void
     {
-        $this->emailAddress = mb_strtolower($emailAddress);
+        $this->emailAddress = null === $emailAddress ? null : mb_strtolower($emailAddress);
     }
 
     public function getEmailAddress(): string
@@ -344,7 +344,7 @@ class AdherentProfile implements MembershipInterface
 
     public function setMandates(?array $mandates): void
     {
-        $this->mandates = $mandates;
+        $this->mandates = $mandates ?? [];
     }
 
     public function getInterests(): array
@@ -352,9 +352,9 @@ class AdherentProfile implements MembershipInterface
         return $this->interests;
     }
 
-    public function setInterests(array $interests): void
+    public function setInterests(?array $interests): void
     {
-        $this->interests = $interests;
+        $this->interests = $interests ?? [];
     }
 
     public function getSubscriptionTypes(): array
@@ -362,9 +362,9 @@ class AdherentProfile implements MembershipInterface
         return $this->subscriptionTypes;
     }
 
-    public function setSubscriptionTypes(array $subscriptionTypes): void
+    public function setSubscriptionTypes(?array $subscriptionTypes): void
     {
-        $this->subscriptionTypes = $subscriptionTypes;
+        $this->subscriptionTypes = $subscriptionTypes ?? [];
     }
 
     public function getSource(): ?string

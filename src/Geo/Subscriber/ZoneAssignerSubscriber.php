@@ -124,7 +124,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         $toAdd = [];
         $typeForGeoSearch = self::TYPES;
 
-        if ($adherent->isForeignResident()) {
+        if ($adherent->getCountry() && $adherent->isForeignResident()) {
             $toAdd = $this->zoneRepository->findParent(Zone::FOREIGN_DISTRICT, $adherent->getCountry(), Zone::COUNTRY);
             $typeForGeoSearch = [Zone::CUSTOM];
         }

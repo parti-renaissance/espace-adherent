@@ -94,7 +94,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     public static function createForeignAddress(
-        string $country,
+        ?string $country,
         ?string $zipCode,
         ?string $cityName,
         ?string $street,
