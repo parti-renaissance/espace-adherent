@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Vox;
 
 use App\AdherentMessage\PublicationZone;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Geo\Zone;
@@ -28,8 +27,6 @@ use Symfony\Component\Uid\Uuid;
 #[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
 class GetTimelineFeedsController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     /**
      * Feed types exposed in the JeMengage mobile timeline, passed to Algolia as tag filters.
      */
@@ -57,18 +54,16 @@ class GetTimelineFeedsController extends AbstractController
             $page = 0;
         }
 
-        if ($this->isCanaryEnabled()) {
-            $appSessionId = trim((string) $request->query->get('session_id'));
-            $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? Uuid::v4()->toRfc4122() : $appSessionId);
+        $appSessionId = trim((string) $request->query->get('session_id'));
+        $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? Uuid::v4()->toRfc4122() : $appSessionId);
 
-            try {
-                return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
-            } catch (\RuntimeException $exception) {
-                $this->logger->warning('Timeline ranker failed, falling back to Algolia.', [
-                    'exception' => $exception,
-                    'user_id' => $user->getId(),
-                ]);
-            }
+        try {
+            return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
+        } catch (\RuntimeException $exception) {
+            $this->logger->error('Timeline ranker failed, falling back to Algolia.', [
+                'exception' => $exception,
+                'user_id' => $user->getId(),
+            ]);
         }
 
         $userId = $user->getId();
