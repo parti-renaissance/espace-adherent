@@ -44,7 +44,7 @@ class ChatbotRateLimitConfigTest extends TestCase
         yield 'adherent_a_jour day' => [ChatbotUserTier::AdherentAJour, ChatbotRateLimitPeriod::Day, 20];
 
         yield 'cadre minute' => [ChatbotUserTier::Cadre, ChatbotRateLimitPeriod::Minute, 3];
-        yield 'cadre hour' => [ChatbotUserTier::Cadre, ChatbotRateLimitPeriod::Hour, 5];
+        yield 'cadre hour' => [ChatbotUserTier::Cadre, ChatbotRateLimitPeriod::Hour, 10];
         yield 'cadre day' => [ChatbotUserTier::Cadre, ChatbotRateLimitPeriod::Day, 50];
     }
 

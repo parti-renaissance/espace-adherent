@@ -18,7 +18,7 @@ final class ChatbotRateLimitConfig
         'sympathisant' => ['minute' => 3, 'hour' => 5, 'day' => 10],
         'adherent' => ['minute' => 3, 'hour' => 5, 'day' => 20],
         'adherent_a_jour' => ['minute' => 3, 'hour' => 5, 'day' => 20],
-        'cadre' => ['minute' => 3, 'hour' => 5, 'day' => 50],
+        'cadre' => ['minute' => 3, 'hour' => 10, 'day' => 50],
     ];
 
     public static function getGlobalLimit(ChatbotRateLimitPeriod $period): int
