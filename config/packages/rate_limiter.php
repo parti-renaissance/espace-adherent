@@ -40,6 +40,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'limit' => 10,
                 'interval' => '1 minute',
             ],
+            'empty_hit_source_log' => [
+                'policy' => 'fixed_window',
+                'limit' => 5,
+                'interval' => '1 hour',
+            ],
         ],
     ]);
 };
