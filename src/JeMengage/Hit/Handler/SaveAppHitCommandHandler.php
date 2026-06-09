@@ -9,13 +9,16 @@ use App\Entity\AppHit;
 use App\Entity\AppSession;
 use App\JeMengage\Hit\Command\SaveAppHitCommand;
 use App\JeMengage\Hit\Event\NewHitSavedEvent;
+use App\JeMengage\Hit\EventTypeEnum;
 use App\JeMengage\Hit\SourceGroupEnum;
 use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\Event\EventRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -29,6 +32,8 @@ class SaveAppHitCommandHandler
         private readonly AdherentRepository $adherentRepository,
         private readonly EventRepository $eventRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
+        private readonly RateLimiterFactory $emptyHitSourceLogLimiter,
     ) {
     }
 
@@ -56,6 +61,18 @@ class SaveAppHitCommandHandler
             && $event = $this->eventRepository->findOneBySlug($hit->objectId)
         ) {
             $hit->objectId = $event->getUuidAsString();
+        }
+
+        if (
+            empty($hit->source)
+            && EventTypeEnum::ActivitySession !== $hit->eventType
+            && $this->emptyHitSourceLogLimiter->create('global')->consume()->isAccepted()
+        ) {
+            $this->logger->error('Received hit with empty source', [
+                'raw' => $hit->raw,
+                'event_type' => $hit->eventType?->value,
+                'object_type' => $hit->objectType,
+            ]);
         }
 
         $hit->updateFingerprintHash();
