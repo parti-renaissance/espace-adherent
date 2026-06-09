@@ -16,6 +16,7 @@ use App\Entity\MailchimpSegment;
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
+use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Contact\ContactStatusEnum;
@@ -65,6 +66,10 @@ class Manager implements LoggerAwareInterface
 
     private const string API_CONTACT = 'contact';
     private const string API_MEMBER = 'member';
+
+    // Initial delay before the first post-send delivery check: the Mailchimp report needs a few
+    // minutes to populate emails_sent (mirrors the SyncReport firstRun delay).
+    private const int VERIFY_INITIAL_DELAY_MS = 300_000;
 
     public function __construct(
         private readonly Driver $driver,
@@ -399,6 +404,22 @@ class Manager implements LoggerAwareInterface
 
     public function sendMailchimpCampaign(MailchimpCampaign $campaign): bool
     {
+        // Checkpoint 2 (recovery double-send guard): if a recovery replica is about to be sent but
+        // the original campaign has meanwhile delivered on its own, abort — never send twice. Covers
+        // both the initial and the retry send paths (both reach this method).
+        if ($campaign->isRecoveryInProgress() && $this->deliveredByExternalId($campaign->getRecoveryOriginalExternalId())) {
+            $this->logger->warning('[Mailchimp][Recovery] Original delivered during preparation — replica send aborted', [
+                'campaign_id' => $campaign->getId(),
+                'original_external_id' => $campaign->getRecoveryOriginalExternalId(),
+            ]);
+
+            $campaign->markRecoveryAborted();
+            $this->entityManager->flush();
+
+            // Treat as resolved so callers do not schedule a retry.
+            return true;
+        }
+
         $this->checkMessageExternalId($campaign);
 
         $campaign->markAsSending();
@@ -411,6 +432,7 @@ class Manager implements LoggerAwareInterface
             $message = $campaign->getMessage();
             $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($message->getUuid()), [new DelayStamp(5000)]);
             $this->bus->dispatch(new SyncReportCommand($message->getUuid(), true, lowPriority: $message->isNational(), delay: 300_000));
+            $this->bus->dispatch(new VerifyCampaignDeliveryCommand($campaign->getId()), [new DelayStamp(self::VERIFY_INITIAL_DELAY_MS)]);
 
             return true;
         }
@@ -419,6 +441,52 @@ class Manager implements LoggerAwareInterface
         $this->entityManager->flush();
 
         return false;
+    }
+
+    /**
+     * Duplicates the campaign on Mailchimp into a fresh sendable draft. Returns the new external id.
+     */
+    public function replicateCampaign(MailchimpCampaign $campaign): ?string
+    {
+        return $this->driver->replicateCampaign($campaign->getExternalId());
+    }
+
+    /**
+     * True if the campaign's current external id reports a strictly positive emails_sent.
+     */
+    public function hasDelivered(MailchimpCampaign $campaign): bool
+    {
+        return $this->deliveredByExternalId($campaign->getExternalId());
+    }
+
+    private function deliveredByExternalId(?string $externalId): bool
+    {
+        if (null === $externalId) {
+            return false;
+        }
+
+        $data = $this->driver->getReportData($externalId);
+
+        return \array_key_exists('emails_sent', $data) && (int) $data['emails_sent'] > 0;
+    }
+
+    /**
+     * Whether the campaign's remote audience still points at the static segment we built for it.
+     * Lets the zero-delivery recovery fail fast and explicitly when actions/replicate did not carry
+     * the recipient config over, instead of letting MailchimpCampaignSendGuard abort at send time
+     * and strand the recovery in an "attempted" state.
+     */
+    public function campaignTargetsSegment(MailchimpCampaign $campaign): bool
+    {
+        $externalId = $campaign->getExternalId();
+
+        if (null === $externalId) {
+            return false;
+        }
+
+        $localSegmentId = $campaign->getStaticSegmentId();
+
+        return null !== $localSegmentId && $this->driver->getCampaignSavedSegmentId($externalId) === $localSegmentId;
     }
 
     public function sendTestCampaign(AdherentMessageInterface $message, array $emails): bool
