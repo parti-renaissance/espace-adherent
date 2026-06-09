@@ -54,9 +54,9 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
             throw new InvalidAdherentTagValueException($tag);
         }
 
-        // A flat hierarchical root (e.g. "adherent", "elu") keeps the " - " boundary so the
-        // Mailchimp "contains" match stays scoped to its children and does not substring-match
-        // another family's label. Flat leaf tags (e.g. "sympathisant") match their exact label.
+        // A hierarchical root (e.g. "adherent", "elu", "sympathisant") keeps the " - " boundary
+        // so the Mailchimp "contains" match stays scoped to its children and does not
+        // substring-match another family's label. Its children carry the "Parent - Child" label.
         if (TagEnum::isHierarchicalRoot($tag)) {
             $label .= ' - ';
         }

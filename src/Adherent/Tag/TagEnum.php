@@ -11,6 +11,13 @@ class TagEnum extends Enum
     public const CONTACT = 'contact';
     public const USER = 'user';
     public const SYMPATHISANT = 'sympathisant';
+    public const SYMPATHISANT_MEMBRE = 'sympathisant:membre';
+    public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
+    public const SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE = 'sympathisant:compte_avecvous_jemengage';
+    public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
+    public const SYMPATHISANT_AUTRE_PARTI = 'sympathisant:autre_parti';
+    public const SYMPATHISANT_BESOIN_D_EUROPE = 'sympathisant:besoin_d_europe';
+    public const SYMPATHISANT_ENSEMBLE2024 = 'sympathisant:ensemble2024';
     public const ADHERENT = 'adherent';
 
     public const ADHERENT_YEAR_TAG_PATTERN = self::ADHERENT.':a_jour_%s';
@@ -58,6 +65,13 @@ class TagEnum extends Enum
 
         return $adherentOnly ? $adherentTags : array_merge($adherentTags, [
             self::SYMPATHISANT,
+            self::SYMPATHISANT_MEMBRE,
+            self::SYMPATHISANT_ADHESION_INCOMPLETE,
+            self::SYMPATHISANT_COMPTE_EM,
+            self::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE,
+            self::SYMPATHISANT_AUTRE_PARTI,
+            self::SYMPATHISANT_BESOIN_D_EUROPE,
+            self::SYMPATHISANT_ENSEMBLE2024,
             self::CONTACT,
             self::USER,
         ]);
@@ -109,14 +123,14 @@ class TagEnum extends Enum
     }
 
     /**
-     * A flat tag whose ":" descendants (not the tag itself) are stored on adherents.
-     * Such a parent needs a boundary when matched in a substring context (e.g. Mailchimp
-     * "contains"). Flat *leaf* tags stored directly (e.g. SYMPATHISANT) are not roots and
-     * match their exact label — adding a new childless tag requires no change here.
+     * A hierarchical root is a flat parent tag whose ":" descendants (not the tag itself) are
+     * stored on adherents. Such a parent needs a boundary when matched in a substring context
+     * (e.g. Mailchimp "contains") so it stays scoped to its children. SYMPATHISANT is a pure
+     * root: it is never stored bare, only its descendants (e.g. SYMPATHISANT_MEMBRE) are.
      */
     public static function isHierarchicalRoot(string $tag): bool
     {
-        return \in_array($tag, [self::ADHERENT, self::ELU, self::NATIONAL_EVENT], true);
+        return \in_array($tag, [self::ADHERENT, self::ELU, self::NATIONAL_EVENT, self::SYMPATHISANT], true);
     }
 
     public static function getNationalEventTag(string $eventSlug, bool $isPresent): string
