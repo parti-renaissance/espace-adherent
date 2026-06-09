@@ -28,7 +28,7 @@ class TagTranslatorTest extends KernelTestCase
 
     public static function provideFlatTagLabels(): iterable
     {
-        yield 'sympathisant (control)' => [TagEnum::SYMPATHISANT, 'Membre'];
+        yield 'sympathisant (control)' => [TagEnum::SYMPATHISANT, 'Sympathisant'];
         yield 'contact' => [TagEnum::CONTACT, 'Contact'];
         yield 'user' => [TagEnum::USER, 'Utilisateur simple'];
     }

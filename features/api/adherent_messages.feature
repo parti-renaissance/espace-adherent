@@ -854,7 +854,14 @@ Feature:
                                     "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
                                     "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
                                     "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
-                                    "sympathisant": "Membre"
+                                    "sympathisant": "Sympathisant",
+                                    "sympathisant:membre": "Sympathisant - Membre",
+                                    "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
+                                    "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                                    "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
+                                    "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                                    "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                                    "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
                                 }
                             },
                             "type": "select"
@@ -1075,7 +1082,14 @@ Feature:
                                     "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
                                     "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
                                     "adherent:plus_a_jour:annee_2025": "Adhérent - Plus à jour - À jour 2025",
-                                    "sympathisant": "Membre"
+                                    "sympathisant": "Sympathisant",
+                                    "sympathisant:membre": "Sympathisant - Membre",
+                                    "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
+                                    "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                                    "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
+                                    "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                                    "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                                    "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
                                 },
                                 "favorite": true,
                                 "placeholder": "Tous mes contacts",
@@ -2158,7 +2172,14 @@ Feature:
                                     "adherent:plus_a_jour:annee_2024": "Adhérent - Plus à jour - À jour 2024",
                                     "adherent:plus_a_jour:annee_2023": "Adhérent - Plus à jour - À jour 2023",
                                     "adherent:plus_a_jour:annee_2022": "Adhérent - Plus à jour - À jour 2022",
-                                    "sympathisant": "Membre"
+                                    "sympathisant": "Sympathisant",
+                                    "sympathisant:membre": "Sympathisant - Membre",
+                                    "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
+                                    "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                                    "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
+                                    "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                                    "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                                    "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
                                 }
                             },
                             "type": "select"

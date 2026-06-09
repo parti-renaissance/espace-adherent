@@ -34,8 +34,8 @@ Feature:
                 },
                 "tags": [
                     {
-                        "code": "sympathisant",
-                        "label": "Membre",
+                        "code": "sympathisant:compte_em",
+                        "label": "Ancien compte En Marche",
                         "type": "sympathisant"
                     }
                 ],

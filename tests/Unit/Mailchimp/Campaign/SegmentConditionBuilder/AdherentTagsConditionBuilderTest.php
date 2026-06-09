@@ -22,13 +22,15 @@ final class AdherentTagsConditionBuilderTest extends TestCase
         $this->builder = new AdherentTagsConditionBuilder($this->tagTranslator);
     }
 
-    public function testFlatSympathisantTagProducesConditionWithoutSeparator(): void
+    public function testSympathisantParentTagKeepsSeparatorBoundary(): void
     {
+        // "sympathisant" is now a hierarchical root: its " - " boundary scopes the Mailchimp
+        // "contains" match to its children (e.g. "Sympathisant - Membre").
         $this->tagTranslator
             ->expects(self::once())
             ->method('trans')
             ->with('sympathisant')
-            ->willReturn('Membre')
+            ->willReturn('Sympathisant')
         ;
 
         $filter = new AdherentMessageFilter();
@@ -39,7 +41,7 @@ final class AdherentTagsConditionBuilderTest extends TestCase
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
                 'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => 'Membre',
+                'value' => 'Sympathisant - ',
             ],
         ], $this->builder->buildFromFilter($filter));
     }
@@ -91,13 +93,37 @@ final class AdherentTagsConditionBuilderTest extends TestCase
         ], $this->builder->buildFromFilter($filter));
     }
 
-    public function testExcludedFlatTagUsesNotContainOperator(): void
+    public function testSympathisantChildTagKeepsTranslatedValueUnchanged(): void
+    {
+        // A child leaf (e.g. "sympathisant:compte_em") is not a root: its already-hierarchical
+        // label is used as-is, with no extra boundary appended.
+        $this->tagTranslator
+            ->expects(self::once())
+            ->method('trans')
+            ->with('sympathisant:compte_em')
+            ->willReturn('Sympathisant - Ancien compte En Marche')
+        ;
+
+        $filter = new AdherentMessageFilter();
+        $filter->adherentTags = 'sympathisant:compte_em';
+
+        self::assertSame([
+            [
+                'condition_type' => 'TextMerge',
+                'op' => 'contains',
+                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
+                'value' => 'Sympathisant - Ancien compte En Marche',
+            ],
+        ], $this->builder->buildFromFilter($filter));
+    }
+
+    public function testExcludedSympathisantTagUsesNotContainOperator(): void
     {
         $this->tagTranslator
             ->expects(self::once())
             ->method('trans')
             ->with('sympathisant')
-            ->willReturn('Membre')
+            ->willReturn('Sympathisant')
         ;
 
         $filter = new AdherentMessageFilter();
@@ -108,7 +134,7 @@ final class AdherentTagsConditionBuilderTest extends TestCase
                 'condition_type' => 'TextMerge',
                 'op' => 'notcontain',
                 'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => 'Membre',
+                'value' => 'Sympathisant - ',
             ],
         ], $this->builder->buildFromFilter($filter));
     }
