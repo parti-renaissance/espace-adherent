@@ -10,7 +10,9 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\SubscriptionType;
+use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\RecoveryStatusEnum;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Exception\FailedSyncException;
@@ -65,9 +67,10 @@ final class ManagerTest extends TestCase
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
+        // Pure stub: the locator only ever serves RequestBuilder, and no test verifies the call,
+        // so drop with() (which would require expects(), deprecated in PHPUnit 14 without it).
         $this->requestBuildersLocator
             ->method('get')
-            ->with(RequestBuilder::class)
             ->willReturn($this->requestBuilder)
         ;
 
@@ -848,10 +851,11 @@ final class ManagerTest extends TestCase
 
         $reachDispatched = false;
         $reportDispatched = false;
+        $verifyDispatched = false;
         $this->bus
-            ->expects(self::exactly(2))
+            ->expects(self::exactly(3))
             ->method('dispatch')
-            ->willReturnCallback(function (object $cmd, array $stamps = []) use (&$reachDispatched, &$reportDispatched, $message): Envelope {
+            ->willReturnCallback(function (object $cmd, array $stamps = []) use (&$reachDispatched, &$reportDispatched, &$verifyDispatched, $message): Envelope {
                 if ($cmd instanceof CreatePublicationReachFromEmailCommand) {
                     self::assertSame($message->getUuid()->toRfc4122(), $cmd->getUuid()->toRfc4122());
                     self::assertCount(1, $stamps);
@@ -863,6 +867,12 @@ final class ManagerTest extends TestCase
                     // not via a DelayStamp on the dispatch call.
                     self::assertSame([], $stamps);
                     $reportDispatched = true;
+                } elseif ($cmd instanceof VerifyCampaignDeliveryCommand) {
+                    self::assertSame(7, $cmd->campaignId);
+                    self::assertCount(1, $stamps);
+                    self::assertInstanceOf(DelayStamp::class, $stamps[0]);
+                    self::assertSame(300_000, $stamps[0]->getDelay());
+                    $verifyDispatched = true;
                 } else {
                     self::fail('Unexpected dispatched command: '.$cmd::class);
                 }
@@ -876,6 +886,7 @@ final class ManagerTest extends TestCase
         self::assertSame(['flush', 'post'], $callOrder, 'Sending must be flushed BEFORE the Mailchimp POST.');
         self::assertTrue($reachDispatched, 'CreatePublicationReachFromEmailCommand must be dispatched on success.');
         self::assertTrue($reportDispatched, 'SyncReportCommand must be dispatched on success.');
+        self::assertTrue($verifyDispatched, 'VerifyCampaignDeliveryCommand must be dispatched on success.');
     }
 
     public function testSendMailchimpCampaignFailureMarksErrorWithoutDispatchingRetry(): void
@@ -921,6 +932,48 @@ final class ManagerTest extends TestCase
         self::assertSame(MailchimpStatusEnum::Error, $campaign->status);
         self::assertSame('campaign in invalid state', $campaign->getDetail());
         self::assertSame(['flush:sending', 'post', 'flush:error'], $callOrder, 'Sending must be flushed before POST; Error must be flushed after a failed POST.');
+    }
+
+    public function testSendMailchimpCampaignAbortsRecoveryWhenOriginalDelivered(): void
+    {
+        $campaign = $this->buildRecoveryCampaign();
+
+        // Checkpoint 2: the original (mc-original) delivered on its own during the replica prep.
+        $this->driver->expects(self::once())->method('getReportData')->with('mc-original')->willReturn(['emails_sent' => 50]);
+        $this->driver->expects(self::never())->method('sendCampaign');
+        $this->entityManager->expects(self::once())->method('flush');
+        $this->bus->expects(self::never())->method('dispatch');
+
+        self::assertTrue($this->manager->sendMailchimpCampaign($campaign), 'returns true so callers do not schedule a retry');
+        self::assertSame('mc-original', $campaign->getExternalId(), 'restored onto the original that delivered');
+        self::assertSame(MailchimpStatusEnum::Sent, $campaign->status);
+        self::assertSame(RecoveryStatusEnum::Aborted, $campaign->getRecoveryStatus());
+    }
+
+    public function testSendMailchimpCampaignProceedsWhenOriginalNotDeliveredDuringRecovery(): void
+    {
+        $campaign = $this->buildRecoveryCampaign();
+
+        // Original still at 0 → the recovery replica is legitimately sent.
+        $this->driver->expects(self::once())->method('getReportData')->with('mc-original')->willReturn([]);
+        $this->driver->expects(self::once())->method('sendCampaign')->with('mc-replica')->willReturn(true);
+        $this->bus->expects(self::exactly(3))->method('dispatch')->willReturnCallback(fn (object $cmd): Envelope => new Envelope($cmd));
+
+        self::assertTrue($this->manager->sendMailchimpCampaign($campaign));
+        self::assertSame(MailchimpStatusEnum::Sending, $campaign->status);
+    }
+
+    private function buildRecoveryCampaign(): MailchimpCampaign
+    {
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $campaign->setExternalId('mc-original');
+        $campaign->status = MailchimpStatusEnum::Sent;
+        $message->addMailchimpCampaign($campaign);
+        $campaign->markRecoveryAttempted('mc-replica'); // swap → externalId=mc-replica, original=mc-original
+
+        return $campaign;
     }
 
     private function createAdherent(): Adherent

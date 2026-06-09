@@ -11,6 +11,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
+use App\Mailchimp\Campaign\RecoveryStatusEnum;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -127,6 +128,17 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
+
+    // Post-send zero-delivery recovery (Unit B). The original (dead) external id is archived so the
+    // recovery flow can keep polling it and abort the replica send if Mailchimp eventually delivers it.
+    #[ORM\Column(nullable: true)]
+    private ?string $recoveryOriginalExternalId = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $recoveryAttemptedAt = null;
+
+    #[ORM\Column(nullable: true, enumType: RecoveryStatusEnum::class)]
+    private ?RecoveryStatusEnum $recoveryStatus = null;
 
     public function __construct(AdherentMessageInterface $message)
     {
@@ -379,5 +391,67 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     public function setMailchimpStaticSegment(?MailchimpStaticSegment $segment): void
     {
         $this->mailchimpStaticSegment = $segment;
+    }
+
+    public function getRecoveryOriginalExternalId(): ?string
+    {
+        return $this->recoveryOriginalExternalId;
+    }
+
+    public function getRecoveryAttemptedAt(): ?\DateTimeInterface
+    {
+        return $this->recoveryAttemptedAt;
+    }
+
+    public function getRecoveryStatus(): ?RecoveryStatusEnum
+    {
+        return $this->recoveryStatus;
+    }
+
+    /**
+     * True while a replica has been created and is on its way to being sent. Used both to gate the
+     * single-attempt recovery and to drive the "abort if the original recovered" checks.
+     */
+    public function isRecoveryInProgress(): bool
+    {
+        return null !== $this->recoveryAttemptedAt && RecoveryStatusEnum::Attempted === $this->recoveryStatus;
+    }
+
+    /**
+     * Swap this campaign onto a freshly replicated Mailchimp campaign so the whole prepare/send
+     * pipeline (and downstream stats/reach, which read externalId) follows the replica. The original
+     * (dead) id is archived for the abort-on-original-recovery checks.
+     */
+    public function markRecoveryAttempted(string $replicaExternalId): void
+    {
+        $this->recoveryOriginalExternalId = $this->externalId;
+        $this->externalId = $replicaExternalId;
+        $this->status = MailchimpStatusEnum::Save;
+        $this->recoveryAttemptedAt = new \DateTime();
+        $this->recoveryStatus = RecoveryStatusEnum::Attempted;
+    }
+
+    public function markRecoverySucceeded(): void
+    {
+        $this->recoveryStatus = RecoveryStatusEnum::Succeeded;
+    }
+
+    public function markRecoveryFailed(): void
+    {
+        $this->recoveryStatus = RecoveryStatusEnum::Failed;
+    }
+
+    /**
+     * The original campaign delivered after all — abort the recovery. If the swap already happened,
+     * restore the campaign onto the (now confirmed-delivered) original so stats/reach track it.
+     */
+    public function markRecoveryAborted(): void
+    {
+        if (null !== $this->recoveryOriginalExternalId) {
+            $this->externalId = $this->recoveryOriginalExternalId;
+            $this->status = MailchimpStatusEnum::Sent;
+        }
+
+        $this->recoveryStatus = RecoveryStatusEnum::Aborted;
     }
 }
