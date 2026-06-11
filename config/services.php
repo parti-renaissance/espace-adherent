@@ -123,6 +123,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$updateCleanedContactToken', '%env(UPDATE_CLEANED_CONTACT_TOKEN)%')
         ->bind('$updateCleanedContactApiToken', '%env(UPDATE_CLEANED_CONTACT_API_TOKEN)%')
         ->bind('$socialNetworkFeedWebhookKey', '%env(SOCIAL_NETWORK_FEED_WEBHOOK_KEY)%')
+        ->bind('$timelineFeedHideWebhookKey', '%env(TIMELINE_FEED_HIDE_WEBHOOK_KEY)%')
         ->bind('$transcoderProjectId', '%env(GCLOUD_PROJECT_ID)%')
         ->bind('$transcoderLocation', '%env(GCLOUD_TRANSCODER_LOCATION)%')
         ->bind('$videoOutputBucket', '%env(key:host:url:MEDIA_CDN_BASE_URL)%')

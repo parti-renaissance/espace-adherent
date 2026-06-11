@@ -60,18 +60,6 @@ class TimelineFeedWriter
         $this->logger->debug('TimelineFeed upsert', ['uuid' => $document->objectId->toRfc4122()]);
     }
 
-    /**
-     * @param TimelineFeedDocument[] $documents
-     */
-    public function bulkUpsert(array $documents): int
-    {
-        foreach (array_chunk($documents, self::CHUNK_SIZE) as $chunk) {
-            $this->upsertChunk($chunk);
-        }
-
-        return \count($documents);
-    }
-
     public function delete(Uuid $objectId): void
     {
         $this->connection->executeStatement(
