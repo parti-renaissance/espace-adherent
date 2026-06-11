@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Entity\AdherentMessage;
 
-use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
-use App\Mailchimp\Campaign\RecoveryStatusEnum;
 use PHPUnit\Framework\TestCase;
 
 class MailchimpCampaignTest extends TestCase
@@ -109,72 +107,6 @@ class MailchimpCampaignTest extends TestCase
         $campaign->markAsFailed(BlockReasonEnum::Empty);
 
         self::assertFalse($campaign->isPendingSend());
-    }
-
-    public function testRecoveryNotInProgressInitially(): void
-    {
-        $campaign = $this->createCampaign();
-
-        self::assertFalse($campaign->isRecoveryInProgress());
-        self::assertNull($campaign->getRecoveryStatus());
-        self::assertNull($campaign->getRecoveryAttemptedAt());
-        self::assertNull($campaign->getRecoveryOriginalExternalId());
-    }
-
-    public function testMarkRecoveryAttemptedSwapsToReplicaAndArchivesOriginal(): void
-    {
-        $campaign = $this->createCampaign();
-        $campaign->setExternalId('mc-original');
-        $campaign->status = MailchimpStatusEnum::Sent;
-
-        $campaign->markRecoveryAttempted('mc-replica');
-
-        self::assertSame('mc-replica', $campaign->getExternalId());
-        self::assertSame('mc-original', $campaign->getRecoveryOriginalExternalId());
-        self::assertSame(MailchimpStatusEnum::Save, $campaign->status, 'status reset so the send path does not skip it');
-        self::assertSame(RecoveryStatusEnum::Attempted, $campaign->getRecoveryStatus());
-        self::assertNotNull($campaign->getRecoveryAttemptedAt());
-        self::assertTrue($campaign->isRecoveryInProgress());
-    }
-
-    public function testMarkRecoveryAbortedAfterSwapRestoresOriginalAndSentStatus(): void
-    {
-        $campaign = $this->createCampaign();
-        $campaign->setExternalId('mc-original');
-        $campaign->status = MailchimpStatusEnum::Sent;
-        $campaign->markRecoveryAttempted('mc-replica');
-
-        $campaign->markRecoveryAborted();
-
-        self::assertSame('mc-original', $campaign->getExternalId(), 'restored so stats/reach track the campaign that delivered');
-        self::assertSame(MailchimpStatusEnum::Sent, $campaign->status);
-        self::assertSame(RecoveryStatusEnum::Aborted, $campaign->getRecoveryStatus());
-        self::assertFalse($campaign->isRecoveryInProgress());
-    }
-
-    public function testMarkRecoveryAbortedBeforeSwapDoesNotTouchExternalId(): void
-    {
-        $campaign = $this->createCampaign();
-        $campaign->setExternalId('mc-original');
-
-        $campaign->markRecoveryAborted();
-
-        self::assertSame('mc-original', $campaign->getExternalId());
-        self::assertSame(RecoveryStatusEnum::Aborted, $campaign->getRecoveryStatus());
-    }
-
-    public function testMarkRecoverySucceededAndFailedSetStatus(): void
-    {
-        $campaign = $this->createCampaign();
-        $campaign->setExternalId('mc-original');
-        $campaign->markRecoveryAttempted('mc-replica');
-
-        $campaign->markRecoverySucceeded();
-        self::assertSame(RecoveryStatusEnum::Succeeded, $campaign->getRecoveryStatus());
-        self::assertFalse($campaign->isRecoveryInProgress());
-
-        $campaign->markRecoveryFailed();
-        self::assertSame(RecoveryStatusEnum::Failed, $campaign->getRecoveryStatus());
     }
 
     private function createCampaign(?AdherentMessageInterface $message = null): MailchimpCampaign

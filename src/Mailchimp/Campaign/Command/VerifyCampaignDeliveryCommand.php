@@ -11,8 +11,7 @@ use App\Messenger\Message\LockableMessageInterface;
  * Post-send delivery verification for a Mailchimp campaign.
  *
  * Routed to the `mailchimp_campaign` queue via {@see CampaignMessageInterface}. Lockable so that
- * concurrent re-deliveries of the same campaign cannot race (and, in Unit B, cannot trigger a
- * double recovery).
+ * concurrent re-deliveries of the same campaign cannot race.
  */
 class VerifyCampaignDeliveryCommand implements CampaignMessageInterface, LockableMessageInterface
 {
