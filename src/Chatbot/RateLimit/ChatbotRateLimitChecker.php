@@ -26,6 +26,7 @@ class ChatbotRateLimitChecker
         private readonly ChatbotTierResolver $tierResolver,
         #[Autowire(service: 'cache.rate_limiter')]
         private readonly CacheItemPoolInterface $cache,
+        private readonly string $appEnvironment,
     ) {
     }
 
@@ -36,6 +37,10 @@ class ChatbotRateLimitChecker
         }
 
         $tier = $this->tierResolver->resolve($adherent);
+
+        if (ChatbotUserTier::Cadre === $tier && 'production' !== $this->appEnvironment) {
+            return;
+        }
 
         foreach (ChatbotRateLimitPeriod::cases() as $period) {
             if (0 === ChatbotRateLimitConfig::getGlobalLimit($period)) {
