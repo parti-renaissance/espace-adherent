@@ -11,6 +11,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             App\Entity\Adherent::class => 'bcrypt',
         ],
         'role_hierarchy' => [
+            'ROLE_ADHERENT_A_JOUR' => ['ROLE_ADHERENT'],
+            'ROLE_ADHERENT' => ['ROLE_MEMBRE'],
+            'ROLE_MEMBRE' => ['ROLE_USER'],
             'ROLE_ADMIN_DASHBOARD' => [
                 'ROLE_APP_ADMIN_GEO_ZONE_LIST',
                 'ROLE_APP_ADMIN_ADHERENT_SEARCH',

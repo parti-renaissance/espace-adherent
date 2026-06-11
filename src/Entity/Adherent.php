@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
+use App\Adherent\AdherentLevel;
 use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\MandateTypeEnum;
@@ -745,7 +746,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_USER'];
+        $roles = [$this->getLevel()->role()];
 
         if ($this->isDeputy()) {
             $roles[] = 'ROLE_DEPUTY';
@@ -848,7 +849,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
         }
 
-        return array_merge(array_unique($roles), $this->roles);
+        return array_values(array_unique(array_merge($roles, $this->roles)));
     }
 
     public function addRoles(array $roles): void
@@ -1662,7 +1663,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        return $user instanceof self && $this->id === $user->getId() && $this->roles === $user->getRoles();
+        return $user instanceof self && $this->id === $user->getId();
     }
 
     public function markAsToDelete(): void
@@ -2210,6 +2211,36 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     public function isRenaissanceSympathizer(): bool
     {
         return $this->hasTag(TagEnum::SYMPATHISANT);
+    }
+
+    public function getLevel(): AdherentLevel
+    {
+        if ($this->hasActiveMembership()) {
+            return AdherentLevel::ADHERENT_A_JOUR;
+        }
+
+        if ($this->isRenaissanceAdherent()) {
+            return AdherentLevel::ADHERENT;
+        }
+
+        if ($this->isRenaissanceSympathizer()) {
+            return AdherentLevel::MEMBRE;
+        }
+
+        if ($this->hasTag(TagEnum::USER)) {
+            return AdherentLevel::USER;
+        }
+
+        return AdherentLevel::CONTACT;
+    }
+
+    public function isCadre(): bool
+    {
+        return $this->hasNationalRole()
+            || $this->isAnimator()
+            || $this->isPresidentOfAgora()
+            || $this->isGeneralSecretaryOfAgora()
+            || !$this->zoneBasedRoles->isEmpty();
     }
 
     public function getTeamMemberships(): Collection
