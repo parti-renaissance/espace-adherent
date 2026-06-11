@@ -48,7 +48,7 @@ class IndexerTimelineProvider
         // an indexer item without a local mirror row (depublished/deleted) is skipped silently. Skipped
         // orphans yield a short page — accepted (the next scroll fills in).
         $rowsByUuid = [];
-        foreach ($this->repository->findByUuids($orderedIds) as $row) {
+        foreach ($this->repository->findPublishableByUuids($orderedIds) as $row) {
             /** @var TimelineFeed $row */
             $rowsByUuid[$row->getUuid()->toRfc4122()] = $row;
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\JeMengage\Timeline\Indexer;
 
 use App\Entity\Timeline\TimelineFeed;
+use App\Entity\Timeline\TimelineHiddenFeed;
 use App\Repository\Timeline\TimelineFeedRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Uid\Uuid;
@@ -42,9 +43,9 @@ final class TimelineFeedRepositoryTest extends AbstractKernelTestCase
         parent::tearDown();
     }
 
-    public function testFindByUuidsReturnsMatchingRows(): void
+    public function testFindPublishableByUuidsReturnsMatchingRows(): void
     {
-        $rows = $this->repository->findByUuids([self::UUID_A, self::UUID_C]);
+        $rows = $this->repository->findPublishableByUuids([self::UUID_A, self::UUID_C]);
 
         $found = array_map(static function (TimelineFeed $feed): string {
             return $feed->getUuid()->toRfc4122();
@@ -54,17 +55,53 @@ final class TimelineFeedRepositoryTest extends AbstractKernelTestCase
         self::assertSame([self::UUID_A, self::UUID_C], $found);
     }
 
-    public function testFindByUuidsIgnoresUnknownUuid(): void
+    public function testFindPublishableByUuidsIgnoresUnknownUuid(): void
     {
-        $rows = $this->repository->findByUuids([self::UUID_B, self::UUID_UNKNOWN]);
+        $rows = $this->repository->findPublishableByUuids([self::UUID_B, self::UUID_UNKNOWN]);
 
         self::assertCount(1, $rows);
         self::assertSame(self::UUID_B, $rows[0]->getUuid()->toRfc4122());
     }
 
-    public function testFindByUuidsWithEmptyArrayReturnsEmpty(): void
+    public function testFindPublishableByUuidsWithEmptyArrayReturnsEmpty(): void
     {
-        self::assertSame([], $this->repository->findByUuids([]));
+        self::assertSame([], $this->repository->findPublishableByUuids([]));
+    }
+
+    public function testFindPublishableByUuidsExcludesHidden(): void
+    {
+        $this->hide(self::UUID_B);
+
+        $rows = $this->repository->findPublishableByUuids([self::UUID_A, self::UUID_B]);
+
+        self::assertCount(1, $rows);
+        self::assertSame(self::UUID_A, $rows[0]->getUuid()->toRfc4122());
+    }
+
+    public function testFindOnePublishableByUuidReturnsRow(): void
+    {
+        $row = $this->repository->findOnePublishableByUuid(Uuid::fromString(self::UUID_A));
+
+        self::assertNotNull($row);
+        self::assertSame(self::UUID_A, $row->getUuid()->toRfc4122());
+    }
+
+    public function testFindOnePublishableByUuidReturnsNullWhenHidden(): void
+    {
+        $this->hide(self::UUID_A);
+
+        self::assertNull($this->repository->findOnePublishableByUuid(Uuid::fromString(self::UUID_A)));
+    }
+
+    public function testFindOnePublishableByUuidReturnsNullWhenAbsent(): void
+    {
+        self::assertNull($this->repository->findOnePublishableByUuid(Uuid::fromString(self::UUID_UNKNOWN)));
+    }
+
+    private function hide(string $uuid): void
+    {
+        $this->manager->persist(new TimelineHiddenFeed(Uuid::fromString($uuid)));
+        $this->manager->flush();
     }
 
     private function feed(string $uuid): TimelineFeed

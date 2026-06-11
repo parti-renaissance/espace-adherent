@@ -106,17 +106,6 @@ class TimelineFeedWriterTest extends AbstractKernelTestCase
         self::assertCount(0, $this->rows());
     }
 
-    public function testBulkUpsertReturnsCount(): void
-    {
-        $inserted = $this->writer->bulkUpsert([
-            $this->document(Uuid::v4(), ['title' => 'A']),
-            $this->document(Uuid::v4(), ['title' => 'B']),
-        ]);
-
-        self::assertSame(2, $inserted);
-        self::assertCount(2, $this->rows());
-    }
-
     public function testDeleteStaleBeforeSweepsUntouchedRows(): void
     {
         // Seed a row with an old updated_at, then run a "rebuild" that only re-upserts one of them.

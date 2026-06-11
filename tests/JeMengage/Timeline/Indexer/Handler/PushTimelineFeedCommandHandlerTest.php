@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\JeMengage\Timeline\Indexer\Handler;
 
+use App\Entity\Timeline\TimelineHiddenFeed;
 use App\JeMengage\Timeline\Indexer\Handler\PushTimelineFeedCommandHandler;
 use App\JeMengage\Timeline\Indexer\IndexerClient;
 use App\JeMengage\Timeline\Indexer\IndexerPayloadFactory;
 use App\JeMengage\Timeline\Indexer\Message\PushTimelineFeedCommand;
+use App\Repository\Timeline\TimelineFeedRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Psr\Log\NullLogger;
@@ -29,6 +31,7 @@ class PushTimelineFeedCommandHandlerTest extends AbstractKernelTestCase
         parent::setUp();
 
         $this->connection = $this->manager->getConnection();
+        $this->manager->createQuery('DELETE FROM '.TimelineHiddenFeed::class.' h')->execute();
         $this->connection->executeStatement('DELETE FROM timeline_feed');
     }
 
@@ -75,6 +78,20 @@ class PushTimelineFeedCommandHandlerTest extends AbstractKernelTestCase
         self::assertCount(0, $requests);
     }
 
+    public function testDoesNotPushHiddenRow(): void
+    {
+        $uuid = Uuid::v4();
+        $this->insertRow($uuid, 'event', ['include' => ['zones' => ['department:75']]]);
+        $this->hide($uuid);
+
+        $requests = [];
+        ($this->handler($requests))(new PushTimelineFeedCommand($uuid));
+
+        // The read guard (findOnePublishableByUuid) drops the hidden row, so nothing is pushed even
+        // though the row exists and its type is pushable.
+        self::assertCount(0, $requests);
+    }
+
     private function handler(array &$requests): PushTimelineFeedCommandHandler
     {
         $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests) {
@@ -84,10 +101,16 @@ class PushTimelineFeedCommandHandlerTest extends AbstractKernelTestCase
         }, 'https://indexer.test');
 
         return new PushTimelineFeedCommandHandler(
-            $this->manager,
+            static::getContainer()->get(TimelineFeedRepository::class),
             new IndexerPayloadFactory(new NullLogger()),
             new IndexerClient($http, new NullLogger()),
         );
+    }
+
+    private function hide(Uuid $uuid): void
+    {
+        $this->manager->persist(new TimelineHiddenFeed($uuid));
+        $this->manager->flush();
     }
 
     private function insertRow(Uuid $uuid, string $type, ?array $audience = null): void
