@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Chatbot\RateLimit;
 
+use App\Adherent\AdherentLevel;
 use App\Chatbot\RateLimit\ChatbotTierResolver;
 use App\Chatbot\RateLimit\ChatbotUserTier;
 use App\Entity\Adherent;
@@ -23,73 +24,48 @@ class ChatbotTierResolverTest extends TestCase
         self::assertSame(ChatbotUserTier::Public, $this->resolver->resolve(null));
     }
 
-    public function testResponsibilityRoleReturnsCadre(): void
+    public function testCadreReturnsCadre(): void
     {
-        foreach (['ROLE_ANIMATOR', 'ROLE_HOST', 'ROLE_DEPUTY', 'ROLE_NATIONAL', 'ROLE_CORRESPONDENT'] as $role) {
-            self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($this->makeAdherent(roles: [$role])));
-        }
+        self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($this->makeAdherent(cadre: true)));
     }
 
-    public function testDelegatedAccessReturnsCadre(): void
+    public function testCadreBeatsMembershipLevel(): void
     {
-        self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($this->makeAdherent(roles: ['ROLE_DELEGATED_ANIMATOR'])));
-    }
-
-    public function testTechnicalRoleIsNotCadre(): void
-    {
-        $adherent = $this->makeAdherent(roles: ['ROLE_PAP_USER', 'ROLE_CANARY_TESTER'], activeMembership: true);
-
-        self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($adherent));
-    }
-
-    public function testActiveMembershipReturnsAdherentAJour(): void
-    {
-        self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($this->makeAdherent(activeMembership: true)));
-    }
-
-    public function testAdherentReturnsAdherent(): void
-    {
-        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($this->makeAdherent(renaissanceAdherent: true)));
-    }
-
-    public function testSympathizerReturnsSympathisant(): void
-    {
-        self::assertSame(ChatbotUserTier::Sympathisant, $this->resolver->resolve($this->makeAdherent(sympathizer: true)));
-    }
-
-    public function testNoMembershipReturnsContact(): void
-    {
-        self::assertSame(ChatbotUserTier::Contact, $this->resolver->resolve($this->makeAdherent()));
-    }
-
-    public function testCadreBeatsActiveMembership(): void
-    {
-        $adherent = $this->makeAdherent(roles: ['ROLE_ANIMATOR'], activeMembership: true, renaissanceAdherent: true);
+        $adherent = $this->makeAdherent(cadre: true, level: AdherentLevel::ADHERENT_A_JOUR);
 
         self::assertSame(ChatbotUserTier::Cadre, $this->resolver->resolve($adherent));
     }
 
-    public function testActiveMembershipBeatsAdherent(): void
+    public function testActiveMembershipReturnsAdherentAJour(): void
     {
-        $adherent = $this->makeAdherent(activeMembership: true, renaissanceAdherent: true);
-
-        self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($adherent));
+        self::assertSame(ChatbotUserTier::AdherentAJour, $this->resolver->resolve($this->makeAdherent(level: AdherentLevel::ADHERENT_A_JOUR)));
     }
 
-    /**
-     * @param string[] $roles
-     */
-    private function makeAdherent(
-        array $roles = [],
-        bool $activeMembership = false,
-        bool $renaissanceAdherent = false,
-        bool $sympathizer = false,
-    ): Adherent {
+    public function testAdherentReturnsAdherent(): void
+    {
+        self::assertSame(ChatbotUserTier::Adherent, $this->resolver->resolve($this->makeAdherent(level: AdherentLevel::ADHERENT)));
+    }
+
+    public function testMembreReturnsSympathisant(): void
+    {
+        self::assertSame(ChatbotUserTier::Sympathisant, $this->resolver->resolve($this->makeAdherent(level: AdherentLevel::MEMBRE)));
+    }
+
+    public function testUserReturnsContact(): void
+    {
+        self::assertSame(ChatbotUserTier::Contact, $this->resolver->resolve($this->makeAdherent(level: AdherentLevel::USER)));
+    }
+
+    public function testContactReturnsContact(): void
+    {
+        self::assertSame(ChatbotUserTier::Contact, $this->resolver->resolve($this->makeAdherent(level: AdherentLevel::CONTACT)));
+    }
+
+    private function makeAdherent(bool $cadre = false, AdherentLevel $level = AdherentLevel::CONTACT): Adherent
+    {
         $adherent = $this->createStub(Adherent::class);
-        $adherent->method('getRoles')->willReturn(array_merge(['ROLE_USER'], $roles));
-        $adherent->method('hasActiveMembership')->willReturn($activeMembership);
-        $adherent->method('isRenaissanceAdherent')->willReturn($renaissanceAdherent);
-        $adherent->method('isRenaissanceSympathizer')->willReturn($sympathizer);
+        $adherent->method('isCadre')->willReturn($cadre);
+        $adherent->method('getLevel')->willReturn($level);
 
         return $adherent;
     }
