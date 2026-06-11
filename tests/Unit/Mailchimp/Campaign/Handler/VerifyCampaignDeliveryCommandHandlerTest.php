@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Mailchimp\Campaign\Handler;
 
 use App\AdherentMessage\MailchimpStatusEnum;
-use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
-use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
 use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\Handler\VerifyCampaignDeliveryCommandHandler;
 use App\Mailchimp\Campaign\PostSendDeliveryGuard;
-use App\Mailchimp\Campaign\RecoveryStatusEnum;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -56,31 +52,7 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
 
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(self::never())->method('flush');
-
-        $this->buildHandler($repository, $manager, $bus, em: $em)(new VerifyCampaignDeliveryCommand(7));
-    }
-
-    public function testInvokeWithDeliveredRecoveryMarksSucceeded(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $campaign->markRecoveryAttempted('mc-replica');
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 42]);
-
-        $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects(self::never())->method('dispatch');
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(self::once())->method('flush');
-
-        $this->buildHandler($repository, $manager, $bus, em: $em)(new VerifyCampaignDeliveryCommand(7));
-
-        self::assertSame(RecoveryStatusEnum::Succeeded, $campaign->getRecoveryStatus());
+        $this->buildHandler($repository, $manager, $bus)(new VerifyCampaignDeliveryCommand(7));
     }
 
     public function testInvokeWithZeroDeliveryNotFinalReschedules(): void
@@ -104,18 +76,16 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         $this->buildHandler($repository, $manager, $bus)(new VerifyCampaignDeliveryCommand(7, 0));
     }
 
-    public function testInvokeWithStillSendingPastSendingWindowAlertsWithoutRecovery(): void
+    public function testInvokeWithStillSendingPastSendingWindowAlerts(): void
     {
         // The sending window is exhausted (sendingRetry >= SENDING_MAX_POLLS): a campaign stuck in
-        // "sending" for hours alerts, but is never replicated (it might still complete → double-send).
+        // "sending" for hours alerts (logger->error → Sentry), but is never rescheduled further.
         $campaign = $this->buildCampaign(preparedCount: 93);
 
         $repository = $this->createMock(MailchimpCampaignRepository::class);
         $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::never())->method('tryClaimRecovery');
 
         $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sending, ['emails_sent' => 0]);
-        $manager->expects(self::never())->method('replicateCampaign');
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())
@@ -134,10 +104,8 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
 
         $repository = $this->createMock(MailchimpCampaignRepository::class);
         $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::never())->method('tryClaimRecovery');
 
         $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sending, ['emails_sent' => 0]);
-        $manager->expects(self::never())->method('replicateCampaign');
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
@@ -174,166 +142,23 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         $this->buildHandler($repository, $manager, $bus)(new VerifyCampaignDeliveryCommand(7, 0, 17));
     }
 
-    public function testInvokeWithZeroDeliveryFinalReplicatesAndRePreparesWhenOriginalNotDelivered(): void
+    public function testInvokeWithZeroDeliveryFinalAlerts(): void
     {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $locker = $this->setLocker($campaign);
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(true);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::once())->method('hasDelivered')->with(self::identicalTo($campaign))->willReturn(false);
-        $manager->expects(self::once())->method('replicateCampaign')->with(self::identicalTo($campaign))->willReturn('mc-replica');
-        $manager->expects(self::once())->method('campaignTargetsSegment')->with(self::identicalTo($campaign))->willReturn(true);
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(self::once())->method('flush');
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::once())
-            ->method('prepare')
-            ->with(self::identicalTo($campaign->getMessage()), self::identicalTo($locker));
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), em: $em, preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame('mc-replica', $campaign->getExternalId());
-        self::assertSame('mc-abc', $campaign->getRecoveryOriginalExternalId());
-        self::assertSame(RecoveryStatusEnum::Attempted, $campaign->getRecoveryStatus());
-    }
-
-    public function testInvokeWithReplicaSegmentMismatchMarksRecoveryFailedWithoutPreparing(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $this->setLocker($campaign);
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(true);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::once())->method('hasDelivered')->with(self::identicalTo($campaign))->willReturn(false);
-        $manager->expects(self::once())->method('replicateCampaign')->with(self::identicalTo($campaign))->willReturn('mc-replica');
-        // The replica did not carry our static segment over → fail fast, never re-prepare.
-        $manager->expects(self::once())->method('campaignTargetsSegment')->with(self::identicalTo($campaign))->willReturn(false);
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame(RecoveryStatusEnum::Failed, $campaign->getRecoveryStatus());
-        self::assertSame('mc-replica', $campaign->getExternalId());
-    }
-
-    public function testInvokeWithZeroDeliveryFinalAlertsButDoesNotRecoverWhenClaimLost(): void
-    {
+        // Terminal "sent" with a confirmed emails_sent=0 at the end of the confirmation window:
+        // alert (logger->error → Sentry). No further reschedule.
         $campaign = $this->buildCampaign(preparedCount: 93);
 
         $repository = $this->createMock(MailchimpCampaignRepository::class);
         $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(false);
 
         $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::never())->method('hasDelivered');
-        $manager->expects(self::never())->method('replicateCampaign');
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())
             ->method('error')
             ->with('[Mailchimp][PostSendGuard] Zero delivery detected', self::callback(fn (array $ctx): bool => 7 === $ctx['campaign_id'] && 0 === $ctx['emails_sent']));
 
-        $this->buildHandler($repository, $manager, $this->silentBus(), $logger, preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-    }
-
-    public function testInvokeWithZeroDeliveryFinalAbortsWhenOriginalAlreadyDelivered(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $this->setLocker($campaign);
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(true);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::once())->method('hasDelivered')->with(self::identicalTo($campaign))->willReturn(true);
-        $manager->expects(self::never())->method('replicateCampaign');
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(self::once())->method('flush');
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), em: $em, preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame(RecoveryStatusEnum::Aborted, $campaign->getRecoveryStatus());
-        self::assertSame('mc-abc', $campaign->getExternalId());
-    }
-
-    public function testInvokeWithReplicateFailureMarksRecoveryFailed(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $this->setLocker($campaign);
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(true);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::once())->method('hasDelivered')->with(self::identicalTo($campaign))->willReturn(false);
-        $manager->expects(self::once())->method('replicateCampaign')->with(self::identicalTo($campaign))->willReturn(null);
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame(RecoveryStatusEnum::Failed, $campaign->getRecoveryStatus());
-    }
-
-    public function testInvokeWithNoLockerMarksRecoveryFailed(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93); // no locker set
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::once())->method('tryClaimRecovery')->with(7)->willReturn(true);
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::once())->method('hasDelivered')->with(self::identicalTo($campaign))->willReturn(false);
-        $manager->expects(self::once())->method('replicateCampaign')->with(self::identicalTo($campaign))->willReturn('mc-replica');
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame(RecoveryStatusEnum::Failed, $campaign->getRecoveryStatus());
-    }
-
-    public function testInvokeWithReplicaAlsoZeroMarksRecoveryFailedWithoutSecondReplica(): void
-    {
-        $campaign = $this->buildCampaign(preparedCount: 93);
-        $campaign->markRecoveryAttempted('mc-replica'); // we are now verifying the replica itself
-
-        $repository = $this->createMock(MailchimpCampaignRepository::class);
-        $repository->expects(self::once())->method('find')->with(7)->willReturn($campaign);
-        $repository->expects(self::never())->method('tryClaimRecovery');
-
-        $manager = $this->mockReads($campaign, MailchimpStatusEnum::Sent, ['emails_sent' => 0]);
-        $manager->expects(self::never())->method('replicateCampaign');
-
-        $preparer = $this->createMock(AudienceMessagePreparer::class);
-        $preparer->expects(self::never())->method('prepare');
-
-        $this->buildHandler($repository, $manager, $this->silentBus(), preparer: $preparer)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
-
-        self::assertSame(RecoveryStatusEnum::Failed, $campaign->getRecoveryStatus());
+        $this->buildHandler($repository, $manager, $this->silentBus(), $logger)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
     }
 
     private function mockReads(MailchimpCampaign $campaign, MailchimpStatusEnum $status, array $report): Manager&\PHPUnit\Framework\MockObject\MockObject
@@ -347,7 +172,7 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
 
     private function silentBus(): MessageBusInterface
     {
-        // Pure stub: dispatch is never invoked on the final-attempt paths that use this helper.
+        // Pure stub: dispatch is never invoked on the alert paths that use this helper.
         return $this->createStub(MessageBusInterface::class);
     }
 
@@ -356,17 +181,12 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         Manager $manager,
         MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
-        ?EntityManagerInterface $em = null,
-        ?AudienceMessagePreparer $preparer = null,
     ): VerifyCampaignDeliveryCommandHandler {
         return new VerifyCampaignDeliveryCommandHandler(
             $repository,
             $manager,
             new PostSendDeliveryGuard(), // real: pure logic, nothing to mock
             $bus,
-            // Stubs by default: tests that assert interactions pass their own createMock() instead.
-            $em ?? $this->createStub(EntityManagerInterface::class),
-            $preparer ?? $this->createStub(AudienceMessagePreparer::class),
             $logger ?? new NullLogger(),
         );
     }
@@ -384,15 +204,6 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         $campaign->setMailchimpStaticSegment($segment);
 
         return $campaign;
-    }
-
-    private function setLocker(MailchimpCampaign $campaign): Adherent
-    {
-        // Pure stub: only used for object-identity (identicalTo) assertions, no method is verified.
-        $locker = $this->createStub(Adherent::class);
-        $campaign->markAsPreparing($locker);
-
-        return $locker;
     }
 
     private function setEntityId(object $entity, int $id): void

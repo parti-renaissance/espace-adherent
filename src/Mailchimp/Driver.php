@@ -196,23 +196,6 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('POST', \sprintf('/campaigns/%s/actions/send', $externalId), [], true);
     }
 
-    /**
-     * Duplicates a campaign (content + recipient config) into a fresh draft (status=save).
-     * Returns the new campaign id, or null on failure (logged, not swallowed silently).
-     */
-    public function replicateCampaign(string $campaignId): ?string
-    {
-        $response = $this->send('POST', \sprintf('/campaigns/%s/actions/replicate', $campaignId));
-
-        if (!$this->isSuccessfulResponse($response, true)) {
-            $this->logger->error(\sprintf('[API] Replicate failed for campaign %s: %s', $campaignId, $response->getContent(false)));
-
-            return null;
-        }
-
-        return $response->toArray()['id'] ?? null;
-    }
-
     public function sendTestCampaign(string $externalId, array $emails): bool
     {
         return $this->sendRequest('POST', \sprintf('/campaigns/%s/actions/test', $externalId), [

@@ -6,13 +6,11 @@ namespace App\Mailchimp\Campaign\Handler;
 
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
 use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\DeliveryDecisionEnum;
 use App\Mailchimp\Campaign\PostSendDeliveryGuard;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -50,8 +48,6 @@ class VerifyCampaignDeliveryCommandHandler
         private readonly Manager $manager,
         private readonly PostSendDeliveryGuard $guard,
         private readonly MessageBusInterface $bus,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly AudienceMessagePreparer $audienceMessagePreparer,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -82,12 +78,6 @@ class VerifyCampaignDeliveryCommandHandler
         );
 
         if (DeliveryDecisionEnum::Ok === $decision->kind) {
-            // A recovery replica that finally delivered → mark the recovery as resolved.
-            if ($campaign->isRecoveryInProgress()) {
-                $campaign->markRecoverySucceeded();
-                $this->entityManager->flush();
-            }
-
             return;
         }
 
@@ -108,12 +98,6 @@ class VerifyCampaignDeliveryCommandHandler
             'retry_count' => $command->countRetry,
             'decision' => $decision->reason,
         ]);
-
-        // Fallback (Unit B) only on a confirmed zero delivery. Other modes (still sending, stuck,
-        // unverifiable) are alert-only — replicating there would be unsafe or pointless.
-        if (DeliveryDecisionEnum::Failed === $decision->kind) {
-            $this->attemptRecovery($campaign);
-        }
     }
 
     /**
@@ -136,116 +120,6 @@ class VerifyCampaignDeliveryCommandHandler
             new VerifyCampaignDeliveryCommand($command->campaignId, $command->countRetry + 1, $command->sendingRetry),
             [new DelayStamp(self::DELAY_SCHEDULE_MS[$command->countRetry])],
         );
-    }
-
-    /**
-     * Zero-delivery recovery: replicate the campaign and re-inject it into the existing preparation
-     * pipeline (rebuild segment → recipient_count readiness → send). Single attempt, with two
-     * abort-if-original-recovered checkpoints to avoid a double send.
-     */
-    private function attemptRecovery(MailchimpCampaign $campaign): void
-    {
-        // The replica we already sent also delivered 0: stop, never replicate a second time.
-        if ($campaign->isRecoveryInProgress()) {
-            $campaign->markRecoveryFailed();
-            $this->entityManager->flush();
-
-            $this->logger->error('[Mailchimp][PostSendGuard] Replica also delivered 0 — recovery failed', [
-                'campaign_id' => $campaign->getId(),
-                'external_id' => $campaign->getExternalId(),
-            ]);
-
-            return;
-        }
-
-        // Atomic single-attempt claim: only one worker proceeds.
-        if (!$this->repository->tryClaimRecovery($campaign->getId())) {
-            return;
-        }
-
-        $this->entityManager->refresh($campaign);
-
-        // Checkpoint 1 (before duplicate): the original may have delivered since detection.
-        if ($this->manager->hasDelivered($campaign)) {
-            $campaign->markRecoveryAborted();
-            $this->entityManager->flush();
-
-            $this->logger->warning('[Mailchimp][PostSendGuard] Original delivered before duplicate — recovery aborted', [
-                'campaign_id' => $campaign->getId(),
-                'external_id' => $campaign->getExternalId(),
-            ]);
-
-            return;
-        }
-
-        $replicaExternalId = $this->manager->replicateCampaign($campaign);
-        if (null === $replicaExternalId) {
-            $campaign->markRecoveryFailed();
-            $this->entityManager->flush();
-
-            $this->logger->error('[Mailchimp][PostSendGuard] Replicate failed — recovery aborted', [
-                'campaign_id' => $campaign->getId(),
-            ]);
-
-            return;
-        }
-
-        $locker = $campaign->getPreparationLockedBy();
-        if (null === $locker) {
-            $campaign->markRecoveryFailed();
-            $this->entityManager->flush();
-
-            $this->logger->error('[Mailchimp][PostSendGuard] No locker available for auto-recovery — aborted', [
-                'campaign_id' => $campaign->getId(),
-            ]);
-
-            return;
-        }
-
-        $originalExternalId = $campaign->getExternalId();
-        $campaign->markRecoveryAttempted($replicaExternalId);
-        $this->resetSegmentForRebuild($campaign);
-        $this->entityManager->flush();
-
-        // Robustness: actions/replicate is documented to copy the recipient config, but do not depend
-        // on it. If the replica does not target our static segment, the pre-send guard would abort at
-        // send time and strand the recovery in "attempted" forever — fail fast and explicitly here,
-        // before wasting a full audience rebuild on a replica that can never go out.
-        if (!$this->manager->campaignTargetsSegment($campaign)) {
-            $campaign->markRecoveryFailed();
-            $this->entityManager->flush();
-
-            $this->logger->error('[Mailchimp][PostSendGuard] Replica lost its segment binding — recovery aborted', [
-                'campaign_id' => $campaign->getId(),
-                'original_external_id' => $originalExternalId,
-                'replica_external_id' => $replicaExternalId,
-            ]);
-
-            return;
-        }
-
-        // Re-inject into the existing pipeline: rebuild audience → finalize markAsReady →
-        // recipient_count readiness guard → send (Checkpoint 2 lives in Manager::sendMailchimpCampaign).
-        $this->audienceMessagePreparer->prepare($campaign->getMessage(), $locker);
-
-        $this->logger->warning('[Mailchimp][PostSendGuard] Recovery started: replica prepared and queued for send', [
-            'campaign_id' => $campaign->getId(),
-            'original_external_id' => $originalExternalId,
-            'replica_external_id' => $replicaExternalId,
-        ]);
-    }
-
-    /**
-     * Force a full audience rebuild on re-preparation: clearing chunksTotal makes the prepare
-     * handler take the wipe+refill path instead of resuming residual chunks from the original send.
-     */
-    private function resetSegmentForRebuild(MailchimpCampaign $campaign): void
-    {
-        $segment = $campaign->getMailchimpStaticSegment();
-        if (null !== $segment) {
-            $segment->chunksTotal = null;
-            $segment->preparedCount = null;
-        }
     }
 
     private function describe(DeliveryDecisionEnum $kind): string
