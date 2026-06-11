@@ -18,6 +18,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -31,6 +32,7 @@ class OAuthServerController extends AbstractController
     public function __construct(
         private readonly AuthorizationServer $authorizationServer,
         private readonly HttpFoundationFactoryInterface $httpFoundationFactory,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -90,7 +92,19 @@ class OAuthServerController extends AbstractController
         try {
             return $this->authorizationServer->respondToAccessTokenRequest($request, $response);
         } catch (OAuthServerException $exception) {
+            if ($exception->getHttpStatusCode() >= 500) {
+                $this->logger->error('OAuth token endpoint failed with a server error.', [
+                    'exception' => $exception->getPrevious() ?? $exception,
+                ]);
+            }
+
             return $exception->generateHttpResponse($response);
+        } catch (\Throwable $exception) {
+            $this->logger->error('OAuth token endpoint failed with an unexpected error.', [
+                'exception' => $exception,
+            ]);
+
+            throw $exception;
         }
     }
 
