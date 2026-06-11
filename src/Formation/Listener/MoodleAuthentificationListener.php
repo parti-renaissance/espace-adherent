@@ -44,6 +44,7 @@ class MoodleAuthentificationListener implements EventSubscriberInterface
             $this->logger->error('Moodle user update failed for {uuid}: {message}', [
                 'uuid' => $userUuid,
                 'message' => $exception->getMessage(),
+                'exception' => $exception,
             ]);
         }
     }
