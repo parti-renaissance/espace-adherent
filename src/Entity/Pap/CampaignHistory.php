@@ -55,14 +55,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/pap_campaign_histories',
             normalizationContext: ['groups' => ['pap_campaign_history_read_list']],
-            security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'pap')"
         ),
         new Post(uriTemplate: '/v3/pap_campaign_histories'),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['pap_campaign_history_read']],
     denormalizationContext: ['groups' => ['pap_campaign_history_write']],
     filters: [PapCampaignHistoryScopeFilter::class],
-    security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_MEMBRE') and is_granted('REQUEST_SCOPE_GRANTED', 'pap_user')"
 )]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 #[ORM\Table(name: 'pap_campaign_history')]

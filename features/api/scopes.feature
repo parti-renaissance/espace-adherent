@@ -62,7 +62,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions", "ai_antiseche"]
+                    "features": ["events", "actions", "ai_antiseche", "pap_user"]
                 },
                 {
                     "code": "national_communication",
@@ -116,7 +116,6 @@ Feature:
                         "elections",
                         "ripostes",
                         "pap",
-                        "pap_v2",
                         "team",
                         "phoning_campaign",
                         "survey",
@@ -156,22 +155,6 @@ Feature:
                     ],
                     "apps": ["data_corner"],
                     "features": ["pap"]
-                },
-                {
-                    "code": "pap",
-                    "name": "Porte-à-porteur",
-                    "role_name": "Porte-à-porteur",
-                    "attributes": {
-                        "theme": {
-                            "primary": "#3A7DFF",
-                            "soft": "#E8F0FF",
-                            "hover": "#2F6FE0",
-                            "active": "#1C5CD8"
-                        }
-                    },
-                    "zones": [],
-                    "apps": ["jemarche"],
-                    "features": []
                 },
                 {
                     "code": "phoning_national_manager",
@@ -301,7 +284,6 @@ Feature:
                     "elections",
                     "ripostes",
                     "pap",
-                    "pap_v2",
                     "team",
                     "phoning_campaign",
                     "survey",
@@ -374,7 +356,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions", "ai_antiseche"]
+                    "features": ["events", "actions", "ai_antiseche", "pap_user"]
                 },
                 {
                     "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
@@ -689,7 +671,6 @@ Feature:
                     "elections",
                     "ripostes",
                     "pap",
-                    "pap_v2",
                     "team",
                     "phoning_campaign",
                     "survey",
@@ -759,7 +740,6 @@ Feature:
                     "elections",
                     "ripostes",
                     "pap",
-                    "pap_v2",
                     "team",
                     "phoning_campaign",
                     "survey",

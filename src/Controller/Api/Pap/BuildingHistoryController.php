@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"))]
+#[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_MEMBRE') and is_granted('REQUEST_SCOPE_GRANTED', 'pap_user')"))]
+#[Route(path: '/v3/pap/buildings/{uuid}/history', name: 'api_get_building_history', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class BuildingHistoryController extends AbstractController
 {
-    #[Route(path: '/v3/pap/buildings/{uuid}/history', name: 'api_get_building_history', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function __invoke(
         Request $request,
         Building $building,

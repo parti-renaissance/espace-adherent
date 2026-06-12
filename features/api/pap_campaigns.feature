@@ -1714,7 +1714,7 @@ Feature:
             """
 
     Scenario: As a logged-in user I can get PAP campaign ranking
-        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/ranking"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -1741,13 +1741,6 @@ Feature:
                             "questioner": "Jacques P.",
                             "nb_visited_doors": 2,
                             "nb_surveys": 0,
-                            "current": false
-                        },
-                        {
-                            "rank": "...",
-                            "questioner": "Referent R.",
-                            "nb_visited_doors": 0,
-                            "nb_surveys": 0,
                             "current": true
                         }
                     ]
@@ -1766,7 +1759,7 @@ Feature:
                             "department": "Paris 8ème",
                             "nb_visited_doors": 5,
                             "nb_surveys": 3,
-                            "current": false
+                            "current": true
                         },
                         {
                             "rank": 2,
@@ -1825,11 +1818,11 @@ Feature:
                             "current": false
                         },
                         {
-                            "rank": "...",
-                            "department": "Seine-et-Marne",
+                            "rank": 10,
+                            "department": "Aube",
                             "nb_visited_doors": 0,
                             "nb_surveys": 0,
-                            "current": true
+                            "current": false
                         }
                     ]
                 }

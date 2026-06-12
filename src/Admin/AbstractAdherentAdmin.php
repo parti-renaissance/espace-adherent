@@ -437,10 +437,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin implements ZoneableAd
                             'label' => 'Responsable National PAP',
                             'required' => false,
                         ])
-                        ->add('papUserRole', null, [
-                            'label' => 'Utilisateur PAP app mobile',
-                            'required' => false,
-                        ])
                     ->end()
                     ->with('Meeting', ['class' => 'col-md-6'])
                         ->add('meetingScanner', null, [

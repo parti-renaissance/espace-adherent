@@ -34,7 +34,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $scope = $this->scopeGeneratorResolver->generate();
 
-        if (!$scope || !$scope->containsFeatures([FeatureEnum::PAP, FeatureEnum::PAP_V2])) {
+        if (!$scope || !$scope->containsFeatures([FeatureEnum::PAP])) {
             return $campaign;
         }
 

@@ -216,7 +216,7 @@ Feature:
         When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"
         Then the response status code should be 200
 
-    Scenario: As a connected user I can create an action (management gated by the actions feature, not by membership)
+    Scenario: As a logged-in user below membership level I cannot create an action
         Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "POST" request to "/api/v3/actions" with body:
             """
@@ -232,7 +232,7 @@ Feature:
                 }
             }
             """
-        Then the response status code should be 201
+        Then the response status code should be 403
 
     Scenario: As a logged-in user below membership level I cannot register to an action
         Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"

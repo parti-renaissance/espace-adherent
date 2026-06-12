@@ -52,7 +52,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions', 'ai_antiseche'],
+                'features' => ['events', 'actions', 'ai_antiseche', 'pap_user'],
             ],
             [
                 'code' => 'national_communication',
@@ -75,11 +75,6 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 ]],
                 'apps' => ['data_corner'],
                 'features' => ['pap'],
-            ],
-            [
-                'code' => 'pap',
-                'zones' => [],
-                'apps' => ['jemarche'],
             ],
             [
                 'code' => 'phoning_national_manager',
@@ -120,12 +115,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions', 'ai_antiseche'],
-            ],
-            [
-                'code' => 'pap',
-                'zones' => [],
-                'apps' => ['jemarche'],
+                'features' => ['events', 'actions', 'ai_antiseche', 'pap_user'],
             ],
             [
                 'code' => 'phoning',
@@ -165,7 +155,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions', 'ai_antiseche'],
+                'features' => ['events', 'actions', 'ai_antiseche', 'pap_user'],
             ],
         ]];
         yield [LoadAdherentData::ADHERENT_20_UUID, [
@@ -186,7 +176,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'militant',
                 'zones' => [],
                 'apps' => ['jemarche'],
-                'features' => ['events', 'actions', 'ai_antiseche'],
+                'features' => ['events', 'actions', 'ai_antiseche', 'pap_user'],
             ],
             [
                 'code' => 'municipal_pilot',

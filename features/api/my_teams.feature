@@ -218,7 +218,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions", "ai_antiseche"]
+                    "features": ["events", "actions", "ai_antiseche", "pap_user"]
                 },
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
@@ -336,7 +336,7 @@ Feature:
                     },
                     "zones": [],
                     "apps": ["jemarche"],
-                    "features": ["events", "actions", "ai_antiseche"]
+                    "features": ["events", "actions", "ai_antiseche", "pap_user"]
                 },
                 {
                     "code": "delegated_689757d2-dea5-49d1-95fe-281fc860ff77",
@@ -506,7 +506,6 @@ Feature:
                                     "elections",
                                     "ripostes",
                                     "pap",
-                                    "pap_v2",
                                     "team",
                                     "phoning_campaign",
                                     "survey",
@@ -600,7 +599,6 @@ Feature:
                                     "elections",
                                     "ripostes",
                                     "pap",
-                                    "pap_v2",
                                     "team",
                                     "phoning_campaign",
                                     "survey",

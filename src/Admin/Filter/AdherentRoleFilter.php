@@ -71,12 +71,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $qb->setParameter('phoningManagerRole', true);
                 }
 
-                // PAP user Role
-                if (\in_array(AdherentRoleEnum::PAP_USER, $value, true)) {
-                    $where->add("$alias.papUserRole = :papUserRole");
-                    $qb->setParameter('papUserRole', true);
-                }
-
                 // Meeting scanner user Role
                 if (\in_array(ScopeEnum::MEETING_SCANNER, $value, true)) {
                     $where->add("$alias.meetingScanner = :meeting_scanner");

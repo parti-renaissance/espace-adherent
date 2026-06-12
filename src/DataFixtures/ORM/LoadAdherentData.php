@@ -102,7 +102,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent1->setSubscriptionTypes($subscriptionTypes);
-        $adherent1->setPapUserRole(true);
         $adherent1->setInterests(['europe', 'numerique', 'sante']);
         $adherent1->setMandates([MandateTypeEnum::CONSEILLER_MUNICIPAL, MandateTypeEnum::MAIRE]);
         $adherent1->tags = [
@@ -161,7 +160,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent3->addCharter(new CommitteeHostCharter());
         $adherent3->addCharter(new PhoningCampaignCharter());
         $adherent3->addCharter(new PapCampaignCharter());
-        $adherent3->setPapUserRole(true);
         $adherent3->setInterests(['europe', 'numerique', 'sante']);
         $adherent3->certify();
         $adherent3->tags = [
@@ -199,7 +197,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent4->addZone($zoneDpt92);
         $adherent4->setCandidateManagedArea($candidateManagedAreaDpt);
         $adherent4->addCharter(new CandidateCharter());
-        $adherent4->setPapUserRole(true);
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $this->adherentFactory->createFromArray([
@@ -520,7 +517,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'),
         ]));
         $referent->addCharter(new CommitteeHostCharter());
-        $referent->setPapUserRole(true);
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $this->adherentFactory->createFromArray([
@@ -615,7 +611,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $deputy_75_1->certify();
-        $deputy_75_1->setPapUserRole(true);
         $deputy_75_1->setInterests(['europe', 'numerique']);
         $deputy_75_1->tags = [
             TagEnum::getAdherentYearTag(2024),
@@ -949,7 +944,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
             'is_adherent' => false,
         ]));
-        $adherent->setPapUserRole(true);
         $adherent->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));

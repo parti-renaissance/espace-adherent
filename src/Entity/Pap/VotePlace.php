@@ -24,7 +24,7 @@ use Symfony\Component\Uid\Uuid;
     normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
     filters: [PapVotePlaceScopeFilter::class],
     paginationClientEnabled: true,
-    security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))"
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_MEMBRE') and is_granted('REQUEST_SCOPE_GRANTED', 'pap_user'))"
 )]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
