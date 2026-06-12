@@ -59,7 +59,7 @@ class Message
     public \DateTimeInterface $date;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    public ?array $raw = null;
+    public ?array $usageRaw = null;
 
     public function __construct(?Uuid $uuid = null)
     {

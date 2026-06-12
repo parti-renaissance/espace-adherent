@@ -6,6 +6,7 @@ namespace Tests\App\Chatbot;
 
 use App\Chatbot\ChatbotManager;
 use App\Entity\Adherent;
+use App\Entity\Chatbot\Message;
 use App\Entity\Chatbot\Thread;
 use App\Repository\Chatbot\ThreadRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,6 +70,44 @@ class ChatbotManagerTest extends TestCase
         self::assertSame('U2', $messages[0]->getContent()[0]->getText());
         self::assertSame(Role::Assistant, $messages[13]->getRole());
         self::assertSame('A8', $messages[13]->asText());
+    }
+
+    public function testHandleBotResponseStoresUsageOnAssistantMessage(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('flush');
+        $manager = new ChatbotManager($entityManager, $this->createStub(ThreadRepository::class));
+
+        $thread = new Thread($this->createStub(Adherent::class), 'antiseche');
+        $usage = ['prompt_tokens' => 9200, 'cost_usd' => 0.012588, 'duration_ms' => 3450];
+
+        $manager->handleBotResponse($thread, 'Bonjour', $usage);
+
+        self::assertCount(1, $thread->messages);
+        $message = $thread->messages->first();
+        self::assertSame(Message::ROLE_ASSISTANT, $message->role);
+        self::assertSame($usage, $message->usageRaw);
+    }
+
+    public function testHandleBotResponseWithoutUsageLeavesRawNull(): void
+    {
+        $thread = new Thread($this->createStub(Adherent::class), 'antiseche');
+
+        $this->manager->handleBotResponse($thread, 'Bonjour');
+
+        self::assertNull($thread->messages->first()->usageRaw);
+    }
+
+    public function testHandleBotResponseSkipsEmptyContent(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->never())->method('flush');
+        $manager = new ChatbotManager($entityManager, $this->createStub(ThreadRepository::class));
+
+        $thread = new Thread($this->createStub(Adherent::class), 'antiseche');
+        $manager->handleBotResponse($thread, '', ['total_tokens' => 10]);
+
+        self::assertCount(0, $thread->messages);
     }
 
     private function createThreadWithMessages(int $count): Thread
