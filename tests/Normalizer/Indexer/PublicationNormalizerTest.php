@@ -8,19 +8,19 @@ use Algolia\SearchBundle\Searchable;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Normalizer\Indexer\PublicationNormalizer;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 
 final class PublicationNormalizerTest extends TestCase
 {
-    private UrlGeneratorInterface&MockObject $urlGenerator;
+    private UrlGeneratorInterface&Stub $urlGenerator;
     private PublicationNormalizer $normalizer;
 
     protected function setUp(): void
     {
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $this->normalizer = new PublicationNormalizer($this->urlGenerator);
     }
 
@@ -31,7 +31,7 @@ final class PublicationNormalizerTest extends TestCase
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = null;
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -63,7 +63,7 @@ final class PublicationNormalizerTest extends TestCase
         $filter = new AdherentMessageFilter();
         $filter->scopeTargets = [];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -98,7 +98,7 @@ final class PublicationNormalizerTest extends TestCase
             ['role' => 'senator', 'include_role' => true, 'include_team' => false],
         ];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -130,7 +130,7 @@ final class PublicationNormalizerTest extends TestCase
             ['role' => null, 'include_role' => true, 'include_team' => false], // Null role
         ];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -158,7 +158,7 @@ final class PublicationNormalizerTest extends TestCase
     {
         $uuid = Uuid::v4();
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -189,7 +189,7 @@ final class PublicationNormalizerTest extends TestCase
             ],
         ];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -225,7 +225,7 @@ final class PublicationNormalizerTest extends TestCase
             ],
         ];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -258,7 +258,7 @@ final class PublicationNormalizerTest extends TestCase
             ],
         ];
 
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn($uuid);
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');
@@ -364,7 +364,7 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testSupportsNormalizationReturnsTrueForAdherentMessage(): void
     {
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
 
         self::assertTrue($this->normalizer->supportsNormalization($message, Searchable::NORMALIZATION_FORMAT));
     }
@@ -376,15 +376,15 @@ final class PublicationNormalizerTest extends TestCase
 
     public function testSupportsNormalizationReturnsFalseWithoutCorrectFormat(): void
     {
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
 
         self::assertFalse($this->normalizer->supportsNormalization($message));
         self::assertFalse($this->normalizer->supportsNormalization($message, 'json'));
     }
 
-    private function createMessageWithFilter(AdherentMessageFilter $filter): AdherentMessage&MockObject
+    private function createMessageWithFilter(AdherentMessageFilter $filter): AdherentMessage&Stub
     {
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getUuid')->willReturn(Uuid::v4());
         $message->method('getSubject')->willReturn('Test subject');
         $message->method('getJsonContent')->willReturn('Test content');

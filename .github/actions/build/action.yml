@@ -25,6 +25,10 @@ inputs:
         description: Set to 'true' to skip composer install (when vendor cache is restored)
         required: false
         default: 'false'
+    skip-build:
+        description: Set to 'true' to reuse the pulled image instead of rebuilding it (downstream jobs after the build job pushed it)
+        required: false
+        default: 'false'
 
 runs:
     using: composite
@@ -35,9 +39,11 @@ runs:
               skip-install: ${{ inputs.skip-composer-install }}
 
         - name: Set up Docker Buildx
+          if: inputs.skip-build != 'true'
           uses: docker/setup-buildx-action@v4
 
         - name: Build docker image
+          if: inputs.skip-build != 'true'
           shell: bash
           env:
               TAG: ${{ inputs.tag }}

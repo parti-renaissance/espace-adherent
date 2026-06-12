@@ -43,16 +43,22 @@ final class AdherentSmsSubscriptionHandlerTest extends TestCase
     {
         $phone = $this->buildPhoneNumber('+33612345678');
 
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent->method('getSubscriptionTypeCodes')->willReturn([]);
         $adherent->method('getPhone')->willReturn($phone);
 
         $this->adherentRepository
+            ->expects($this->once())
             ->method('findOneByEmail')
             ->with('user@example.com')
             ->willReturn($adherent);
 
         $this->entityManager->expects($this->once())->method('refresh');
+        $this->subscriptionHandler
+            ->expects($this->once())
+            ->method('handleUpdateSubscription')
+            ->with($adherent, [])
+        ;
 
         $this->smsOptOutRepository
             ->expects($this->once())
@@ -68,15 +74,21 @@ final class AdherentSmsSubscriptionHandlerTest extends TestCase
 
     public function testHandleOnSmsUnsubscribeWithoutPhoneDoesNotCallAdd(): void
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent->method('getSubscriptionTypeCodes')->willReturn([]);
         $adherent->method('getPhone')->willReturn(null);
 
         $this->adherentRepository
+            ->expects($this->once())
             ->method('findOneByEmail')
             ->willReturn($adherent);
 
         $this->entityManager->expects($this->once())->method('refresh');
+        $this->subscriptionHandler
+            ->expects($this->once())
+            ->method('handleUpdateSubscription')
+            ->with($adherent, [])
+        ;
         $this->smsOptOutRepository->expects($this->never())->method('add');
         $this->smsOptOutRepository->expects($this->never())->method('cancelLastActiveOptOut');
 
@@ -90,15 +102,21 @@ final class AdherentSmsSubscriptionHandlerTest extends TestCase
     {
         $phone = $this->buildPhoneNumber('+33612345678');
 
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent->method('getSubscriptionTypeCodes')->willReturn([]);
         $adherent->method('getPhone')->willReturn($phone);
 
         $this->adherentRepository
+            ->expects($this->once())
             ->method('findOneByEmail')
             ->willReturn($adherent);
 
         $this->entityManager->expects($this->once())->method('refresh');
+        $this->subscriptionHandler
+            ->expects($this->once())
+            ->method('handleUpdateSubscription')
+            ->with($adherent, ['militant_action_sms'])
+        ;
         $this->smsOptOutRepository->expects($this->never())->method('add');
 
         $this->smsOptOutRepository
@@ -117,6 +135,7 @@ final class AdherentSmsSubscriptionHandlerTest extends TestCase
     {
         $this->adherentRepository->expects($this->never())->method('findOneByEmail');
         $this->subscriptionHandler->expects($this->never())->method('handleUpdateSubscription');
+        $this->entityManager->expects($this->never())->method('refresh');
         $this->smsOptOutRepository->expects($this->never())->method('add');
         $this->smsOptOutRepository->expects($this->never())->method('cancelLastActiveOptOut');
 

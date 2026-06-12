@@ -129,8 +129,16 @@ final class SendPushChunkHandlerTest extends TestCase
             'ttl:test:push:0',
         );
 
-        $this->cache->method('has')->with('ttl:test:push:0')->willReturn(false);
-        $this->messaging->method('send');
+        $this->cache
+            ->expects(self::once())
+            ->method('has')
+            ->with('ttl:test:push:0')
+            ->willReturn(false)
+        ;
+        $this->messaging
+            ->expects(self::once())
+            ->method('send')
+        ;
 
         $this->cache
             ->expects(self::once())
@@ -155,7 +163,12 @@ final class SendPushChunkHandlerTest extends TestCase
             $uuid,
         );
 
-        $this->cache->method('has')->with('uuid:test:push:0')->willReturn(false);
+        $this->cache
+            ->expects(self::once())
+            ->method('has')
+            ->with('uuid:test:push:0')
+            ->willReturn(false)
+        ;
 
         $this->messaging
             ->expects(self::once())

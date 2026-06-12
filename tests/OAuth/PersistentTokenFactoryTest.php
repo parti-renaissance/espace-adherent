@@ -52,15 +52,13 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class))
+            ->willReturn($user = $this->createStub(Adherent::class))
         ;
 
         $this
             ->clientRepository
             ->method('findOneByUuid')
-            ->with(self::CLIENT_UUID)
-            ->willReturn($client = $this->createMock(Client::class))
+            ->willReturn($client = $this->createStub(Client::class))
         ;
 
         $authCode = $this->tokenFactory->createAuthorizationCode($token);
@@ -90,14 +88,12 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
-            ->willReturn($this->createMock(Adherent::class))
+            ->willReturn($this->createStub(Adherent::class))
         ;
 
         $this
             ->clientRepository
             ->method('findOneByUuid')
-            ->with(self::CLIENT_UUID)
             ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback']))
         ;
 
@@ -117,14 +113,12 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
-            ->willReturn($this->createMock(Adherent::class))
+            ->willReturn($this->createStub(Adherent::class))
         ;
 
         $this
             ->clientRepository
             ->method('findOneByUuid')
-            ->with(self::CLIENT_UUID)
             ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback', 'http://client2.com']))
         ;
 
@@ -145,15 +139,13 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class))
+            ->willReturn($user = $this->createStub(Adherent::class))
         ;
 
         $this
             ->clientRepository
             ->method('findOneByUuid')
-            ->with(self::CLIENT_UUID)
-            ->willReturn($client = $this->createMock(Client::class))
+            ->willReturn($client = $this->createStub(Client::class))
         ;
 
         $accessToken = $this->tokenFactory->createAccessToken($token);
@@ -181,7 +173,6 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
             ->willReturn(null)
         ;
 
@@ -199,14 +190,12 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->method('findOneByUuid')
-            ->with(self::USER_UUID)
-            ->willReturn($this->createMock(Adherent::class))
+            ->willReturn($this->createStub(Adherent::class))
         ;
 
         $this
             ->clientRepository
             ->method('findOneByUuid')
-            ->with(self::CLIENT_UUID)
             ->willReturn(null)
         ;
 
@@ -223,8 +212,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->accessTokenRepository
             ->method('findAccessTokenByIdentifier')
-            ->with(self::ACCESS_TOKEN_IDENTIFIER)
-            ->willReturn($accessToken = $this->createMock(AccessToken::class))
+            ->willReturn($accessToken = $this->createStub(AccessToken::class))
         ;
 
         $refreshToken = $this->tokenFactory->createRefreshToken($token);
@@ -268,10 +256,10 @@ class PersistentTokenFactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->accessTokenRepository = $this->createMock(AccessTokenRepository::class);
-        $this->clientRepository = $this->createMock(ClientRepository::class);
-        $this->adherentRepository = $this->createMock(AdherentRepository::class);
-        $this->deviceRepository = $this->createMock(DeviceRepository::class);
+        $this->accessTokenRepository = $this->createStub(AccessTokenRepository::class);
+        $this->clientRepository = $this->createStub(ClientRepository::class);
+        $this->adherentRepository = $this->createStub(AdherentRepository::class);
+        $this->deviceRepository = $this->createStub(DeviceRepository::class);
         $this->tokenFactory = new PersistentTokenFactory(
             $this->accessTokenRepository,
             $this->clientRepository,

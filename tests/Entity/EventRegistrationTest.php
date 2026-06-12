@@ -47,7 +47,7 @@ class EventRegistrationTest extends TestCase
 
     private function createAdherentMock(string $uuid)
     {
-        $adherent = $this->createMock(Adherent::class)
+        $adherent = $this->createStub(Adherent::class)
         ;
 
         $adherent->method('getUuid')->willReturn(Uuid::fromString($uuid));
@@ -59,14 +59,12 @@ class EventRegistrationTest extends TestCase
     {
         $uuid = Uuid::fromString($uuid);
 
-        $event = $this->createPartialMock(Event::class, ['getUuid']);
+        $event = new Event();
 
         // Hack to ensure the $uuid protected property contains
         // a valid UuidInterface instance.
         $rp = new \ReflectionProperty($event, 'uuid');
         $rp->setValue($event, $uuid);
-
-        $event->method('getUuid')->willReturn($uuid);
 
         return $event;
     }

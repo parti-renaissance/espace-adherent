@@ -21,8 +21,8 @@ use App\JeMengage\Hit\TargetTypeEnum;
 use App\Repository\Adherent\Activity\AdherentActivityRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
@@ -33,8 +33,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
 {
     private PopulateAdherentActivityCommandHandler $handler;
     private AdherentActivityRepository $activityRepository;
-    private MessageBusInterface&MockObject $bus;
-    private LoggerInterface&MockObject $logger;
+    private MessageBusInterface $bus;
     private Adherent $adherent;
 
     public function testInsertsAllowedActionHistoryRows(): void
@@ -178,13 +177,20 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         // Given
         $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_SUCCESS);
 
-        $this->bus->expects(self::once())
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
             ->method('dispatch')
             ->with(self::callback(fn ($msg) => $msg instanceof PopulateAdherentActivityCommand && SourceTypeEnum::Hit === $msg->sourceType))
             ->willReturn(new Envelope(new PopulateAdherentActivityCommand(SourceTypeEnum::Hit)));
 
+        $handler = new PopulateAdherentActivityCommandHandler(
+            new PopulateAdherentActivityService($this->get(Connection::class), new AdherentActivityDescriptionBuilder()),
+            $bus,
+            new NullLogger(),
+        );
+
         // When
-        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+        $handler(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
     }
 
     public function testSkipsActionHistoryRowsCreatedWithinLastMinute(): void
@@ -222,7 +228,8 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
         // Given
         $this->createActionHistory(UserActionHistoryTypeEnum::LOGIN_SUCCESS);
 
-        $this->logger
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
             ->expects(self::atLeastOnce())
             ->method('info')
             ->with(
@@ -236,8 +243,14 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
                 }),
             );
 
+        $handler = new PopulateAdherentActivityCommandHandler(
+            new PopulateAdherentActivityService($this->get(Connection::class), new AdherentActivityDescriptionBuilder()),
+            $this->bus,
+            $logger,
+        );
+
         // When
-        ($this->handler)(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
+        $handler(new PopulateAdherentActivityCommand(SourceTypeEnum::ActionHistory));
     }
 
     public function testLogsWarningWhenBatchEmptyButSourceHasEligibleRow(): void
@@ -265,7 +278,7 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
             );
         $logger->expects(self::never())->method('info');
 
-        $bus = $this->createMock(MessageBusInterface::class);
+        $bus = $this->createStub(MessageBusInterface::class);
         $bus->method('dispatch')->willReturn(new Envelope(new \stdClass()));
 
         $handler = new PopulateAdherentActivityCommandHandler($serviceMock, $bus, $logger);
@@ -310,15 +323,13 @@ class PopulateAdherentActivityCommandHandlerTest extends AbstractKernelTestCase
 
         $this->activityRepository = $this->manager->getRepository(AdherentActivity::class);
 
-        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->bus = $this->createStub(MessageBusInterface::class);
         $this->bus->method('dispatch')->willReturn(new Envelope(new \stdClass()));
-
-        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->handler = new PopulateAdherentActivityCommandHandler(
             new PopulateAdherentActivityService($connection, new AdherentActivityDescriptionBuilder()),
             $this->bus,
-            $this->logger,
+            new NullLogger(),
         );
     }
 

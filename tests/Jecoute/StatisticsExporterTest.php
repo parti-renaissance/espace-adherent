@@ -41,7 +41,7 @@ class StatisticsExporterTest extends TestCase
     public function testExport(): void
     {
         /** @var Adherent $author */
-        $author = $this->createMock(Adherent::class);
+        $author = $this->createStub(Adherent::class);
         $survey = LocalSurvey::create($author);
         $survey->setName('Questionnaire TestU');
 

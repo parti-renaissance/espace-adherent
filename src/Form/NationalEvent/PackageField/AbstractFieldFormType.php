@@ -74,8 +74,8 @@ abstract class AbstractFieldFormType extends AbstractType
                 'description' => $fieldConfig['description'] ?? null,
             ],
             'placeholder' => $fieldConfig['placeholder'] ?? null,
-            'choice_value' => static fn ($choice) => $choices[$choice]['id'] ?? $choice,
-            'choice_label' => static fn ($choice) => $choices[$choice]['titre'] ?? $choice,
+            'choice_value' => static fn ($choice) => null !== $choice ? ($choices[$choice]['id'] ?? $choice) : $choice,
+            'choice_label' => static fn ($choice) => null !== $choice ? ($choices[$choice]['titre'] ?? $choice) : $choice,
             'choice_attr' => function ($key) use ($fieldConfig, $fieldId, $reservedPlaces, $currentValue): array {
                 $currentFieldReservations = $reservedPlaces[$fieldId] ?? [];
 

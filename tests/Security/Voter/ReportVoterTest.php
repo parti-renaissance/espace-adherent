@@ -52,7 +52,7 @@ class ReportVoterTest extends TestCase
     #[DataProvider('provideUsers')]
     public function testGrantedWhenAuthenticatedFully(?string $userClass): void
     {
-        $user = $userClass ? $this->createMock($userClass) : null;
+        $user = $userClass ? $this->createStub($userClass) : null;
         $token = $this->createMock(TokenInterface::class);
         $token->expects($this->once())
             ->method('getUser')
@@ -76,7 +76,7 @@ class ReportVoterTest extends TestCase
         $token = $this->createMock(TokenInterface::class);
         $token->expects($this->once())
             ->method('getUser')
-            ->willReturn($this->createMock(Administrator::class))
+            ->willReturn($this->createStub(Administrator::class))
         ;
 
         $this->authorizationChecker->expects($this->never())

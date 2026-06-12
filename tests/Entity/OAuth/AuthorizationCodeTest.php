@@ -53,11 +53,11 @@ class AuthorizationCodeTest extends TestCase
     {
         $token = new AuthorizationCode(
             Uuid::fromString(self::UUID),
-            $this->createMock(Adherent::class),
+            $this->createStub(Adherent::class),
             self::IDENTIFIER,
             new \DateTimeImmutable($expiryDateTime),
             'https://my.app.com/oauth/callback',
-            $this->createMock(Client::class)
+            $this->createStub(Client::class)
         );
         $token->addScope('public');
         $token->addScopes(['user_profile', 'manage_committees']);

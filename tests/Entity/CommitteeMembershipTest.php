@@ -76,7 +76,7 @@ class CommitteeMembershipTest extends AbstractKernelTestCase
 
     private function createCommittee(): Committee
     {
-        return $this->createConfiguredMock(Committee::class, [
+        return $this->createConfiguredStub(Committee::class, [
             'getUuid' => Uuid::fromString(self::COMMITTEE_UUID),
         ]);
     }

@@ -144,7 +144,7 @@ class OAuthAuthorizationManagerTest extends TestCase
 
     private function createUser(): Adherent
     {
-        return $this->createMock(Adherent::class);
+        return $this->createStub(Adherent::class);
     }
 
     private function createClient(bool $askForUserAuthorization = true): Client

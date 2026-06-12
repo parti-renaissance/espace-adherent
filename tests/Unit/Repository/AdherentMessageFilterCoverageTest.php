@@ -175,7 +175,7 @@ class AdherentMessageFilterCoverageTest extends KernelTestCase
 
     private function buildCommitteeStub(): Committee
     {
-        $committee = $this->createMock(Committee::class);
+        $committee = $this->createStub(Committee::class);
         $committee->method('getId')->willReturn(1);
 
         return $committee;
@@ -183,7 +183,7 @@ class AdherentMessageFilterCoverageTest extends KernelTestCase
 
     private function buildZoneStub(): Zone
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getId')->willReturn(1);
 
         return $zone;

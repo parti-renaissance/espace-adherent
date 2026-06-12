@@ -67,7 +67,7 @@ class MessengerTransportTest extends TestCase
 
         $emailRepository = $this->createPartialMock(EmailLogRepository::class, ['findOneByUuid', 'getEntityManager']);
         $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn($emailObject = EmailLog::createFromMessage($message, $email->getHttpRequestPayload()));
-        $emailRepository->expects($this->once())->method('getEntityManager')->willReturn($this->createMock(EntityManagerInterface::class));
+        $emailRepository->expects($this->once())->method('getEntityManager')->willReturn($this->createStub(EntityManagerInterface::class));
 
         $transport = new MessengerTransport($this->getBus(new SendMessageCommandHandler($emailRepository, $client)));
         $transport->sendTemplateEmail($email);
@@ -83,7 +83,7 @@ class MessengerTransportTest extends TestCase
         $emailTemplateFactory = new EmailTemplateFactory(
             'sender@test.com',
             'Test sender',
-            $this->createMock(Manager::class)
+            $this->createStub(Manager::class)
         );
         $message->setSenderEmail('contact@en-marche.fr');
         $email = $emailTemplateFactory->createFromMessage($message);

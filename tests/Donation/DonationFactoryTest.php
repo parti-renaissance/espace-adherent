@@ -35,7 +35,7 @@ class DonationFactoryTest extends TestCase
         $request->getAddress()->setAddress('2, Rue de la République');
         $request->setDuration(0);
 
-        $donator = $this->createConfiguredMock(Donator::class, [
+        $donator = $this->createConfiguredStub(Donator::class, [
             'getGender' => 'male',
             'getFirstName' => 'Damien',
             'getLastName' => 'DUPONT',
@@ -64,10 +64,10 @@ class DonationFactoryTest extends TestCase
         return new DonationFactory(
             new PostAddressFactory(),
             new DonationRequestUtils(
-                $this->createMock(CsrfTokenManagerInterface::class),
+                $this->createStub(CsrfTokenManagerInterface::class),
                 Slugify::create(),
             ),
-            $this->createMock(ZoneRepository::class)
+            $this->createStub(ZoneRepository::class)
         );
     }
 }

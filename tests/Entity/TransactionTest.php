@@ -70,7 +70,7 @@ class TransactionTest extends TestCase
     #[DataProvider('constructProvider')]
     public function testConstruct(array $payload, array $expectations): void
     {
-        $transaction = new Transaction($this->createMock(Donation::class), $payload);
+        $transaction = new Transaction($this->createStub(Donation::class), $payload);
 
         foreach ($expectations as $key => $expectation) {
             if ($expectation instanceof \DateTimeInterface) {

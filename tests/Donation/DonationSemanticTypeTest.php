@@ -12,7 +12,7 @@ class DonationSemanticTypeTest extends TestCase
 {
     public function testFromDonationReturnsMembershipWhenIsMembership(): void
     {
-        $donation = $this->createMock(Donation::class);
+        $donation = $this->createStub(Donation::class);
         $donation->method('isMembership')->willReturn(true);
         $donation->method('isSubscription')->willReturn(false);
 
@@ -24,7 +24,7 @@ class DonationSemanticTypeTest extends TestCase
 
     public function testFromDonationReturnsRecurringWhenIsSubscription(): void
     {
-        $donation = $this->createMock(Donation::class);
+        $donation = $this->createStub(Donation::class);
         $donation->method('isMembership')->willReturn(false);
         $donation->method('isSubscription')->willReturn(true);
 
@@ -36,7 +36,7 @@ class DonationSemanticTypeTest extends TestCase
 
     public function testFromDonationReturnsSimpleWhenNotMembershipNorSubscription(): void
     {
-        $donation = $this->createMock(Donation::class);
+        $donation = $this->createStub(Donation::class);
         $donation->method('isMembership')->willReturn(false);
         $donation->method('isSubscription')->willReturn(false);
 

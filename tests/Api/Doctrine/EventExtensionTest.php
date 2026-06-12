@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -25,13 +25,13 @@ use Symfony\Bundle\SecurityBundle\Security;
 class EventExtensionTest extends TestCase
 {
     private EventExtension $extension;
-    private ScopeGeneratorResolver&MockObject $scopeResolver;
+    private ScopeGeneratorResolver&Stub $scopeResolver;
 
     protected function setUp(): void
     {
-        $this->scopeResolver = $this->createMock(ScopeGeneratorResolver::class);
-        $security = $this->createMock(Security::class);
-        $eventRepository = $this->createMock(EventRepository::class);
+        $this->scopeResolver = $this->createStub(ScopeGeneratorResolver::class);
+        $security = $this->createStub(Security::class);
+        $eventRepository = $this->createStub(EventRepository::class);
         $this->extension = new EventExtension($security, $this->scopeResolver, $eventRepository);
     }
 
@@ -109,7 +109,7 @@ class EventExtensionTest extends TestCase
 
     public function testPrivateContextWithZonesDelegatesToInZoneOfScopeFilter(): void
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getId')->willReturn(75);
 
         $scope = $this->createScope(
@@ -179,7 +179,7 @@ class EventExtensionTest extends TestCase
 
     private function createScope(array $committeeUuids, array $agoraUuids, array $zones, bool $isNational): Scope
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
 
         $scope = new Scope(
             $isNational ? 'national' : 'deputy',
@@ -209,9 +209,9 @@ class EventExtensionTest extends TestCase
         return $scope;
     }
 
-    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = []): QueryBuilder&MockObject
+    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = []): QueryBuilder&Stub
     {
-        $subQb = $this->createMock(QueryBuilder::class);
+        $subQb = $this->createStub(QueryBuilder::class);
         $subQb->method('select')->willReturnSelf();
         $subQb->method('from')->willReturnSelf();
         $subQb->method('innerJoin')->willReturnSelf();
@@ -220,13 +220,13 @@ class EventExtensionTest extends TestCase
         $subQb->method('andWhere')->willReturnSelf();
         $subQb->method('getDQL')->willReturn('SELECT 1 FROM Event e');
 
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createStub(EntityManager::class);
         $em->method('createQueryBuilder')->willReturn($subQb);
 
-        $expr = $this->createMock(Expr::class);
+        $expr = $this->createStub(Expr::class);
         $expr->method('exists')->willReturnCallback(fn (string $dql) => "EXISTS($dql)");
 
-        $qb = $this->createMock(QueryBuilder::class);
+        $qb = $this->createStub(QueryBuilder::class);
         $qb->method('getRootAliases')->willReturn(['e']);
         $qb->method('expr')->willReturn($expr);
         $qb->method('andWhere')->willReturnCallback(function (string $condition) use (&$andWhereCalls, $qb) {
@@ -248,7 +248,7 @@ class EventExtensionTest extends TestCase
     {
         $this->extension->applyToCollection(
             $qb,
-            $this->createMock(QueryNameGeneratorInterface::class),
+            $this->createStub(QueryNameGeneratorInterface::class),
             Event::class,
             null,
             [PrivatePublicContextBuilder::CONTEXT_KEY => PrivatePublicContextBuilder::CONTEXT_PRIVATE]

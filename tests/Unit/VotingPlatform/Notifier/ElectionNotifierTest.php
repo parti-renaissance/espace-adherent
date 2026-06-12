@@ -17,26 +17,25 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\ElectionNotifier;
 use Doctrine\ORM\EntityManagerInterface;
 use League\CommonMark\CommonMarkConverter;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[AllowMockObjectsWithoutExpectations]
 final class ElectionNotifierTest extends TestCase
 {
-    private MailerService&MockObject $mailer;
-    private UrlGeneratorInterface&MockObject $urlGenerator;
-    private EntityManagerInterface&MockObject $entityManager;
+    private (MailerService&MockObject)|(MailerService&Stub) $mailer;
+    private UrlGeneratorInterface&Stub $urlGenerator;
+    private (EntityManagerInterface&MockObject)|(EntityManagerInterface&Stub) $entityManager;
     private VoterRepository&MockObject $voterRepository;
     private AdherentRepository&MockObject $adherentRepository;
     private ElectionNotifier $notifier;
 
     protected function setUp(): void
     {
-        $this->mailer = $this->createMock(MailerService::class);
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->mailer = $this->createStub(MailerService::class);
+        $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->voterRepository = $this->createMock(VoterRepository::class);
         $this->adherentRepository = $this->createMock(AdherentRepository::class);
 
@@ -45,6 +44,11 @@ final class ElectionNotifierTest extends TestCase
             ->willReturn('http://localhost/elections/xxx')
         ;
 
+        $this->rebuildNotifier();
+    }
+
+    private function rebuildNotifier(): void
+    {
         $this->notifier = new ElectionNotifier(
             $this->mailer,
             $this->urlGenerator,
@@ -99,6 +103,10 @@ final class ElectionNotifierTest extends TestCase
             ->method('getAllInZones')
             ->willReturn([])
         ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
+        ;
         $this->adherentRepository
             ->expects(self::never())
             ->method('findRenaissanceAdherentsForElection')
@@ -121,6 +129,10 @@ final class ElectionNotifierTest extends TestCase
             ->expects(self::never())
             ->method('getAllInZones')
         ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
+        ;
 
         $this->notifier->notifyElectionVoteIsOpen($election);
     }
@@ -135,6 +147,10 @@ final class ElectionNotifierTest extends TestCase
             ->method('findAllForCongressCNElection')
             ->with(false, self::anything(), self::anything())
             ->willReturn([])
+        ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
         ;
         $this->adherentRepository
             ->expects(self::never())
@@ -196,7 +212,6 @@ final class ElectionNotifierTest extends TestCase
             ->expects(self::never())
             ->method('getAllInZonesAndNotVoted')
         ;
-
         $this->notifier->notifyVoteReminder($election, Designation::NOTIFICATION_VOTE_REMINDER_1D);
     }
 
@@ -227,6 +242,10 @@ final class ElectionNotifierTest extends TestCase
             ->method('getAllInZonesAndNotVoted')
             ->willReturn([])
         ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
+        ;
         $this->adherentRepository
             ->expects(self::never())
             ->method('findRenaissanceAdherentsForElection')
@@ -249,6 +268,10 @@ final class ElectionNotifierTest extends TestCase
             ->expects(self::never())
             ->method('getAllInZonesAndNotVoted')
         ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
+        ;
 
         $this->notifier->notifyVoteReminder($election, Designation::NOTIFICATION_VOTE_REMINDER_1D);
     }
@@ -256,10 +279,17 @@ final class ElectionNotifierTest extends TestCase
     public function testNotifyMarksNotificationAsSentAndFlushes(): void
     {
         $election = $this->buildElection(DesignationTypeEnum::CONSULTATION, withZone: false, notifyPotentialElectorate: true);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->rebuildNotifier();
 
         $this->adherentRepository
+            ->expects(self::atLeastOnce())
             ->method('findRenaissanceAdherentsForElection')
             ->willReturn([])
+        ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
         ;
         $this->entityManager
             ->expects(self::atLeastOnce())
@@ -279,11 +309,17 @@ final class ElectionNotifierTest extends TestCase
 
         $batch1 = [$this->buildAdherent('a@b.fr')];
         $batch2 = [$this->buildAdherent('c@d.fr')];
+        $this->mailer = $this->createMock(MailerService::class);
+        $this->rebuildNotifier();
 
         $this->adherentRepository
             ->expects(self::exactly(3))
             ->method('findRenaissanceAdherentsForElection')
             ->willReturnOnConsecutiveCalls($batch1, $batch2, [])
+        ;
+        $this->voterRepository
+            ->expects(self::never())
+            ->method('findForElection')
         ;
 
         $this->mailer

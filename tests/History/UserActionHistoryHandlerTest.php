@@ -10,6 +10,7 @@ use App\History\Command\UserActionHistoryCommand;
 use App\History\UserActionHistoryHandler;
 use App\History\UserActionHistoryTypeEnum;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\Envelope;
@@ -18,13 +19,13 @@ use Symfony\Component\Uid\Uuid;
 
 class UserActionHistoryHandlerTest extends TestCase
 {
-    private Security&MockObject $security;
+    private Security&Stub $security;
     private MessageBusInterface&MockObject $bus;
     private UserActionHistoryHandler $handler;
 
     protected function setUp(): void
     {
-        $this->security = $this->createMock(Security::class);
+        $this->security = $this->createStub(Security::class);
         $this->bus = $this->createMock(MessageBusInterface::class);
         $this->handler = new UserActionHistoryHandler($this->security, $this->bus);
     }
@@ -39,7 +40,7 @@ class UserActionHistoryHandlerTest extends TestCase
         $this->security->method('getUser')->willReturn($author);
         $this->security->method('getToken')->willReturn(null);
 
-        $delegatedAccess = $this->createMock(DelegatedAccess::class);
+        $delegatedAccess = $this->createStub(DelegatedAccess::class);
         $delegatedAccess->method('getDelegator')->willReturn($delegator);
         $delegatedAccess->method('getDelegated')->willReturn($delegated);
         $delegatedAccess->method('getType')->willReturn('president_departmental_assembly');
@@ -69,7 +70,7 @@ class UserActionHistoryHandlerTest extends TestCase
         $this->security->method('getUser')->willReturn(null);
         $this->security->method('getToken')->willReturn(null);
 
-        $delegatedAccess = $this->createMock(DelegatedAccess::class);
+        $delegatedAccess = $this->createStub(DelegatedAccess::class);
         $delegatedAccess->method('getDelegator')->willReturn($delegator);
         $delegatedAccess->method('getDelegated')->willReturn($delegated);
         $delegatedAccess->method('getType')->willReturn('correspondent');
@@ -139,7 +140,7 @@ class UserActionHistoryHandlerTest extends TestCase
 
     private function createAdherent(string $firstName, string $lastName): Adherent
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent->method('getFirstName')->willReturn($firstName);
         $adherent->method('getLastName')->willReturn($lastName);
         $adherent->method('getUuid')->willReturn(Uuid::v4());

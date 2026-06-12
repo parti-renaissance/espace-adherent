@@ -16,7 +16,7 @@ class PayboxPaymentUnsubscriptionTest extends AbstractKernelTestCase
 {
     public function testUnsubscribError(): void
     {
-        $donation = $this->createMock(Donation::class);
+        $donation = $this->createStub(Donation::class);
 
         $payboxPaymentUnsubscribtion = $this->createPayboxPaymentUnsubscriptionError();
 
@@ -39,11 +39,11 @@ class PayboxPaymentUnsubscriptionTest extends AbstractKernelTestCase
 
     private function createPayboxPaymentUnsubscriptionError(): PayboxPaymentUnsubscription
     {
-        $this->createConfiguredMock(Request::class, []);
+        $this->createConfiguredStub(Request::class, []);
 
         return new PayboxPaymentUnsubscription(
-            $this->createConfiguredMock(MailerService::class, []),
-            $this->createConfiguredMock(Request::class, [
+            $this->createConfiguredStub(MailerService::class, []),
+            $this->createConfiguredStub(Request::class, [
                 'cancel' => 'ACQ=NO&ERREUR=9&IDENTIFIANT=2&REFERENCE=refcmd1',
             ]),
         );
@@ -51,11 +51,11 @@ class PayboxPaymentUnsubscriptionTest extends AbstractKernelTestCase
 
     private function createPayboxPaymentUnsubscriptionSuccess(): PayboxPaymentUnsubscription
     {
-        $this->createConfiguredMock(Request::class, []);
+        $this->createConfiguredStub(Request::class, []);
 
         return new PayboxPaymentUnsubscription(
-            $this->createConfiguredMock(MailerService::class, []),
-            $this->createConfiguredMock(Request::class, ['cancel' => 'ACQ=OK&IDENTIFIANT=2&REFERENCE=refcmd1']),
+            $this->createConfiguredStub(MailerService::class, []),
+            $this->createConfiguredStub(Request::class, ['cancel' => 'ACQ=OK&IDENTIFIANT=2&REFERENCE=refcmd1']),
         );
     }
 }

@@ -16,7 +16,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
 {
     public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissionEnum::HOST, fn (self $_this) => $_this->createMock(Committee::class)];
+        yield [false, true, CommitteePermissionEnum::HOST, fn (self $_this) => $_this->createStub(Committee::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter

@@ -32,13 +32,13 @@ final class RequestBuilderTest extends TestCase
         $this->zoneRepository = $this->createMock(ZoneRepository::class);
 
         $this->requestBuilder = new RequestBuilder(
-            $this->createMock(MailchimpObjectIdMapping::class),
-            $this->createMock(ElectedRepresentativeTagsBuilder::class),
-            $this->createMock(ElectedRepresentativeAdherentMandateRepository::class),
-            $this->createMock(DonationRepository::class),
-            $this->createMock(TagTranslator::class),
+            $this->createStub(MailchimpObjectIdMapping::class),
+            $this->createStub(ElectedRepresentativeTagsBuilder::class),
+            $this->createStub(ElectedRepresentativeAdherentMandateRepository::class),
+            $this->createStub(DonationRepository::class),
+            $this->createStub(TagTranslator::class),
             $this->zoneRepository,
-            $this->createMock(TranslatorInterface::class),
+            $this->createStub(TranslatorInterface::class),
             $this->smsOptOutRepository,
         );
     }
@@ -54,6 +54,10 @@ final class RequestBuilderTest extends TestCase
             ->method('isOptedOut')
             ->with($formattedPhone)
             ->willReturn(true)
+        ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
         ;
 
         $this->requestBuilder
@@ -80,6 +84,10 @@ final class RequestBuilderTest extends TestCase
             ->with($formattedPhone)
             ->willReturn(false)
         ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder
             ->setPhone($phone)
@@ -103,6 +111,10 @@ final class RequestBuilderTest extends TestCase
             ->expects(self::never())
             ->method('isOptedOut')
         ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder
             ->setPhone($phone)
@@ -125,6 +137,10 @@ final class RequestBuilderTest extends TestCase
             ->expects(self::never())
             ->method('isOptedOut')
         ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder
             ->setPhone($phone)
@@ -146,6 +162,10 @@ final class RequestBuilderTest extends TestCase
             ->expects(self::never())
             ->method('isOptedOut')
         ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder->setEmailMarketingConsent(MarketingConsentStatusEnum::CONFIRMED);
 
@@ -163,6 +183,10 @@ final class RequestBuilderTest extends TestCase
             ->expects(self::never())
             ->method('isOptedOut')
         ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder
             ->setPhone(null)
@@ -177,6 +201,15 @@ final class RequestBuilderTest extends TestCase
     public function testBuildContactRequestAlwaysIncludesEmailChannel(): void
     {
         $email = 'test@example.com';
+
+        $this->smsOptOutRepository
+            ->expects(self::never())
+            ->method('isOptedOut')
+        ;
+        $this->zoneRepository
+            ->expects(self::never())
+            ->method('findByPostalCode')
+        ;
 
         $this->requestBuilder->setEmailMarketingConsent(MarketingConsentStatusEnum::DENIED);
 
@@ -194,6 +227,10 @@ final class RequestBuilderTest extends TestCase
             ->expects(self::never())
             ->method('findByPostalCode')
         ;
+        $this->smsOptOutRepository
+            ->expects(self::never())
+            ->method('isOptedOut')
+        ;
 
         $result = $this->requestBuilder->updateFromNationalEventInscription($this->createEventInscription(null));
 
@@ -207,6 +244,10 @@ final class RequestBuilderTest extends TestCase
             ->method('findByPostalCode')
             ->with('75001')
             ->willReturn([])
+        ;
+        $this->smsOptOutRepository
+            ->expects(self::never())
+            ->method('isOptedOut')
         ;
 
         $this->requestBuilder->updateFromNationalEventInscription($this->createEventInscription('75001'));

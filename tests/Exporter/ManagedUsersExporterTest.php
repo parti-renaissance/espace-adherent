@@ -18,6 +18,7 @@ use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\Exporter\ExporterInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -28,8 +29,8 @@ class ManagedUsersExporterTest extends TestCase
 {
     private ?MockObject $sonataExporter = null;
     private ?MockObject $repository = null;
-    private ?MockObject $tagTranslator = null;
-    private ?MockObject $translator = null;
+    private (TagTranslator&MockObject)|(TagTranslator&Stub)|null $tagTranslator = null;
+    private (TranslatorInterface&MockObject)|(TranslatorInterface&Stub)|null $translator = null;
     private ?MockObject $scopeGeneratorResolver = null;
     private ?ManagedUsersExporter $exporter = null;
 
@@ -39,10 +40,15 @@ class ManagedUsersExporterTest extends TestCase
 
         $this->sonataExporter = $this->createMock(ExporterInterface::class);
         $this->repository = $this->createMock(ManagedUserRepository::class);
-        $this->tagTranslator = $this->createMock(TagTranslator::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->tagTranslator = $this->createStub(TagTranslator::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
         $this->scopeGeneratorResolver = $this->createMock(ScopeGeneratorResolver::class);
 
+        $this->rebuildExporter();
+    }
+
+    private function rebuildExporter(): void
+    {
         $this->exporter = new ManagedUsersExporter(
             $this->sonataExporter,
             $this->repository,
@@ -115,6 +121,10 @@ class ManagedUsersExporterTest extends TestCase
             ->method('generate')
             ->willReturn(null)
         ;
+
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->tagTranslator = $this->createMock(TagTranslator::class);
+        $this->rebuildExporter();
 
         $this->translator
             ->expects($this->exactly(2))
@@ -662,7 +672,7 @@ class ManagedUsersExporterTest extends TestCase
 
     private function createFilter(): ManagedUsersFilter
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getId')->willReturn(1);
 
         return new ManagedUsersFilter(managedZones: [$zone]);

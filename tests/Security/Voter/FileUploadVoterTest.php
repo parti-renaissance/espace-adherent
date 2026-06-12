@@ -10,7 +10,6 @@ use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\FileUploadVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 {
@@ -30,7 +29,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new FileUploadVoter($this->createMock(ScopeGeneratorResolver::class));
+        return new FileUploadVoter($this->createStub(ScopeGeneratorResolver::class));
     }
 
     #[DataProvider('provideDocumentTypes')]
@@ -41,19 +40,12 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, FileUploadVoter::FILE_UPLOAD, $type);
     }
 
-    /**
-     * @return Adherent|MockObject
-     */
     private function getAdherentMock(?bool $isHost = null): Adherent
     {
-        $adherent = $this->createAdherentMock();
+        $adherent = $this->createStub(Adherent::class);
 
         if (null !== $isHost) {
-            $adherent
-                ->expects(self::any())
-                ->method('isHost')
-                ->willReturn($isHost)
-            ;
+            $adherent->method('isHost')->willReturn($isHost);
         }
 
         return $adherent;

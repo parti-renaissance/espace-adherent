@@ -45,7 +45,7 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                $this->createMock(Manager::class)
+                $this->createStub(Manager::class)
             ),
             $dispatcher,
         );
@@ -81,7 +81,7 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                $this->createMock(Manager::class)
+                $this->createStub(Manager::class)
             ),
             $dispatcher,
         );

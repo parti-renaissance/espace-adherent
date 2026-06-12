@@ -24,12 +24,12 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
 
     protected function getVoter(): VoterInterface
     {
-        $scopeRepository = $this->createConfiguredMock(ScopeRepository::class, ['findCodesGrantedForDataCorner' => [
+        $scopeRepository = $this->createConfiguredStub(ScopeRepository::class, ['findCodesGrantedForDataCorner' => [
             ScopeEnum::SENATOR,
             ScopeEnum::DEPUTY,
         ]]);
 
-        $this->scopeGeneratorMock = $this->createConfiguredMock(GeneralScopeGenerator::class, []);
+        $this->scopeGeneratorMock = $this->createStub(GeneralScopeGenerator::class);
 
         return new DataCornerVoter($scopeRepository, $this->scopeGeneratorMock);
     }
@@ -39,7 +39,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
     {
         $adherent = $this->getAdherentMock($isDeputy);
 
-        $this->scopeGeneratorMock->expects($this->once())
+        $this->scopeGeneratorMock
             ->method('generateScopes')
             ->willReturn(
                 $isDeputy ? [new Scope('deputy', 'Délégué de circonscription', 'Boss', [], [], [], $adherent)] : []
@@ -57,7 +57,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
 
     private function getAdherentMock(bool $isDeputy = false): Adherent
     {
-        $adherent = $this->createAdherentMock();
+        $adherent = $this->createStub(Adherent::class);
 
         $adherent
             ->method('isRenaissanceUser')

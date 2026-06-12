@@ -16,7 +16,7 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestC
         $event = $this->createEventMock('Grand Meeting de Paris', '2017-02-01 15:30:00', 'Palais des Congrés, Porte Maillot', '75001-75101', 'EM Paris');
         $event->method('getOrganizerName')->willReturn('Michelle');
 
-        $registration = $this->createMock(EventRegistration::class);
+        $registration = $this->createStub(EventRegistration::class);
         $registration->method('getEvent')->willReturn($event);
         $registration->method('getFirstName')->willReturn('John');
         $registration->method('getEmailAddress')->willReturn('john@bar.com');

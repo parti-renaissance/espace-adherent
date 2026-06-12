@@ -64,7 +64,7 @@ class DonationTest extends TestCase
             $type,
             10,
             $donatedAt ? \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTime(),
-            $this->createMock(PostAddress::class),
+            $this->createStub(PostAddress::class),
             '127.0.0.1',
             $duration,
             '10'

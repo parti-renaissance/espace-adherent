@@ -6,7 +6,10 @@
          bootstrap="tests/bootstrap.php"
          cacheDirectory="var/.phpunit.cache"
          failOnWarning="true"
-         failOnNotice="true">
+         failOnNotice="true"
+         failOnDeprecation="true"
+         failOnPhpunitDeprecation="true"
+         failOnPhpunitNotice="true">
   <php>
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="-1"/>
@@ -17,7 +20,7 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
-  <source restrictNotices="true" restrictWarnings="true">
+  <source restrictNotices="true" restrictWarnings="true" ignoreIndirectDeprecations="true">
     <include>
       <directory>src</directory>
       <directory>tests</directory>

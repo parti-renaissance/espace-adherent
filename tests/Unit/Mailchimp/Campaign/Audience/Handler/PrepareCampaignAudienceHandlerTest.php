@@ -71,10 +71,10 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $campaign->markAsReady();
         $campaign->markAsPendingSend();
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository = $this->createStub(AdherentRepository::class);
         $adherentRepository->method('findAdherentIdsForMessage')->willReturn([]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -128,10 +128,10 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository = $this->createStub(AdherentRepository::class);
         $adherentRepository->method('findAdherentIdsForMessage')->willReturn([]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -153,13 +153,13 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         // 1500 ids → ceil(1500/500) = 3 chunks
         $adherentIds = range(1, 1500);
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository = $this->createStub(AdherentRepository::class);
         $adherentRepository->method('findAdherentIdsForMessage')->willReturn($adherentIds);
 
         $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $memberRepository->expects(self::once())->method('deleteBySegmentId');
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
@@ -208,14 +208,14 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         $this->setEntityId($message, 100);
         $campaign = $this->buildCampaign($message, segmentId: 555);
 
-        $adherentRepository = $this->createMock(AdherentRepository::class);
+        $adherentRepository = $this->createStub(AdherentRepository::class);
         $adherentRepository->method('findAdherentIdsForMessage')->willReturn(range(1, 93));
 
         $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         // Local rows are cleared before the wipe (so the catch starts from a clean local state too).
         $memberRepository->expects(self::once())->method('deleteBySegmentId');
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
 
         $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
