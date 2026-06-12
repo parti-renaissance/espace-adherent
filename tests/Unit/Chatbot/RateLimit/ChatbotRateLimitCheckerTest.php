@@ -90,12 +90,50 @@ class ChatbotRateLimitCheckerTest extends TestCase
         }
     }
 
-    private function buildChecker(ChatbotUserTier $tier): ChatbotRateLimitChecker
+    public function testCadreIsUnlimitedOutsideProduction(): void
+    {
+        $checker = $this->buildChecker(ChatbotUserTier::Cadre, 'staging');
+        $adherent = $this->buildAdherent();
+
+        for ($i = 1; $i <= 60; ++$i) {
+            $checker->check($adherent, 'antiseche');
+        }
+
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testCadreRemainsLimitedInProduction(): void
+    {
+        $checker = $this->buildChecker(ChatbotUserTier::Cadre, 'production');
+        $adherent = $this->buildAdherent();
+
+        for ($i = 1; $i <= 3; ++$i) {
+            $checker->check($adherent, 'antiseche');
+        }
+
+        $this->expectException(ChatbotRateLimitExceededException::class);
+        $checker->check($adherent, 'antiseche');
+    }
+
+    public function testNonCadreRemainsLimitedOutsideProduction(): void
+    {
+        $checker = $this->buildChecker(ChatbotUserTier::Contact, 'staging');
+        $adherent = $this->buildAdherent();
+
+        for ($i = 1; $i <= 3; ++$i) {
+            $checker->check($adherent, 'antiseche');
+        }
+
+        $this->expectException(ChatbotRateLimitExceededException::class);
+        $checker->check($adherent, 'antiseche');
+    }
+
+    private function buildChecker(ChatbotUserTier $tier, string $appEnvironment = 'production'): ChatbotRateLimitChecker
     {
         $resolver = $this->createStub(ChatbotTierResolver::class);
         $resolver->method('resolve')->willReturn($tier);
 
-        return new ChatbotRateLimitChecker($resolver, $this->cache);
+        return new ChatbotRateLimitChecker($resolver, $this->cache, $appEnvironment);
     }
 
     private function buildAdherent(): Adherent

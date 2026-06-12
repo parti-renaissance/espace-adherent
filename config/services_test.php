@@ -30,6 +30,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->alias(Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader::class, 'doctrine.fixtures.loader');
 
+    $services->set(App\Chatbot\RateLimit\ChatbotRateLimitChecker::class)
+        ->arg('$appEnvironment', 'production');
+
     $services->set(League\Glide\Server::class)
         ->factory([
             League\Glide\ServerFactory::class,
