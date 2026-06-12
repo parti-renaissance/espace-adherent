@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Rows are written via raw DBAL (TimelineFeedWriter) and only ever hydrated by Doctrine on read.
  */
 #[ORM\Entity(repositoryClass: TimelineFeedRepository::class)]
+#[ORM\Index(columns: ['publication_date'])]
 class TimelineFeed
 {
     use EntityIdentityTrait;

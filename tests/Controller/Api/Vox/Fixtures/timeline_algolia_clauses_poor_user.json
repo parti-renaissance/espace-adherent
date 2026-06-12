@@ -1,0 +1,41 @@
+{
+    "filters": [
+        "(is_national:true OR adherent_ids:96 OR type:publication OR zone_codes:department_77 OR zone_codes:city_77288)",
+        "(NOT type:publication OR audience.tag:false OR audience.include:\"tag:sympathisant\" OR audience.include:\"tag:sympathisant:compte_em\")",
+        "NOT audience.exclude:\"tag:sympathisant\"",
+        "NOT audience.exclude:\"tag:sympathisant:compte_em\"",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:borough:none\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:canton:none\" OR audience.include:\"zone:canton:7711\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:city:none\" OR audience.include:\"zone:city:77288\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:department:none\" OR audience.include:\"zone:department:77\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:region:none\" OR audience.include:\"zone:region:11\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:country:none\" OR audience.include:\"zone:country:FR\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:district:none\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:foreign_district:none\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:custom:none\")",
+        "(audience.age_min = 0 OR audience.age_min <= 84)",
+        "(audience.age_max = 0 OR audience.age_max >= 84)",
+        "(NOT type:publication OR audience.civility:false OR audience.include:\"gender:male\")",
+        "(NOT type:publication OR audience.committee_member:2 OR audience.committee_member:0)",
+        "(NOT type:publication OR audience.committee:false)",
+        "(NOT type:publication OR audience.mandate_type:false)",
+        "(NOT type:publication OR audience.declared_mandate:false)",
+        "(audience.first_membership_since = 0 OR audience.first_membership_since <= 1781265087)",
+        "(audience.first_membership_before = 0 OR audience.first_membership_before >= 1781265087)",
+        "(audience.last_membership_since = 0 OR audience.last_membership_since <= 1781265087)",
+        "(audience.last_membership_before = 0 OR audience.last_membership_before >= 1781265087)",
+        "(audience.registered_since = 0 OR audience.registered_since <= 1485369105)",
+        "(audience.registered_before = 0 OR audience.registered_before >= 1485369105)",
+        "(NOT type:publication OR audience.scope_targets:false OR audience.include:\"scope_targets:president_departmental_assembly\" OR audience.include:\"scope_targets:procurations_manager\" OR audience.include:\"scope_targets:municipal_pilot\" OR audience.include:\"scope_targets:fde_coordinator\" OR audience.include:\"scope_targets:national_tech_division\")"
+    ],
+    "tagFilters": [
+        [
+            "news",
+            "event",
+            "action",
+            "publication",
+            "transactional_message",
+            "social_network_post"
+        ]
+    ]
+}

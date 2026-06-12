@@ -43,6 +43,40 @@ class TimelineFeedRepository extends ServiceEntityRepository
     }
 
     /**
+     * One keyset page of candidate rows for the local audience filtering, newest first.
+     * Array hydration on purpose: up to the finder scan cap rows may flow through per request — no
+     * partial entities in the UnitOfWork, and the heavy `display` payload is not selected.
+     *
+     * @param string[] $types
+     *
+     * @return list<array{uuid: string, type: string, audience: ?array, publicationDate: \DateTimeImmutable, id: int}>
+     */
+    public function findCandidateChunk(array $types, ?\DateTimeImmutable $beforeDate, ?int $beforeId, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('tf')
+            ->select('tf.uuid', 'tf.type', 'tf.audience', 'tf.publicationDate', 'tf.id')
+            ->andWhere('tf.type IN (:types)')
+            ->andWhere('tf.uuid NOT IN (SELECT h.uuid FROM '.TimelineHiddenFeed::class.' h)')
+            ->orderBy('tf.publicationDate', 'DESC')
+            ->addOrderBy('tf.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setParameter('types', $types);
+
+        if (null !== $beforeDate && null !== $beforeId) {
+            $qb
+                ->andWhere('tf.publicationDate < :beforeDate OR (tf.publicationDate = :beforeDate AND tf.id < :beforeId)')
+                ->setParameter('beforeDate', $beforeDate)
+                ->setParameter('beforeId', $beforeId);
+        }
+
+        return array_map(static function (array $row): array {
+            $row['uuid'] = (string) $row['uuid'];
+
+            return $row;
+        }, $qb->getQuery()->getArrayResult());
+    }
+
+    /**
      * One mirror row by source UUID, or null if absent OR hidden — the read-side hide guard for the push.
      */
     public function findOnePublishableByUuid(Uuid $uuid): ?TimelineFeed

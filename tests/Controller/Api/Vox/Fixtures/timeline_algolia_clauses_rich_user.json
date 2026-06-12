@@ -1,0 +1,42 @@
+{
+    "filters": [
+        "(is_national:true OR adherent_ids:106 OR type:publication OR zone_codes:department_75 OR zone_codes:city_75056)",
+        "(NOT type:publication OR audience.tag:false OR audience.include:\"tag:adherent\" OR audience.include:\"tag:adherent:a_jour_2026\" OR audience.include:\"tag:adherent:a_jour_2026:recotisation\")",
+        "NOT audience.exclude:\"tag:adherent\"",
+        "NOT audience.exclude:\"tag:adherent:a_jour_2026\"",
+        "NOT audience.exclude:\"tag:adherent:a_jour_2026:recotisation\"",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:borough:none\" OR audience.include:\"zone:borough:75108\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:canton:none\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:city:none\" OR audience.include:\"zone:city:75056\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:department:none\" OR audience.include:\"zone:department:75\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:region:none\" OR audience.include:\"zone:region:11\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:country:none\" OR audience.include:\"zone:country:FR\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:district:none\" OR audience.include:\"zone:district:75-1\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:foreign_district:none\")",
+        "(NOT type:publication OR audience.zone:false OR audience.include:\"zone:custom:none\")",
+        "(audience.age_min = 0 OR audience.age_min <= 73)",
+        "(audience.age_max = 0 OR audience.age_max >= 73)",
+        "(NOT type:publication OR audience.civility:false OR audience.include:\"gender:male\")",
+        "(NOT type:publication OR audience.committee_member:2 OR audience.committee_member:1)",
+        "(NOT type:publication OR audience.committee:false OR audience.include:\"committee:515a56c0-bde8-56ef-b90c-4745b1c93818\")",
+        "(NOT type:publication OR audience.mandate_type:false)",
+        "(NOT type:publication OR audience.declared_mandate:false)",
+        "(audience.first_membership_since = 0 OR audience.first_membership_since <= 1672565400)",
+        "(audience.first_membership_before = 0 OR audience.first_membership_before >= 1672565400)",
+        "(audience.last_membership_since = 0 OR audience.last_membership_since <= 1767259800)",
+        "(audience.last_membership_before = 0 OR audience.last_membership_before >= 1767259800)",
+        "(audience.registered_since = 0 OR audience.registered_since <= 1483429674)",
+        "(audience.registered_before = 0 OR audience.registered_before >= 1483429674)",
+        "(NOT type:publication OR audience.scope_targets:false OR audience.include:\"scope_targets:agora_president\" OR audience.include:\"scope_targets:agora_general_secretary\" OR audience.include:\"scope_targets:president_departmental_assembly:mobilization_manager\" OR audience.include:\"scope_targets:president_departmental_assembly:*\")"
+    ],
+    "tagFilters": [
+        [
+            "news",
+            "event",
+            "action",
+            "publication",
+            "transactional_message",
+            "social_network_post"
+        ]
+    ]
+}
