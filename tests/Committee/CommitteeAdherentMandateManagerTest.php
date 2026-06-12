@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\App\Committee;
 
 use App\Committee\CommitteeAdherentMandateManager;
-use App\Committee\CommitteeManager;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
@@ -21,7 +20,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Tests\App\AbstractKernelTestCase;
@@ -29,50 +27,6 @@ use Tests\App\AbstractKernelTestCase;
 #[Group('committee')]
 class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 {
-    /** @var MockObject|EntityManagerInterface */
-    private $entityManager;
-    /** @var MockObject|CommitteeAdherentMandateRepository */
-    private $mandateRepository;
-    /** @var MockObject|ElectedRepresentativeRepository */
-    private $electedRepresentativeRepository;
-    /** @var MockObject|TranslatorInterface */
-    private $translator;
-    /** @var MockObject|CommitteeAdherentMandateManager */
-    private $mandateManager;
-    /** @var MockObject|CommitteeManager */
-    private $committeeManager;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
-        $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
-        $this->committeeManager = $this->createMock(CommitteeMembershipManager::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
-
-        $this->mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->committeeManager,
-            $this->translator
-        );
-    }
-
-    protected function tearDown(): void
-    {
-        $this->entityManager = null;
-        $this->mandateRepository = null;
-        $this->electedRepresentativeRepository = null;
-        $this->translator = null;
-        $this->mandateManager = null;
-        $this->committeeManager = null;
-
-        parent::tearDown();
-    }
-
     public function testCannotCreateMandateIfIncorrectGender(): void
     {
         $this->expectException(CommitteeAdherentMandateException::class);
@@ -80,13 +34,14 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent(Genders::OTHER);
         $committee = $this->createCommittee();
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.not_valid_gender', $this->anything())
         ;
 
-        $this->mandateManager->createMandate($adherent, $committee);
+        $this->createManager(translator: $translator)->createMandate($adherent, $committee);
     }
 
     public function testCannotCreateMandateIfAdherentHasActiveMandate(): void
@@ -109,19 +64,23 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         );
         $mandate->setCommittee($this->createCommittee());
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.adherent_with_active_mandate', $this->anything())
         ;
-        $this->mandateRepository
+        $mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
+        $mandateRepository
             ->expects($this->once())
             ->method('findActiveMandate')
             ->with($adherent, $committee)
             ->willReturn($activeMandate)
         ;
 
-        $this->mandateManager->createMandate($adherent, $committee);
+        $this->createManager(mandateRepository: $mandateRepository, translator: $translator)
+            ->createMandate($adherent, $committee)
+        ;
     }
 
     #[DataProvider('provideGenders')]
@@ -135,13 +94,14 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $mandate->setCommittee($committee);
         $committee->addAdherentMandate($mandate);
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.committee_has_already_active_mandate', $this->anything())
         ;
 
-        $this->mandateManager->createMandate($adherent, $committee);
+        $this->createManager(translator: $translator)->createMandate($adherent, $committee);
     }
 
     #[DataProvider('provideGenders')]
@@ -150,14 +110,15 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
 
-        $this->entityManager
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
             ->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(CommitteeAdherentMandate::class))
         ;
-        $this->entityManager->expects($this->once())->method('flush');
+        $entityManager->expects($this->once())->method('flush');
 
-        $this->mandateManager->createMandate($adherent, $committee);
+        $this->createManager(entityManager: $entityManager)->createMandate($adherent, $committee);
 
         $this->assertCount(1, $committee->getAdherentMandates());
         $this->assertInstanceOf(CommitteeAdherentMandate::class, $committee->getAdherentMandates()->first());
@@ -170,14 +131,15 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
 
-        $this->mandateRepository
+        $mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
+        $mandateRepository
             ->expects($this->once())
             ->method('findActiveMandateFor')
             ->with($adherent, $committee)
             ->willReturn(null)
         ;
 
-        $this->mandateManager->endMandate($adherent, $committee);
+        $this->createManager(mandateRepository: $mandateRepository)->endMandate($adherent, $committee);
     }
 
     #[DataProvider('provideGenders')]
@@ -190,14 +152,15 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 
         $this->assertNull($mandate->getFinishAt());
 
-        $this->mandateRepository
+        $mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
+        $mandateRepository
             ->expects($this->once())
             ->method('findActiveMandateFor')
             ->with($adherent, $committee)
             ->willReturn($mandate)
         ;
 
-        $this->mandateManager->endMandate($adherent, $committee);
+        $this->createManager(mandateRepository: $mandateRepository)->endMandate($adherent, $committee);
 
         $this->assertNotNull($mandate->getFinishAt());
     }
@@ -208,13 +171,16 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 
         $adherent = $this->createNewAdherent(Genders::MALE);
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.inappropriate_gender')
         ;
 
-        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::FEMALE);
+        $this->createManager(translator: $translator)
+            ->checkAdherentForMandateReplacement($adherent, Genders::FEMALE)
+        ;
     }
 
     public function testCheckAdherentForMandateReplacementFailsIfAdherentMinor(): void
@@ -223,13 +189,16 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 
         $adherent = $this->createNewAdherent(Genders::MALE, new \DateTime()->modify('-17 years')->format('Y-m-d'));
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.adherent.not_valid')
         ;
 
-        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::MALE);
+        $this->createManager(translator: $translator)
+            ->checkAdherentForMandateReplacement($adherent, Genders::MALE)
+        ;
     }
 
     public function testCheckAdherentForMandateReplacementFailsIfAdherentHasActiveParliamentaryMandate(): void
@@ -238,19 +207,24 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 
         $adherent = $this->createNewAdherent(Genders::MALE);
 
-        $this->electedRepresentativeRepository
+        $electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
+        $electedRepresentativeRepository
             ->expects($this->once())
             ->method('hasActiveParliamentaryMandate')
             ->with($adherent)
             ->willReturn(true)
         ;
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->once())
             ->method('trans')
             ->with('adherent_mandate.committee.adherent.not_valid')
         ;
 
-        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::MALE);
+        $this->createManager(
+            electedRepresentativeRepository: $electedRepresentativeRepository,
+            translator: $translator,
+        )->checkAdherentForMandateReplacement($adherent, Genders::MALE);
     }
 
     public function testCanReplaceMandate(): void
@@ -263,26 +237,33 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $command->setAdherent($adherent);
         $command->setProvisional(false);
 
-        $this->translator
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator
             ->expects($this->never())
             ->method('trans')
         ;
-        $this->committeeManager
+        $committeeManager = $this->createMock(CommitteeMembershipManager::class);
+        $committeeManager
             ->expects($this->once())
             ->method('followCommittee')
             ->with($adherent, $committee)
         ;
-        $this->entityManager
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
             ->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(CommitteeAdherentMandate::class))
         ;
-        $this->entityManager
+        $entityManager
             ->expects($this->once())
             ->method('flush')
         ;
 
-        $this->mandateManager->replaceMandate($mandate, $command);
+        $this->createManager(
+            entityManager: $entityManager,
+            committeeManager: $committeeManager,
+            translator: $translator,
+        )->replaceMandate($mandate, $command);
 
         $this->assertNotNull($mandate->getFinishAt());
         $this->assertSame(AdherentMandateInterface::REASON_REPLACED, $mandate->getReason());
@@ -298,22 +279,27 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $mandateCommand->setQuality($quality = CommitteeMandateQualityEnum::SUPERVISOR);
         $mandateCommand->setProvisional($isProvisional = true);
 
-        $this->committeeManager
+        $committeeManager = $this->createMock(CommitteeMembershipManager::class);
+        $committeeManager
             ->expects($this->once())
             ->method('followCommittee')
             ->with($adherent, $committee)
         ;
-        $this->entityManager
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
             ->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(CommitteeAdherentMandate::class))
         ;
-        $this->entityManager
+        $entityManager
             ->expects($this->once())
             ->method('flush')
         ;
 
-        $mandate = $this->mandateManager->createMandateFromCommand($mandateCommand);
+        $mandate = $this->createManager(
+            entityManager: $entityManager,
+            committeeManager: $committeeManager,
+        )->createMandateFromCommand($mandateCommand);
 
         $this->assertSame($committee, $mandate->getCommittee());
         $this->assertSame($adherent, $mandate->getAdherent());
@@ -323,6 +309,22 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertSame(new \DateTime()->format('Y/m/d'), $mandate->getBeginAt()->format('Y/m/d'));
         $this->assertNull($mandate->getFinishAt());
         $this->assertNull($mandate->getReason());
+    }
+
+    private function createManager(
+        ?EntityManagerInterface $entityManager = null,
+        ?CommitteeAdherentMandateRepository $mandateRepository = null,
+        ?ElectedRepresentativeRepository $electedRepresentativeRepository = null,
+        ?CommitteeMembershipManager $committeeManager = null,
+        ?TranslatorInterface $translator = null,
+    ): CommitteeAdherentMandateManager {
+        return new CommitteeAdherentMandateManager(
+            $entityManager ?? $this->createStub(EntityManagerInterface::class),
+            $mandateRepository ?? $this->createStub(CommitteeAdherentMandateRepository::class),
+            $electedRepresentativeRepository ?? $this->createStub(ElectedRepresentativeRepository::class),
+            $committeeManager ?? $this->createStub(CommitteeMembershipManager::class),
+            $translator ?? $this->createStub(TranslatorInterface::class),
+        );
     }
 
     private function createNewAdherent(string $gender = Genders::MALE, ?string $birthday = null): Adherent

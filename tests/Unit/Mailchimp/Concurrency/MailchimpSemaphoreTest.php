@@ -159,7 +159,12 @@ final class MailchimpSemaphoreTest extends TestCase
     public function testLowPriorityNeverPicksReservedSlots(): void
     {
         $lock = $this->createMock(SharedLockInterface::class);
-        $lock->method('acquire')->with(false)->willReturn(true);
+        $lock
+            ->expects(self::exactly(50))
+            ->method('acquire')
+            ->with(false)
+            ->willReturn(true)
+        ;
 
         $pickedKeys = [];
         $lockFactory = $this->createMock(LockFactory::class);
@@ -196,9 +201,14 @@ final class MailchimpSemaphoreTest extends TestCase
         }
 
         $lock = $this->createMock(SharedLockInterface::class);
-        $lock->method('acquire')->with(false)->willReturn(true);
+        $lock
+            ->expects(self::exactly(200))
+            ->method('acquire')
+            ->with(false)
+            ->willReturn(true)
+        ;
 
-        $lockFactory = $this->createMock(LockFactory::class);
+        $lockFactory = $this->createStub(LockFactory::class);
         $lockFactory
             ->method('createLock')
             ->willReturnCallback(function (string $key) use (&$allReachableSlots, $lock): SharedLockInterface {

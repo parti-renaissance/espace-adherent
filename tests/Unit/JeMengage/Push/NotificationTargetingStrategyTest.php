@@ -42,7 +42,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     public function testActionCreatedScopesZone(): void
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getCode')->willReturn('92');
 
         $action = $this->mockAction(assemblyZone: $zone);
@@ -74,7 +74,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     public function testNationalEventTicketScopesMeeting(): void
     {
-        $event = $this->createMock(NationalEvent::class);
+        $event = $this->createStub(NationalEvent::class);
         $event->method('getId')->willReturn(1);
 
         self::assertSame('meeting:1', NationalEventTicketNotification::create($event)->getScope());
@@ -82,7 +82,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     public function testPrivateMessageScopesPrivateMessage(): void
     {
-        $pm = $this->createMock(TimelineItemPrivateMessage::class);
+        $pm = $this->createStub(TimelineItemPrivateMessage::class);
         $pm->notificationTitle = 'Title';
         $pm->notificationDescription = 'Body';
         $pm->method('getId')->willReturn(1);
@@ -92,7 +92,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     public function testAdherentMessageScopesPublication(): void
     {
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $message->method('getFromName')->willReturn('Sender');
         $message->method('getSubject')->willReturn('Subject');
         $message->method('getId')->willReturn(1);
@@ -141,7 +141,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     public function testNewsCreatedLocalScopesZone(): void
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getCode')->willReturn('92');
         $zone->method('getAssemblyZone')->willReturn($zone);
 
@@ -155,7 +155,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     private function mockEvent(bool $isNational = false, bool $hasCommittee = false, bool $hasZone = false): Event
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
         $event->method('getName')->willReturn('Test Event');
         $event->method('getBeginAt')->willReturn(new \DateTime('+1 day'));
         $event->method('getInlineFormattedAddress')->willReturn('Paris');
@@ -163,14 +163,14 @@ final class NotificationTargetingStrategyTest extends TestCase
         $event->method('getId')->willReturn(1);
         $committee = null;
         if ($hasCommittee) {
-            $committee = $this->createMock(Committee::class);
+            $committee = $this->createStub(Committee::class);
             $committee->method('getId')->willReturn(1);
             $committee->method('getName')->willReturn('Test Committee');
         }
         $event->method('getCommittee')->willReturn($committee);
 
         if ($hasZone) {
-            $zone = $this->createMock(Zone::class);
+            $zone = $this->createStub(Zone::class);
             $zone->method('getName')->willReturn('Hauts-de-Seine');
             $zone->method('getCode')->willReturn('92');
             $event->method('getAssemblyZone')->willReturn($zone);
@@ -183,7 +183,7 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     private function mockAction(?Zone $assemblyZone = null): Action
     {
-        $action = $this->createMock(Action::class);
+        $action = $this->createStub(Action::class);
         $action->type = 'pap';
         $action->date = new \DateTime('+1 day');
         $action->method('getCityName')->willReturn('Clichy');
@@ -198,13 +198,13 @@ final class NotificationTargetingStrategyTest extends TestCase
 
     private function mockNews(bool $isNational = false, bool $hasCommittee = false): News
     {
-        $news = $this->createMock(News::class);
+        $news = $this->createStub(News::class);
         $news->method('getTitle')->willReturn('Test News');
         $news->method('getCleanedCroppedText')->willReturn('Test content');
         $news->method('isNational')->willReturn($isNational);
         $committee = null;
         if ($hasCommittee) {
-            $committee = $this->createMock(Committee::class);
+            $committee = $this->createStub(Committee::class);
             $committee->method('getId')->willReturn(1);
         }
         $news->method('getCommittee')->willReturn($committee);

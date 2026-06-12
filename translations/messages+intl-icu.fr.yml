@@ -1222,7 +1222,7 @@ scope.feature.ripostes: Ripostes
 scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
 scope.feature.procurations: Procurations
-scope.feature.pap_v2: Porte-à-porte V2
+scope.feature.pap_user: PAP
 scope.feature.news: Notifications
 scope.feature.phoning_campaign: Phoning
 scope.feature.survey: Questionnaires

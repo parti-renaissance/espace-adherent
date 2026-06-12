@@ -52,17 +52,11 @@ class CallbackManagerTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->clientRepository = $this->createMock(ClientRepository::class);
-        $this->clientRepository
-            ->method('findOneByUuid')
-            ->willReturnCallback(function (Uuid $uuid) {
-                return self::KNOWN_CLIENT_UUID === $uuid->toRfc4122() ? $this->createClient() : null;
-            })
-        ;
 
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
 
         $this->request = new Request();
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         $requestStack
             ->method('getMainRequest')
             ->willReturnCallback(function () {
@@ -88,6 +82,7 @@ class CallbackManagerTest extends TestCase
     {
         $this->request->query->set('redirect_uri', $redirectUri = 'https://enmarche.fr');
         $this->request->query->set('client_id', $clientId = self::KNOWN_CLIENT_UUID);
+        $this->configureClientRepositoryLookup();
 
         $this->urlGenerator->expects($this->once())
             ->method('generate')
@@ -107,6 +102,11 @@ class CallbackManagerTest extends TestCase
     ): void {
         $this->request->query->set('redirect_uri', $redirectUri);
         $this->request->query->set('client_id', $clientId);
+        if ('ansuite"*«»-' === $clientId) {
+            $this->clientRepository->expects($this->never())->method('findOneByUuid');
+        } else {
+            $this->configureClientRepositoryLookup();
+        }
 
         $this->urlGenerator->expects($this->exactly(1))
             ->method('generate')
@@ -137,6 +137,7 @@ class CallbackManagerTest extends TestCase
         ;
 
         $this->clientRepository->expects($this->never())->method($this->anything());
+        $this->logger->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
     }
@@ -152,6 +153,7 @@ class CallbackManagerTest extends TestCase
         ;
 
         $this->clientRepository->expects($this->never())->method($this->anything());
+        $this->logger->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
     }
@@ -167,8 +169,20 @@ class CallbackManagerTest extends TestCase
         ;
 
         $this->clientRepository->expects($this->never())->method($this->anything());
+        $this->logger->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
+    }
+
+    private function configureClientRepositoryLookup(): void
+    {
+        $this->clientRepository
+            ->expects($this->once())
+            ->method('findOneByUuid')
+            ->willReturnCallback(function (Uuid $uuid) {
+                return self::KNOWN_CLIENT_UUID === $uuid->toRfc4122() ? $this->createClient() : null;
+            })
+        ;
     }
 
     private function createClient(): Client

@@ -10,7 +10,7 @@ use App\Entity\Action\Action;
 use App\Entity\Event\Event;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]
@@ -66,7 +66,7 @@ class BoundingBoxFilterTest extends TestCase
 
         $this->filter->apply(
             $qb,
-            $this->createMock(QueryNameGeneratorInterface::class),
+            $this->createStub(QueryNameGeneratorInterface::class),
             Action::class,
             null,
             ['filters' => [BoundingBoxFilter::PROPERTY_NAME => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
@@ -114,7 +114,7 @@ class BoundingBoxFilterTest extends TestCase
 
         $this->filter->apply(
             $qb,
-            $this->createMock(QueryNameGeneratorInterface::class),
+            $this->createStub(QueryNameGeneratorInterface::class),
             Event::class,
             null,
             ['filters' => ['somethingElse' => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
@@ -130,7 +130,7 @@ class BoundingBoxFilterTest extends TestCase
 
         $this->filter->apply(
             $qb,
-            $this->createMock(QueryNameGeneratorInterface::class),
+            $this->createStub(QueryNameGeneratorInterface::class),
             \stdClass::class,
             null,
             ['filters' => [BoundingBoxFilter::PROPERTY_NAME => ['ne' => ['lat' => '49.5', 'lng' => '3.25'], 'sw' => ['lat' => '48.0', 'lng' => '2.0']]]]
@@ -165,16 +165,16 @@ class BoundingBoxFilterTest extends TestCase
     {
         $this->filter->apply(
             $queryBuilder,
-            $this->createMock(QueryNameGeneratorInterface::class),
+            $this->createStub(QueryNameGeneratorInterface::class),
             Event::class,
             null,
             ['filters' => [BoundingBoxFilter::PROPERTY_NAME => $value]]
         );
     }
 
-    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = [], string $alias = 'e'): QueryBuilder&MockObject
+    private function createQueryBuilderMock(array &$andWhereCalls = [], array &$setParameterCalls = [], string $alias = 'e'): QueryBuilder&Stub
     {
-        $qb = $this->createMock(QueryBuilder::class);
+        $qb = $this->createStub(QueryBuilder::class);
         $qb->method('getRootAliases')->willReturn([$alias]);
         $qb->method('andWhere')->willReturnCallback(function (string $condition) use (&$andWhereCalls, $qb) {
             $andWhereCalls[] = $condition;

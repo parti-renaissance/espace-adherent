@@ -15,6 +15,7 @@ use App\JeMengage\Push\TokenProviderResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -24,7 +25,7 @@ final class SendNotificationHandlerTest extends TestCase
 {
     private EntityManagerInterface&MockObject $entityManager;
     private NotificationFactory&MockObject $notificationFactory;
-    private TokenProviderResolver&MockObject $tokenProviderResolver;
+    private TokenProviderResolver&Stub $tokenProviderResolver;
     private MessageBusInterface&MockObject $bus;
     private SendNotificationHandler $handler;
 
@@ -32,7 +33,7 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->notificationFactory = $this->createMock(NotificationFactory::class);
-        $this->tokenProviderResolver = $this->createMock(TokenProviderResolver::class);
+        $this->tokenProviderResolver = $this->createStub(TokenProviderResolver::class);
         $this->bus = $this->createMock(MessageBusInterface::class);
 
         $this->handler = new SendNotificationHandler(
@@ -47,7 +48,7 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $command = $this->createCommand();
         $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+        $object->method('isNotificationEnabled')->willReturn(true);
 
         $notification = $this->mockNotification($object, $command);
         $this->mockResolverTokens($notification, $object, $command, array_map(
@@ -71,7 +72,7 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $command = $this->createCommand();
         $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+        $object->method('isNotificationEnabled')->willReturn(true);
 
         $notification = $this->mockNotification($object, $command);
         $this->mockResolverTokens($notification, $object, $command, ['token-a', 'token-b']);
@@ -103,14 +104,18 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $command = $this->createCommand();
         $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+        $object->method('isNotificationEnabled')->willReturn(true);
 
         $notification = $this->mockNotification($object, $command);
         $this->mockResolverTokens($notification, $object, $command, ['token-1']);
 
-        $this->bus->method('dispatch')->willReturnCallback(function (SendPushChunkCommand $cmd): Envelope {
-            return new Envelope($cmd);
-        });
+        $this->bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->willReturnCallback(function (SendPushChunkCommand $cmd): Envelope {
+                return new Envelope($cmd);
+            })
+        ;
 
         $this->entityManager
             ->expects(self::once())
@@ -124,8 +129,8 @@ final class SendNotificationHandlerTest extends TestCase
     public function testInvokeWithNoTokensDoesNotDispatch(): void
     {
         $command = $this->createCommand();
-        $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+        $object = $this->mockObjectFound($command, observed: true);
+        $object->method('isNotificationEnabled')->willReturn(true);
 
         $notification = $this->mockNotification($object, $command);
         $this->mockResolverTokens($notification, $object, $command, []);
@@ -140,7 +145,7 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $command = $this->createCommand();
         $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(false);
+        $object->method('isNotificationEnabled')->willReturn(false);
 
         $this->notificationFactory->expects(self::never())->method('create');
         $this->bus->expects(self::never())->method('dispatch');
@@ -152,9 +157,13 @@ final class SendNotificationHandlerTest extends TestCase
     {
         $command = $this->createCommand();
 
-        $repository = $this->createMock(EntityRepository::class);
-        $repository->method('findOneBy')->with(['uuid' => $command->getUuid()])->willReturn(null);
-        $this->entityManager->method('getRepository')->with($command->getClass())->willReturn($repository);
+        $repository = $this->createStub(EntityRepository::class);
+        $repository->method('findOneBy')->willReturn(null);
+        $this->entityManager
+            ->expects(self::once())
+            ->method('getRepository')
+            ->willReturn($repository)
+        ;
 
         $this->notificationFactory->expects(self::never())->method('create');
         $this->bus->expects(self::never())->method('dispatch');
@@ -165,15 +174,19 @@ final class SendNotificationHandlerTest extends TestCase
     public function testInvokeCallsHandleNotificationSent(): void
     {
         $command = $this->createCommand();
-        $object = $this->mockObjectFound($command);
-        $object->method('isNotificationEnabled')->with($command)->willReturn(true);
+        $object = $this->mockObjectFound($command, observed: true);
+        $object->method('isNotificationEnabled')->willReturn(true);
 
         $notification = $this->mockNotification($object, $command);
         $this->mockResolverTokens($notification, $object, $command, ['token-1']);
 
-        $this->bus->method('dispatch')->willReturnCallback(function (SendPushChunkCommand $cmd): Envelope {
-            return new Envelope($cmd);
-        });
+        $this->bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->willReturnCallback(function (SendPushChunkCommand $cmd): Envelope {
+                return new Envelope($cmd);
+            })
+        ;
 
         $object
             ->expects(self::once())
@@ -186,26 +199,32 @@ final class SendNotificationHandlerTest extends TestCase
         ($this->handler)($command);
     }
 
-    private function createCommand(): SendNotificationCommandInterface&MockObject
+    private function createCommand(): SendNotificationCommandInterface&Stub
     {
-        $command = $this->createMock(SendNotificationCommandInterface::class);
+        $command = $this->createStub(SendNotificationCommandInterface::class);
         $command->method('getUuid')->willReturn(Uuid::v4());
         $command->method('getClass')->willReturn('App\Entity\Event\Event');
 
         return $command;
     }
 
-    private function mockObjectFound(SendNotificationCommandInterface&MockObject $command): NotificationObjectInterface&MockObject
+    private function mockObjectFound(SendNotificationCommandInterface $command, bool $observed = false): NotificationObjectInterface
     {
-        $object = $this->createMock(NotificationObjectInterface::class);
-        $repository = $this->createMock(EntityRepository::class);
-        $repository->method('findOneBy')->with(['uuid' => $command->getUuid()])->willReturn($object);
-        $this->entityManager->method('getRepository')->with($command->getClass())->willReturn($repository);
+        $object = $observed
+            ? $this->createMock(NotificationObjectInterface::class)
+            : $this->createStub(NotificationObjectInterface::class);
+        $repository = $this->createStub(EntityRepository::class);
+        $repository->method('findOneBy')->willReturn($object);
+        $this->entityManager
+            ->expects(self::once())
+            ->method('getRepository')
+            ->willReturn($repository)
+        ;
 
         return $object;
     }
 
-    private function mockNotification(NotificationObjectInterface&MockObject $object, SendNotificationCommandInterface&MockObject $command): PushChunkNotification
+    private function mockNotification(NotificationObjectInterface $object, SendNotificationCommandInterface $command): PushChunkNotification
     {
         $notification = new PushChunkNotification(
             'Test Title',
@@ -216,19 +235,18 @@ final class SendNotificationHandlerTest extends TestCase
         );
 
         $this->notificationFactory
+            ->expects(self::once())
             ->method('create')
-            ->with($object, $command)
             ->willReturn($notification)
         ;
 
         return $notification;
     }
 
-    private function mockResolverTokens(PushChunkNotification $notification, NotificationObjectInterface&MockObject $object, SendNotificationCommandInterface&MockObject $command, array $tokens): void
+    private function mockResolverTokens(PushChunkNotification $notification, NotificationObjectInterface $object, SendNotificationCommandInterface $command, array $tokens): void
     {
         $this->tokenProviderResolver
             ->method('getTokens')
-            ->with($notification, $object, $command)
             ->willReturn($tokens)
         ;
     }

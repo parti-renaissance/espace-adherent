@@ -77,7 +77,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTestCase
         ;
 
         if (null !== $hasPendingCertificationRequest || null !== $hasBlockedCertificationRequest) {
-            $certificationRequests = $this->createMock(CertificationRequestCollection::class);
+            $certificationRequests = $this->createStub(CertificationRequestCollection::class);
 
             if (null !== $hasPendingCertificationRequest) {
                 $certificationRequests

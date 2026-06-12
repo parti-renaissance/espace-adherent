@@ -94,7 +94,7 @@ final class MailchimpHandlerMiddlewareTest extends TestCase
         $slot = $this->createMock(MailchimpSlot::class);
         $slot->expects(self::once())->method('release');
 
-        $semaphore = $this->createMock(MailchimpSemaphore::class);
+        $semaphore = $this->createStub(MailchimpSemaphore::class);
         $semaphore->method('acquire')->willReturn($slot);
 
         $context = new MailchimpPriorityContext();

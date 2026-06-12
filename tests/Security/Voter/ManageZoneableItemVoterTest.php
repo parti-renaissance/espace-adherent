@@ -21,13 +21,11 @@ use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageZoneableItemVoter;
 use Doctrine\Common\Collections\ArrayCollection;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\Uid\Uuid;
 
-#[AllowMockObjectsWithoutExpectations]
 #[Group('unit')]
 class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
 {
@@ -56,7 +54,12 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, self::PERMISSION, fn (self $_this) => $_this->createAdherentSubject()];
+        yield [false, true, self::PERMISSION, function (self $_this): Adherent {
+            $_this->scopeGeneratorResolver->expects($_this->never())->method('generate');
+            $_this->zoneRepository->expects($_this->never())->method('isInZones');
+
+            return $_this->createAdherentSubject();
+        }];
     }
 
     public function testVoteWithNationalScopeIsGranted(): void
@@ -390,6 +393,9 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
 
     public function testSupportsRejectsAttributeOutsidePrefix(): void
     {
+        $this->scopeGeneratorResolver->expects(self::never())->method('generate');
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
         $voter = $this->getVoter();
         $supports = $this->invokeProtectedSupports($voter, 'OTHER_PERMISSION', $this->createAdherentSubject());
 
@@ -398,6 +404,9 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
 
     public function testSupportsRejectsSubjectNotZoneable(): void
     {
+        $this->scopeGeneratorResolver->expects(self::never())->method('generate');
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
         $voter = $this->getVoter();
         $supports = $this->invokeProtectedSupports($voter, self::PERMISSION, new \stdClass());
 
@@ -406,6 +415,9 @@ class ManageZoneableItemVoterTest extends AbstractAdherentVoterTestCase
 
     public function testSupportsAcceptsAttributeWithCustomVariantSuffix(): void
     {
+        $this->scopeGeneratorResolver->expects(self::never())->method('generate');
+        $this->zoneRepository->expects(self::never())->method('isInZones');
+
         $voter = $this->getVoter();
         $supports = $this->invokeProtectedSupports($voter, 'MANAGE_ZONEABLE_ITEM__CUSTOM_VARIANT', $this->createAdherentSubject());
 

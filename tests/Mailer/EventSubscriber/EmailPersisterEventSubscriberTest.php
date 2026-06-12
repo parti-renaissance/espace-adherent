@@ -28,6 +28,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->manager->expects($this->once())->method('persist');
         $this->manager->expects($this->once())->method('flush');
         $this->manager->expects($this->once())->method('detach');
+        $this->repository->expects($this->never())->method('findOneByUuid');
 
         $message = RenaissanceDeclaredMandateNotificationMessage::create(['john@smith.tld', 'johana156@gmail.com'], [1, 2], 'https://');
         $message->setSenderEmail('noreply@en-marche.fr');
@@ -116,7 +117,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->emailTemplateFactory = new EmailTemplateFactory(
             'sender@test.com',
             'Test sender',
-            $this->createMock(Manager::class)
+            $this->createStub(Manager::class)
         );
 
         $this->subscriber = new EmailPersisterEventSubscriber(

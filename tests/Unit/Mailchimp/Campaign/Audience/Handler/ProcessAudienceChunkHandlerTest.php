@@ -47,7 +47,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $campaign = $this->buildPreparingCampaign($message, segmentId: 555);
         $this->setEntityId($campaign, 7);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
 
         $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
@@ -78,7 +78,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
 
         $idToEmail = [10 => 'a@example.com', 11 => 'b@example.com'];
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
@@ -131,15 +131,15 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $campaign = $this->buildPreparingCampaign($message, segmentId: 555);
         $this->setEntityId($campaign, 7);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
-        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $repo = $this->createStub(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('findPendingEmailsByChunk')->willReturn([10 => 'last@example.com']);
         $repo->method('existsPending')->willReturn(false);
 
-        $driver = $this->createMock(Driver::class);
+        $driver = $this->createStub(Driver::class);
         $driver->method('send')->willReturn($this->successfulResponse(['total_added' => 1, 'errors' => []]));
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -162,7 +162,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $campaign = $this->buildPreparingCampaign($message, segmentId: 555);
         $this->setEntityId($campaign, 7);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
         $this->expectIncrementChunksDoneQuery($em);
 
@@ -185,7 +185,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         ;
         $repo->method('existsPending')->willReturn(true);
 
-        $driver = $this->createMock(Driver::class);
+        $driver = $this->createStub(Driver::class);
         $driver->method('send')->willReturn($this->successfulResponse([
             'total_added' => 1,
             'errors' => [
@@ -193,7 +193,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
             ],
         ]));
 
-        $bus = $this->createMock(MessageBusInterface::class);
+        $bus = $this->createStub(MessageBusInterface::class);
         $handler = $this->buildHandler($em, $repo, $driver, $bus);
         $handler(new ProcessAudienceChunkMessage(7, 0));
     }
@@ -205,18 +205,18 @@ class ProcessAudienceChunkHandlerTest extends TestCase
         $campaign = $this->buildPreparingCampaign($message, segmentId: 555);
         $this->setEntityId($campaign, 7);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('find')->willReturn($campaign);
 
         $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
         $repo->method('findPendingEmailsByChunk')->willReturn([10 => 'a@example.com']);
         $repo->expects(self::never())->method('markRowsAsProcessed');
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(500);
         $response->method('getContent')->willReturn('boom');
 
-        $driver = $this->createMock(Driver::class);
+        $driver = $this->createStub(Driver::class);
         $driver->method('send')->willReturn($response);
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -257,7 +257,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
 
     private function expectIncrementChunksDoneQuery(EntityManagerInterface $em): void
     {
-        $query = $this->createMock(Query::class);
+        $query = $this->createStub(Query::class);
         $query->method('setParameter')->willReturnSelf();
         $query->method('execute')->willReturn(1);
         $em->method('createQuery')->willReturn($query);
@@ -265,7 +265,7 @@ class ProcessAudienceChunkHandlerTest extends TestCase
 
     private function successfulResponse(array $body): ResponseInterface
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(200);
         $response->method('toArray')->willReturn($body);
 

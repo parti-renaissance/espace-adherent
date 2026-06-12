@@ -14,6 +14,7 @@ use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
     private ?EventInscriptionRepository $eventInscriptionRepository = null;
     private ?MessageBusInterface $bus = null;
+    private ?EntityManagerInterface $em = null;
 
     #[DataProvider('provideReferrerCodes')]
     public function testEventInscriptionWithReferral(string $referrerCode, ?string $referrerEmail): void

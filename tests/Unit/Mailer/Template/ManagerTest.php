@@ -48,6 +48,6 @@ class ManagerTest extends TestCase
     private function manager(): Manager
     {
         // getTemplateContent() does not touch the repository.
-        return new Manager($this->createMock(TransactionalEmailTemplateRepository::class));
+        return new Manager($this->createStub(TransactionalEmailTemplateRepository::class));
     }
 }

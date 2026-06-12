@@ -59,7 +59,7 @@ final class DataProviderTest extends AbstractKernelTestCase
             static::getContainer()->get(TimelineHiddenFeedRepository::class),
         );
 
-        $result = $provider->findItems($this->createMock(Adherent::class), 0, [], []);
+        $result = $provider->findItems($this->createStub(Adherent::class), 0, [], []);
 
         self::assertSame([$allowed], array_column($result['hits'], 'objectID'));
     }

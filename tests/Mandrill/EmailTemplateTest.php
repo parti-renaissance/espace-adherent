@@ -119,7 +119,7 @@ class EmailTemplateTest extends TestCase
         $emailTemplateFactory = new EmailTemplateFactory(
             'sender@test.com',
             'Test sender',
-            $this->createMock(Manager::class)
+            $this->createStub(Manager::class)
         );
 
         $message = DummyMessage::create();

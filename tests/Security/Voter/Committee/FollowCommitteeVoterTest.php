@@ -38,8 +38,16 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideAnonymousCases(): iterable
     {
-        yield 'Anonymous cannot follow committees' => [false, true, CommitteePermissionEnum::FOLLOW, fn (self $_this) => $_this->getCommitteeMock()];
-        yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissionEnum::UNFOLLOW, fn (self $_this) => $_this->getCommitteeMock()];
+        yield 'Anonymous cannot follow committees' => [false, true, CommitteePermissionEnum::FOLLOW, function (self $_this): Committee {
+            $_this->adherentRepository->expects($_this->never())->method('countCommitteeHosts');
+
+            return $_this->getCommitteeMock();
+        }];
+        yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissionEnum::UNFOLLOW, function (self $_this): Committee {
+            $_this->adherentRepository->expects($_this->never())->method('countCommitteeHosts');
+
+            return $_this->getCommitteeMock();
+        }];
     }
 
     protected function getVoter(): AbstractAdherentVoter

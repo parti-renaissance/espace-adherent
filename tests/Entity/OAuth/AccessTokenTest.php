@@ -54,10 +54,10 @@ class AccessTokenTest extends TestCase
     {
         $token = new AccessToken(
             Uuid::fromString(self::UUID),
-            $this->createMock(Adherent::class),
+            $this->createStub(Adherent::class),
             self::IDENTIFIER,
             \DateTimeImmutable::createFromFormat('U', (string) $time),
-            $this->createMock(Client::class)
+            $this->createStub(Client::class)
         );
         $token->addScope('public');
         $token->addScopes(['user_profile', 'manage_committees']);

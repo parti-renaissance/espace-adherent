@@ -14,7 +14,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
 {
     public function testPostPersist(): void
     {
-        $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
+        $entity = $this->createStub(AlgoliaIndexedEntityInterface::class);
 
         $indexer = $this->createMock(SearchService::class);
         $indexer->expects($this->once())->method('index')->with(
@@ -27,7 +27,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
 
     public function testPostUpdate(): void
     {
-        $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
+        $entity = $this->createStub(AlgoliaIndexedEntityInterface::class);
 
         $indexer = $this->createMock(SearchService::class);
         $indexer
@@ -41,7 +41,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
 
     public function testPreRemove(): void
     {
-        $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
+        $entity = $this->createStub(AlgoliaIndexedEntityInterface::class);
 
         $indexer = $this->createMock(SearchService::class);
         $indexer->expects($this->once())->method('remove')->with(
@@ -54,6 +54,6 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
 
     private function getManager(SearchService $indexer, ?EntityManagerInterface $manager = null): AlgoliaIndexedEntityManager
     {
-        return new AlgoliaIndexedEntityManager($indexer, $manager ?? $this->createMock(EntityManagerInterface::class));
+        return new AlgoliaIndexedEntityManager($indexer, $manager ?? $this->createStub(EntityManagerInterface::class));
     }
 }

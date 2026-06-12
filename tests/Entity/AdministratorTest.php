@@ -70,7 +70,7 @@ class AdministratorTest extends AbstractKernelTestCase
 
     private function createAdministratorRole(string $code, bool $enabled = true): AdministratorRole
     {
-        $role = $this->createMock(AdministratorRole::class);
+        $role = $this->createStub(AdministratorRole::class);
 
         $role->code = $code;
         $role->enabled = $enabled;

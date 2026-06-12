@@ -42,7 +42,11 @@ class VotingPlatformAbleToVoteVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, VotingPlatformAbleToVoteVoter::PERMISSION, fn (self $_this) => $_this->createElectionStub(new Designation())];
+        yield [false, true, VotingPlatformAbleToVoteVoter::PERMISSION, function (self $_this): Election {
+            $_this->voterRepository->expects($_this->never())->method('existsForElection');
+
+            return $_this->createElectionStub(new Designation());
+        }];
     }
 
     protected function getVoter(): AbstractAdherentVoter

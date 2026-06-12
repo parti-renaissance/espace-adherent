@@ -86,7 +86,7 @@ class ReportTest extends TestCase
 
     private function createReport(string $subjectClass, array $reasons, ?string $comment = null): Report
     {
-        return new class($this->createMock($subjectClass), $this->createMock(Adherent::class), $reasons, $comment) extends Report {
+        return new class($this->createStub($subjectClass), $this->createStub(Adherent::class), $reasons, $comment) extends Report {
             // CS needed for Style CI
         };
     }

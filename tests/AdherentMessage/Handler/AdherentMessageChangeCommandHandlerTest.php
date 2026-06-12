@@ -73,7 +73,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     {
         $message = $this->preparedMessage(ScopeEnum::ANIMATOR);
         $message->setFilter($committeeFilter = new AdherentMessageFilter());
-        $committeeFilter->setCommittee($this->createConfiguredMock(Committee::class, [
+        $committeeFilter->setCommittee($this->createConfiguredStub(Committee::class, [
             'getUuidAsString' => '9106f810-9e1f-4ed8-b0dd-5c5ddc17cf61',
             'getName' => 'Committee name',
             'getMailchimpId' => 456,
@@ -302,12 +302,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     {
         parent::setUp();
 
-        $this->adherentDummy = $this->createConfiguredMock(Adherent::class, [
+        $this->adherentDummy = $this->createConfiguredStub(Adherent::class, [
             '__toString' => 'Full Name',
             'getFullName' => 'Full Name',
             'getFirstName' => 'First Name',
             'getEmailAddress' => 'adherent@mail.com',
-            'getDeputyZone' => $this->createConfiguredMock(Zone::class, ['__toString' => 'District1']),
+            'getDeputyZone' => $this->createConfiguredStub(Zone::class, ['__toString' => 'District1']),
         ]);
 
         $this->clientMock = $this->createMock(HttpClientInterface::class);
@@ -369,7 +369,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 new AdherentGeoZoneConditionBuilder(),
                 new AdherentInterestConditionBuilder($this->mailchimpMapping),
                 new AdherentRegistrationDateConditionBuilder(),
-                new AdherentTagsConditionBuilder($this->createMock(TagTranslator::class)),
+                new AdherentTagsConditionBuilder($this->createStub(TagTranslator::class)),
                 new CampusRegistrationConditionBuilder(),
                 new CertifiedConditionBuilder(),
                 new ContactNameConditionBuilder(),
@@ -398,7 +398,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     private function createSectionRequestBuildersIterable(): iterable
     {
         return [
-            new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
+            new CommitteeMessageSectionBuilder($this->createConfiguredStub(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
             new BasicMessageSectionBuilder(),
             new DeputyMessageSectionBuilder(),
         ];
@@ -424,12 +424,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 $this->mailchimpMapping,
                 $this->createBus(),
                 $serviceLocator,
-                $this->createMock(SmsOptOutRepository::class),
-                $this->createMock(SubscriptionTypeRepository::class),
-                $this->createMock(EventInscriptionRepository::class),
-                $this->createMock(ObjectManager::class),
+                $this->createStub(SmsOptOutRepository::class),
+                $this->createStub(SubscriptionTypeRepository::class),
+                $this->createStub(EventInscriptionRepository::class),
+                $this->createStub(ObjectManager::class),
             ),
-            $this->createMock(ObjectManager::class)
+            $this->createStub(ObjectManager::class)
         );
     }
 
@@ -443,12 +443,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
     private function createBus(): MessageBusInterface
     {
-        return $this->createMock(MessageBusInterface::class);
+        return $this->createStub(MessageBusInterface::class);
     }
 
     private function createMockResponse(string $content, int $statusCode = 200): ResponseInterface
     {
-        return $this->createConfiguredMock(ResponseInterface::class, [
+        return $this->createConfiguredStub(ResponseInterface::class, [
             'getContent' => $content,
             'getStatusCode' => $statusCode,
             'toArray' => json_decode($content, true),
@@ -459,7 +459,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     {
         return new Renderer(
             new Parser(),
-            $this->createMock(ContextBuilder::class),
+            $this->createStub(ContextBuilder::class),
             new SimpleContainer([
                 'mailchimp' => new MailchimpVariableRenderer(),
             ])

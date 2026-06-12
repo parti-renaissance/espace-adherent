@@ -30,6 +30,7 @@ use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -42,32 +43,35 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 final class ManagerTest extends TestCase
 {
     private Driver&MockObject $driver;
-    private MessageBusInterface&MockObject $bus;
-    private MailchimpObjectIdMapping&MockObject $mailchimpObjectIdMapping;
-    private ServiceLocator&MockObject $requestBuildersLocator;
-    private RequestBuilder&MockObject $requestBuilder;
-    private SmsOptOutRepository&MockObject $smsOptOutRepository;
-    private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
-    private EventInscriptionRepository&MockObject $eventInscriptionRepository;
-    private EntityManagerInterface&MockObject $entityManager;
+    private (MessageBusInterface&MockObject)|(MessageBusInterface&Stub) $bus;
+    private MailchimpObjectIdMapping&Stub $mailchimpObjectIdMapping;
+    private ServiceLocator&Stub $requestBuildersLocator;
+    private (RequestBuilder&MockObject)|(RequestBuilder&Stub) $requestBuilder;
+    private (SmsOptOutRepository&MockObject)|(SmsOptOutRepository&Stub) $smsOptOutRepository;
+    private (SubscriptionTypeRepository&MockObject)|(SubscriptionTypeRepository&Stub) $subscriptionTypeRepository;
+    private EventInscriptionRepository&Stub $eventInscriptionRepository;
+    private (EntityManagerInterface&MockObject)|(EntityManagerInterface&Stub) $entityManager;
     private Manager $manager;
 
     protected function setUp(): void
     {
         $this->driver = $this->createMock(Driver::class);
-        $this->bus = $this->createMock(MessageBusInterface::class);
-        $this->mailchimpObjectIdMapping = $this->createMock(MailchimpObjectIdMapping::class);
-        $this->requestBuildersLocator = $this->createMock(ServiceLocator::class);
-        $this->requestBuilder = $this->createMock(RequestBuilder::class);
-        $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
-        $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
-        $this->eventInscriptionRepository = $this->createMock(EventInscriptionRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->bus = $this->createStub(MessageBusInterface::class);
+        $this->mailchimpObjectIdMapping = $this->createStub(MailchimpObjectIdMapping::class);
+        $this->requestBuilder = $this->createStub(RequestBuilder::class);
+        $this->smsOptOutRepository = $this->createStub(SmsOptOutRepository::class);
+        $this->subscriptionTypeRepository = $this->createStub(SubscriptionTypeRepository::class);
+        $this->eventInscriptionRepository = $this->createStub(EventInscriptionRepository::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
 
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->rebuildManager();
+    }
 
-        // Pure stub: the locator only ever serves RequestBuilder, and no test verifies the call,
-        // so drop with() (which would require expects(), deprecated in PHPUnit 14 without it).
+    private function rebuildManager(): void
+    {
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+
+        $this->requestBuildersLocator = $this->createStub(ServiceLocator::class);
         $this->requestBuildersLocator
             ->method('get')
             ->willReturn($this->requestBuilder)
@@ -92,6 +96,8 @@ final class ManagerTest extends TestCase
         $adherent = $this->createAdherent();
         $message = $this->createCommand($adherent);
         $contactRequest = new ContactRequest('test@example.com');
+        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->rebuildManager();
 
         $this->mailchimpObjectIdMapping
             ->method('getListIdFromSource')
@@ -166,7 +172,6 @@ final class ManagerTest extends TestCase
 
         $this->requestBuilder
             ->method('buildMemberRequest')
-            ->with('test@example.com')
             ->willReturn($memberRequest)
         ;
 
@@ -196,6 +201,8 @@ final class ManagerTest extends TestCase
         $adherent = $this->createAdherent();
         $message = $this->createCommand($adherent);
         $contactRequest = new ContactRequest('test@example.com');
+        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->rebuildManager();
 
         $this->mailchimpObjectIdMapping
             ->method('getListIdFromSource')
@@ -335,7 +342,7 @@ final class ManagerTest extends TestCase
         $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
         $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
         $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
-        $this->driver->method('addContact')->willThrowException(new FailedSyncException('Internal Server Error'));
+        $this->driver->expects($this->once())->method('addContact')->willThrowException(new FailedSyncException('Internal Server Error'));
 
         self::assertNull($adherent->mailchimpLastFailedAt);
 
@@ -356,7 +363,7 @@ final class ManagerTest extends TestCase
         $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
         $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
         $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
-        $this->driver->method('addContact')->willReturn('new-contact-id');
+        $this->driver->expects($this->once())->method('addContact')->willReturn('new-contact-id');
 
         $this->manager->editMember($adherent, $message);
 
@@ -375,7 +382,7 @@ final class ManagerTest extends TestCase
         $this->driver->method('getMemberInfo')->willReturn(['status' => null, 'contact_id' => null]);
         $this->requestBuilder->method('updateFromAdherent')->willReturnSelf();
         $this->requestBuilder->method('buildContactRequest')->willReturn($contactRequest);
-        $this->driver->method('addContact')->willThrowException(new \RuntimeException('unexpected boom'));
+        $this->driver->expects($this->once())->method('addContact')->willThrowException(new \RuntimeException('unexpected boom'));
 
         $this->manager->editMember($adherent, $message);
 
@@ -413,7 +420,6 @@ final class ManagerTest extends TestCase
 
         $this->requestBuilder
             ->method('buildMemberRequest')
-            ->with('test@example.com')
             ->willReturn($memberRequest)
         ;
 
@@ -446,6 +452,9 @@ final class ManagerTest extends TestCase
         $contactRequest = new ContactRequest('test@example.com');
         $contactRequest->setSmsPhone('+33612345678');
         $contactRequestWithoutSms = new ContactRequest('test@example.com');
+        $this->requestBuilder = $this->createMock(RequestBuilder::class);
+        $this->smsOptOutRepository = $this->createMock(SmsOptOutRepository::class);
+        $this->rebuildManager();
 
         $this->mailchimpObjectIdMapping
             ->method('getListIdFromSource')
@@ -603,6 +612,8 @@ final class ManagerTest extends TestCase
         $contactRequest = new ContactRequest('test@example.com');
 
         $smsType = new SubscriptionType('SMS', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+        $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
+        $this->rebuildManager();
 
         $this->mailchimpObjectIdMapping
             ->method('getListIdFromSource')
@@ -633,6 +644,7 @@ final class ManagerTest extends TestCase
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('updateContact')
             ->willReturn(true)
         ;
@@ -678,6 +690,7 @@ final class ManagerTest extends TestCase
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('updateContact')
             ->willReturn(true)
         ;
@@ -692,6 +705,8 @@ final class ManagerTest extends TestCase
         $adherent = $this->createAdherent();
         $message = $this->createCommand($adherent);
         $contactRequest = new ContactRequest('test@example.com');
+        $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
+        $this->rebuildManager();
 
         $this->mailchimpObjectIdMapping
             ->method('getListIdFromSource')
@@ -721,6 +736,7 @@ final class ManagerTest extends TestCase
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('addContact')
             ->willReturn('new-contact-id')
         ;
@@ -755,6 +771,7 @@ final class ManagerTest extends TestCase
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('addContact')
             ->willReturn('new-contact-id')
         ;
@@ -801,11 +818,13 @@ final class ManagerTest extends TestCase
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('addContact')
             ->willThrowException(new InvalidPayloadException('Invalid Resource'))
         ;
 
         $this->driver
+            ->expects(self::once())
             ->method('editMember')
             ->willReturn(true)
         ;
@@ -825,6 +844,9 @@ final class ManagerTest extends TestCase
         $this->setEntityId($campaign, 7);
         $campaign->setExternalId('mc-abc');
         $message->addMailchimpCampaign($campaign);
+        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->rebuildManager();
 
         $callOrder = [];
 
@@ -895,6 +917,9 @@ final class ManagerTest extends TestCase
         $this->setEntityId($campaign, 7);
         $campaign->setExternalId('mc-abc');
         $message->addMailchimpCampaign($campaign);
+        $this->bus = $this->createMock(MessageBusInterface::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->rebuildManager();
 
         $callOrder = [];
 

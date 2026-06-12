@@ -95,7 +95,7 @@ class InitiateStaticSegmentSubscriberTest extends TestCase
     {
         $campaign = $this->createCampaign();
 
-        $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $segmentService = $this->createStub(MailchimpStaticSegmentServiceInterface::class);
         $segmentService->method('create')->willReturn(null);
 
         $em = $this->createMock(EntityManagerInterface::class);

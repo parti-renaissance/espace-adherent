@@ -10,7 +10,7 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Geo\Zone;
 use App\Validator\MandateZoneType;
 use App\Validator\MandateZoneTypeValidator;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
 class MandateZoneTypeValidatorTest extends ConstraintValidatorTestCase
 {
@@ -152,7 +152,7 @@ class MandateZoneTypeValidatorTest extends ConstraintValidatorTestCase
 
     private function createMandate(string $mandateType, ?Zone $zone): ElectedRepresentativeAdherentMandate
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
 
         return ElectedRepresentativeAdherentMandate::create(
             null,
@@ -165,9 +165,9 @@ class MandateZoneTypeValidatorTest extends ConstraintValidatorTestCase
         );
     }
 
-    private function createZoneMock(string $type, string $code): Zone&MockObject
+    private function createZoneMock(string $type, string $code): Zone&Stub
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone->method('getType')->willReturn($type);
         $zone->method('getCode')->willReturn($code);
 

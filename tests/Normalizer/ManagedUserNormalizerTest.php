@@ -14,27 +14,27 @@ use App\Repository\SubscriptionTypeRepository;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ManagedUserNormalizerTest extends TestCase
 {
-    private TranslatorInterface&MockObject $translator;
-    private TagTranslator&MockObject $tagTranslator;
-    private ScopeGeneratorResolver&MockObject $scopeGeneratorResolver;
-    private SubscriptionTypeRepository&MockObject $subscriptionTypeRepository;
-    private NormalizerInterface&MockObject $innerNormalizer;
+    private TranslatorInterface&Stub $translator;
+    private TagTranslator&Stub $tagTranslator;
+    private ScopeGeneratorResolver&Stub $scopeGeneratorResolver;
+    private SubscriptionTypeRepository&Stub $subscriptionTypeRepository;
+    private NormalizerInterface&Stub $innerNormalizer;
     private ManagedUserNormalizer $normalizer;
 
     protected function setUp(): void
     {
-        $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->tagTranslator = $this->createMock(TagTranslator::class);
-        $this->scopeGeneratorResolver = $this->createMock(ScopeGeneratorResolver::class);
-        $this->subscriptionTypeRepository = $this->createMock(SubscriptionTypeRepository::class);
-        $this->innerNormalizer = $this->createMock(NormalizerInterface::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->tagTranslator = $this->createStub(TagTranslator::class);
+        $this->scopeGeneratorResolver = $this->createStub(ScopeGeneratorResolver::class);
+        $this->subscriptionTypeRepository = $this->createStub(SubscriptionTypeRepository::class);
+        $this->innerNormalizer = $this->createStub(NormalizerInterface::class);
 
         $this->normalizer = new ManagedUserNormalizer(
             $this->translator,
@@ -47,7 +47,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSupportsNormalizationReturnsTrueForManagedUser(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
 
         self::assertTrue($this->normalizer->supportsNormalization($managedUser));
     }
@@ -59,7 +59,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSupportsNormalizationReturnsFalseWhenAlreadyProcessed(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
 
         self::assertFalse($this->normalizer->supportsNormalization(
             $managedUser,
@@ -70,7 +70,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeAddsSubscriptionTypesAndRolesForVoxDetailGroup(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([
@@ -108,15 +108,15 @@ final class ManagedUserNormalizerTest extends TestCase
         ;
 
         // Mock subscription types from repository
-        $subscriptionType1 = $this->createMock(SubscriptionType::class);
+        $subscriptionType1 = $this->createStub(SubscriptionType::class);
         $subscriptionType1->method('getCode')->willReturn('subscribed_emails_movement_information');
         $subscriptionType1->method('getLabel')->willReturn('National');
 
-        $subscriptionType2 = $this->createMock(SubscriptionType::class);
+        $subscriptionType2 = $this->createStub(SubscriptionType::class);
         $subscriptionType2->method('getCode')->willReturn('subscribed_emails_weekly_letter');
         $subscriptionType2->method('getLabel')->willReturn('Recevoir la newsletter hebdomadaire');
 
-        $subscriptionType3 = $this->createMock(SubscriptionType::class);
+        $subscriptionType3 = $this->createStub(SubscriptionType::class);
         $subscriptionType3->method('getCode')->willReturn('militant_action_sms');
         $subscriptionType3->method('getLabel')->willReturn('Recevoir les SMS militants');
 
@@ -190,7 +190,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeAddsRolesButNotSubscriptionTypesForVoxListOnly(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([['code' => 'animator', 'zones' => 'Comité Levallois', 'zone_labels' => 'Comité Levallois']])
@@ -215,8 +215,9 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $this->translator
             ->method('trans')
-            ->with('role.animator', ['gender' => 'male'])
-            ->willReturn('Animateur')
+            ->willReturnMap([
+                ['role.animator', ['gender' => 'male'], 'Animateur'],
+            ])
         ;
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
@@ -233,7 +234,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeSkipsEmptyRoleCodes(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([
@@ -271,8 +272,9 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $this->translator
             ->method('trans')
-            ->with('role.animator', ['gender' => 'male'])
-            ->willReturn('Animateur')
+            ->willReturnMap([
+                ['role.animator', ['gender' => 'male'], 'Animateur'],
+            ])
         ;
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
@@ -284,7 +286,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeTransformsRolesToTagsForNonVoxGroups(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('isEmailSubscribed')
             ->willReturn(true)
@@ -316,8 +318,9 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $this->translator
             ->method('trans')
-            ->with('role.animator', ['gender' => 'female'])
-            ->willReturn('Animatrice')
+            ->willReturnMap([
+                ['role.animator', ['gender' => 'female'], 'Animatrice'],
+            ])
         ;
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
@@ -332,7 +335,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeTransformsElectMandatesToCodeLabelForVoxGroup(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([])
@@ -396,7 +399,7 @@ final class ManagedUserNormalizerTest extends TestCase
         ?string $agora,
         string $expectedLabel,
     ): void {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([$role])
@@ -576,7 +579,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeTagsForDelegatedRoleWithZone(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('isEmailSubscribed')
             ->willReturn(true)
@@ -639,7 +642,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeTagsForDelegatedRoleWithZoneFemale(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('isEmailSubscribed')
             ->willReturn(true)
@@ -699,7 +702,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testNormalizeTagsForRoleWithZone(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('isEmailSubscribed')
             ->willReturn(true)
@@ -744,8 +747,9 @@ final class ManagedUserNormalizerTest extends TestCase
 
         $this->translator
             ->method('trans')
-            ->with('role.president_departmental_assembly', ['gender' => 'male'])
-            ->willReturn("Président d'Assemblée Départementale")
+            ->willReturnMap([
+                ['role.president_departmental_assembly', ['gender' => 'male'], "Président d'Assemblée Départementale"],
+            ])
         ;
 
         $result = $this->normalizer->normalize($managedUser, null, $context);
@@ -759,7 +763,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortRolesByPriorityPriorityDirectThenOtherDirectThenDelegated(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([
@@ -799,7 +803,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortRolesByPriorityUnknownRoleGoesAtEndOfCategory(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser
             ->method('getRoles')
             ->willReturn([
@@ -833,7 +837,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortRolesByPriorityEmptyArrayReturnsEmpty(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser->method('getRoles')->willReturn([]);
         $managedUser->method('getGender')->willReturn('male');
         $managedUser->method('getElectMandates')->willReturn(null);
@@ -852,7 +856,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortMandatesByPriorityNationalToLocalOrder(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser->method('getRoles')->willReturn([]);
         $managedUser->method('getGender')->willReturn('male');
         // Out of order: local then national
@@ -889,7 +893,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortMandatesByPriorityEmptyArrayReturnsEmpty(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser->method('getRoles')->willReturn([]);
         $managedUser->method('getGender')->willReturn('male');
         $managedUser->method('getElectMandates')->willReturn([]);
@@ -908,7 +912,7 @@ final class ManagedUserNormalizerTest extends TestCase
 
     public function testSortMandatesByPrioritySingleElementReturnsSame(): void
     {
-        $managedUser = $this->createMock(ManagedUser::class);
+        $managedUser = $this->createStub(ManagedUser::class);
         $managedUser->method('getRoles')->willReturn([]);
         $managedUser->method('getGender')->willReturn('male');
         $managedUser->method('getElectMandates')->willReturn([MandateTypeEnum::MAIRE]);

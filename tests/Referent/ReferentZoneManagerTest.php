@@ -20,7 +20,7 @@ class ReferentZoneManagerTest extends TestCase
         ?string $inseeCode,
         array $zoneCodes,
     ): void {
-        $referentZoneManager = new ReferentZoneManager($this->createMock(ZoneRepository::class));
+        $referentZoneManager = new ReferentZoneManager($this->createStub(ZoneRepository::class));
         $adherent = $this->createAdherent($country, $inseeCode, $zoneCodes);
 
         $this->assertSame($isUpdateNeeded, $referentZoneManager->isUpdateNeeded($adherent));
@@ -42,7 +42,7 @@ class ReferentZoneManagerTest extends TestCase
      */
     private function createAdherent(string $country, ?string $inseeCode, array $zoneCodes): Adherent
     {
-        return $this->createConfiguredMock(Adherent::class, [
+        return $this->createConfiguredStub(Adherent::class, [
             'getCountry' => $country,
             'getInseeCode' => $inseeCode,
             'getZonesCodes' => $zoneCodes,

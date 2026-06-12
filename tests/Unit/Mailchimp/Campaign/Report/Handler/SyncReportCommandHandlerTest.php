@@ -13,9 +13,8 @@ final class SyncReportCommandHandlerTest extends TestCase
     #[DataProvider('provideMarkSuspiciousClicksCases')]
     public function testMarkSuspiciousClicks(array $rows, array $expectedSuspicious): void
     {
-        $handler = $this->createPartialMock(SyncReportCommandHandler::class, []);
-
-        $reflection = new \ReflectionClass($handler);
+        $reflection = new \ReflectionClass(SyncReportCommandHandler::class);
+        $handler = $reflection->newInstanceWithoutConstructor();
         $method = $reflection->getMethod('markSuspiciousClicks');
 
         $result = $method->invoke($handler, $rows);

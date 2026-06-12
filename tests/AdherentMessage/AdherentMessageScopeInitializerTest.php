@@ -14,24 +14,30 @@ use App\Repository\MyTeam\MyTeamRepository;
 use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AdherentMessageScopeInitializerTest extends TestCase
 {
     private ScopeGeneratorResolver&MockObject $scopeResolver;
-    private MyTeamRepository&MockObject $myTeamRepository;
-    private MemberRepository&MockObject $memberRepository;
-    private TranslatorInterface&MockObject $translator;
+    private (MyTeamRepository&MockObject)|(MyTeamRepository&Stub) $myTeamRepository;
+    private (MemberRepository&MockObject)|(MemberRepository&Stub) $memberRepository;
+    private (TranslatorInterface&MockObject)|(TranslatorInterface&Stub) $translator;
     private AdherentMessageScopeInitializer $initializer;
 
     protected function setUp(): void
     {
         $this->scopeResolver = $this->createMock(ScopeGeneratorResolver::class);
-        $this->myTeamRepository = $this->createMock(MyTeamRepository::class);
-        $this->memberRepository = $this->createMock(MemberRepository::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->myTeamRepository = $this->createStub(MyTeamRepository::class);
+        $this->memberRepository = $this->createStub(MemberRepository::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
 
+        $this->rebuildInitializer();
+    }
+
+    private function rebuildInitializer(): void
+    {
         $this->initializer = new AdherentMessageScopeInitializer(
             $this->scopeResolver,
             $this->myTeamRepository,
@@ -170,10 +176,14 @@ final class AdherentMessageScopeInitializerTest extends TestCase
 
         $scope = $this->createScope('president_departmental_assembly', $teamOwner, false);
 
-        $team = $this->createMock(MyTeam::class);
-        $member = $this->createMock(Member::class);
+        $team = $this->createStub(MyTeam::class);
+        $member = $this->createStub(Member::class);
         $member->method('getRole')->willReturn('delegate');
         $member->method('getAdherent')->willReturn($sender);
+        $this->myTeamRepository = $this->createMock(MyTeamRepository::class);
+        $this->memberRepository = $this->createMock(MemberRepository::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->rebuildInitializer();
 
         $this->scopeResolver
             ->expects(self::once())
@@ -213,10 +223,12 @@ final class AdherentMessageScopeInitializerTest extends TestCase
 
         $scope = $this->createScope('president_departmental_assembly', $teamOwner, false);
 
-        $team = $this->createMock(MyTeam::class);
-        $member = $this->createMock(Member::class);
+        $team = $this->createStub(MyTeam::class);
+        $member = $this->createStub(Member::class);
         $member->method('getRole')->willReturn('custom_role');
         $member->method('getAdherent')->willReturn($sender);
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->rebuildInitializer();
 
         $this->scopeResolver
             ->expects(self::once())
@@ -233,6 +245,7 @@ final class AdherentMessageScopeInitializerTest extends TestCase
 
         // Translator returns the key itself (no translation found)
         $this->translator
+            ->expects(self::once())
             ->method('trans')
             ->with('my_team_member.role.custom_role', ['gender' => null])
             ->willReturn('my_team_member.role.custom_role');
@@ -243,9 +256,9 @@ final class AdherentMessageScopeInitializerTest extends TestCase
         self::assertSame('custom_role', $message->senderRole);
     }
 
-    private function createAdherent(string $email, string $firstName, string $lastName, ?string $gender = null): Adherent&MockObject
+    private function createAdherent(string $email, string $firstName, string $lastName, ?string $gender = null): Adherent&Stub
     {
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent->method('getEmailAddress')->willReturn($email);
         $adherent->method('getFirstName')->willReturn($firstName);
         $adherent->method('getLastName')->willReturn($lastName);
@@ -255,9 +268,9 @@ final class AdherentMessageScopeInitializerTest extends TestCase
         return $adherent;
     }
 
-    private function createScope(string $code, Adherent $mainUser, bool $isNational): Scope&MockObject
+    private function createScope(string $code, Adherent $mainUser, bool $isNational): Scope&Stub
     {
-        $scope = $this->createMock(Scope::class);
+        $scope = $this->createStub(Scope::class);
         $scope->method('getMainCode')->willReturn($code);
         $scope->method('getMainUser')->willReturn($mainUser);
         $scope->method('isNational')->willReturn($isNational);

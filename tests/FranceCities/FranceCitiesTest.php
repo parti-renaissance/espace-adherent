@@ -129,7 +129,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
 
     private function createReferentZone(string $code): Zone
     {
-        $zone = $this->createMock(Zone::class);
+        $zone = $this->createStub(Zone::class);
         $zone
             ->method('getCode')
             ->willReturn($code)

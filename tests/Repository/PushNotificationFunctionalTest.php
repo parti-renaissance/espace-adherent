@@ -133,7 +133,7 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
     public function testNotificationFactoryCreatesEventLiveBeginNotification(): void
     {
         $factory = $this->get(NotificationFactory::class);
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
         $event->method('getName')->willReturn('Test Live Event');
 
         $command = new EventLiveBeginNotificationCommand(Uuid::v4());
@@ -205,7 +205,7 @@ final class PushNotificationFunctionalTest extends AbstractKernelTestCase
 
     public function testFindAllForAdherentMessageRunsWithoutError(): void
     {
-        $message = $this->createMock(AdherentMessage::class);
+        $message = $this->createStub(AdherentMessage::class);
         $filter = new AdherentMessageFilter();
         $message->method('getFilter')->willReturn($filter);
 

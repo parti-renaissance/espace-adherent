@@ -92,7 +92,7 @@ class AudienceChunkFailureSubscriberTest extends TestCase
             ->willReturn(0)
         ;
 
-        $bus = $this->createMock(MessageBusInterface::class);
+        $bus = $this->createStub(MessageBusInterface::class);
         $bus->method('dispatch')->willReturn(new Envelope(new \stdClass()));
 
         $event = new WorkerMessageFailedEvent(

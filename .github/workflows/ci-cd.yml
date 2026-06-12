@@ -44,16 +44,16 @@ jobs:
 
             - uses: ./.github/actions/docker-pull
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
 
             - uses: ./.github/actions/build
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
                   skip-composer-install: ${{ steps.composer-cache.outputs.cache-hit }}
 
             - uses: ./.github/actions/docker-push
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
 
     build-static:
         name: Build assets
@@ -179,11 +179,12 @@ jobs:
 
             - uses: ./.github/actions/docker-pull
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
 
             - uses: ./.github/actions/build
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
+                  skip-build: true
                   skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq
                   keys: true
@@ -192,9 +193,7 @@ jobs:
             - name: Prepare app (assets, cache, db, rabbitmq)
               run: make tfp-rabbitmq tfp-db
 
-            - env:
-                  PHPUNIT_ARGS: --log-junit ./phpunit/junit.xml
-              run: |-
+            - run: |-
                   make test-phpunit
 
     behat:
@@ -213,11 +212,12 @@ jobs:
 
             - uses: ./.github/actions/docker-pull
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
 
             - uses: ./.github/actions/build
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
+                  skip-build: true
                   skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq
                   keys: true
@@ -254,11 +254,12 @@ jobs:
 
             - uses: ./.github/actions/docker-pull
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
 
             - uses: ./.github/actions/build
               with:
-                  hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
+                  hash: ${{ github.sha }}
+                  skip-build: true
                   skip-composer-install: ${{ steps.deps-cache.outputs.composer-cache-hit }}
                   extra-containers: db redis rabbitmq selenium
                   keys: true
@@ -318,7 +319,7 @@ jobs:
                       --cache-from=type=gha,scope=prod \
                       --cache-from=type=gha,scope=dev \
                       --cache-from=type=registry,ref=${{ env.REGISTRY }}:${{ env.TAG }} \
-                      --cache-from=type=registry,ref=${{ env.REGISTRY }}:dev-${{ hashFiles('Dockerfile', 'docker/*') }} \
+                      --cache-from=type=registry,ref=${{ env.REGISTRY }}:dev-${{ github.sha }} \
                       --cache-to=type=gha,scope=prod,mode=max \
                       --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
                       --tag ${{ env.REGISTRY }}:${{ env.TAG }} \

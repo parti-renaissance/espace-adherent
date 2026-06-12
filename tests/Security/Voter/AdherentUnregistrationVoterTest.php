@@ -87,7 +87,7 @@ class AdherentUnregistrationVoterTest extends TestCase
             ->willReturn($isRegionalDelegate)
         ;
 
-        $membership = $this->createMock(CommitteeMembership::class);
+        $membership = $this->createStub(CommitteeMembership::class);
         $membership
             ->method('hasActiveCommitteeCandidacy')
             ->willReturn($hasCommitteeCandidacy)
@@ -116,11 +116,11 @@ class AdherentUnregistrationVoterTest extends TestCase
 
     private function createAdherentMock(): Adherent
     {
-        return $this->createMock(Adherent::class);
+        return $this->createStub(Adherent::class);
     }
 
     private function createTokenMock(): TokenInterface
     {
-        return $this->createMock(TokenInterface::class);
+        return $this->createStub(TokenInterface::class);
     }
 }

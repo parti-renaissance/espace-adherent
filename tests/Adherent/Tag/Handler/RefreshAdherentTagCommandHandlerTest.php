@@ -67,7 +67,7 @@ class RefreshAdherentTagCommandHandlerTest extends TestCase
         $email = 'test@example.org';
         $command = new RefreshAdherentTagCommand($uuid);
 
-        $adherent = $this->createMock(Adherent::class);
+        $adherent = $this->createStub(Adherent::class);
         $adherent
             ->method('getUuid')
             ->willReturn($uuid)

@@ -24,9 +24,9 @@ class FileManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->storage = $this->createMock(FilesystemOperator::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->repository = $this->createMock(FileRepository::class);
+        $this->storage = $this->createStub(FilesystemOperator::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
+        $this->repository = $this->createStub(FileRepository::class);
 
         $this->fileManager = new FileManager(
             $this->storage,

@@ -86,6 +86,7 @@ final class JeMarcheMessagingTest extends TestCase
         $report = MulticastSendReport::withItems([]);
 
         $this->notificationRepository
+            ->expects(self::once())
             ->method('keyExists')
             ->with(self::isString())
             ->willReturn(false)
@@ -104,6 +105,13 @@ final class JeMarcheMessagingTest extends TestCase
             ->with($report)
         ;
 
+        $this->entityManager->expects(self::exactly(2))->method('flush');
+        $this->eventDispatcher
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PushNotificationSentEvent::class))
+        ;
+
         $this->messaging->send($notification);
     }
 
@@ -113,6 +121,7 @@ final class JeMarcheMessagingTest extends TestCase
         $exception = new \RuntimeException('FCM unavailable');
 
         $this->notificationRepository
+            ->expects(self::once())
             ->method('keyExists')
             ->with(self::isString())
             ->willReturn(false)
@@ -134,6 +143,10 @@ final class JeMarcheMessagingTest extends TestCase
             ->expects(self::once())
             ->method('remove')
             ->with(self::isInstanceOf(NotificationEntity::class))
+        ;
+        $this->eventDispatcher
+            ->expects(self::never())
+            ->method('dispatch')
         ;
 
         $this->expectException(\RuntimeException::class);
@@ -162,6 +175,14 @@ final class JeMarcheMessagingTest extends TestCase
             ->expects(self::never())
             ->method('processReport')
         ;
+        $this->entityManager
+            ->expects(self::never())
+            ->method('persist')
+        ;
+        $this->eventDispatcher
+            ->expects(self::never())
+            ->method('dispatch')
+        ;
 
         $this->messaging->send($notification);
     }
@@ -177,6 +198,7 @@ final class JeMarcheMessagingTest extends TestCase
         $report = MulticastSendReport::withItems([]);
 
         $this->notificationRepository
+            ->expects(self::exactly(2))
             ->method('keyExists')
             ->with(self::isString())
             ->willReturn(false)
@@ -196,6 +218,11 @@ final class JeMarcheMessagingTest extends TestCase
         ;
 
         $this->entityManager->expects(self::exactly(4))->method('flush');
+        $this->eventDispatcher
+            ->expects(self::exactly(2))
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PushNotificationSentEvent::class))
+        ;
 
         $this->messaging->send($notification);
     }

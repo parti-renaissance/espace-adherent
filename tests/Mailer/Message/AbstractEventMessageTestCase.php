@@ -23,20 +23,22 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
     ): Event {
         $address = $this->createPostAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
-        $event = $this->createMock(Event::class);
-        $event->expects(static::any())->method('getName')->willReturn($name);
-        $event->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
-        $event->expects(static::any())->method('getTimeZone')->willReturn($timeZone);
+        $event = $this->createStub(Event::class);
+        $event->method('getName')->willReturn($name);
+        $event->method('getBeginAt')->willReturn(new \DateTime($beginAt));
+        $event->method('getTimeZone')->willReturn($timeZone);
         $localeBeginAt = new \DateTime($beginAt);
-        $event->expects(static::any())->method('getLocalBeginAt')->willReturn($localeBeginAt->setTimezone(new \DateTimeZone($timeZone)));
-        $event->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
-        $event->expects(static::any())->method('getDescription')->willReturn($description);
+        $event->method('getLocalBeginAt')->willReturn($localeBeginAt->setTimezone(new \DateTimeZone($timeZone)));
+        $event->method('getInlineFormattedAddress')->willReturnMap([
+            ['fr_FR', $address],
+        ]);
+        $event->method('getDescription')->willReturn($description);
 
         if ($committeeName) {
-            $committee = $this->createMock(Committee::class);
-            $committee->expects(static::any())->method('getName')->willReturn($committeeName);
+            $committee = $this->createStub(Committee::class);
+            $committee->method('getName')->willReturn($committeeName);
 
-            $event->expects(static::any())->method('getCommittee')->willReturn($committee);
+            $event->method('getCommittee')->willReturn($committee);
         }
 
         return $event;
@@ -47,21 +49,21 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         string $firstName,
         string $lastName,
     ): EventRegistration {
-        $registration = $this->createMock(EventRegistration::class);
-        $registration->expects(static::any())->method('getEmailAddress')->willReturn($emailAddress);
-        $registration->expects(static::any())->method('getFirstName')->willReturn($firstName);
-        $registration->expects(static::any())->method('getLastName')->willReturn($lastName);
+        $registration = $this->createStub(EventRegistration::class);
+        $registration->method('getEmailAddress')->willReturn($emailAddress);
+        $registration->method('getFirstName')->willReturn($firstName);
+        $registration->method('getLastName')->willReturn($lastName);
 
         return $registration;
     }
 
     protected function createAdherentMock(string $emailAddress, string $firstName, string $lastName): Adherent
     {
-        $adherent = $this->createMock(Adherent::class);
-        $adherent->expects(static::any())->method('getEmailAddress')->willReturn($emailAddress);
-        $adherent->expects(static::any())->method('getFirstName')->willReturn($firstName);
-        $adherent->expects(static::any())->method('getLastName')->willReturn($lastName);
-        $adherent->expects(static::any())->method('getFullName')->willReturn($firstName.' '.$lastName);
+        $adherent = $this->createStub(Adherent::class);
+        $adherent->method('getEmailAddress')->willReturn($emailAddress);
+        $adherent->method('getFirstName')->willReturn($firstName);
+        $adherent->method('getLastName')->willReturn($lastName);
+        $adherent->method('getFullName')->willReturn($firstName.' '.$lastName);
 
         return $adherent;
     }
