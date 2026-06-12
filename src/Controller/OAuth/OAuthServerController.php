@@ -7,6 +7,7 @@ namespace App\Controller\OAuth;
 use App\Entity\Adherent;
 use App\Form\ConfirmActionType;
 use App\OAuth\OAuthAuthorizationManager;
+use App\OAuth\TokenRequestErrorLogger;
 use App\Repository\OAuth\ClientRepository;
 use App\Security\Voter\OAuthClientVoter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
@@ -33,6 +34,7 @@ class OAuthServerController extends AbstractController
         private readonly AuthorizationServer $authorizationServer,
         private readonly HttpFoundationFactoryInterface $httpFoundationFactory,
         private readonly LoggerInterface $logger,
+        private readonly TokenRequestErrorLogger $tokenRequestErrorLogger,
     ) {
     }
 
@@ -96,6 +98,8 @@ class OAuthServerController extends AbstractController
                 $this->logger->error('OAuth token endpoint failed with a server error.', [
                     'exception' => $exception->getPrevious() ?? $exception,
                 ]);
+            } else {
+                $this->tokenRequestErrorLogger->logClientError($request, $exception);
             }
 
             return $exception->generateHttpResponse($response);

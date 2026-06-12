@@ -45,6 +45,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'limit' => 5,
                 'interval' => '1 hour',
             ],
+            'oauth_token_error_log' => [
+                'policy' => 'fixed_window',
+                'limit' => 5,
+                'interval' => '1 day',
+            ],
         ],
     ]);
 };
