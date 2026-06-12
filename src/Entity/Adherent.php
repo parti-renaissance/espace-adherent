@@ -494,9 +494,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     private bool $papNationalManagerRole = false;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $papUserRole = false;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $meetingScanner = false;
 
     #[Groups(['profile_read'])]
@@ -830,10 +827,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
 
         if ($this->voteInspector) {
             $roles[] = 'ROLE_VOTE_INSPECTOR';
-        }
-
-        if ($this->hasPapUserRole()) {
-            $roles[] = 'ROLE_PAP_USER';
         }
 
         if ($this->meetingScanner) {
@@ -2283,16 +2276,6 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     public function setPapNationalManagerRole(bool $papNationalManagerRole): void
     {
         $this->papNationalManagerRole = $papNationalManagerRole;
-    }
-
-    public function hasPapUserRole(): bool
-    {
-        return $this->papUserRole;
-    }
-
-    public function setPapUserRole(bool $papUserRole): void
-    {
-        $this->papUserRole = $papUserRole;
     }
 
     public function hasZoneBasedRole(string $scope): bool

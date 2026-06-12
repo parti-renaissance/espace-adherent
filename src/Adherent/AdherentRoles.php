@@ -46,7 +46,6 @@ class AdherentRoles
             ScopeEnum::REGIONAL_COORDINATOR,
             ScopeEnum::FDE_COORDINATOR,
             ScopeEnum::MEETING_SCANNER,
-            AdherentRoleEnum::PAP_USER,
         ],
     ];
 

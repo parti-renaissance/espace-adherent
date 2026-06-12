@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource(
     operations: [],
     normalizationContext: ['groups' => ['pap_building_statistics_read']],
-    security: "is_granted('REQUEST_SCOPE_GRANTED', ['pap_v2', 'pap'])"
+    security: "is_granted('REQUEST_SCOPE_GRANTED', 'pap')"
 )]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
 #[ORM\Index(columns: ['status'])]

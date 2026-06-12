@@ -22,7 +22,7 @@ class FeatureEnum extends Enum
     public const MOBILE_APP = 'mobile_app';
     public const ELECTIONS = 'elections';
     public const PAP = 'pap';
-    public const PAP_V2 = 'pap_v2';
+    public const PAP_USER = 'pap_user';
     public const RIPOSTES = 'ripostes';
     public const TEAM = 'team';
     public const NEWS = 'news';
@@ -62,7 +62,6 @@ class FeatureEnum extends Enum
         self::ELECTIONS,
         self::RIPOSTES,
         self::PAP,
-        self::PAP_V2,
         self::TEAM,
         self::PHONING_CAMPAIGN,
         self::SURVEY,
@@ -105,6 +104,7 @@ class FeatureEnum extends Enum
             self::EVENTS,
             self::ACTIONS,
             self::AI_ANTISECHE,
+            self::PAP_USER,
         ];
     }
 

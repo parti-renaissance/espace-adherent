@@ -84,7 +84,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/v3/actions',
-            security: "is_granted('REQUEST_SCOPE_GRANTED', 'actions')",
+            security: "is_granted('ROLE_MEMBRE') and is_granted('REQUEST_SCOPE_GRANTED', 'actions')",
         ),
     ],
     normalizationContext: ['groups' => ['action_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],

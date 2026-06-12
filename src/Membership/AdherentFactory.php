@@ -60,7 +60,6 @@ class AdherentFactory
             $request->phone
         );
         $adherent->setSource($request->getSource());
-        $adherent->setPapUserRole(true);
 
         return $adherent;
     }
@@ -82,7 +81,6 @@ class AdherentFactory
         );
         $adherent->setNationality($request->nationality);
         $adherent->setSource($request->getSource());
-        $adherent->setPapUserRole(true);
 
         return $adherent;
     }
@@ -103,8 +101,6 @@ class AdherentFactory
         );
 
         $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
-        $adherent->setPapUserRole(true);
-
         if ($membershipRequest->originalEmail && $membershipRequest->originalEmail === $adherent->getEmailAddress()) {
             $adherent->enable();
         }
