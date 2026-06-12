@@ -58,6 +58,9 @@ class Message
     #[ORM\Column(type: 'datetime')]
     public \DateTimeInterface $date;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $raw = null;
+
     public function __construct(?Uuid $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::v4();

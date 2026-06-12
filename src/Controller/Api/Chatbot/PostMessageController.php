@@ -7,6 +7,7 @@ namespace App\Controller\Api\Chatbot;
 use App\Chatbot\ChatbotManager;
 use App\Chatbot\RateLimit\ChatbotRateLimitChecker;
 use App\Chatbot\RateLimit\Exception\ChatbotRateLimitExceededException;
+use App\Chatbot\Usage\ChatbotUsageTracker;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;
@@ -39,6 +40,7 @@ class PostMessageController extends AbstractController
         private readonly ContainerInterface $agents,
         private readonly ChatbotRateLimitChecker $rateLimitChecker,
         private readonly AuthorizationChecker $authorizationChecker,
+        private readonly ChatbotUsageTracker $usageTracker,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -78,12 +80,15 @@ class PostMessageController extends AbstractController
         }
 
         $agent = $this->agents->get($agentId);
-        $thread = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
+        $userMessage = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
+        $thread = $userMessage->thread;
         $messageBag = $chatbotManager->buildContextMessageBag($thread);
 
-        return new StreamedResponse(function () use ($agent, $messageBag, $thread, $chatbotManager) {
+        return new StreamedResponse(function () use ($agent, $messageBag, $thread, $userMessage, $chatbotManager, $agentId) {
             set_time_limit(0);
+            ignore_user_abort(true);
 
+            $this->usageTracker->start();
             $fullResponse = '';
 
             try {
@@ -136,6 +141,8 @@ class PostMessageController extends AbstractController
                         ]);
                     }
                 }
+
+                $this->usageTracker->record($userMessage, $agentId);
             }
         }, 200, self::STREAM_HEADERS + [
             'X-Chatbot-Thread-UUID' => $thread->getUuid()->toRfc4122(),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Chatbot;
 
 use App\Entity\Adherent;
+use App\Entity\Chatbot\Message as ChatbotMessage;
 use App\Entity\Chatbot\Thread;
 use App\Repository\Chatbot\ThreadRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,7 @@ class ChatbotManager
     ) {
     }
 
-    public function handleUserMessage(string $content, ?string $threadId, Adherent $adherent, string $agentId): Thread
+    public function handleUserMessage(string $content, ?string $threadId, Adherent $adherent, string $agentId): ChatbotMessage
     {
         $thread = null;
 
@@ -35,11 +36,11 @@ class ChatbotManager
             $this->entityManager->persist($thread);
         }
 
-        $thread->addUserMessage($content);
+        $userMessage = $thread->addUserMessage($content);
 
         $this->entityManager->flush();
 
-        return $thread;
+        return $userMessage;
     }
 
     public function handleBotResponse(Thread $thread, string $content): void
