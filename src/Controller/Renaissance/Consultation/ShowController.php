@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('RENAISSANCE_ADHERENT')]
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/espace-adherent/consultations/{uuid}', name: 'app_renaissance_consultation_show', methods: ['GET'])]
 class ShowController extends AbstractController
 {

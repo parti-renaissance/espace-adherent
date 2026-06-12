@@ -40,6 +40,7 @@ class SurveyController extends AbstractController
         return $this->json($surveys, context: ['groups' => ['survey_list']]);
     }
 
+    #[IsGranted('ROLE_MEMBRE')]
     #[Route(path: '/reply', name: 'api_survey_reply', methods: ['POST'])]
     public function surveyReplyAction(
         Request $request,

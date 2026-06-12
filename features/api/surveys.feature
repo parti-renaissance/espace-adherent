@@ -319,7 +319,79 @@ Feature:
         Examples:
             | email                      |
             | michelle.dufour@example.ch |
-            | simple-user@example.ch     |
+
+    Scenario: As a member I can reply to a national survey
+        Given I am logged with "carl999@example.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+            """
+            {
+                "survey": 1,
+                "type": "national",
+                "lastName": "Bonsoirini",
+                "firstName": "Ernestino",
+                "emailAddress": "ernestino@bonsoirini.fr",
+                "agreedToStayInContact": true,
+                "agreedToContactForJoin": false,
+                "agreedToTreatPersonalData": true,
+                "postalCode": "59000",
+                "profession": "employees",
+                "ageRange": "between_25_39",
+                "gender": "male",
+                "latitude": 48.856614,
+                "longitude": 2.3522219,
+                "answers": [
+                    {
+                        "surveyQuestion": 6,
+                        "textField": "Réponse libre d'un questionnaire national"
+                    },
+                    {
+                        "surveyQuestion": 7,
+                        "selectedChoices": ["5", "6"]
+                    }
+                ]
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            {
+                "status": "ok"
+            }
+            """
+
+    Scenario: As a logged-in user below membership level I cannot reply to a survey
+        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+            """
+            {
+                "survey": 1,
+                "type": "national",
+                "lastName": "Bonsoirini",
+                "firstName": "Ernestino",
+                "emailAddress": "ernestino@bonsoirini.fr",
+                "agreedToStayInContact": true,
+                "agreedToContactForJoin": false,
+                "agreedToTreatPersonalData": true,
+                "postalCode": "59000",
+                "profession": "employees",
+                "ageRange": "between_25_39",
+                "gender": "male",
+                "latitude": 48.856614,
+                "longitude": 2.3522219,
+                "answers": [
+                    {
+                        "surveyQuestion": 6,
+                        "textField": "Réponse libre d'un questionnaire national"
+                    },
+                    {
+                        "surveyQuestion": 7,
+                        "selectedChoices": ["5", "6"]
+                    }
+                ]
+            }
+            """
+        Then the response status code should be 403
 
     Scenario: As a logged-in user I can reply to a national survey without agreeing to join
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"

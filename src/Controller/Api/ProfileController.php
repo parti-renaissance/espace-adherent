@@ -270,6 +270,7 @@ class ProfileController extends AbstractController
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[IsGranted('ROLE_MEMBRE')]
     #[Route(path: '/instances', methods: ['GET'])]
     public function myInstances(UserInterface $adherent, AdherentInstances $adherentInstances): Response
     {

@@ -211,6 +211,34 @@ Feature:
         Then the response status code should be 200
         And the JSON node "editable" should be equal to "true"
 
+    Scenario: As a simple logged-in user I can list and read actions
+        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"
+        Then the response status code should be 200
+
+    Scenario: As a connected user I can create an action (management gated by the actions feature, not by membership)
+        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/actions" with body:
+            """
+            {
+                "type": "pap",
+                "date": "2024-06-01 10:00:00",
+                "description": "<p>desc</p>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city_name": "Clichy",
+                    "country": "FR"
+                }
+            }
+            """
+        Then the response status code should be 201
+
+    Scenario: As a logged-in user below membership level I cannot register to an action
+        Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/actions/198df430-3148-4e81-b1e3-0d442c5102b4/register"
+        Then the response status code should be 403
+
     Scenario: As a logged-in VOX user I can get actions around me
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"

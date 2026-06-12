@@ -641,6 +641,12 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ],
         'access_control' => [
             [
+                'path' => '^/api/v3/',
+                'roles' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
                 'path' => '^/parametres',
                 'roles' => [
                     'ROLE_USER',

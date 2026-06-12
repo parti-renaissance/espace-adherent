@@ -4,8 +4,8 @@ Feature:
     In order to see polls and vote
     I should be able to access API of polls
 
-    Scenario: As a non logged-in user I can retrieve polls, vote for it and see the results
-        Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+    Scenario: As a logged-in user I can retrieve polls, vote for it and see the results
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/polls"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -94,8 +94,8 @@ Feature:
             }
             """
 
-    Scenario: As a non logged-in user I can retrieve poll by postal code, when an active nation poll exists
-        Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+    Scenario: As a logged-in user I can retrieve poll by postal code, when an active nation poll exists
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/polls/92110"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -137,9 +137,9 @@ Feature:
             }
             """
 
-    Scenario: As a non logged-in user I can retrieve poll by postal code, when no active nation poll
+    Scenario: As a logged-in user I can retrieve poll by postal code, when no active nation poll
         Given I freeze the clock to "+3 days"
-        And I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/polls/92110"
         Then the response status code should be 200
         And the JSON should be equal to:
@@ -173,9 +173,9 @@ Feature:
             }
             """
 
-    Scenario: As a non logged-in user I cannot retrieve poll by postal code, if no local poll and no active nation poll
+    Scenario: As a logged-in user I cannot retrieve poll by postal code, if no local poll and no active nation poll
         Given I freeze the clock to "+3 days"
-        And I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "GET" request to "/api/v3/polls/69003"
         Then the response status code should be 200
         And the response should be equal to

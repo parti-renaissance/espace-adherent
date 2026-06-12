@@ -2225,3 +2225,12 @@ Feature:
                 }
             ]
             """
+
+    Scenario: As a member I can get my instances but a below-member user cannot
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        When I send a "GET" request to "/api/v3/profile/instances"
+        Then the response status code should be 200
+        And the response should be in JSON
+        When I am logged with "simple-user@example.ch" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        And I send a "GET" request to "/api/v3/profile/instances"
+        Then the response status code should be 403

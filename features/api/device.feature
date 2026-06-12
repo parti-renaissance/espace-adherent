@@ -1,23 +1,12 @@
 @api
 @renaissance_api
 Feature:
-    In order to track device informations
-    As a logged-in device
-    I should be able to update my informations
+    In order to keep /api/v3 reserved to authenticated users
+    A device-only OAuth token must not be able to reach /api/v3 endpoints
 
-    Scenario: As a logged-in device I can update my postal code
+    Scenario: A device token is rejected on /api/v3 by the ROLE_USER access control
         Given I am logged with device "device_2" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "PUT" request to "/api/v3/device/device_2" with body:
-            """
-            {
-                "postal_code": "06200"
-            }
-            """
-        Then the response status code should be 200
-
-    Scenario: As a logged-in device I can not update another device
-        Given I am logged with device "device_2" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-        When I send a "PUT" request to "/api/v3/device/device_1" with body:
             """
             {
                 "postal_code": "06200"
