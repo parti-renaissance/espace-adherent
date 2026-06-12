@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/v3/referrals',
-            security: "is_granted('RENAISSANCE_ADHERENT')"
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'referrals') or is_granted('ROLE_MEMBRE')"
         ),
     ],
     normalizationContext: ['groups' => ['referral_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],

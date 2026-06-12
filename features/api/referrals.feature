@@ -199,6 +199,30 @@ Feature:
             }
             """
 
+    Scenario: As a member I can create a new referral
+        Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/referrals" with body:
+            """
+            {
+                "email_address": "member-referral@dev.test",
+                "first_name": "Jane"
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON node "email_address" should be equal to "member-referral@dev.test"
+
+    Scenario: As a logged-in user below membership level I cannot create a referral
+        Given I am logged with "simple-user@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/referrals" with body:
+            """
+            {
+                "email_address": "blocked-referral@dev.test",
+                "first_name": "Jane"
+            }
+            """
+        Then the response status code should be 403
+
     Scenario: As an logged in user, I can create a new referral with all informations
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         And I send a "POST" request to "/api/v3/referrals" with body:

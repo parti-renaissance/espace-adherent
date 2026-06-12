@@ -75,13 +75,17 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/actions/{uuid}/register',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: RegisterController::class,
+            security: "is_granted('ROLE_MEMBRE')",
             deserialize: false,
         ),
         new GetCollection(
             uriTemplate: '/v3/actions',
-            normalizationContext: ['groups' => ['action_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]]
+            normalizationContext: ['groups' => ['action_read_list', ImageExposeNormalizer::NORMALIZATION_GROUP]],
         ),
-        new Post(uriTemplate: '/v3/actions'),
+        new Post(
+            uriTemplate: '/v3/actions',
+            security: "is_granted('REQUEST_SCOPE_GRANTED', 'actions')",
+        ),
     ],
     normalizationContext: ['groups' => ['action_read', ImageExposeNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['action_write']],

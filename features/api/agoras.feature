@@ -103,8 +103,13 @@ Feature:
             }
             """
 
-    Scenario: As a logged-in user (not adherent) I can not join an Agora
+    Scenario: As a logged-in member (not adherent) I can not join an Agora
         Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
+        Then the response status code should be 403
+
+    Scenario: As a logged-in adherent not up to date with membership I can not join an Agora
+        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
         When I send a "POST" request to "/api/v3/agoras/82ad6422-cb82-4c04-b478-bfb421c740e0/join"
         Then the response status code should be 403
 

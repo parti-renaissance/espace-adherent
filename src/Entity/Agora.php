@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/agoras/{uuid}/join',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: JoinAgoraController::class,
-            security: 'is_granted("RENAISSANCE_ADHERENT")',
+            security: 'is_granted("ROLE_ADHERENT_A_JOUR")',
             deserialize: false,
         ),
         new HttpOperation(
