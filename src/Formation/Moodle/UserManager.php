@@ -49,8 +49,11 @@ class UserManager
             return;
         }
 
-        if (!$moodleUser = $this->moodleUserRepository->findOneBy(['moodleId' => $userData['id']])) {
+        if (!$moodleUser = $this->moodleUserRepository->findOneBy(['adherent' => $adherent])) {
             $this->entityManager->persist($moodleUser = new User($adherent, $userData['id']));
+            $this->entityManager->flush();
+        } elseif ($moodleUser->moodleId !== $userData['id']) {
+            $moodleUser->moodleId = $userData['id'];
             $this->entityManager->flush();
         }
 
