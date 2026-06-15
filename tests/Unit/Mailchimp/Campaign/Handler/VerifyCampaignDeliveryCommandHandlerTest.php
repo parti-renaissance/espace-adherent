@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
+use App\Mailchimp\Campaign\Fallback\Message\TriggerMandrillFallbackMessage;
 use App\Mailchimp\Campaign\Handler\VerifyCampaignDeliveryCommandHandler;
 use App\Mailchimp\Campaign\PostSendDeliveryGuard;
 use App\Mailchimp\Manager;
@@ -142,10 +143,10 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
         $this->buildHandler($repository, $manager, $bus)(new VerifyCampaignDeliveryCommand(7, 0, 17));
     }
 
-    public function testInvokeWithZeroDeliveryFinalAlerts(): void
+    public function testInvokeWithZeroDeliveryFinalAlertsAndTriggersMandrillFallback(): void
     {
         // Terminal "sent" with a confirmed emails_sent=0 at the end of the confirmation window:
-        // alert (logger->error → Sentry). No further reschedule.
+        // alert (logger->error → Sentry) AND hand over to the Mandrill fallback. No reschedule.
         $campaign = $this->buildCampaign(preparedCount: 93);
 
         $repository = $this->createMock(MailchimpCampaignRepository::class);
@@ -158,7 +159,13 @@ class VerifyCampaignDeliveryCommandHandlerTest extends TestCase
             ->method('error')
             ->with('[Mailchimp][PostSendGuard] Zero delivery detected', self::callback(fn (array $ctx): bool => 7 === $ctx['campaign_id'] && 0 === $ctx['emails_sent']));
 
-        $this->buildHandler($repository, $manager, $this->silentBus(), $logger)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback(fn (TriggerMandrillFallbackMessage $msg): bool => 7 === $msg->campaignId))
+            ->willReturnCallback(fn (object $msg): Envelope => new Envelope($msg));
+
+        $this->buildHandler($repository, $manager, $bus, $logger)(new VerifyCampaignDeliveryCommand(7, self::FINAL_RETRY));
     }
 
     private function mockReads(MailchimpCampaign $campaign, MailchimpStatusEnum $status, array $report): Manager&\PHPUnit\Framework\MockObject\MockObject
