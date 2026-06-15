@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
-use App\Entity\Adherent;
 use App\Entity\Procuration\Proxy;
 use App\Entity\Procuration\Request;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +44,6 @@ class RefreshAdherentsTagsCommand extends Command
             ->addOption('procuration-only', null, InputOption::VALUE_NONE, 'Only refresh adherents linked to procurations')
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
             ->addOption('with-static-labels', null, InputOption::VALUE_NONE)
-            ->addOption('dry-run', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -56,9 +54,9 @@ class RefreshAdherentsTagsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $batchSize = $input->getOption('batch-size');
+        $batchSize = (int) $input->getOption('batch-size');
 
-        $paginator = $this->getQueryBuilder(
+        $queryBuilder = $this->getQueryBuilder(
             $input->getOption('id'),
             $input->getOption('email'),
             $input->getOption('tag'),
@@ -68,7 +66,13 @@ class RefreshAdherentsTagsCommand extends Command
             $input->getOption('with-static-labels'),
         );
 
-        if (!$total = $paginator->count()) {
+        $total = (int) (clone $queryBuilder)
+            ->select('COUNT(DISTINCT adherent.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if (!$total) {
             $this->io->success('No adherent to refresh.');
 
             return self::SUCCESS;
@@ -78,35 +82,38 @@ class RefreshAdherentsTagsCommand extends Command
             return self::FAILURE;
         }
 
-        $paginator->getQuery()->setMaxResults($batchSize);
+        // Keyset pagination: seek on the primary key instead of using OFFSET, which forces MySQL to
+        // rescan and discard a growing number of rows on every batch (quadratic over 380k+ rows,
+        // made worse by the non-indexable "tags LIKE" filter doing a full table scan each time).
+        $query = $queryBuilder
+            ->andWhere('adherent.id > :last_id')
+            ->orderBy('adherent.id', 'ASC')
+            ->setMaxResults($batchSize)
+            ->getQuery()
+        ;
 
         $this->io->progressStart($total);
-        $offset = 0;
+        $lastId = 0;
 
         do {
-            foreach ($paginator as $adherent) {
-                if (!$input->getOption('dry-run')) {
-                    $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
-                }
+            $adherents = $query->setParameter('last_id', $lastId)->getResult();
+
+            foreach ($adherents as $adherent) {
+                $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
 
                 $this->io->progressAdvance();
-                ++$offset;
+                $lastId = $adherent->getId();
             }
 
-            $paginator->getQuery()->setFirstResult($offset);
-
             $this->entityManager->clear();
-        } while ($offset < $total);
+        } while ($adherents);
 
         $this->io->progressFinish();
 
         return self::SUCCESS;
     }
 
-    /**
-     * @return Paginator|Adherent[]
-     */
-    private function getQueryBuilder(array $ids, array $emails, array $tags, ?string $tagPattern, ?string $source, bool $procurationsOnly, bool $withStaticLabels): Paginator
+    private function getQueryBuilder(array $ids, array $emails, array $tags, ?string $tagPattern, ?string $source, bool $procurationsOnly, bool $withStaticLabels): QueryBuilder
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -166,6 +173,6 @@ class RefreshAdherentsTagsCommand extends Command
             $queryBuilder->innerJoin('adherent.staticLabels', 'static_labels');
         }
 
-        return new Paginator($queryBuilder->getQuery());
+        return $queryBuilder;
     }
 }
