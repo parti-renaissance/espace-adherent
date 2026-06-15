@@ -80,15 +80,13 @@ class PostMessageController extends AbstractController
         }
 
         $agent = $this->agents->get($agentId);
-        $userMessage = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
-        $thread = $userMessage->thread;
+        $thread = $chatbotManager->handleUserMessage($message, $threadId, $user, $agentId);
         $messageBag = $chatbotManager->buildContextMessageBag($thread);
 
-        return new StreamedResponse(function () use ($agent, $messageBag, $thread, $userMessage, $chatbotManager, $agentId) {
+        return new StreamedResponse(function () use ($agent, $messageBag, $thread, $chatbotManager) {
             set_time_limit(0);
             ignore_user_abort(true);
 
-            $this->usageTracker->start();
             $fullResponse = '';
 
             try {
@@ -132,17 +130,17 @@ class PostMessageController extends AbstractController
 
                 flush();
             } finally {
-                if ($thread && !empty($fullResponse)) {
+                $rawUsage = $this->usageTracker->pull();
+
+                if (!empty($fullResponse)) {
                     try {
-                        $chatbotManager->handleBotResponse($thread, $fullResponse);
+                        $chatbotManager->handleBotResponse($thread, $fullResponse, $rawUsage);
                     } catch (\Throwable $e) {
                         $this->logger->error('[CHATBOT] Failed to persist bot response', [
                             'error' => $e->getMessage(),
                         ]);
                     }
                 }
-
-                $this->usageTracker->record($userMessage, $agentId);
             }
         }, 200, self::STREAM_HEADERS + [
             'X-Chatbot-Thread-UUID' => $thread->getUuid()->toRfc4122(),
