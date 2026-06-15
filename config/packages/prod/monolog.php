@@ -12,6 +12,13 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'channels' => ['mailchimp_sync'],
                 'formatter' => 'monolog.formatter.json',
             ],
+            'stderr_errors' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'level' => Monolog\Level::Error->value,
+                'channels' => ['!deprecation'],
+                'formatter' => 'monolog.formatter.json',
+            ],
             'main' => [
                 'type' => 'fingers_crossed',
                 'channels' => [
@@ -30,6 +37,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'sentry_logs' => [
                 'type' => 'service',
                 'id' => Sentry\SentryBundle\Monolog\LogsHandler::class,
+                'channels' => ['!request'],
             ],
             'sentry_breadcrumbs' => [
                 'type' => 'service',

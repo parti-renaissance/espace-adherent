@@ -42,6 +42,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'environment' => '%env(APP_ENVIRONMENT)%',
             'release' => '%env(APP_VERSION)%',
             'enable_logs' => true,
+            'log_flush_threshold' => 100,
         ],
     ]);
 };
