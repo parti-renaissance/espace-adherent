@@ -27,6 +27,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand::class => 'sync',
                 App\NationalEvent\Command\PaymentStatusUpdateCommand::class => 'sync',
                 App\JeMengage\Hit\Command\SaveAppHitCommand::class => 'sync',
+                App\Mailchimp\Campaign\Fallback\Message\SendMandrillFallbackChunkMessage::class => 'sync',
+                App\Mailchimp\Campaign\Fallback\Message\TriggerMandrillFallbackMessage::class => 'sync',
             ],
         ],
     ]);

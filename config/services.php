@@ -573,6 +573,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$apiKey', '%env(MANDRILL_API_KEY)%')
         ->arg('$testApiKey', '%env(MANDRILL_TEST_API_KEY)%');
 
+    $services->alias(App\Mailer\EmailClientInterface::class, App\Mandrill\EmailClient::class);
+
     $services->set(League\Glide\Responses\SymfonyResponseFactory::class);
 
     $services->set(League\Glide\Server::class)

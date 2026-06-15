@@ -11,6 +11,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
+use App\Mailchimp\Campaign\MandrillFallbackStatusEnum;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -127,6 +128,9 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
+
+    #[ORM\Column(nullable: true, enumType: MandrillFallbackStatusEnum::class)]
+    public ?MandrillFallbackStatusEnum $mandrillFallbackStatus = null;
 
     public function __construct(AdherentMessageInterface $message)
     {
@@ -379,5 +383,30 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     public function setMailchimpStaticSegment(?MailchimpStaticSegment $segment): void
     {
         $this->mailchimpStaticSegment = $segment;
+    }
+
+    public function markFallbackAttempted(): void
+    {
+        $this->mandrillFallbackStatus = MandrillFallbackStatusEnum::Attempted;
+    }
+
+    public function markFallbackSent(): void
+    {
+        $this->mandrillFallbackStatus = MandrillFallbackStatusEnum::Sent;
+    }
+
+    public function markFallbackSkipped(): void
+    {
+        $this->mandrillFallbackStatus = MandrillFallbackStatusEnum::Skipped;
+    }
+
+    public function markFallbackAborted(): void
+    {
+        $this->mandrillFallbackStatus = MandrillFallbackStatusEnum::Aborted;
+    }
+
+    public function markFallbackFailed(): void
+    {
+        $this->mandrillFallbackStatus = MandrillFallbackStatusEnum::Failed;
     }
 }

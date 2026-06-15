@@ -8,6 +8,7 @@ use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\DeliveryDecisionEnum;
+use App\Mailchimp\Campaign\Fallback\Message\TriggerMandrillFallbackMessage;
 use App\Mailchimp\Campaign\PostSendDeliveryGuard;
 use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
@@ -60,6 +61,15 @@ class VerifyCampaignDeliveryCommandHandler
             return;
         }
 
+        if (str_contains((string) $campaign->getMessage()->getSubject(), TriggerMandrillFallbackMessage::FORCE_FALLBACK_SUBJECT_TOKEN)) {
+            $this->logger->warning('[Mailchimp][PostSendGuard][HACK] Forced Mandrill fallback via subject token', [
+                'campaign_id' => $campaign->getId(),
+            ]);
+            $this->bus->dispatch(new TriggerMandrillFallbackMessage($campaign->getId()));
+
+            return;
+        }
+
         $status = $this->manager->getCampaignStatus($campaign);
         $reportData = $this->manager->getReportData($campaign);
         // Tri-state read: an absent key means the report is not readable (404/transient), which is
@@ -98,6 +108,10 @@ class VerifyCampaignDeliveryCommandHandler
             'retry_count' => $command->countRetry,
             'decision' => $decision->reason,
         ]);
+
+        if (DeliveryDecisionEnum::Failed === $decision->kind) {
+            $this->bus->dispatch(new TriggerMandrillFallbackMessage($campaign->getId()));
+        }
     }
 
     /**
