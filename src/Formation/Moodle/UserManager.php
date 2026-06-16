@@ -33,28 +33,39 @@ class UserManager
             return;
         }
 
-        if (empty($userData = $this->driver->findUserByEmail($adherent->getEmailAddress()))) {
-            $userData = $this->driver->createUser([
-                'email' => $email = $adherent->getEmailAddress(),
-                'username' => $email,
-                'firstname' => $adherent->getFirstName(),
-                'lastname' => $adherent->getLastName(),
-                'auth' => 'oauth2',
-            ]);
-        }
-
-        if (empty($userData['id'])) {
-            $this->logger->error('Moodle user data is missing ID', ['userData' => $userData, 'adherentId' => $adherent->getId()]);
-
-            return;
-        }
+        $email = $adherent->getEmailAddress();
 
         if (!$moodleUser = $this->moodleUserRepository->findOneBy(['adherent' => $adherent])) {
-            $this->entityManager->persist($moodleUser = new User($adherent, $userData['id']));
+            if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email)['id'] ?? null)) {
+                $this->logger->error('Moodle user data is missing ID', ['adherentId' => $adherent->getId()]);
+
+                return;
+            }
+
+            $this->entityManager->persist($moodleUser = new User($adherent, $moodleId));
             $this->entityManager->flush();
-        } elseif ($moodleUser->moodleId !== $userData['id']) {
-            $moodleUser->moodleId = $userData['id'];
-            $this->entityManager->flush();
+        } else {
+            // The Moodle account is identified by the stored moodleId, not by the (mutable) email.
+            // Push any email change to Moodle so the user keeps their account — and therefore their
+            // progress — instead of being matched to a brand-new account on the next OAuth login.
+            $userData = $this->driver->findUserById($moodleUser->moodleId);
+
+            if (empty($userData)) {
+                // Account no longer exists on Moodle: re-provision and repoint the local link.
+                if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email)['id'] ?? null)) {
+                    $this->logger->error('Moodle user data is missing ID', ['adherentId' => $adherent->getId()]);
+
+                    return;
+                }
+
+                $moodleUser->moodleId = $moodleId;
+                $this->entityManager->flush();
+            } elseif (($userData['email'] ?? null) !== $email) {
+                $this->driver->updateUser($moodleUser->moodleId, [
+                    'email' => $email,
+                    'username' => $email,
+                ]);
+            }
         }
 
         $adherentJobs = $this->prepareAdherentJobs($adherent);
@@ -91,6 +102,21 @@ class UserManager
                 $this->entityManager->flush();
             }
         }
+    }
+
+    private function findOrCreateMoodleUser(Adherent $adherent, string $email): array
+    {
+        if (!empty($userData = $this->driver->findUserByEmail($email))) {
+            return $userData;
+        }
+
+        return $this->driver->createUser([
+            'email' => $email,
+            'username' => $email,
+            'firstname' => $adherent->getFirstName(),
+            'lastname' => $adherent->getLastName(),
+            'auth' => 'oauth2',
+        ]);
     }
 
     private function prepareAdherentJobs(Adherent $adherent): array

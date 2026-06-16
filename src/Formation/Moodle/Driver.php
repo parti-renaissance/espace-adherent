@@ -23,6 +23,51 @@ class Driver
         ])->toArray()[0] ?? [];
     }
 
+    public function findUserById(int $id): array
+    {
+        return $this->moodleClient->request('GET', '', [
+            'query' => [
+                'wsfunction' => 'core_user_get_users_by_field',
+                'field' => 'id',
+                'values' => [$id],
+            ],
+        ])->toArray()[0] ?? [];
+    }
+
+    public function updateUser(int $userId, array $data): void
+    {
+        $this->moodleClient->request('POST', '', [
+            'query' => ['wsfunction' => 'core_user_update_users'],
+            'body' => [
+                'users' => [['id' => $userId, ...$data]],
+            ],
+        ]);
+    }
+
+    public function deleteUser(int $userId): void
+    {
+        $this->moodleClient->request('POST', '', [
+            'query' => ['wsfunction' => 'core_user_delete_users'],
+            'body' => ['userids' => [$userId]],
+        ]);
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function findUsersByName(string $firstName, string $lastName): array
+    {
+        return $this->moodleClient->request('POST', '', [
+            'query' => ['wsfunction' => 'core_user_get_users'],
+            'body' => [
+                'criteria' => [
+                    ['key' => 'firstname', 'value' => $firstName],
+                    ['key' => 'lastname', 'value' => $lastName],
+                ],
+            ],
+        ])->toArray()['users'] ?? [];
+    }
+
     public function createUser(array $data): array
     {
         return $this->moodleClient->request('POST', '', [
