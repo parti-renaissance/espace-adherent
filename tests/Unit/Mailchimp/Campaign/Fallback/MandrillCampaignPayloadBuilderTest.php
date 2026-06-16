@@ -4,37 +4,28 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp\Campaign\Fallback;
 
-use App\AdherentMessage\Variable\Renderer;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailchimp\Campaign\Fallback\MandrillCampaignPayloadBuilder;
 use PHPUnit\Framework\TestCase;
 
 class MandrillCampaignPayloadBuilderTest extends TestCase
 {
+    private const string ACCOUNT_URL = 'https://parti.re/mon-compte';
+
     public function testBuildsMessagesSendPayloadWithMergeVarsPerRecipient(): void
     {
-        $renderer = $this->createMock(Renderer::class);
-        $renderer
-            ->expects(self::once())
-            ->method('renderMailchimp')
-            ->with('<p>Bonjour *|FNAME|*</p>')
-            ->willReturn('<p>Bonjour *|FNAME|*</p>')
-        ;
-
         $message = $this->createMock(AdherentMessageInterface::class);
-        $message->expects(self::once())->method('getContent')->willReturn('<p>Bonjour *|FNAME|*</p>');
-        $message->expects(self::once())->method('getSubject')->willReturn('Le sujet');
+        $message->expects(self::atLeastOnce())->method('getSubject')->willReturn('Le sujet');
         $message->expects(self::once())->method('getFromName')->willReturn('Jean Dupont | Renaissance');
 
-        $builder = new MandrillCampaignPayloadBuilder($renderer, 'contact@parti-renaissance.fr');
+        $builder = new MandrillCampaignPayloadBuilder('contact@parti-renaissance.fr');
 
-        $payload = $builder->build($message, [
+        $payload = $builder->build($message, '<p>Bonjour *|FNAME|*</p>', [
             ['email' => 'a@test.dev', 'firstName' => 'Alice', 'lastName' => 'Martin', 'gender' => 'female', 'publicId' => 'PUB-1'],
             ['email' => 'b@test.dev', 'firstName' => 'Bob', 'lastName' => 'Durand', 'gender' => 'male', 'publicId' => 'PUB-2'],
         ]);
 
         $msg = $payload['message'];
-        self::assertSame('<p>Bonjour *|FNAME|*</p>', $msg['html']);
         self::assertSame('Le sujet', $msg['subject']);
         self::assertSame('contact@parti-renaissance.fr', $msg['from_email']);
         self::assertSame('Jean Dupont | Renaissance', $msg['from_name']);
@@ -57,19 +48,47 @@ class MandrillCampaignPayloadBuilderTest extends TestCase
         );
     }
 
-    public function testNullGenderBecomesEmptyMergeVar(): void
+    public function testResolvesMailchimpSystemTagsButKeepsRecipientMergeTags(): void
     {
-        $renderer = $this->createMock(Renderer::class);
-        $renderer->expects(self::once())->method('renderMailchimp')->with('html')->willReturn('html');
-
         $message = $this->createMock(AdherentMessageInterface::class);
-        $message->expects(self::once())->method('getContent')->willReturn('html');
-        $message->expects(self::once())->method('getSubject')->willReturn('s');
+        $message->expects(self::atLeastOnce())->method('getSubject')->willReturn('Le sujet');
         $message->expects(self::once())->method('getFromName')->willReturn('n');
 
-        $builder = new MandrillCampaignPayloadBuilder($renderer, 'contact@parti-renaissance.fr');
+        $builder = new MandrillCampaignPayloadBuilder('contact@parti-renaissance.fr');
 
-        $payload = $builder->build($message, [
+        $renderedHtml = '<title>*|MC:SUBJECT|*</title>'
+            .'<p>Bonjour *|FNAME|* *|IF:GENDER|*Madame*|END:IF|*</p>'
+            .'<a href="*|UNSUB|*">se désabonner</a>'
+            .'<a href="*|UPDATE_PROFILE|*">préférences</a>'
+            .'<a href="*|ARCHIVE|*">navigateur</a>';
+
+        $html = $builder->build($message, $renderedHtml, [
+            ['email' => 'a@test.dev', 'firstName' => 'Alice', 'lastName' => 'Martin', 'gender' => 'female', 'publicId' => 'PUB-1'],
+        ])['message']['html'];
+
+        // System tags Mandrill cannot expand are resolved...
+        self::assertStringContainsString('<title>Le sujet</title>', $html);
+        self::assertStringContainsString('<a href="'.self::ACCOUNT_URL.'">se désabonner</a>', $html);
+        self::assertStringContainsString('<a href="'.self::ACCOUNT_URL.'">préférences</a>', $html);
+        self::assertStringContainsString('<a href="'.self::ACCOUNT_URL.'">navigateur</a>', $html);
+        self::assertStringNotContainsString('*|MC:SUBJECT|*', $html);
+        self::assertStringNotContainsString('*|UNSUB|*', $html);
+        self::assertStringNotContainsString('*|UPDATE_PROFILE|*', $html);
+        self::assertStringNotContainsString('*|ARCHIVE|*', $html);
+
+        // ...but per-recipient merge tags and conditionals are left for Mandrill to expand at send.
+        self::assertStringContainsString('Bonjour *|FNAME|* *|IF:GENDER|*Madame*|END:IF|*', $html);
+    }
+
+    public function testNullGenderBecomesEmptyMergeVar(): void
+    {
+        $message = $this->createMock(AdherentMessageInterface::class);
+        $message->expects(self::atLeastOnce())->method('getSubject')->willReturn('s');
+        $message->expects(self::once())->method('getFromName')->willReturn('n');
+
+        $builder = new MandrillCampaignPayloadBuilder('contact@parti-renaissance.fr');
+
+        $payload = $builder->build($message, '<p>html</p>', [
             ['email' => 'c@test.dev', 'firstName' => 'Cl', 'lastName' => 'X', 'gender' => null, 'publicId' => 'PUB-3'],
         ]);
 

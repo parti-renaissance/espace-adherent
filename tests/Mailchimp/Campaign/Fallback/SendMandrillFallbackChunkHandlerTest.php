@@ -34,7 +34,7 @@ class SendMandrillFallbackChunkHandlerTest extends AbstractKernelTestCase
         $this->addChunkRow($campaign, 1, MandrillFallbackChunkStatusEnum::Pending);
         $this->manager->flush();
 
-        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1));
+        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1, '<p>Bonjour *|FNAME|*</p>'));
 
         self::assertSame(MandrillFallbackChunkStatusEnum::Sent, $this->chunkRepository->findStatus($campaign->getId(), 1));
     }
@@ -46,7 +46,7 @@ class SendMandrillFallbackChunkHandlerTest extends AbstractKernelTestCase
         $this->addChunkRow($campaign, 1, MandrillFallbackChunkStatusEnum::Sent);
         $this->manager->flush();
 
-        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1));
+        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1, '<p>Bonjour *|FNAME|*</p>'));
 
         self::assertSame(MandrillFallbackChunkStatusEnum::Sent, $this->chunkRepository->findStatus($campaign->getId(), 1));
     }
@@ -58,7 +58,7 @@ class SendMandrillFallbackChunkHandlerTest extends AbstractKernelTestCase
         $this->addChunkRow($campaign, 1, MandrillFallbackChunkStatusEnum::Sending);
         $this->manager->flush();
 
-        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1));
+        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1, '<p>Bonjour *|FNAME|*</p>'));
 
         self::assertSame(MandrillFallbackChunkStatusEnum::NeedsReview, $this->chunkRepository->findStatus($campaign->getId(), 1));
     }
@@ -71,7 +71,7 @@ class SendMandrillFallbackChunkHandlerTest extends AbstractKernelTestCase
         $this->addChunkRow($campaign, 1, MandrillFallbackChunkStatusEnum::Pending);
         $this->manager->flush();
 
-        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1));
+        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1, '<p>Bonjour *|FNAME|*</p>'));
 
         self::assertSame(MandrillFallbackChunkStatusEnum::Pending, $this->chunkRepository->findStatus($campaign->getId(), 1));
     }
@@ -84,7 +84,7 @@ class SendMandrillFallbackChunkHandlerTest extends AbstractKernelTestCase
         $this->addChunkRow($campaign, 1, MandrillFallbackChunkStatusEnum::Pending);
         $this->manager->flush();
 
-        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1));
+        ($this->handler)(new SendMandrillFallbackChunkMessage($campaign->getId(), 1, '<p>Bonjour *|FNAME|*</p>'));
 
         self::assertSame(MandrillFallbackChunkStatusEnum::Sent, $this->chunkRepository->findStatus($campaign->getId(), 1));
     }
