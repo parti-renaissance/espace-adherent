@@ -851,7 +851,7 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
 
     public function getSortableAlertDate(): \DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->finishAt ?? $this->createdAt;
     }
 
     public function updateMembersCount(bool $incrementAction, ?Adherent $adherent = null): void

@@ -22,7 +22,7 @@ class AlertProvider
             $allAlerts = array_merge($allAlerts, $provider->getAlerts($adherent));
         }
 
-        usort($allAlerts, fn (Alert $a, Alert $b) => $b->date <=> $a->date);
+        usort($allAlerts, fn (Alert $a, Alert $b) => $a->date <=> $b->date);
 
         return $allAlerts;
     }
