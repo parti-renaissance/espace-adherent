@@ -44,6 +44,10 @@ class AppAlert implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(nullable: true)]
     public ?string $imageUrl = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $image = null;
+
     #[Assert\Url]
     #[ORM\Column(nullable: true)]
     public ?string $shareUrl = null;
