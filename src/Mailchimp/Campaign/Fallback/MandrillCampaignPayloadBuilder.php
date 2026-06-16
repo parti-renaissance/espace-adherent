@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\Fallback;
 
-use App\AdherentMessage\Variable\Renderer;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 class MandrillCampaignPayloadBuilder
 {
     private const string REPLY_TO = 'contact@parti-renaissance.fr';
 
-    public function __construct(
-        private readonly Renderer $variableRenderer,
-        private readonly string $fromEmail,
-    ) {
+    private const string ACCOUNT_URL = 'https://parti.re/mon-compte';
+
+    public function __construct(private readonly string $fromEmail)
+    {
     }
 
     /**
@@ -22,7 +21,7 @@ class MandrillCampaignPayloadBuilder
      *
      * @return array{message: array<string, mixed>}
      */
-    public function build(AdherentMessageInterface $message, array $recipients): array
+    public function build(AdherentMessageInterface $message, string $renderedHtml, array $recipients): array
     {
         $to = [];
         $mergeVars = [];
@@ -47,7 +46,7 @@ class MandrillCampaignPayloadBuilder
 
         return [
             'message' => [
-                'html' => $this->variableRenderer->renderMailchimp((string) $message->getContent()),
+                'html' => $this->resolveMailchimpSystemTags($renderedHtml, $message),
                 'subject' => $message->getSubject(),
                 'from_email' => $this->fromEmail,
                 'from_name' => $message->getFromName(),
@@ -57,5 +56,15 @@ class MandrillCampaignPayloadBuilder
                 'merge_vars' => $mergeVars,
             ],
         ];
+    }
+
+    private function resolveMailchimpSystemTags(string $html, AdherentMessageInterface $message): string
+    {
+        return strtr($html, [
+            '*|MC:SUBJECT|*' => (string) $message->getSubject(),
+            '*|UNSUB|*' => self::ACCOUNT_URL,
+            '*|UPDATE_PROFILE|*' => self::ACCOUNT_URL,
+            '*|ARCHIVE|*' => self::ACCOUNT_URL,
+        ]);
     }
 }

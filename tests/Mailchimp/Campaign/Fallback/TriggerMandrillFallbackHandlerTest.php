@@ -14,6 +14,7 @@ use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Campaign\Fallback\Handler\TriggerMandrillFallbackHandler;
 use App\Mailchimp\Campaign\Fallback\Message\TriggerMandrillFallbackMessage;
 use App\Mailchimp\Campaign\MandrillFallbackStatusEnum;
+use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
@@ -54,6 +55,19 @@ class TriggerMandrillFallbackHandlerTest extends AbstractKernelTestCase
         self::assertSame(MandrillFallbackStatusEnum::Sent, $this->reloadStatus($campaign));
         // Chunk 2 has no eligible recipient -> only 2 ledger rows are created for chunksTotal=3.
         self::assertSame(2, $this->countChunkRows($campaign));
+    }
+
+    public function testEmptyCampaignContentFailsWithoutFanOut(): void
+    {
+        $campaign = $this->createCampaign(chunksTotal: 1);
+        $this->addMember($campaign, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+
+        // Mailchimp returns no rendered HTML -> the fallback must not send a bare/empty body.
+        $this->handler($this->managerReturning($campaign, ['emails_sent' => 0]), cap: 5000, campaignContent: '')(new TriggerMandrillFallbackMessage($campaign->getId()));
+
+        self::assertSame(MandrillFallbackStatusEnum::Failed, $this->reloadStatus($campaign));
+        self::assertSame(0, $this->countChunkRows($campaign));
     }
 
     /**
@@ -127,14 +141,18 @@ class TriggerMandrillFallbackHandlerTest extends AbstractKernelTestCase
         self::assertSame(0, $this->countChunkRows($campaign));
     }
 
-    private function handler(Manager $manager, int $cap): TriggerMandrillFallbackHandler
+    private function handler(Manager $manager, int $cap, string $campaignContent = '<html><body>Bonjour *|FNAME|*</body></html>'): TriggerMandrillFallbackHandler
     {
+        $driver = $this->createStub(Driver::class);
+        $driver->method('getCampaignContent')->willReturn($campaignContent);
+
         return new TriggerMandrillFallbackHandler(
             self::getContainer()->get(MailchimpCampaignRepository::class),
             $manager,
             self::getContainer()->get(MailchimpStaticSegmentMemberRepository::class),
             self::getContainer()->get(MessageBusInterface::class),
             $this->manager,
+            $driver,
             $cap,
         );
     }
@@ -177,6 +195,7 @@ class TriggerMandrillFallbackHandlerTest extends AbstractKernelTestCase
         $message->setSubject($subject);
         $message->setContent('<p>Bonjour *|FNAME|*</p>');
         $campaign = new MailchimpCampaign($message);
+        $campaign->setExternalId('mc-external-id');
         $segment = new MailchimpStaticSegment($campaign);
         $segment->chunksTotal = $chunksTotal;
         $campaign->setMailchimpStaticSegment($segment);

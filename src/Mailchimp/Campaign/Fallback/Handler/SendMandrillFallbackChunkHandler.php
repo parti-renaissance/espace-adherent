@@ -75,7 +75,7 @@ class SendMandrillFallbackChunkHandler
             return;
         }
 
-        $payload = $this->payloadBuilder->build($campaign->getMessage(), $recipients);
+        $payload = $this->payloadBuilder->build($campaign->getMessage(), $message->renderedHtml, $recipients);
 
         try {
             $response = $this->emailClient->sendEmail(json_encode($payload, \JSON_THROW_ON_ERROR), useTemplateEndpoint: false);

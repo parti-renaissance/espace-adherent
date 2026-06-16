@@ -11,6 +11,7 @@ class SendMandrillFallbackChunkMessage implements CampaignMessageInterface
     public function __construct(
         public readonly int $campaignId,
         public readonly int $chunkNumber,
+        public readonly string $renderedHtml,
     ) {
     }
 }

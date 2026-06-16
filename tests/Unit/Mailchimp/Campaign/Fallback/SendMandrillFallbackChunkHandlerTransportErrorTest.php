@@ -47,7 +47,7 @@ class SendMandrillFallbackChunkHandlerTransportErrorTest extends TestCase
         $memberRepository->expects(self::once())->method('findRecipientsForMandrillByChunk')->with(7, $chunkNumber)->willReturn($recipients);
 
         $payloadBuilder = $this->createMock(MandrillCampaignPayloadBuilder::class);
-        $payloadBuilder->expects(self::once())->method('build')->with($message, $recipients)->willReturn(['message' => ['html' => 'x']]);
+        $payloadBuilder->expects(self::once())->method('build')->with($message, '<p>rendered</p>', $recipients)->willReturn(['message' => ['html' => 'x']]);
 
         $emailClient = new class implements EmailClientInterface {
             public function sendEmail(string $email, bool $resend = false, bool $useTemplateEndpoint = true): string
@@ -67,6 +67,6 @@ class SendMandrillFallbackChunkHandlerTransportErrorTest extends TestCase
 
         $this->expectException(MailerException::class);
 
-        $handler(new SendMandrillFallbackChunkMessage($campaignId, $chunkNumber));
+        $handler(new SendMandrillFallbackChunkMessage($campaignId, $chunkNumber, '<p>rendered</p>'));
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MandrillFallbackChunk;
 use App\Mailchimp\Campaign\Fallback\Message\SendMandrillFallbackChunkMessage;
 use App\Mailchimp\Campaign\Fallback\Message\TriggerMandrillFallbackMessage;
+use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\MailchimpCampaignRepository;
@@ -28,6 +29,7 @@ class TriggerMandrillFallbackHandler
         private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly MessageBusInterface $bus,
         private readonly EntityManagerInterface $entityManager,
+        private readonly Driver $driver,
         private readonly int $cap,
         ?LoggerInterface $logger = null,
     ) {
@@ -104,6 +106,21 @@ class TriggerMandrillFallbackHandler
         // message for a guaranteed no-op. Skip them.
         $eligibleChunks = $this->memberRepository->findChunkNumbersEligibleForMandrill($segment->id);
 
+        // Fetch the campaign HTML rendered by Mailchimp (template decor included) once for the whole
+        // fan-out and carry it on each chunk message, so the per-chunk handler stays free of any
+        // Mailchimp I/O. The zero-delivery incident only breaks delivery, not the read API.
+        $renderedHtml = $this->fetchRenderedHtml($campaign);
+        if (null === $renderedHtml) {
+            $campaign->markFallbackFailed();
+            $this->entityManager->flush();
+
+            $this->logger->error('[Mandrill][Fallback] Empty campaign content from Mailchimp — fallback failed', [
+                'campaign_id' => $message->campaignId,
+            ]);
+
+            return;
+        }
+
         // Create the per-chunk ledger rows and commit them BEFORE dispatching, so the chunk handler
         // (which claims Pending -> Sending) always finds its row — including the sync path in tests.
         foreach ($eligibleChunks as $chunkNumber) {
@@ -114,7 +131,7 @@ class TriggerMandrillFallbackHandler
         $this->entityManager->flush();
 
         foreach ($eligibleChunks as $chunkNumber) {
-            $this->bus->dispatch(new SendMandrillFallbackChunkMessage($message->campaignId, $chunkNumber));
+            $this->bus->dispatch(new SendMandrillFallbackChunkMessage($message->campaignId, $chunkNumber, $renderedHtml));
         }
 
         $this->logger->warning('[Mandrill][Fallback] Fan-out dispatched', [
@@ -122,5 +139,17 @@ class TriggerMandrillFallbackHandler
             'chunks' => \count($eligibleChunks),
             'eligible' => $eligible,
         ]);
+    }
+
+    private function fetchRenderedHtml(MailchimpCampaign $campaign): ?string
+    {
+        $externalId = $campaign->getExternalId();
+        if (null === $externalId) {
+            return null;
+        }
+
+        $html = $this->driver->getCampaignContent($externalId);
+
+        return '' === $html ? null : $html;
     }
 }
