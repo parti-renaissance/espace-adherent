@@ -37,7 +37,7 @@ class AppAlertProvider implements AlertProviderInterface
                 $ctaUrl = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $appAlert->ctaUrl)->getUrl();
             }
             $alerts[] = $alert = Alert::createFromAppAlert($appAlert, $ctaUrl ?? null, $this->getImageUrl($appAlert));
-            $alert->date = $appAlert->beginAt;
+            $alert->date = $appAlert->endAt;
         }
 
         return $alerts;

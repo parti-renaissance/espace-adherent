@@ -309,7 +309,7 @@ class NationalEvent implements \Stringable, NotificationObjectInterface, EntityA
 
     public function getSortableAlertDate(): \DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->endDate ?? $this->createdAt;
     }
 
     public function getIndexedPackageConfig(): ?array

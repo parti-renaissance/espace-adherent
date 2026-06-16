@@ -945,6 +945,6 @@ class Designation implements \Stringable, EntityAdministratorBlameableInterface,
 
     public function getSortableAlertDate(): \DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->voteEndDate ?? $this->createdAt;
     }
 }

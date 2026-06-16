@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 class Alert
 {
-    // Date used to sort alerts
+    // End date used to sort alerts.
     #[Ignore]
     public ?\DateTimeInterface $date = null;
 

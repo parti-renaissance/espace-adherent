@@ -27,7 +27,7 @@ class AppAlertRepository extends ServiceEntityRepository
             ->andWhere('a.endAt >= :now')
             ->andWhere('a.isActive = true')
             ->setParameter('now', new \DateTime())
-            ->orderBy('a.beginAt', 'DESC')
+            ->orderBy('a.endAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
