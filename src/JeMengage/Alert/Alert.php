@@ -73,7 +73,7 @@ class Alert
         );
     }
 
-    public static function createFromAppAlert(AppAlert $appAlert, ?string $ctaUrl): self
+    public static function createFromAppAlert(AppAlert $appAlert, ?string $ctaUrl, ?string $imageUrl = null): self
     {
         return new self(
             $appAlert->type,
@@ -82,7 +82,7 @@ class Alert
             $appAlert->description,
             $appAlert->ctaLabel,
             $ctaUrl ?? $appAlert->ctaUrl,
-            $appAlert->imageUrl,
+            $imageUrl ?? $appAlert->imageUrl,
             $appAlert->shareUrl,
             $appAlert->data,
         );

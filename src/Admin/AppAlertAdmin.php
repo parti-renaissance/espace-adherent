@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Form\Admin\UploadableFileType;
 use App\Form\DateTimePickerType;
 use App\Form\JsonType;
 use App\JeMengage\Alert\AlertTypeEnum;
@@ -47,6 +48,7 @@ class AppAlertAdmin extends AbstractAdmin
                 ->add('title', null, ['label' => 'Titre'])
                 ->add('description', TextareaType::class, ['label' => 'Description', 'attr' => ['rows' => 10]])
                 ->add('ctaLabel', null, ['label' => 'Label du CTA', 'required' => false])
+                ->add('shareUrl', UrlType::class, ['label' => 'URL de partage', 'required' => false])
                 ->add('ctaUrl', null, ['label' => 'URL du CTA', 'required' => false])
                 ->add('withMagicLink', null, ['label' => 'Avec lien magique', 'required' => false])
                 ->add('isActive', null, ['label' => 'Active', 'required' => false])
@@ -56,8 +58,7 @@ class AppAlertAdmin extends AbstractAdmin
                 ->add('endAt', DateTimePickerType::class, ['label' => 'Date de fin'])
             ->end()
             ->with('Images', ['class' => 'col-md-6'])
-                ->add('imageUrl', UrlType::class, ['label' => 'URL de l\'image', 'required' => false])
-                ->add('shareUrl', UrlType::class, ['label' => 'URL de partage', 'required' => false])
+                ->add('image', UploadableFileType::class, ['label' => 'Image', 'required' => false])
             ->end()
             ->with('Autres', ['class' => 'col-md-6'])
                 ->add('data', JsonType::class, [
