@@ -27,11 +27,10 @@ final class ActionNotificationMessage extends AbstractRenaissanceMessage
 
         $vars = [
             'author_firstname' => self::escape($host->getFirstName()),
-            'action_type' => ActionTypeEnum::LABELS[$action->type],
+            'action_type' => mb_ucfirst(ActionTypeEnum::LABELS[$action->type]),
             'action_date' => static::formatDate($action->date, 'EEEE d MMMM y'),
             'action_hour' => static::formatDate($action->date, 'HH\'h\'mm'),
-            'action_city' => self::escape($action->getCityName()),
-            'action_postal_code' => $action->getPostalCode(),
+            'action_address' => self::escape($action->getInlineFormattedAddress()),
             'action_url' => $actionUrl,
             'action_description' => $action->description,
         ];

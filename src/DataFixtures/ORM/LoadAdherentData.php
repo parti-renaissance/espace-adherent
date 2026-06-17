@@ -1017,11 +1017,32 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        // Subscribed member (sympathisant) of commune 77288 — covers the member branch of the
-        // commune-notification audience (AdherentRepository::findMembersAndAdherentsInZones).
+        // Subscribed sympathisant:adhesion_incomplete of commune 77288 — the EXCLUDED case of the
+        // commune-notification audience: only sympathisant:membre matches, not the whole sympathisant family.
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('coalitions-user-1', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'commune-member-1@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => AddressInterface::FRANCE,
+            'first_name' => 'Camille',
+            'last_name' => 'Membre',
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1980-03-15',
+            'registered_at' => '2021-01-25 19:31:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->tags = [TagEnum::SYMPATHISANT_MEMBRE];
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        // Completed sympathisant:membre of commune 77288, subscribed to event_email — the INCLUDED member case
+        // of the commune-notification audience (AdherentRepository::findMembersAndAdherentsInZones).
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $adherent->setSubscriptionTypes($subscriptionTypes);
+        $this->addReference('commune-member-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => self::RENAISSANCE_USER_1_UUID,

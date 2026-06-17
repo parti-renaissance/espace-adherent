@@ -14,14 +14,16 @@ use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
 /**
- * The action creation mail targets the commune (city zone) audience: members + adherents subscribed to
- * event_email. Asserted on commune 77288 from the shared LoadAdherentData set.
+ * The action creation mail targets the commune (city zone) audience: adherents + members (sympathisant:membre)
+ * subscribed to event_email; other sympathisants (e.g. adhesion_incomplete) are excluded.
+ * Asserted on commune 77288 from the shared LoadAdherentData set.
  */
 #[Group('functional')]
 class SendActionCreationNotificationCommandHandlerTest extends AbstractKernelTestCase
 {
     private const ADHERENT_IN = 'francis.brioul@yahoo.com';
-    private const MEMBER_IN = 'coalitions-user-1@en-marche-dev.fr';
+    private const MEMBER_IN = 'commune-member-1@en-marche-dev.fr';
+    private const ADHESION_INCOMPLETE_OUT = 'coalitions-user-1@en-marche-dev.fr';
     private const ADHERENT_NO_SUB = 'je-mengage-user-1@en-marche-dev.fr';
     private const USER_IN = 'adherent-male-a@en-marche-dev.fr';
     private const ADHERENT_OTHER_ZONE = 'laura@deloche.com';
@@ -69,10 +71,12 @@ class SendActionCreationNotificationCommandHandlerTest extends AbstractKernelTes
         $repository = $this->getEmailRepository();
         $received = static fn (string $email): bool => [] !== $repository->findRecipientMessages(ActionNotificationMessage::class, $email);
 
-        // Included: adherent + member of the commune, subscribed to event_email.
+        // Included: adherent and member (sympathisant:membre) of the commune, subscribed to event_email.
         self::assertTrue($received(self::ADHERENT_IN));
         self::assertTrue($received(self::MEMBER_IN));
 
+        // Excluded: incomplete-adhesion sympathisant (not sympathisant:membre), despite being subscribed.
+        self::assertFalse($received(self::ADHESION_INCOMPLETE_OUT));
         // Excluded by preference (no event_email), tag (plain user), and zone (other commune).
         self::assertFalse($received(self::ADHERENT_NO_SUB));
         self::assertFalse($received(self::USER_IN));

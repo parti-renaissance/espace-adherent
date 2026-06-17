@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Event\Handler;
 
 use App\Adherent\Tag\TagEnum;
+use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Event\Command\SendCreationNotificationCommand;
 use App\Mailer\MailerService;
@@ -42,10 +43,8 @@ class SendCreationNotificationCommandHandler
             $recipients = $this->adherentRepository->findInAgora($agora, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         } elseif ($committee = $event->getCommittee()) {
             $recipients = $this->adherentRepository->findInCommittee($committee, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
-        } elseif (ScopeEnum::MILITANT === $event->getAuthorScope() && $cityZones = $event->getZonesOfType(Zone::CITY)) {
-            $recipients = $this->adherentRepository->findMembersAndAdherentsInZones($cityZones, SubscriptionTypeEnum::EVENT_EMAIL);
-        } elseif ($zones = $event->getZones()->toArray()) {
-            $recipients = $this->adherentRepository->findInZones($zones, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
+        } elseif ($zones = $this->resolveNotificationZones($event)) {
+            $recipients = $this->adherentRepository->findMembersAndAdherentsInZones($zones, SubscriptionTypeEnum::EVENT_EMAIL);
         }
 
         if (!$recipients) {
@@ -60,5 +59,17 @@ class SendCreationNotificationCommandHandler
                 $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'evenements/'.$event->getSlug(),
             ));
         }
+    }
+
+    /**
+     * @return Zone[]
+     */
+    private function resolveNotificationZones(Event $event): array
+    {
+        if (ScopeEnum::MILITANT === $event->getAuthorScope()) {
+            return $event->getZonesOfType(Zone::CITY);
+        }
+
+        return $event->getZones()->toArray();
     }
 }
