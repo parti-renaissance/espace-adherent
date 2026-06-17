@@ -36,6 +36,7 @@ use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
 use App\JeMengage\Hit\HitTargetInterface;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageExposeNormalizer;
 use App\Repository\Action\ActionRepository;
@@ -194,6 +195,10 @@ class Action implements AuthoredInterface, AuthorInstanceInterface, GeoPointInte
 
     public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
     {
+        if ($command instanceof NotifyForActionCommand && NotifyForActionCommand::EVENT_CANCEL === $command->event) {
+            return true;
+        }
+
         return !$this->isCancelled();
     }
 

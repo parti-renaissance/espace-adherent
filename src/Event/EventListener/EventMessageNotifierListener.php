@@ -6,10 +6,12 @@ namespace App\Event\EventListener;
 
 use App\Address\AddressInterface;
 use App\Entity\Event\Event;
+use App\Entity\Event\RegistrationStatusEnum;
 use App\Event\Command\SendCreationNotificationCommand;
 use App\Event\EventEvent;
 use App\Event\EventRegistrationEvent;
 use App\Events;
+use App\JeMengage\Push\Command\NotifyEventRegistrantsCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\EventCancellationMessage;
 use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
@@ -63,7 +65,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$subscriptions = $this->registrationRepository->findByEvent($event)->toArray()) {
+        if (!$subscriptions = $this->registrationRepository->findByEvent($event, RegistrationStatusEnum::CONFIRMED)->toArray()) {
             return;
         }
 
@@ -76,6 +78,8 @@ class EventMessageNotifierListener implements EventSubscriberInterface
                 )
             );
         }
+
+        $this->bus->dispatch(new NotifyEventRegistrantsCommand($event->getUuid(), NotifyEventRegistrantsCommand::EVENT_CANCEL));
     }
 
     public function sendRegistrationEmail(EventRegistrationEvent $event): void
@@ -115,7 +119,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$subscriptions = $this->registrationRepository->findByEvent($event)->toArray()) {
+        if (!$subscriptions = $this->registrationRepository->findByEvent($event, RegistrationStatusEnum::CONFIRMED)->toArray()) {
             return;
         }
 
@@ -126,6 +130,8 @@ class EventMessageNotifierListener implements EventSubscriberInterface
                 $this->generateUrl('vox_app').'/evenements/'.$event->getSlug(),
             ));
         }
+
+        $this->bus->dispatch(new NotifyEventRegistrantsCommand($event->getUuid(), NotifyEventRegistrantsCommand::EVENT_UPDATE));
     }
 
     private function matchChanges(Event $event): bool

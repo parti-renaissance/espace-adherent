@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Event\Handler;
 
 use App\Adherent\Tag\TagEnum;
+use App\Entity\Geo\Zone;
 use App\Event\Command\SendCreationNotificationCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\Event\EventRepository;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,6 +42,8 @@ class SendCreationNotificationCommandHandler
             $recipients = $this->adherentRepository->findInAgora($agora, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         } elseif ($committee = $event->getCommittee()) {
             $recipients = $this->adherentRepository->findInCommittee($committee, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
+        } elseif (ScopeEnum::MILITANT === $event->getAuthorScope() && $cityZones = $event->getZonesOfType(Zone::CITY)) {
+            $recipients = $this->adherentRepository->findMembersAndAdherentsInZones($cityZones, SubscriptionTypeEnum::EVENT_EMAIL);
         } elseif ($zones = $event->getZones()->toArray()) {
             $recipients = $this->adherentRepository->findInZones($zones, TagEnum::ADHERENT, SubscriptionTypeEnum::EVENT_EMAIL);
         }
