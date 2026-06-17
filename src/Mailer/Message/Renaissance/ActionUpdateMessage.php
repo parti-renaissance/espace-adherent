@@ -46,10 +46,10 @@ final class ActionUpdateMessage extends AbstractRenaissanceMessage
     private static function getTemplateVars(Action $action, string $actionUrl): array
     {
         return [
-            'action_type' => ActionTypeEnum::LABELS[$action->type],
+            'action_type' => mb_ucfirst(ActionTypeEnum::LABELS[$action->type]),
             'action_date' => static::formatDate($action->date, 'EEEE d MMMM y'),
             'action_hour' => static::formatDate($action->date, 'HH\'h\'mm'),
-            'action_city' => self::escape($action->getCityName()),
+            'action_address' => self::escape($action->getInlineFormattedAddress()),
             'action_url' => $actionUrl,
         ];
     }

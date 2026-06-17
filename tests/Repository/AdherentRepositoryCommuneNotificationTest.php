@@ -16,11 +16,12 @@ use Tests\App\AbstractKernelTestCase;
  *
  * Asserted against the shared LoadAdherentData set, anchored on commune 77288 which already gathers
  * every needed profile:
- *  - francis.brioul@yahoo.com         : adherent, event_email                 → adherent branch
- *  - coalitions-user-1@…              : member (sympathisant), event_email     → member branch
- *  - je-mengage-user-1@…             : adherent, NO event_email               → preference filter
- *  - adherent-male-a@…               : plain user, event_email                → tag filter
- *  - laura@deloche.com (76540)        : adherent, event_email, other commune   → zone filter
+ *  - francis.brioul@yahoo.com         : adherent, event_email                       → adherent branch
+ *  - commune-member-1@…              : sympathisant:membre, event_email             → member branch
+ *  - coalitions-user-1@…              : sympathisant:adhesion_incomplete, event_email → excluded (only sympathisant:membre matches)
+ *  - je-mengage-user-1@…             : adherent, NO event_email                     → preference filter
+ *  - adherent-male-a@…               : plain user, event_email                      → tag filter
+ *  - laura@deloche.com (76540)        : adherent, event_email, other commune         → zone filter
  */
 #[Group('functional')]
 class AdherentRepositoryCommuneNotificationTest extends AbstractKernelTestCase
@@ -28,7 +29,8 @@ class AdherentRepositoryCommuneNotificationTest extends AbstractKernelTestCase
     private const COMMUNE_CODE = '77288';
 
     private const ADHERENT_IN = 'francis.brioul@yahoo.com';
-    private const MEMBER_IN = 'coalitions-user-1@en-marche-dev.fr';
+    private const MEMBER_IN = 'commune-member-1@en-marche-dev.fr';
+    private const ADHESION_INCOMPLETE_OUT = 'coalitions-user-1@en-marche-dev.fr';
     private const ADHERENT_NO_SUB = 'je-mengage-user-1@en-marche-dev.fr';
     private const USER_IN = 'adherent-male-a@en-marche-dev.fr';
     private const ADHERENT_OTHER_ZONE = 'laura@deloche.com';
@@ -55,10 +57,13 @@ class AdherentRepositoryCommuneNotificationTest extends AbstractKernelTestCase
             $this->adherentRepository->findMembersAndAdherentsInZones([$this->commune()], SubscriptionTypeEnum::EVENT_EMAIL)
         );
 
-        // Adherent and member of the commune, both subscribed to event_email.
+        // Adherent and member (sympathisant:membre) of the commune, both subscribed to event_email.
         self::assertContains(self::ADHERENT_IN, $emails);
         self::assertContains(self::MEMBER_IN, $emails);
 
+        // Excluded by the tag narrowing: an incomplete-adhesion sympathisant is not a sympathisant:membre,
+        // even though it is in the commune and subscribed to event_email.
+        self::assertNotContains(self::ADHESION_INCOMPLETE_OUT, $emails);
         // Excluded by the preference filter (no event_email subscription).
         self::assertNotContains(self::ADHERENT_NO_SUB, $emails);
         // Excluded by the tag filter (neither adherent nor member).
@@ -73,8 +78,10 @@ class AdherentRepositoryCommuneNotificationTest extends AbstractKernelTestCase
 
         // Without the subscription filter, the non-subscribed adherent is now included.
         self::assertContains(self::ADHERENT_NO_SUB, $emails);
-        // The member is still matched (sympathisant branch).
+        // The member (sympathisant:membre) is still matched.
         self::assertContains(self::MEMBER_IN, $emails);
+        // The incomplete-adhesion sympathisant stays excluded: the tag narrowing is independent of the preference.
+        self::assertNotContains(self::ADHESION_INCOMPLETE_OUT, $emails);
         // The tag and zone filters still apply.
         self::assertNotContains(self::USER_IN, $emails);
         self::assertNotContains(self::ADHERENT_OTHER_ZONE, $emails);
