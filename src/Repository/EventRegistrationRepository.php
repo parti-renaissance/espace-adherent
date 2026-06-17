@@ -176,17 +176,22 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByEvent(Event $event): EventRegistrationCollection
+    public function findByEvent(Event $event, ?RegistrationStatusEnum $status = null): EventRegistrationCollection
     {
-        $registrations = $this->createQueryBuilder('er')
+        $qb = $this->createQueryBuilder('er')
             ->where('er.event = :event')
             ->andWhere('er.emailAddress IS NOT NULL')
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult()
         ;
 
-        return $this->createEventRegistrationCollection($registrations);
+        if (null !== $status) {
+            $qb
+                ->andWhere('er.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $this->createEventRegistrationCollection($qb->getQuery()->getResult());
     }
 
     /**

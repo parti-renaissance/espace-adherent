@@ -14,6 +14,7 @@ use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AppSessionPushTokenLink;
 use App\Entity\Event\Event;
 use App\Entity\Event\EventRegistration;
+use App\Entity\Event\RegistrationStatusEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Entity\NationalEvent\EventInscription;
@@ -23,6 +24,7 @@ use App\Entity\PushToken;
 use App\Entity\TimelineItemPrivateMessage;
 use App\Firebase\PushTokenUnsubscribeReasonEnum;
 use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
+use App\JeMengage\Push\Command\NotifyEventRegistrantsCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -90,7 +92,19 @@ class PushTokenRepository extends ServiceEntityRepository
 
         $filterEnabled = false;
 
-        if ($object instanceof Event && ($object->isInvitation() || !$object->getCommittee())) {
+        if ($object instanceof Event && $command instanceof NotifyEventRegistrantsCommand) {
+            // Update/cancel notifications target the confirmed registrants only, whatever the event type
+            // (committee events included — this branch takes priority over the committee-members branch below).
+            $filterEnabled = true;
+
+            $queryBuilder
+                ->innerJoin(EventRegistration::class, 'er', Join::WITH, 'er.adherent = a')
+                ->andWhere('er.event = :event')
+                ->andWhere('er.status = :confirmed')
+                ->setParameter('event', $object)
+                ->setParameter('confirmed', RegistrationStatusEnum::CONFIRMED)
+            ;
+        } elseif ($object instanceof Event && ($object->isInvitation() || !$object->getCommittee())) {
             $filterEnabled = true;
 
             $queryBuilder

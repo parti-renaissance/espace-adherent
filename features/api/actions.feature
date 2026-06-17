@@ -96,7 +96,7 @@ Feature:
         And I should have 1 notification "ActionCreatedNotification" with data:
             | key   | value                                                                                                 |
             | data  | {"link":"http://vox.code/actions/@uuid@"}                                                             |
-            | scope | zone:92                                                                                               |
+            | scope | zone:92024                                                                                            |
             | title | 🚪 Porte à porte le 1 juin à Clichy                                                                   |
             | body  | Damien vient de créer une nouvelle action de porte à porte le samedi 1 juin à 10h00 à Clichy (92110). |
         When I save this response

@@ -1017,6 +1017,10 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        // Subscribed member (sympathisant) of commune 77288 — covers the member branch of the
+        // commune-notification audience (AdherentRepository::findMembersAndAdherentsInZones).
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $adherent->setSubscriptionTypes($subscriptionTypes);
         $this->addReference('coalitions-user-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([

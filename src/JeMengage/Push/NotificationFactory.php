@@ -12,6 +12,7 @@ use App\JeMengage\Push\Command\EventLiveBeginNotificationCommand;
 use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\JeMengage\Push\Command\NewsCreatedNotificationCommand;
+use App\JeMengage\Push\Command\NotifyEventRegistrantsCommand;
 use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\JeMengage\Push\Command\PrivateMessageNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
@@ -20,9 +21,11 @@ use App\JeMengage\Push\Notification\ActionCancelledNotification;
 use App\JeMengage\Push\Notification\ActionCreatedNotification;
 use App\JeMengage\Push\Notification\ActionUpdatedNotification;
 use App\JeMengage\Push\Notification\AdherentMessageSentNotification;
+use App\JeMengage\Push\Notification\EventCancelledNotification;
 use App\JeMengage\Push\Notification\EventCreatedNotification;
 use App\JeMengage\Push\Notification\EventLiveBeginNotification;
 use App\JeMengage\Push\Notification\EventReminderNotification;
+use App\JeMengage\Push\Notification\EventUpdatedNotification;
 use App\JeMengage\Push\Notification\NationalEventTicketNotification;
 use App\JeMengage\Push\Notification\NewsCreatedNotification;
 use App\JeMengage\Push\Notification\PrivateMessageNotification;
@@ -56,6 +59,12 @@ class NotificationFactory
                 case NotifyForActionCommand::EVENT_SECOND_NOTIFICATION:
                     return ActionBeginNotification::create($object, NotifyForActionCommand::EVENT_FIRST_NOTIFICATION === $command->event);
             }
+        }
+
+        if ($command instanceof NotifyEventRegistrantsCommand) {
+            return NotifyEventRegistrantsCommand::EVENT_CANCEL === $command->event
+                ? EventCancelledNotification::create($object)
+                : EventUpdatedNotification::create($object);
         }
 
         if ($command instanceof EventLiveBeginNotificationCommand) {

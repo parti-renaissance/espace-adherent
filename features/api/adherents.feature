@@ -1284,7 +1284,7 @@ Feature:
             """
             {
                 "adherent": 9,
-                "sympathizer": 3
+                "sympathizer": 4
             }
             """
         When I send a "GET" request to "/api/v3/adherents/count?scope=president_departmental_assembly&since=2022"
@@ -1294,7 +1294,7 @@ Feature:
             {
                 "adherent": 9,
                 "adherent_since": 8,
-                "sympathizer": 3
+                "sympathizer": 4
             }
             """
         When I send a "POST" request to "/api/v3/adherents/count?scope=president_departmental_assembly" with body:

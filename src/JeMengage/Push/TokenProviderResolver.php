@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\JeMengage\Push;
 
+use App\Entity\Action\Action;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\Event\Event;
+use App\Entity\Geo\Zone;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\Firebase\Notification\MulticastNotificationInterface;
@@ -46,6 +48,14 @@ class TokenProviderResolver
             $zones = array_filter([$object->getZone()]);
         } elseif ($object instanceof EntityScopeVisibilityWithZonesInterface || $object instanceof ZoneableEntityInterface) {
             $zones = $object->getZones()->toArray();
+        }
+
+        // An action targets its commune (city zone) directly, like a militant event — getZones() may
+        // also hold parent zones (department, region), so the city zone is selected explicitly.
+        if ($object instanceof Action) {
+            $cityZones = $object->getZonesOfType(Zone::CITY);
+
+            return $cityZones ? $this->pushTokenRepository->findAllForZone(reset($cityZones)) : [];
         }
 
         // A militant event targets its city zone directly, without climbing to the assembly (department) zone.

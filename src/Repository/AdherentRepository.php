@@ -1520,6 +1520,52 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param Zone[] $zones
+     *
+     * @return Adherent[]
+     */
+    public function findMembersAndAdherentsInZones(array $zones, ?string $subscriptionTypeCode = null): array
+    {
+        if (!$zones) {
+            return [];
+        }
+
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, emailAddress, firstName, lastName}')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
+            ->setParameter('sympathisant_tag', TagEnum::SYMPATHISANT.'%')
+        ;
+
+        $qb->andWhere($qb->expr()->orX(
+            'a.tags LIKE :adherent_tag',
+            'a.tags LIKE :sympathisant_tag',
+        ));
+
+        if ($subscriptionTypeCode) {
+            $qb
+                ->innerJoin('a.subscriptionTypes', 'subscription_type')
+                ->andWhere('subscription_type.code = :subscription_type_code')
+                ->setParameter('subscription_type_code', $subscriptionTypeCode)
+            ;
+        }
+
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findInCommittee(Committee $committee, string $tag, ?string $subscriptionTypeCode = null): array
     {
         $qb = $this->createQueryBuilder('a')
