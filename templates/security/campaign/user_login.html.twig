@@ -3,6 +3,7 @@
 {% block title 'Connectez-vous avec vos identifiants' %}
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+{% form_theme magicLink 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% block security_block_title %}
     <span>Je me connecte</span>
@@ -10,47 +11,66 @@
 {% endblock %}
 
 {% block security_content %}
-    <p class="text-center font-semibold text-[16px] leading-[1.5] text-vox-gray-900 mb-6">
-        Vous pouvez utiliser un compte Renaissance ou Attal Président.
-    </p>
+    <div class="flex flex-col gap-4 w-full">
+        <div class="bg-vox-gray-100 rounded-2xl p-4 flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
+                <h2 class="font-plaak uppercase tracking-tight text-[20px] text-vox-gray-900">Connexion par lien magique</h2>
+                <p class="text-[14px] leading-5 text-vox-gray-600">Vous renseignez votre email, vous recevez un lien de connexion sur lequel vous cliquez, vous êtes connecté.</p>
+            </div>
 
-    {{ form_start(form, {attr: {class: 'flex flex-col gap-4 w-full'}}) }}
-        {% if error %}
-            <twig:ReParagraphStatus status="error" icon>
-                {{- error.messageKey|trans(error.messageData)|raw -}}
-            </twig:ReParagraphStatus>
-        {% endif %}
+            {{ form_start(magicLink, {
+                action: path('app_user_get_magic_link', {app_domain: app.request.attributes.get('app_domain', app.request.host)}),
+                attr: {class: 'flex flex-col gap-4 w-full'},
+            }) }}
+                {{ form_row(magicLink, {
+                    attr: {
+                        placeholder: 'Adresse email',
+                        autocomplete: 'email',
+                        validate: "['required']",
+                    }, label: false}) }}
 
-        <div class="flex flex-col gap-2">
-            {{ form_row(form._username, {
-                attr: {
-                    placeholder: 'Adresse email',
-                    validate: "['required']",
-                    autocomplete: 'email',
-                }, label: false}) }}
-
-            {{ form_row(form._password, {attr: {
-                placeholder: 'Mot de passe',
-                validate: "['required']",
-            }, label: false}) }}
+                <twig:ReButton color="blue" icon="link-2" class="w-full rounded-full px-4 py-3.5 text-[14px] sm:text-[14px] font-semibold bg-vox-blue-600 text-white hover:enabled:bg-vox-blue-700">Envoyez-moi un lien de connexion</twig:ReButton>
+            {{ form_end(magicLink) }}
         </div>
 
-        {{ form_row(form._remember_me, {label: 'Se souvenir de moi'}) }}
-
-        <div class="flex items-center justify-between text-[14px] font-semibold">
-            <a href="{{ path('app_forgot_password', {app_domain: app.request.attributes.get('app_domain', app.request.host)}) }}" class="text-vox-blue-600 hover:underline">Mot de passe oublié ?</a>
-            <a href="{{ path('campaign_app') }}bienvenue" class="text-vox-blue-600 hover:underline">Je crée un compte</a>
+        <div class="flex items-center gap-2.5 text-[14px] text-vox-gray-500">
+            <span class="h-px flex-1 bg-vox-gray-200"></span>
+            OU
+            <span class="h-px flex-1 bg-vox-gray-200"></span>
         </div>
 
-        <twig:ReButton color="blue" class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-vox-blue-600 text-white hover:enabled:bg-vox-blue-700">Je me connecte</twig:ReButton>
+        <div class="bg-vox-gray-100 rounded-2xl p-4 flex flex-col gap-4">
+            <h1 class="font-plaak uppercase tracking-tight text-[20px] text-vox-gray-900">Connexion par mot de passe</h1>
 
-        <twig:ReButton
-            tag="a"
-            href="{{ path('app_user_get_magic_link', {app_domain: app.request.attributes.get('app_domain', app.request.host)}) }}"
-            stroke
-            color="blue"
-            icon="link-2"
-            class="w-full rounded-full py-3.5 text-[16px] font-semibold text-vox-blue-600 border-0 hover:enabled:bg-vox-blue-50"
-        >Je me connecte avec un lien</twig:ReButton>
-    {{ form_end(form) }}
+            {{ form_start(form, {attr: {class: 'flex flex-col gap-4 w-full'}}) }}
+                {% if error %}
+                    <twig:ReParagraphStatus status="error" icon>
+                        {{- error.messageKey|trans(error.messageData)|raw -}}
+                    </twig:ReParagraphStatus>
+                {% endif %}
+
+                <div class="flex flex-col gap-2">
+                    {{ form_row(form._username, {
+                        attr: {
+                            placeholder: 'Adresse email',
+                            validate: "['required']",
+                            autocomplete: 'email',
+                        }, label: false}) }}
+
+                    {{ form_row(form._password, {attr: {
+                        placeholder: 'Mot de passe',
+                        validate: "['required']",
+                    }, label: false}) }}
+                </div>
+
+                {{ form_row(form._remember_me, {label: 'Se souvenir de moi'}) }}
+
+                <a href="{{ path('app_forgot_password', {app_domain: app.request.attributes.get('app_domain', app.request.host)}) }}" class="self-start text-vox-blue-600 hover:underline text-[14px] font-semibold">Mot de passe oublié ?</a>
+
+                <twig:ReButton color="blue" class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-vox-blue-600 text-white hover:enabled:bg-vox-blue-700">Je me connecte</twig:ReButton>
+            {{ form_end(form) }}
+        </div>
+
+        <a href="{{ path('campaign_app') }}bienvenue" class="self-center text-vox-blue-600 hover:underline text-[14px] font-semibold">Je crée un compte</a>
+    </div>
 {% endblock %}
