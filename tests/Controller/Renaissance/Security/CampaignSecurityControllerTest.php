@@ -89,7 +89,7 @@ class CampaignSecurityControllerTest extends AbstractRenaissanceWebTestCase
         $voxHost = static::getContainer()->getParameter('user_vox_host');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/demander-un-lien-magique');
-        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => $email]));
+        $this->client->submit($crawler->selectButton('Envoyez-moi un lien de connexion')->form(['email' => $email]));
 
         $messages = $this->getEmailRepository()->findRecipientMessages(RenaissanceMagicLinkMessage::class, $email);
         self::assertCount(1, $messages);
@@ -112,7 +112,7 @@ class CampaignSecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         // Request a magic link from the campaign host, then read the link back from the email.
         $crawler = $this->client->request(Request::METHOD_GET, '/demander-un-lien-magique');
-        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => $email]));
+        $this->client->submit($crawler->selectButton('Envoyez-moi un lien de connexion')->form(['email' => $email]));
 
         $messages = $this->getEmailRepository()->findRecipientMessages(RenaissanceMagicLinkMessage::class, $email);
         self::assertCount(1, $messages);
@@ -219,7 +219,7 @@ class CampaignSecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Same host-stickiness expectation for the magic-link request success path.
-        $this->client->submit($crawler->selectButton('M’envoyer un lien')->form(['email' => 'carl999@example.fr']));
+        $this->client->submit($crawler->selectButton('Envoyez-moi un lien de connexion')->form(['email' => 'carl999@example.fr']));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $location = (string) $this->client->getResponse()->headers->get('location');

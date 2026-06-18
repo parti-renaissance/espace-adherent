@@ -49,6 +49,7 @@ class SecurityController extends AbstractController
 
         return $this->renderSecurityTheme($request, $appUrlManager, 'user_login.html.twig', [
             'form' => $form->createView(),
+            'magicLink' => $this->createForm(EmailType::class, null, ['constraints' => new NotBlank()])->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
     }
