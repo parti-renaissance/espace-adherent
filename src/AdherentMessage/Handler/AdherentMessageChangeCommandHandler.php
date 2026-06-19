@@ -6,7 +6,7 @@ namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Mailchimp\Manager;
+use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -17,7 +17,7 @@ class AdherentMessageChangeCommandHandler
 {
     public function __construct(
         private readonly AdherentMessageRepository $repository,
-        private readonly Manager $mailchimpManager,
+        private readonly StaticSegmentInitializer $staticSegmentInitializer,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
@@ -28,24 +28,13 @@ class AdherentMessageChangeCommandHandler
             return;
         }
 
-        if ($message->isSynchronized()) {
-            return;
+        foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
+            $this->staticSegmentInitializer->ensureLocalSegment($mailchimpCampaign);
         }
 
-        $filter = $message->getFilter();
-
-        foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
-            if ($this->mailchimpManager->editCampaign($mailchimpCampaign)) {
-                $filter?->setSynchronized(true);
-
-                $this->entityManager->flush();
-
-                if ($this->mailchimpManager->editCampaignContent($mailchimpCampaign)) {
-                    $mailchimpCampaign->setSynchronized(true);
-                }
-
-                $this->entityManager->flush();
-            }
+        if (!$message->isSynchronized()) {
+            $message->getFilter()?->setSynchronized(true);
+            $this->entityManager->flush();
         }
 
         $this->entityManager->clear();

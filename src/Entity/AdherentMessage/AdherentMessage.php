@@ -327,15 +327,11 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
             return false;
         }
 
-        $status = true;
-
-        foreach ($this->getMailchimpCampaigns() as $campaign) {
-            $status &= $campaign->isSynchronized();
+        if (!$this->content || !$this->subject) {
+            return false;
         }
 
-        $status &= (!$this->filter || $this->filter->isSynchronized());
-
-        return (bool) $status;
+        return !$this->filter || $this->filter->isSynchronized();
     }
 
     public function isFullySent(): bool

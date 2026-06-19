@@ -4,490 +4,106 @@ declare(strict_types=1);
 
 namespace Tests\App\AdherentMessage\Handler;
 
-use App\Adherent\Tag\TagTranslator;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
-use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
-use App\AdherentMessage\Variable\ContextBuilder;
-use App\AdherentMessage\Variable\Parser;
-use App\AdherentMessage\Variable\Renderer;
-use App\AdherentMessage\Variable\Renderer\MailchimpVariableRenderer;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageFilter;
-use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\Committee;
-use App\Entity\Geo\Zone;
-use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
-use App\Mailchimp\Campaign\CampaignRequestBuilder;
-use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
-use App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
-use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentGeoZoneConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentTagsConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CampusRegistrationConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CertifiedConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\DeclaredMandateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\DonatorStatusConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ElectMandateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\JMECommitteeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\MembershipDateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionsBuilder;
-use App\Mailchimp\Driver;
-use App\Mailchimp\Manager;
+use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use App\Repository\AdherentMessageRepository;
-use App\Repository\NationalEvent\EventInscriptionRepository;
-use App\Repository\SmsOptOutRepository;
-use App\Repository\SubscriptionTypeRepository;
-use App\Scope\ScopeEnum;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Contracts\Service\ServiceProviderInterface;
-use Tests\App\AbstractKernelTestCase;
 
-class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
+/**
+ * Since Phase 9 the handler makes ZERO Mailchimp calls: it has no Mailchimp dependency, only the
+ * local segment initializer + the EntityManager. It ensures the local audience segment and flips
+ * the message readiness flag.
+ */
+class AdherentMessageChangeCommandHandlerTest extends TestCase
 {
-    private $adherentDummy;
-    private $commandDummy;
-    private $clientMock;
-    /** @var MailchimpObjectIdMapping */
-    private $mailchimpMapping;
-
-    public function testCommitteeMessageGeneratesGoodPayloads(): void
+    public function testEnsuresLocalSegmentAndFlipsFilterSync(): void
     {
-        $message = $this->preparedMessage(ScopeEnum::ANIMATOR);
-        $message->setFilter($committeeFilter = new AdherentMessageFilter());
-        $committeeFilter->setCommittee($this->createConfiguredStub(Committee::class, [
-            'getUuidAsString' => '9106f810-9e1f-4ed8-b0dd-5c5ddc17cf61',
-            'getName' => 'Committee name',
-            'getMailchimpId' => 456,
-        ]));
+        $uuid = Uuid::v4();
+        $message = $this->createMessage();
+        $campaign = $message->getMailchimpCampaigns()[0];
 
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '4',
-                    'template_id' => 4,
-                    'subject_line' => '[Comité] Subject',
-                    'title' => date('Y/m/d').' - Full Name : Subject',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                'template' => [
-                    'id' => 4,
-                    'sections' => [
-                        'content' => 'Content',
-                        'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
+        self::assertFalse($message->isSynchronized(), 'A message with an unsynchronized filter is not ready yet.');
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
+        $initializer = $this->createMock(StaticSegmentInitializer::class);
+        $initializer->expects(self::once())->method('ensureLocalSegment')->with($campaign);
 
-                return $this->createMockResponse(json_encode(['id' => 123]));
-            })
-        ;
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('flush');
+        $em->expects(self::once())->method('clear');
 
-        $this->createHandler($message)($this->commandDummy);
+        new AdherentMessageChangeCommandHandler($this->repository($uuid, $message), $initializer, $em)(
+            new AdherentMessageChangeCommand($uuid)
+        );
+
+        self::assertTrue($message->getFilter()->isSynchronized());
+        self::assertTrue($message->isSynchronized());
     }
 
-    public function testCandidateMessageGeneratesGoodPayloads(): void
+    public function testEnsuresSegmentEvenWhenMessageAlreadySynchronized(): void
     {
-        $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
-        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
+        // A filter-less message with content + subject is already "synchronized", yet it still needs
+        // its local segment for the send path: ensuring the segment must not be gated on readiness.
+        $uuid = Uuid::v4();
+        $message = $this->createMessage(withFilter: false);
+        $campaign = $message->getMailchimpCampaigns()[0];
 
-        new GenericMailchimpCampaignHandler()->handle($message);
+        self::assertTrue($message->isSynchronized());
 
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '7',
-                    'template_id' => 7,
-                    'subject_line' => '[Candidat] Subject',
-                    'title' => date('Y/m/d').' - Full Name : Subject',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                'template' => [
-                    'id' => 7,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
+        $initializer = $this->createMock(StaticSegmentInitializer::class);
+        $initializer->expects(self::once())->method('ensureLocalSegment')->with($campaign);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::never())->method('flush'); // nothing to flip → no readiness flush
+        $em->expects(self::once())->method('clear');
 
-                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
+        new AdherentMessageChangeCommandHandler($this->repository($uuid, $message), $initializer, $em)(
+            new AdherentMessageChangeCommand($uuid)
+        );
     }
 
-    public function testCandidateJecouteMessageGeneratesGoodPayloads(): void
+    public function testReturnsEarlyWhenMessageNotFound(): void
     {
-        $message = $this->preparedMessage(ScopeEnum::CANDIDATE);
-        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
+        $uuid = Uuid::v4();
 
-        new GenericMailchimpCampaignHandler()->handle($message);
+        $repository = $this->createMock(AdherentMessageRepository::class);
+        $repository->expects(self::once())->method('findOneByUuid')->with($uuid->toRfc4122())->willReturn(null);
 
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '7',
-                    'template_id' => 7,
-                    'subject_line' => '[Candidat] Subject',
-                    'title' => date('Y/m/d').' - Full Name : Subject',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                'template' => [
-                    'id' => 7,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
+        $initializer = $this->createMock(StaticSegmentInitializer::class);
+        $initializer->expects(self::never())->method('ensureLocalSegment');
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::never())->method('flush');
+        $em->expects(self::never())->method('clear');
 
-                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
+        new AdherentMessageChangeCommandHandler($repository, $initializer, $em)(new AdherentMessageChangeCommand($uuid));
     }
 
-    public function testCorrespondentMessageGeneratesGoodPayloads(): void
+    private function createMessage(bool $withFilter = true): AdherentMessage
     {
-        $message = $this->preparedMessage(ScopeEnum::CORRESPONDENT);
-        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
-
-        new GenericMailchimpCampaignHandler()->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '13',
-                    'template_id' => 13,
-                    'subject_line' => '[Responsable local] Subject',
-                    'title' => date('Y/m/d').' - Full Name : Subject',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/id1/content', ['json' => [
-                'template' => [
-                    'id' => 13,
-                    'sections' => [
-                        'content' => 'Content',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 'id1']));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testRegionalCoordinatorMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(ScopeEnum::REGIONAL_COORDINATOR);
-        $message->setFilter(new AdherentMessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
-
-        new GenericMailchimpCampaignHandler()->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '9',
-                    'template_id' => 9,
-                    'subject_line' => '[Coordinateur Régional] Subject',
-                    'title' => date('Y/m/d').' - Full Name : Subject',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/id1/content', ['json' => [
-                'template' => [
-                    'id' => 9,
-                    'sections' => [
-                        'content' => 'Content',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 'id1']));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->adherentDummy = $this->createConfiguredStub(Adherent::class, [
-            '__toString' => 'Full Name',
-            'getFullName' => 'Full Name',
-            'getFirstName' => 'First Name',
-            'getEmailAddress' => 'adherent@mail.com',
-            'getDeputyZone' => $this->createConfiguredStub(Zone::class, ['__toString' => 'District1']),
-        ]);
-
-        $this->clientMock = $this->createMock(HttpClientInterface::class);
-        $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
-        $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::v4());
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->adherentDummy = null;
-        $this->clientMock = null;
-        $this->commandDummy = null;
-    }
-
-    private function preparedMessage(string $instanceScope): AdherentMessageInterface
-    {
-        $message = new AdherentMessage(Uuid::v4(), $this->adherentDummy);
-        $message->setSender($this->adherentDummy);
+        $message = new AdherentMessage(Uuid::v4(), $this->createStub(Adherent::class));
         $message->setSubject('Subject');
         $message->setContent('Content');
-        $message->setInstanceScope($instanceScope);
         $message->addMailchimpCampaign(new MailchimpCampaign($message));
+
+        if ($withFilter) {
+            $message->setFilter(new AdherentMessageFilter());
+        }
 
         return $message;
     }
 
-    private function creatRequestBuildersLocator(): ServiceLocator
+    private function repository(Uuid $uuid, AdherentMessage $message): AdherentMessageRepository
     {
-        $campaignRequestBuilder = new CampaignRequestBuilder(
-            $this->mailchimpMapping = new MailchimpObjectIdMapping(
-                'main_list_id',
-                'newsletter_list_id',
-                'elected_representative_list_id',
-                'event_inscription_list_id',
-                'jecoute_list_id',
-                'jemengage_list_id',
-                'newsletter_legislative_candidate_list_id',
-                'newsletter_renaissance_list_id',
-                array_flip(ScopeEnum::ALL),
-                array_flip(ScopeEnum::ALL),
-                [
-                    'subscribed_emails_referents' => 1,
-                    'COMMITTEE_SUPERVISOR' => 3,
-                    'COMMITTEE_HOST' => 4,
-                    'COMMITTEE_FOLLOWER' => 5,
-                    'COMMITTEE_NO_FOLLOWER' => 6,
-                    'deputy_email' => 7,
-                    'senator_email' => 8,
-                ],
-                'A',
-                'B',
-                'C',
-                'https://mailchimp.com',
-                'xyz'
-            ),
-            new SegmentConditionsBuilder($this->mailchimpMapping, [
-                new AdherentGeoZoneConditionBuilder(),
-                new AdherentInterestConditionBuilder($this->mailchimpMapping),
-                new AdherentRegistrationDateConditionBuilder(),
-                new AdherentTagsConditionBuilder($this->createStub(TagTranslator::class)),
-                new CampusRegistrationConditionBuilder(),
-                new CertifiedConditionBuilder(),
-                new ContactNameConditionBuilder(),
-                new ContactAgeConditionBuilder(),
-                new DeclaredMandateConditionBuilder(),
-                new DonatorStatusConditionBuilder(),
-                new JMECommitteeConditionBuilder(),
-                new ElectMandateConditionBuilder(),
-                new MembershipDateConditionBuilder(),
-                new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
-            ])
-        );
+        $repository = $this->createMock(AdherentMessageRepository::class);
+        $repository->expects(self::once())->method('findOneByUuid')->with($uuid->toRfc4122())->willReturn($message);
 
-        $campaignContentRequestBuilder = new CampaignContentRequestBuilder(
-            $this->mailchimpMapping,
-            $this->createMockRenderer(),
-            $this->createSectionRequestBuildersIterable()
-        );
-
-        return new ServiceLocator([
-            CampaignRequestBuilder::class => fn () => $campaignRequestBuilder,
-            CampaignContentRequestBuilder::class => fn () => $campaignContentRequestBuilder,
-        ]);
-    }
-
-    private function createSectionRequestBuildersIterable(): iterable
-    {
-        return [
-            new CommitteeMessageSectionBuilder($this->createConfiguredStub(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
-            new BasicMessageSectionBuilder(),
-            new DeputyMessageSectionBuilder(),
-        ];
-    }
-
-    private function createRepositoryMock(AdherentMessageInterface $message): AdherentMessageRepository
-    {
-        $repositoryMock = $this->createMock(AdherentMessageRepository::class);
-        $repositoryMock->expects($this->once())->method('findOneByUuid')->willReturn($message);
-
-        return $repositoryMock;
-    }
-
-    private function createHandler(AdherentMessageInterface $message): AdherentMessageChangeCommandHandler
-    {
-        $serviceLocator = $this->creatRequestBuildersLocator();
-
-        return new AdherentMessageChangeCommandHandler(
-            $this->createRepositoryMock($message),
-            new Manager(
-                new Driver($this->clientMock, 'test_main'),
-                $this->createEventDispatcher(),
-                $this->mailchimpMapping,
-                $this->createBus(),
-                $serviceLocator,
-                $this->createStub(SmsOptOutRepository::class),
-                $this->createStub(SubscriptionTypeRepository::class),
-                $this->createStub(EventInscriptionRepository::class),
-                $this->createStub(ObjectManager::class),
-            ),
-            $this->createStub(ObjectManager::class)
-        );
-    }
-
-    private function createEventDispatcher(): EventDispatcherInterface
-    {
-        $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->addSubscriber(new UpdateCampaignSubjectSubscriber());
-
-        return $eventDispatcher;
-    }
-
-    private function createBus(): MessageBusInterface
-    {
-        return $this->createStub(MessageBusInterface::class);
-    }
-
-    private function createMockResponse(string $content, int $statusCode = 200): ResponseInterface
-    {
-        return $this->createConfiguredStub(ResponseInterface::class, [
-            'getContent' => $content,
-            'getStatusCode' => $statusCode,
-            'toArray' => json_decode($content, true),
-        ]);
-    }
-
-    private function createMockRenderer(): Renderer
-    {
-        return new Renderer(
-            new Parser(),
-            $this->createStub(ContextBuilder::class),
-            new SimpleContainer([
-                'mailchimp' => new MailchimpVariableRenderer(),
-            ])
-        );
-    }
-}
-
-class SimpleContainer implements ContainerInterface, ServiceProviderInterface
-{
-    private $container;
-
-    public function __construct(array $container)
-    {
-        $this->container = $container;
-    }
-
-    public function get($id): mixed
-    {
-        return $this->container[$id] ?? null;
-    }
-
-    public function has($id): bool
-    {
-        return isset($this->container[$id]);
-    }
-
-    public function getProvidedServices(): array
-    {
-        return array_map(fn ($v) => \gettype($v), $this->container);
+        return $repository;
     }
 }

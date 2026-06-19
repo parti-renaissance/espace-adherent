@@ -26,6 +26,7 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
     use EntityAdministratorBlameableTrait;
 
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[ORM\Column(unique: true, nullable: true)]
     public ?string $identifier = null;
 
@@ -67,7 +68,7 @@ class TransactionalEmailTemplate implements \Stringable, EntityAdministratorBlam
 
     public function getMessageClass(): string
     {
-        $parts = explode('\\', $this->identifier);
+        $parts = explode('\\', (string) $this->identifier);
 
         return end($parts);
     }

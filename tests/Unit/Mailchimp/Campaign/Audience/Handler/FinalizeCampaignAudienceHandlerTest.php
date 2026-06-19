@@ -13,14 +13,13 @@ use App\Mailchimp\Campaign\Audience\Handler\FinalizeCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
-use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
+use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class FinalizeCampaignAudienceHandlerTest extends TestCase
 {
@@ -86,13 +85,9 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus->expects(self::once())
             ->method('dispatch')
             ->with(
+                // SES trigger, no DelayStamp: the audience is already complete in the DB at finalize.
                 self::callback(function (object $cmd): bool {
-                    return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
-                }),
-                self::callback(function (array $stamps): bool {
-                    return 1 === \count($stamps)
-                        && $stamps[0] instanceof DelayStamp
-                        && 60_000 === $stamps[0]->getDelay();
+                    return $cmd instanceof TriggerSesCampaignMessage && 7 === $cmd->campaignId;
                 }),
             )
             ->willReturn(new Envelope(new \stdClass()))
@@ -123,7 +118,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::isInstanceOf(SendMailchimpCampaignCommand::class))
+            ->with(self::isInstanceOf(TriggerSesCampaignMessage::class))
             ->willThrowException(new \RuntimeException('broker down'))
         ;
 
@@ -266,7 +261,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         self::assertSame(400, $segment->erroredCount);
     }
 
-    public function testPendingSendDispatchesSendCommandAndClearsFlag(): void
+    public function testPendingSendDispatchesSesTriggerAndClearsFlag(): void
     {
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
@@ -291,13 +286,9 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus->expects(self::once())
             ->method('dispatch')
             ->with(
+                // SES trigger, single-arg dispatch (no DelayStamp).
                 self::callback(function (object $cmd): bool {
-                    return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
-                }),
-                self::callback(function (array $stamps): bool {
-                    return 1 === \count($stamps)
-                        && $stamps[0] instanceof DelayStamp
-                        && 60_000 === $stamps[0]->getDelay();
+                    return $cmd instanceof TriggerSesCampaignMessage && 7 === $cmd->campaignId;
                 }),
             )
             ->willReturn(new Envelope(new \stdClass()))
@@ -335,7 +326,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::isInstanceOf(SendMailchimpCampaignCommand::class))
+            ->with(self::isInstanceOf(TriggerSesCampaignMessage::class))
             ->willThrowException(new \RuntimeException('broker down'))
         ;
 
