@@ -11,6 +11,7 @@ use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\Event\Event;
 use App\Entity\Geo\Zone;
 use App\Entity\NotificationObjectInterface;
+use App\Entity\Pronostic\Pronostic;
 use App\Entity\ZoneableEntityInterface;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
@@ -31,6 +32,7 @@ class TokenProviderResolver
             NotificationScope::PREFIX_NATIONAL === $scope => $this->pushTokenRepository->findAllForNational(),
             str_starts_with($scope, NotificationScope::PREFIX_ZONE) => $this->getZoneTokens($object),
             str_starts_with($scope, NotificationScope::PREFIX_PUBLICATION) => $this->getAudienceFilterTokens($object),
+            str_starts_with($scope, NotificationScope::PREFIX_PRONOSTIC_PARTICIPANTS) => $object instanceof Pronostic ? $this->pushTokenRepository->findAllForPronosticParticipants($object) : [],
             str_starts_with($scope, NotificationScope::PREFIX_COMMITTEE),
             str_starts_with($scope, NotificationScope::PREFIX_EVENT),
             str_starts_with($scope, NotificationScope::PREFIX_ACTION),

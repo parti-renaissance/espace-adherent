@@ -8,6 +8,8 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\NotificationObjectInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Repository\Pronostic\PronosticRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +20,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: PronosticRepository::class)]
 #[ORM\Index(fields: ['beginAt', 'matchAt'])]
-class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
+class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -123,6 +125,20 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     public function isOpenAt(\DateTimeInterface $date): bool
     {
         return $this->beginAt <= $date && $date < $this->matchAt;
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return true;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
+    }
+
+    public function isNational(): bool
+    {
+        return true;
     }
 
     public function isWonBy(PronosticParticipation $participation): bool
