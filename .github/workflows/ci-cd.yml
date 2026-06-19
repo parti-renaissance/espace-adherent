@@ -31,7 +31,7 @@ jobs:
         runs-on: ubuntu-24.04
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - name: Cache composer
               id: composer-cache
@@ -60,7 +60,7 @@ jobs:
         runs-on: ubuntu-24.04
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - name: Cache static assets
               id: static-cache
@@ -88,7 +88,7 @@ jobs:
             EXEC:
             RUN_NODE:
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - name: Cache composer
               id: composer-cache
@@ -162,7 +162,7 @@ jobs:
         if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - id: deps-cache
               uses: ./.github/actions/dependencies-cache
@@ -203,7 +203,7 @@ jobs:
         if: github.ref_name != 'master' || vars.SKIP_TESTS_ON_DEPLOY != 'true'
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - id: deps-cache
               uses: ./.github/actions/dependencies-cache
@@ -245,7 +245,7 @@ jobs:
                     - '@ux-component'
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - id: deps-cache
               uses: ./.github/actions/dependencies-cache
@@ -289,7 +289,7 @@ jobs:
             !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - name: Cache composer
               uses: actions/cache@v5
@@ -335,7 +335,7 @@ jobs:
         if: always() && needs.docker-build-push-gcr.result == 'success' && github.ref_name == 'master'
 
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
 
             - name: Create Sentry release
               uses: getsentry/action-release@v3
