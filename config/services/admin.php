@@ -310,6 +310,14 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AppAlert::class, 'label' => 'Alertes', 'group' => 'App mobile'])
     ;
     $services
+        ->set('app.admin.pronostic', App\Admin\Pronostic\PronosticAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Pronostic\Pronostic::class, 'label' => 'Matchs', 'group' => 'Pronostics'])
+    ;
+    $services
+        ->set('app.admin.pronostic_participation', App\Admin\Pronostic\PronosticParticipationAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Pronostic\PronosticParticipation::class, 'label' => 'Participations', 'group' => 'Pronostics'])
+    ;
+    $services
         ->set('app.admin.private_message', App\Admin\TimelinePrivateMessageAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\TimelineItemPrivateMessage::class, 'label' => 'Messages transactionnels (timeline)', 'group' => 'App mobile'])
     ;

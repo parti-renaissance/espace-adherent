@@ -313,6 +313,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'ROLE_ADMIN_APPLICATION_MOBILE_HEADER_BLOCKS' => [
                 'ROLE_APP_ADMIN_JE_MENGAGE_HEADER_BLOCK_ALL',
             ],
+            'ROLE_ADMIN_APPLICATION_MOBILE_PRONOSTICS' => [
+                'ROLE_APP_ADMIN_PRONOSTIC_ALL',
+                'ROLE_APP_ADMIN_PRONOSTIC_PARTICIPATION_ALL',
+            ],
             'ROLE_ADMIN_PHONING_CAMPAIGNS' => [
                 'ROLE_APP_ADMIN_PHONING_CAMPAIGN_ALL',
                 'ROLE_APP_ADMIN_PHONING_CAMPAIGN_HISTORY_ALL',
@@ -473,6 +477,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ROLE_ADMIN_APPLICATION_MOBILE_RIPOSTES',
                 'ROLE_ADMIN_APPLICATION_MOBILE_RESSOURCE_LINKS',
                 'ROLE_ADMIN_APPLICATION_MOBILE_HEADER_BLOCKS',
+                'ROLE_ADMIN_APPLICATION_MOBILE_PRONOSTICS',
                 'ROLE_ADMIN_PHONING_CAMPAIGNS',
                 'ROLE_ADMIN_PHONING_CAMPAIGN_HISTORIES',
                 'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGNS',
