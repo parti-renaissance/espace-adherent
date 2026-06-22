@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: PronosticRepository::class)]
-#[ORM\Index(name: 'IDX_PRONOSTIC_PERIOD', columns: ['begin_at', 'match_at'])]
+#[ORM\Index(fields: ['beginAt', 'matchAt'])]
 class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -47,12 +47,12 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     public ?int $gabrielTeam2Score = null;
 
     #[Assert\NotNull]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $beginAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $beginAt = null;
 
     #[Assert\NotNull]
-    #[ORM\Column(type: 'datetime')]
-    public ?\DateTimeInterface $matchAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    public ?\DateTimeImmutable $matchAt = null;
 
     #[Assert\PositiveOrZero]
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
@@ -62,14 +62,14 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $resultTeam2Score = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $resultPublishedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $resultPublishedAt = null;
 
     #[ORM\Column(options: ['default' => false])]
     public bool $displayed = false;
 
     /** @var Collection<int, PronosticParticipation> */
-    #[ORM\OneToMany(targetEntity: PronosticParticipation::class, mappedBy: 'pronostic', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PronosticParticipation::class, mappedBy: 'pronostic', fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $participations;
 
     public function __construct()
@@ -114,7 +114,7 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     public function setPublishResult(bool $publish): void
     {
         if ($publish && !$this->resultPublishedAt) {
-            $this->resultPublishedAt = new \DateTime();
+            $this->resultPublishedAt = new \DateTimeImmutable();
         } elseif (!$publish) {
             $this->resultPublishedAt = null;
         }

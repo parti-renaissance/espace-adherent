@@ -33,7 +33,7 @@ final class Version20260619165140 extends AbstractMigration
                   UNIQUE INDEX UNIQ_E64BDCDED17F50A6 (uuid),
                   INDEX IDX_E64BDCDE9DF5350C (created_by_administrator_id),
                   INDEX IDX_E64BDCDECF1918FF (updated_by_administrator_id),
-                  INDEX IDX_PRONOSTIC_PERIOD (begin_at, match_at),
+                  INDEX IDX_E64BDCDE3826374DFFD036BA (begin_at, match_at),
                   PRIMARY KEY (id)
                 ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`
             SQL);

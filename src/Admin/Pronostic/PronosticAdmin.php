@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Pronostic;
 
+use App\Admin\AbstractAdmin;
 use App\Form\DateTimePickerType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,8 +17,9 @@ class PronosticAdmin extends AbstractAdmin
 {
     protected function configureDefaultSortValues(array &$sortValues): void
     {
+        parent::configureDefaultSortValues($sortValues);
+
         $sortValues[DatagridInterface::SORT_BY] = 'matchAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -62,8 +63,8 @@ class PronosticAdmin extends AbstractAdmin
                 ->add('title', null, ['label' => 'Titre'])
                 ->add('team1', null, ['label' => 'Équipe 1'])
                 ->add('team2', null, ['label' => 'Équipe 2'])
-                ->add('beginAt', DateTimePickerType::class, ['label' => 'Début des pronostics'])
-                ->add('matchAt', DateTimePickerType::class, ['label' => 'Date du match / fin des pronostics'])
+                ->add('beginAt', DateTimePickerType::class, ['label' => 'Début des pronostics', 'input' => 'datetime_immutable'])
+                ->add('matchAt', DateTimePickerType::class, ['label' => 'Date du match / fin des pronostics', 'input' => 'datetime_immutable'])
                 ->add('displayed', CheckboxType::class, [
                     'label' => 'Afficher dans l’application',
                     'required' => false,

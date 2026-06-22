@@ -43,7 +43,7 @@ class PronosticTest extends TestCase
         $pronostic->setPublishResult(true);
 
         self::assertTrue($pronostic->isResultPublished());
-        self::assertInstanceOf(\DateTime::class, $pronostic->resultPublishedAt);
+        self::assertInstanceOf(\DateTimeImmutable::class, $pronostic->resultPublishedAt);
 
         $pronostic->setPublishResult(false);
 

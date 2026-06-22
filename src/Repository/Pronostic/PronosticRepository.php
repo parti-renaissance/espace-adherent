@@ -14,19 +14,4 @@ class PronosticRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Pronostic::class);
     }
-
-    public function findDisplayed(): ?Pronostic
-    {
-        return $this->findOneBy(['displayed' => true]);
-    }
-
-    /** @return Pronostic[] */
-    public function findAllOrdered(): array
-    {
-        return $this->createQueryBuilder('pronostic')
-            ->orderBy('pronostic.matchAt', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }
