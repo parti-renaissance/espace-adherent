@@ -11,7 +11,6 @@ use App\Mailer\MailerService;
 use App\Pronostic\PronosticReminderTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\Pronostic\PronosticParticipationRepository;
-use App\Repository\Pronostic\PronosticReminderRepository;
 use App\Repository\Pronostic\PronosticRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -20,12 +19,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Uid\Uuid;
 
 class DispatchPronosticNotificationsCommandTest extends TestCase
 {
     private PronosticRepository $pronosticRepository;
-    private PronosticReminderRepository $reminderRepository;
     private MessageBusInterface $bus;
     private MailerService $mailer;
     private AdherentRepository $adherentRepository;
@@ -36,7 +33,6 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->pronosticRepository = $this->createStub(PronosticRepository::class);
-        $this->reminderRepository = $this->createStub(PronosticReminderRepository::class);
         $this->bus = $this->createMock(MessageBusInterface::class);
         $this->mailer = $this->createMock(MailerService::class);
         $this->adherentRepository = $this->createStub(AdherentRepository::class);
@@ -55,7 +51,6 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
             $this->mailer,
             $this->pronosticRepository,
             $this->participationRepository,
-            $this->reminderRepository,
             $this->adherentRepository,
             $this->entityManager,
         );
@@ -78,7 +73,6 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     {
         $pronostic = $this->makePronostic(matchAt: '+2 days');
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->reminderRepository->method('has')->willReturn(false);
         $this->bus->expects(self::never())->method('dispatch');
         $this->mailer->expects(self::never())->method('sendMessage');
 
@@ -90,8 +84,8 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     public function testSkipsCreationWhenReminderAlreadyExists(): void
     {
         $pronostic = $this->makePronostic(matchAt: '+2 days');
+        $pronostic->creationNotified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->reminderRepository->method('has')->willReturn(true);
         $this->bus->expects(self::never())->method('dispatch');
         $this->mailer->expects(self::never())->method('sendMessage');
 
@@ -103,15 +97,12 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     public function testDispatchesResultsPushWhenResultPublished(): void
     {
         $pronostic = $this->makePronostic(matchAt: '-1 hour', resultPublished: true);
+        $pronostic->creationNotified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->reminderRepository->method('has')->willReturnMap([
-            [$pronostic, PronosticReminderTypeEnum::CREATION, true],
-            [$pronostic, PronosticReminderTypeEnum::RESULTS, false],
-        ]);
 
         $this->bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::callback(fn($cmd) => $cmd instanceof PronosticNotificationCommand && $cmd->type === PronosticReminderTypeEnum::RESULTS))
+            ->with(self::callback(fn ($cmd) => $cmd instanceof PronosticNotificationCommand && PronosticReminderTypeEnum::RESULTS === $cmd->type))
             ->willReturn(new Envelope(new \stdClass()));
         $this->mailer->expects(self::never())->method('sendMessage');
 
@@ -123,8 +114,9 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     public function testSkipsResultsWhenReminderAlreadyExists(): void
     {
         $pronostic = $this->makePronostic(matchAt: '-1 hour', resultPublished: true);
+        $pronostic->creationNotified = true;
+        $pronostic->resultNotified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->reminderRepository->method('has')->willReturn(true);
         $this->bus->expects(self::never())->method('dispatch');
         $this->mailer->expects(self::never())->method('sendMessage');
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\Pronostic\Pronostic;
-use App\Entity\Pronostic\PronosticReminder;
 use App\JeMengage\Push\Command\PronosticNotificationCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\PronosticCreationMessage;
@@ -13,7 +12,6 @@ use App\Mailer\Message\Renaissance\PronosticResultMessage;
 use App\Pronostic\PronosticReminderTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\Pronostic\PronosticParticipationRepository;
-use App\Repository\Pronostic\PronosticReminderRepository;
 use App\Repository\Pronostic\PronosticRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
@@ -37,7 +36,6 @@ class DispatchPronosticNotificationsCommand extends Command
         private readonly MailerService $transactionalMailer,
         private readonly PronosticRepository $pronosticRepository,
         private readonly PronosticParticipationRepository $participationRepository,
-        private readonly PronosticReminderRepository $reminderRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
@@ -49,6 +47,10 @@ class DispatchPronosticNotificationsCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     * @throws ExceptionInterface
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $pronostic = $this->pronosticRepository->findDisplayed();
@@ -60,7 +62,7 @@ class DispatchPronosticNotificationsCommand extends Command
 
         $now = new \DateTimeImmutable();
 
-        if (!$this->reminderRepository->has($pronostic, PronosticReminderTypeEnum::CREATION)) {
+        if (!$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
             $this->sendCreationEmails($pronostic);
             $this->markReminded($pronostic, PronosticReminderTypeEnum::CREATION);
             $this->io->success('Mail de création envoyé.');
@@ -68,21 +70,21 @@ class DispatchPronosticNotificationsCommand extends Command
 
         if ($now < $pronostic->matchAt) {
             $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
-            if ($now >= $oneDayBefore && !$this->reminderRepository->has($pronostic, PronosticReminderTypeEnum::J_MINUS_1)) {
+            if ($now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
                 $this->bus->dispatch(new PronosticNotificationCommand($pronostic->getUuid(), PronosticReminderTypeEnum::J_MINUS_1));
                 $this->markReminded($pronostic, PronosticReminderTypeEnum::J_MINUS_1);
                 $this->io->success('Push J-1 programmé.');
             }
 
             $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
-            if ($now >= $oneHourBefore && !$this->reminderRepository->has($pronostic, PronosticReminderTypeEnum::H_MINUS_1)) {
+            if ($now >= $oneHourBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1)) {
                 $this->bus->dispatch(new PronosticNotificationCommand($pronostic->getUuid(), PronosticReminderTypeEnum::H_MINUS_1));
                 $this->markReminded($pronostic, PronosticReminderTypeEnum::H_MINUS_1);
                 $this->io->success('Push H-1 programmé.');
             }
         }
 
-        if ($pronostic->isResultPublished() && !$this->reminderRepository->has($pronostic, PronosticReminderTypeEnum::RESULTS)) {
+        if ($pronostic->isResultPublished() && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::RESULTS)) {
             $this->bus->dispatch(new PronosticNotificationCommand($pronostic->getUuid(), PronosticReminderTypeEnum::RESULTS));
             $this->sendResultEmails($pronostic);
             $this->markReminded($pronostic, PronosticReminderTypeEnum::RESULTS);
@@ -116,7 +118,7 @@ class DispatchPronosticNotificationsCommand extends Command
 
     private function markReminded(Pronostic $pronostic, PronosticReminderTypeEnum $type): void
     {
-        $this->entityManager->persist(new PronosticReminder($pronostic, $type));
+        $pronostic->markReminderSent($type);
         $this->entityManager->flush();
     }
 }

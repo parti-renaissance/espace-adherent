@@ -9,7 +9,6 @@ use App\Entity\Pronostic\Pronostic;
 use App\Entity\Pronostic\PronosticParticipation;
 use App\JeMengage\Alert\AlertTypeEnum;
 use App\JeMengage\Alert\Provider\PronosticAlertProvider;
-use App\Pronostic\PronosticViewFactory;
 use App\Repository\Pronostic\PronosticParticipationRepository;
 use App\Repository\Pronostic\PronosticRepository;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +27,6 @@ class PronosticAlertProviderTest extends TestCase
         $this->provider = new PronosticAlertProvider(
             $this->pronosticRepository,
             $this->participationRepository,
-            new PronosticViewFactory(),
         );
 
         $this->pronostic = new Pronostic();
