@@ -19,6 +19,10 @@ class SendResubscribeEmailController extends AbstractController
             return $this->json(['message' => 'Militant est déjà abonné aux emails'], Response::HTTP_BAD_REQUEST);
         }
 
+        if ($adherent->isEmailHardBounced() || $adherent->isEmailComplained()) {
+            return $this->json(['message' => 'Adresse non éligible au réabonnement (plainte ou retour en erreur).'], Response::HTTP_BAD_REQUEST);
+        }
+
         if ($adherent->resubscribeEmailSentAt && $adherent->resubscribeEmailSentAt->diff(new \DateTime())->y < 1) {
             return $this->json(['message' => \sprintf('Un email de réabonnement a déjà été envoyé le %s. Vous ne pouvez en envoyer qu\'un par an.', $adherent->resubscribeEmailSentAt->format('d/m/Y'))], Response::HTTP_BAD_REQUEST);
         }

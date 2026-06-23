@@ -11,11 +11,16 @@ use App\Ses\Rendering\AssembledCampaignEmail;
 use App\Ses\Rendering\SesRecipient;
 use App\Ses\Rendering\SesRecipientContextFactory;
 use App\Ses\Rendering\SesRecipientEmailFactory;
+use App\Ses\Unsubscribe\UnsubscribeUrlGenerator;
 use App\ValueObject\Genders;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SesRecipientEmailFactoryTest extends TestCase
 {
+    private const UNSUBSCRIBE_URL = 'https://vox.test/desabonnement/TOKEN';
+    private const UUID = '11111111-1111-4111-8111-111111111111';
+
     public function testCreateResolvesDictionaryCodesPerRecipientAndPopulatesSesEmail(): void
     {
         $assembled = new AssembledCampaignEmail(
@@ -33,8 +38,8 @@ class SesRecipientEmailFactoryTest extends TestCase
 
         $factory = $this->factory();
 
-        $female = $factory->create($assembled, new SesRecipient('alice@b.fr', 'Alice', 'Martin', Genders::FEMALE, 'A1'));
-        $male = $factory->create($assembled, new SesRecipient('bob@b.fr', 'Bob', 'Durand', Genders::MALE, 'B2'));
+        $female = $factory->create($assembled, new SesRecipient('alice@b.fr', self::UUID, 'Alice', 'Martin', Genders::FEMALE, 'A1'));
+        $male = $factory->create($assembled, new SesRecipient('bob@b.fr', self::UUID, 'Bob', 'Durand', Genders::MALE, 'B2'));
 
         // Per-recipient resolution produces distinct HTML.
         self::assertStringContainsString('Chère Alice,', $female->html);
@@ -55,6 +60,24 @@ class SesRecipientEmailFactoryTest extends TestCase
         self::assertSame('auteur@renaissance.code', $female->replyTo);
     }
 
+    public function testCreateResolvesUnsubscribePlaceholderAndSetsHeaderUrl(): void
+    {
+        $assembled = new AssembledCampaignEmail(
+            '<p><a href="{{unsubscribe_url}}">Se désabonner</a></p>',
+            'Sujet',
+            'contact@renaissance.code',
+        );
+
+        $email = $this->factory()->create(
+            $assembled,
+            new SesRecipient('z@b.fr', self::UUID, 'Zoe', 'Zed', null, 'Z0')
+        );
+
+        self::assertStringNotContainsString('{{unsubscribe_url}}', $email->html);
+        self::assertStringContainsString(self::UNSUBSCRIBE_URL, $email->html);
+        self::assertSame(self::UNSUBSCRIBE_URL, $email->listUnsubscribeUrl);
+    }
+
     public function testAbsentGenderResolvesSalutationToEmptyString(): void
     {
         $assembled = new AssembledCampaignEmail(
@@ -63,7 +86,7 @@ class SesRecipientEmailFactoryTest extends TestCase
             'contact@renaissance.code',
         );
 
-        $email = $this->factory()->create($assembled, new SesRecipient('sam@b.fr', 'Sam', 'Lee', null, 'X9'));
+        $email = $this->factory()->create($assembled, new SesRecipient('sam@b.fr', self::UUID, 'Sam', 'Lee', null, 'X9'));
 
         self::assertStringContainsString('[]', $email->html);
         self::assertStringNotContainsString('{{', $email->html);
@@ -71,7 +94,15 @@ class SesRecipientEmailFactoryTest extends TestCase
 
     private function factory(): SesRecipientEmailFactory
     {
-        return new SesRecipientEmailFactory(new Parser(), new SesVariableRenderer(), new SesRecipientContextFactory());
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator->method('generate')->willReturn(self::UNSUBSCRIBE_URL);
+
+        return new SesRecipientEmailFactory(
+            new Parser(),
+            new SesVariableRenderer(),
+            new SesRecipientContextFactory(),
+            new UnsubscribeUrlGenerator($urlGenerator, 'test-secret-0123456789abcdef-0123'),
+        );
     }
 
     private function code(string $name): string

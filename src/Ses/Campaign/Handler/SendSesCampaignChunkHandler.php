@@ -82,6 +82,7 @@ class SendSesCampaignChunkHandler
 
                 $email = $this->recipientEmailFactory->create($assembled, new SesRecipient(
                     (string) $row['email'],
+                    $row['uuid']->toRfc4122(),
                     (string) $row['firstName'],
                     (string) $row['lastName'],
                     $row['gender'],

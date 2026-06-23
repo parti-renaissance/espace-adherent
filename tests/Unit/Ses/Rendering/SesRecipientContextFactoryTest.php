@@ -16,7 +16,7 @@ class SesRecipientContextFactoryTest extends TestCase
     #[DataProvider('provideSalutations')]
     public function testSalutationFollowsGenderAndIsEmptyWhenGenderAbsent(?string $gender, string $expected): void
     {
-        $context = new SesRecipientContextFactory()->create(new SesRecipient('a@b.fr', 'Jean', 'Dupont', $gender, '12345'));
+        $context = new SesRecipientContextFactory()->create(new SesRecipient('a@b.fr', 'uuid-1', 'Jean', 'Dupont', $gender, '12345'));
 
         self::assertSame($expected, $context[$this->code(Dictionary::SALUTATION)]);
     }
@@ -33,7 +33,7 @@ class SesRecipientContextFactoryTest extends TestCase
     public function testValuesAreHtmlEscaped(): void
     {
         $context = new SesRecipientContextFactory()->create(
-            new SesRecipient('a@b.fr', '<script>alert(1)</script>', '<b>D</b>', Genders::FEMALE, '<i>9</i>')
+            new SesRecipient('a@b.fr', 'uuid-1', '<script>alert(1)</script>', '<b>D</b>', Genders::FEMALE, '<i>9</i>')
         );
 
         self::assertSame('&lt;script&gt;alert(1)&lt;/script&gt;', $context[$this->code(Dictionary::FIRST_NAME)]);

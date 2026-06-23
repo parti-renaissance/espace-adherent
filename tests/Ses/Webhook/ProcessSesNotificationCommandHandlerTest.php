@@ -37,6 +37,8 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         self::assertTrue($reloaded->isEmailHardBounced());
         // Technical suppression: the consent status is left untouched.
         self::assertSame(ContactStatusEnum::SUBSCRIBED, $reloaded->getMailchimpStatus());
+        // A bounce is not a complaint.
+        self::assertFalse($reloaded->isEmailComplained());
     }
 
     public function testComplaintUnsubscribesDurably(): void
@@ -50,6 +52,8 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         $this->manager->clear();
         $reloaded = $this->getRepository(Adherent::class)->findOneByEmail($email);
         self::assertSame(ContactStatusEnum::UNSUBSCRIBED, $reloaded->getMailchimpStatus());
+        // The complaint is recorded as such, distinct from a voluntary unsubscribe.
+        self::assertTrue($reloaded->isEmailComplained());
         // unsubscribeRequestedAt is the freeze guard that makes the unsubscribe survive a Mailchimp re-sync.
         self::assertNotNull($reloaded->unsubscribeRequestedAt);
         self::assertFalse($reloaded->isEmailHardBounced());

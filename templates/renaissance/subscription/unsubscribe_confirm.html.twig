@@ -1,0 +1,18 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Désabonnement' %}
+{% block flash_message '' %}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500">
+        <twig:Atoms:ReCard class="max-w-[500px] text-center">
+            <h1 class="text-xl font-bold mb-4">Se désabonner</h1>
+            <p class="mb-6">Confirmez que vous ne souhaitez plus recevoir d'emails de Renaissance.</p>
+            <form method="post">
+                <button type="submit" class="bg-slate-700 text-white rounded-full px-6 py-3 font-semibold">
+                    Confirmer le désabonnement
+                </button>
+            </form>
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}

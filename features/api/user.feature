@@ -20,6 +20,7 @@ Feature:
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                 "email_address": "carl999@example.fr",
                 "email_subscribed": true,
+                "can_receive_email": true,
                 "first_name": "Carl",
                 "last_name": "Mirabeau",
                 "image_url": null,
@@ -107,6 +108,7 @@ Feature:
                 "use_nickname": true,
                 "certified": true,
                 "email_subscribed": true,
+                "can_receive_email": true,
                 "country": "FR",
                 "postal_code": "75008",
                 "surveys": {

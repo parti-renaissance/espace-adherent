@@ -123,6 +123,11 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $resubscribeEmailSentAt = null;
 
+    // Mirror of Adherent::$emailComplainedAt — populated by the external projection builder (INSERT...SELECT),
+    // not by the app. Keeps a complainer out of the resubscribe offer.
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $emailComplainedAt = null;
+
     /**
      * @var string|null
      */
@@ -619,10 +624,19 @@ class ManagedUser implements TranslatedTagInterface, ImageAwareInterface, ImageE
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
     }
 
+    public function isEmailComplained(): bool
+    {
+        return null !== $this->emailComplainedAt;
+    }
+
     #[Groups(['managed_users_list', 'managed_user_read', 'managed_user_vox_detail'])]
     public function isAvailableForResubscribeEmail(): bool
     {
-        return !$this->isEmailSubscribed() && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTime())->y >= 1);
+        // Never offer a re-engagement to a spam-complaining address (a hard bounce keeps mailchimpStatus
+        // SUBSCRIBED, so it is already excluded by isEmailSubscribed()).
+        return !$this->isEmailSubscribed()
+            && !$this->isEmailComplained()
+            && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTime())->y >= 1);
     }
 
     public function getCommitteeUuids(): ?array
