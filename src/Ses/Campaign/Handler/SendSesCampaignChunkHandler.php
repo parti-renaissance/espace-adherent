@@ -14,10 +14,13 @@ use App\Ses\Client\SesEmailClient;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipient;
 use App\Ses\Rendering\SesRecipientEmailFactory;
+use App\Ses\Stats\Command\RefreshSesPublicationStatsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 /**
  * Sends one chunk of a campaign through SES, one recipient at a time, with per-row at-most-once.
@@ -44,6 +47,7 @@ class SendSesCampaignChunkHandler
         private readonly CampaignReachInserter $reachInserter,
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -163,5 +167,10 @@ class SendSesCampaignChunkHandler
         $this->logger->info('[SES][Campaign] Campaign send complete', [
             'campaign_id' => $campaign->getId(),
         ]);
+
+        $this->bus->dispatch(
+            new RefreshSesPublicationStatsCommand($campaign->getMessage()->getUuid()),
+            [new DelayStamp(300_000)]
+        );
     }
 }

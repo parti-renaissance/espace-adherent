@@ -53,6 +53,7 @@ class SesMessageAssembler
             $sender?->email ?? '',
             $sender?->name,
             $message->getReplyTo(),
+            campaignUuid: $adherentMessage->getUuid()->toRfc4122(),
         );
     }
 

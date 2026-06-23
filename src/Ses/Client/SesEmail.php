@@ -17,6 +17,8 @@ class SesEmail
         public readonly ?string $fromName = null,
         public readonly ?string $replyTo = null,
         public readonly ?string $listUnsubscribeUrl = null,
+        public readonly ?string $campaignUuid = null,
+        public readonly ?string $adherentUuid = null,
     ) {
     }
 }

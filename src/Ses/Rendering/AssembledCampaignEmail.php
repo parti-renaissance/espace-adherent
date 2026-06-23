@@ -19,6 +19,7 @@ class AssembledCampaignEmail
         public readonly string $fromEmail,
         public readonly ?string $fromName = null,
         public readonly ?string $replyTo = null,
+        public readonly ?string $campaignUuid = null,
     ) {
     }
 }

@@ -32,6 +32,7 @@ use App\Ses\Unsubscribe\UnsubscribeUrlGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
@@ -103,6 +104,7 @@ class SendSesCampaignChunkTransportErrorTest extends AbstractKernelTestCase
             new CampaignReachInserter($memberRepository, self::getContainer()->get(BulkInsertHelper::class)),
             self::getContainer()->get(AdherentRepository::class),
             self::getContainer()->get(EntityManagerInterface::class),
+            self::getContainer()->get(MessageBusInterface::class),
         );
     }
 

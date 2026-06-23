@@ -139,6 +139,45 @@ class SesEmailClientTest extends TestCase
         self::assertStringNotContainsString('List-Unsubscribe', $capturedBody);
     }
 
+    public function testEmailTagsIncludedWhenCorrelationUuidsProvided(): void
+    {
+        $capturedBody = null;
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$capturedBody): MockResponse {
+            $capturedBody = $options['body'] ?? null;
+
+            return new MockResponse(json_encode(['MessageId' => 'ses-msg-1']), ['http_code' => 200]);
+        });
+
+        $this->createClient($httpClient)->sendEmail(new SesEmail(
+            to: 'jean@example.org',
+            subject: 'Sujet',
+            html: '<p>x</p>',
+            fromEmail: 'contact@parti-renaissance.fr',
+            campaignUuid: '11111111-1111-4111-8111-111111111111',
+            adherentUuid: '22222222-2222-4222-8222-222222222222',
+        ));
+
+        self::assertIsString($capturedBody);
+        $tags = json_decode($capturedBody, true)['EmailTags'] ?? null;
+        self::assertContains(['Name' => 'campaign_uuid', 'Value' => '11111111-1111-4111-8111-111111111111'], $tags);
+        self::assertContains(['Name' => 'adherent_uuid', 'Value' => '22222222-2222-4222-8222-222222222222'], $tags);
+    }
+
+    public function testEmailTagsOmittedWhenCorrelationUuidsNull(): void
+    {
+        $capturedBody = null;
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$capturedBody): MockResponse {
+            $capturedBody = $options['body'] ?? null;
+
+            return new MockResponse(json_encode(['MessageId' => 'ses-msg-1']), ['http_code' => 200]);
+        });
+
+        $this->createClient($httpClient)->sendEmail($this->basicEmail());
+
+        self::assertIsString($capturedBody);
+        self::assertStringNotContainsString('EmailTags', $capturedBody);
+    }
+
     private function createClient(HttpClientInterface $httpClient, ?string $configurationSetName = null): SesEmailClient
     {
         return new SesEmailClient(new SesClient(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Controller\Webhook;
 
+use App\DataFixtures\ORM\LoadAdherentMessageData;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +81,112 @@ class SesNotificationControllerTest extends AbstractRenaissanceWebTestCase
         $this->postRaw(self::KEY, $body);
 
         self::assertResponseIsSuccessful();
+    }
+
+    public function testOpenEngagementEventRecordsAppHit(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-male-a@en-marche-dev.fr');
+        $campaignUuid = LoadAdherentMessageData::MESSAGE_02_UUID;
+
+        $before = $this->countEmailHits($campaignUuid, $adherent->getId(), 'open');
+
+        $this->postNotification(self::KEY, $this->engagementNotification('Open', $campaignUuid, $adherent->getUuidAsString(), [
+            'open' => ['timestamp' => '2024-01-15T10:30:00.000Z'],
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertSame($before + 1, $this->countEmailHits($campaignUuid, $adherent->getId(), 'open'));
+    }
+
+    public function testClickEngagementEventRecordsAppHitWithUrl(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-male-a@en-marche-dev.fr');
+        $campaignUuid = LoadAdherentMessageData::MESSAGE_02_UUID;
+
+        $before = $this->countEmailHits($campaignUuid, $adherent->getId(), 'click');
+
+        $this->postNotification(self::KEY, $this->engagementNotification('Click', $campaignUuid, $adherent->getUuidAsString(), [
+            'click' => ['timestamp' => '2024-01-15T11:00:00.000Z', 'link' => 'https://parti-renaissance.fr/x'],
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertSame($before + 1, $this->countEmailHits($campaignUuid, $adherent->getId(), 'click'));
+
+        $url = $this->manager->getConnection()->fetchOne(
+            'SELECT target_url FROM app_hit WHERE object_id = ? AND adherent_id = ? AND event_type = ? ORDER BY id DESC LIMIT 1',
+            [$campaignUuid, $adherent->getId(), 'click']
+        );
+        self::assertSame('https://parti-renaissance.fr/x', $url);
+    }
+
+    public function testRedeliveredOpenIsDeduplicated(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-male-a@en-marche-dev.fr');
+        $campaignUuid = LoadAdherentMessageData::MESSAGE_02_UUID;
+        $body = $this->engagementNotification('Open', $campaignUuid, $adherent->getUuidAsString(), [
+            'open' => ['timestamp' => '2024-02-20T09:00:00.000Z'],
+        ]);
+
+        $before = $this->countEmailHits($campaignUuid, $adherent->getId(), 'open');
+        $this->postNotification(self::KEY, $body);
+        $this->postNotification(self::KEY, $body);
+
+        // Same event delivered twice (SNS at-least-once) resolves to one fingerprint, one row.
+        self::assertSame($before + 1, $this->countEmailHits($campaignUuid, $adherent->getId(), 'open'));
+    }
+
+    public function testEngagementForUnknownMessageRecordsNothing(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-male-a@en-marche-dev.fr');
+        $unknownCampaign = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+
+        $before = $this->countEmailHits($unknownCampaign, $adherent->getId(), 'open');
+
+        $this->postNotification(self::KEY, $this->engagementNotification('Open', $unknownCampaign, $adherent->getUuidAsString(), [
+            'open' => ['timestamp' => '2024-03-01T09:00:00.000Z'],
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertSame($before, $this->countEmailHits($unknownCampaign, $adherent->getId(), 'open'));
+    }
+
+    public function testEngagementForUnknownAdherentRecordsNothing(): void
+    {
+        $campaignUuid = LoadAdherentMessageData::MESSAGE_02_UUID;
+        $unknownAdherentUuid = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+
+        $before = (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM app_hit');
+
+        $this->postNotification(self::KEY, $this->engagementNotification('Open', $campaignUuid, $unknownAdherentUuid, [
+            'open' => ['timestamp' => '2024-04-01T09:00:00.000Z'],
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertSame($before, (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM app_hit'));
+    }
+
+    private function engagementNotification(string $type, string $campaignUuid, string $adherentUuid, array $eventBody): string
+    {
+        return json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-engagement-1',
+            'Message' => json_encode(array_merge([
+                'eventType' => $type,
+                'mail' => ['tags' => [
+                    'campaign_uuid' => [$campaignUuid],
+                    'adherent_uuid' => [$adherentUuid],
+                ]],
+            ], $eventBody)),
+        ]);
+    }
+
+    private function countEmailHits(string $objectId, int $adherentId, string $eventType): int
+    {
+        return (int) $this->manager->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM app_hit WHERE object_id = ? AND adherent_id = ? AND event_type = ? AND source = ?',
+            [$objectId, $adherentId, $eventType, 'email']
+        );
     }
 
     private function notification(string $type, array $eventBody): string

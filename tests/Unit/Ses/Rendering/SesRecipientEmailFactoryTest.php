@@ -92,6 +92,24 @@ class SesRecipientEmailFactoryTest extends TestCase
         self::assertStringNotContainsString('{{', $email->html);
     }
 
+    public function testCreatePropagatesCampaignAndAdherentUuidToSesEmail(): void
+    {
+        $assembled = new AssembledCampaignEmail(
+            '<p>x</p>',
+            'Sujet',
+            'contact@renaissance.code',
+            campaignUuid: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        );
+
+        $email = $this->factory()->create(
+            $assembled,
+            new SesRecipient('z@b.fr', self::UUID, 'Zoe', 'Zed', null, 'Z0')
+        );
+
+        self::assertSame('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', $email->campaignUuid);
+        self::assertSame(self::UUID, $email->adherentUuid);
+    }
+
     private function factory(): SesRecipientEmailFactory
     {
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);

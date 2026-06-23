@@ -24,6 +24,25 @@ class AppHitRepository extends ServiceEntityRepository
         parent::__construct($registry, AppHit::class);
     }
 
+    public function markSuspiciousEmailClicks(string $objectId): void
+    {
+        $this->getEntityManager()->getConnection()->executeStatement(
+            <<<'SQL'
+                UPDATE app_hit h
+                INNER JOIN (
+                    SELECT adherent_id, app_date
+                    FROM app_hit
+                    WHERE object_id = :objectId AND event_type = 'click' AND source = 'email'
+                    GROUP BY adherent_id, app_date
+                    HAVING COUNT(*) >= 2
+                ) bursts ON bursts.adherent_id = h.adherent_id AND bursts.app_date = h.app_date
+                SET h.suspicious = 1
+                WHERE h.object_id = :objectId AND h.event_type = 'click' AND h.source = 'email'
+                SQL,
+            ['objectId' => $objectId]
+        );
+    }
+
     public function countImpressionAndOpenStats(TargetTypeEnum $type, Uuid $objectUuid): array
     {
         $qb = $this->createQueryBuilder('h')
