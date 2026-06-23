@@ -468,6 +468,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des paramètres d\'en-tête',
             AdministratorRoleGroupEnum::APPLICATION_MOBILE
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_APPLICATION_MOBILE_PRONOSTICS',
+            'Administrateur des pronostics',
+            AdministratorRoleGroupEnum::APPLICATION_MOBILE
+        );
         // Phoning
         yield $this->createRole(
             'ROLE_ADMIN_PHONING_CAMPAIGNS',
