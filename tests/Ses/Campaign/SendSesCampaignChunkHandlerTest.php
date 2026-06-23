@@ -18,6 +18,7 @@ use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailer\Template\Manager;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
+use App\Repository\AdherentRepository;
 use App\Repository\MailchimpCampaignRepository;
 use App\Ses\Campaign\Handler\SendSesCampaignChunkHandler;
 use App\Ses\Campaign\Message\SendSesCampaignChunkMessage;
@@ -28,6 +29,7 @@ use App\Ses\Client\SesSendOutcome;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipientContextFactory;
 use App\Ses\Rendering\SesRecipientEmailFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
@@ -141,6 +143,54 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
         self::assertSame(MailchimpStatusEnum::Sent, $this->reloadStatus($campaign));
     }
 
+    public function testSuppressionListRejectionMarksRecipientHardBounced(): void
+    {
+        $campaign = $this->createCampaign();
+        $campaign->status = MailchimpStatusEnum::Sending;
+        $recipient = $this->createSubscribedAdherent();
+        $this->addMember($campaign, $recipient, 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+        $email = $recipient->getEmailAddress();
+
+        // SES refuses a recipient already on the account suppression list: a known-dead mailbox.
+        $client = $this->createMock(SesEmailClient::class);
+        $client
+            ->expects(self::once())
+            ->method('sendEmail')
+            ->willReturnCallback(static fn (): SesSendOutcome => SesSendOutcome::rejected('Email address is on the suppression list for your account.'))
+        ;
+
+        $this->createHandler($client)(new SendSesCampaignChunkMessage($campaign->getId(), 1));
+
+        $this->manager->clear();
+        $reloaded = $this->getRepository(Adherent::class)->findOneByEmail($email);
+        self::assertTrue($reloaded->isEmailHardBounced(), 'suppression-list rejection must flag the recipient');
+    }
+
+    public function testSenderConfigRejectionDoesNotMarkRecipient(): void
+    {
+        $campaign = $this->createCampaign();
+        $campaign->status = MailchimpStatusEnum::Sending;
+        $recipient = $this->createSubscribedAdherent();
+        $this->addMember($campaign, $recipient, 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+        $email = $recipient->getEmailAddress();
+
+        // A sender-side config error is not the recipient's fault: live addresses must not be suppressed.
+        $client = $this->createMock(SesEmailClient::class);
+        $client
+            ->expects(self::once())
+            ->method('sendEmail')
+            ->willReturnCallback(static fn (): SesSendOutcome => SesSendOutcome::rejected('MailFromDomainNotVerified: the sending domain is not verified.'))
+        ;
+
+        $this->createHandler($client)(new SendSesCampaignChunkMessage($campaign->getId(), 1));
+
+        $this->manager->clear();
+        $reloaded = $this->getRepository(Adherent::class)->findOneByEmail($email);
+        self::assertFalse($reloaded->isEmailHardBounced(), 'sender-config rejection must not flag the recipient');
+    }
+
     protected function tearDown(): void
     {
         $this->seq = 0;
@@ -159,6 +209,8 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
             new SesRecipientEmailFactory(new VariableParser(), new SesVariableRenderer(), new SesRecipientContextFactory()),
             $client,
             new CampaignReachInserter($memberRepository, self::getContainer()->get(BulkInsertHelper::class)),
+            self::getContainer()->get(AdherentRepository::class),
+            self::getContainer()->get(EntityManagerInterface::class),
         );
     }
 

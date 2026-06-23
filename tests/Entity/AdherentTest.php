@@ -42,6 +42,50 @@ class AdherentTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLongitude());
     }
 
+    public function testMarkAsEmailHardBouncedSetsTimestampOnce(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $this->assertFalse($adherent->isEmailHardBounced());
+
+        $adherent->markAsEmailHardBounced();
+        $this->assertTrue($adherent->isEmailHardBounced());
+        $first = $adherent->emailHardBouncedAt;
+
+        $adherent->markAsEmailHardBounced();
+        $this->assertSame($first, $adherent->emailHardBouncedAt, 'idempotent: keeps the first occurrence date');
+    }
+
+    public function testMarkAsEmailHardBouncedDoesNotTouchConsentOrSms(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $statusBefore = $adherent->getMailchimpStatus();
+        $subscriptionsBefore = $adherent->getSubscriptionTypes();
+
+        $adherent->markAsEmailHardBounced();
+
+        $this->assertSame($statusBefore, $adherent->getMailchimpStatus());
+        $this->assertSame($subscriptionsBefore, $adherent->getSubscriptionTypes());
+    }
+
+    public function testChangingEmailAddressResetsHardBounce(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailHardBounced();
+        $this->assertTrue($adherent->isEmailHardBounced());
+
+        $adherent->setEmailAddress('a-new-fresh-address@example.org');
+        $this->assertFalse($adherent->isEmailHardBounced(), 'a new address gets a fresh chance');
+    }
+
+    public function testReassigningSameEmailKeepsHardBounce(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailHardBounced();
+
+        $adherent->setEmailAddress($adherent->getEmailAddress());
+        $this->assertTrue($adherent->isEmailHardBounced(), 'same address must not reset suppression');
+    }
+
     public function testAdherentsAreEqual(): void
     {
         $adherent1 = $this->createNewAdherent('john.smith@example.org');

@@ -19,8 +19,10 @@ use AsyncAws\Ses\SesClient;
  */
 class SesEmailClient
 {
-    public function __construct(private readonly SesClient $client)
-    {
+    public function __construct(
+        private readonly SesClient $client,
+        private readonly ?string $sesConfigurationSetName = null,
+    ) {
     }
 
     public function sendEmail(SesEmail $email): SesSendOutcome
@@ -29,6 +31,7 @@ class SesEmailClient
             'FromEmailAddress' => $this->formatFrom($email),
             'Destination' => ['ToAddresses' => [$email->to]],
             'ReplyToAddresses' => null !== $email->replyTo ? [$email->replyTo] : [],
+            'ConfigurationSetName' => $this->sesConfigurationSetName ?: null,
             'Content' => [
                 'Simple' => [
                     'Subject' => ['Data' => $email->subject, 'Charset' => 'UTF-8'],
