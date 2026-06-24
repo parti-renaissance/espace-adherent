@@ -28,12 +28,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->load('App\Mailchimp\\', __DIR__.'/../../src/Mailchimp/');
 
-    $services->set(App\Mailchimp\Campaign\Fallback\MandrillCampaignPayloadBuilder::class)
-        ->arg('$fromEmail', '%env(MANDRILL_CAMPAIGN_FROM_EMAIL)%');
-
-    $services->set(App\Mailchimp\Campaign\Fallback\Handler\TriggerMandrillFallbackHandler::class)
-        ->arg('$cap', '%env(int:MAILCHIMP_FALLBACK_MANDRILL_CAP)%');
-
     $services->set(App\Mailchimp\Driver::class)
         ->arg('$listId', '%env(MAILCHIMP_MEMBER_LIST_ID)%')
         ->arg('$mailchimpDebug', '%env(bool:default::MAILCHIMP_DEBUG)%')

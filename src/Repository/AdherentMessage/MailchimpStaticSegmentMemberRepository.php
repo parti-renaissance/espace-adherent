@@ -7,7 +7,6 @@ namespace App\Repository\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
-use App\Mailchimp\Contact\ContactStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,61 +44,6 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
         }
 
         return $result;
-    }
-
-    public function findRecipientsForMandrillByChunk(int $staticSegmentId, int $chunkNumber): array
-    {
-        return $this->createQueryBuilder('m')
-            ->select('a.emailAddress AS email, a.firstName, a.lastName, a.gender, a.publicId')
-            ->innerJoin('m.adherent', 'a')
-            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
-            ->andWhere('m.chunkNumber = :chunkNumber')
-            ->andWhere('m.processingStatus = :added')
-            ->andWhere('a.mailchimpStatus = :subscribed')
-            ->setParameter('staticSegmentId', $staticSegmentId)
-            ->setParameter('chunkNumber', $chunkNumber)
-            ->setParameter('added', SegmentMemberStatusEnum::Added)
-            ->setParameter('subscribed', ContactStatusEnum::SUBSCRIBED)
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
-
-    public function countEligibleForMandrill(int $staticSegmentId): int
-    {
-        return (int) $this->createQueryBuilder('m')
-            ->select('COUNT(m.id)')
-            ->innerJoin('m.adherent', 'a')
-            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
-            ->andWhere('m.processingStatus = :added')
-            ->andWhere('a.mailchimpStatus = :subscribed')
-            ->setParameter('staticSegmentId', $staticSegmentId)
-            ->setParameter('added', SegmentMemberStatusEnum::Added)
-            ->setParameter('subscribed', ContactStatusEnum::SUBSCRIBED)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function findChunkNumbersEligibleForMandrill(int $staticSegmentId): array
-    {
-        $rows = $this->createQueryBuilder('m')
-            ->select('DISTINCT m.chunkNumber')
-            ->innerJoin('m.adherent', 'a')
-            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
-            ->andWhere('m.processingStatus = :added')
-            ->andWhere('a.mailchimpStatus = :subscribed')
-            ->setParameter('staticSegmentId', $staticSegmentId)
-            ->setParameter('added', SegmentMemberStatusEnum::Added)
-            ->setParameter('subscribed', ContactStatusEnum::SUBSCRIBED)
-            ->orderBy('m.chunkNumber', 'ASC')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return array_map(static function (array $row): int {
-            return (int) $row['chunkNumber'];
-        }, $rows);
     }
 
     /**
