@@ -8,6 +8,7 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\UploadableFile;
 use App\Repository\Pronostic\PronosticRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -67,6 +68,10 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
 
     #[ORM\Column(options: ['default' => false])]
     public bool $displayed = false;
+
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
+    public ?UploadableFile $image = null;
 
     /** @var Collection<int, PronosticParticipation> */
     #[ORM\OneToMany(targetEntity: PronosticParticipation::class, mappedBy: 'pronostic', fetch: 'EXTRA_LAZY', orphanRemoval: true)]

@@ -1344,6 +1344,7 @@ alert.type.election: Élection
 alert.type.live: Live
 alert.type.live_announce: Annonce de live
 alert.type.meeting: Meeting
+alert.type.pronostic: Pronostic
 
 #
 # Administrators
