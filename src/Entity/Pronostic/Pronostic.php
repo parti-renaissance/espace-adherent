@@ -9,6 +9,9 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UploadableFile;
+use App\Entity\NotificationObjectInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
+use App\Pronostic\PronosticReminderTypeEnum;
 use App\Repository\Pronostic\PronosticRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +22,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: PronosticRepository::class)]
 #[ORM\Index(fields: ['beginAt', 'matchAt'])]
-class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
+class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -72,6 +75,18 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $image = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $creationNotified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $jMinus1Notified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $hMinus1Notified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    public bool $resultNotified = false;
 
     /** @var Collection<int, PronosticParticipation> */
     #[ORM\OneToMany(targetEntity: PronosticParticipation::class, mappedBy: 'pronostic', fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -128,6 +143,40 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     public function isOpenAt(\DateTimeInterface $date): bool
     {
         return $this->beginAt <= $date && $date < $this->matchAt;
+    }
+
+    public function hasReminderBeenSent(PronosticReminderTypeEnum $type): bool
+    {
+        return match ($type) {
+            PronosticReminderTypeEnum::CREATION => $this->creationNotified,
+            PronosticReminderTypeEnum::J_MINUS_1 => $this->jMinus1Notified,
+            PronosticReminderTypeEnum::H_MINUS_1 => $this->hMinus1Notified,
+            PronosticReminderTypeEnum::RESULTS => $this->resultNotified,
+        };
+    }
+
+    public function markReminderSent(PronosticReminderTypeEnum $type): void
+    {
+        match ($type) {
+            PronosticReminderTypeEnum::CREATION => $this->creationNotified = true,
+            PronosticReminderTypeEnum::J_MINUS_1 => $this->jMinus1Notified = true,
+            PronosticReminderTypeEnum::H_MINUS_1 => $this->hMinus1Notified = true,
+            PronosticReminderTypeEnum::RESULTS => $this->resultNotified = true,
+        };
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return true;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
+    }
+
+    public function isNational(): bool
+    {
+        return true;
     }
 
     public function isWonBy(PronosticParticipation $participation): bool
