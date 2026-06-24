@@ -84,7 +84,7 @@ class PronosticAdmin extends AbstractAdmin
                 ->add('beginAt', DateTimePickerType::class, ['label' => 'Début des pronostics', 'input' => 'datetime_immutable'])
                 ->add('matchAt', DateTimePickerType::class, ['label' => 'Date du match / fin des pronostics', 'input' => 'datetime_immutable'])
                 ->add('displayed', CheckboxType::class, [
-                    'label' => 'Afficher dans l’application',
+                    'label' => 'Afficher dans l’application (dans le carrousel d\'alerte)',
                     'required' => false,
                     'help' => 'Un seul pronostic doit être affiché à la fois.',
                 ])
