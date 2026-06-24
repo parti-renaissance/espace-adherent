@@ -36,20 +36,14 @@ class Driver
 
     public function updateUser(int $userId, array $data): void
     {
-        $this->moodleClient->request('POST', '', [
-            'query' => ['wsfunction' => 'core_user_update_users'],
-            'body' => [
-                'users' => [['id' => $userId, ...$data]],
-            ],
+        $this->execute('core_user_update_users', [
+            'users' => [['id' => $userId, ...$data]],
         ]);
     }
 
     public function deleteUser(int $userId): void
     {
-        $this->moodleClient->request('POST', '', [
-            'query' => ['wsfunction' => 'core_user_delete_users'],
-            'body' => ['userids' => [$userId]],
-        ]);
+        $this->execute('core_user_delete_users', ['userids' => [$userId]]);
     }
 
     /**
@@ -103,6 +97,20 @@ class Driver
             'query' => ['wsfunction' => 'tool_organisation_job_delete'],
             'body' => ['id' => $jobId],
         ]);
+    }
+
+    private function execute(string $wsFunction, array $body): void
+    {
+        $content = $this->moodleClient->request('POST', '', [
+            'query' => ['wsfunction' => $wsFunction],
+            'body' => $body,
+        ])->getContent();
+
+        $decoded = '' === $content ? null : json_decode($content, true);
+
+        if (\is_array($decoded) && isset($decoded['exception'])) {
+            throw new \RuntimeException(\sprintf('Moodle "%s" call failed: %s [%s] %s', $wsFunction, $decoded['exception'], $decoded['errorcode'] ?? 'unknown', $decoded['message'] ?? ''));
+        }
     }
 
     public function createDepartment(string $name, string $id, ?string $parentId): bool
