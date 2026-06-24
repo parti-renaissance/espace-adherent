@@ -90,7 +90,7 @@ class PronosticAdmin extends AbstractAdmin
                 ])
                 ->add('image', UploadableFileType::class, [
                     'label' => 'Image affichée dans l’alerte',
-                    'required' => false,
+                    'required' => $this->isCreation(),
                 ])
             ->end()
             ->with('Pronostic de Gabriel', ['class' => 'col-md-6'])

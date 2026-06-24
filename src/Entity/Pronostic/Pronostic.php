@@ -69,6 +69,9 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(options: ['default' => false])]
     public bool $displayed = false;
 
+    #[Assert\NotNull(
+        message: 'Veuillez ajouter une image pour créer le pronostic.',
+        groups: ['Admin_creation'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(cascade: ['all'], orphanRemoval: true)]
     public ?UploadableFile $image = null;
