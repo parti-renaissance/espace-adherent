@@ -10,18 +10,15 @@ use App\OAuth\PersistentTokenFactory;
 use App\Repository\OAuth\AuthorizationCodeRepository;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface as OAuthAuthCodeRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
 {
-    private $persistentTokenFactory;
-    private $authorizationCodeRepository;
-
     public function __construct(
-        PersistentTokenFactory $persistentTokenFactory,
-        AuthorizationCodeRepository $authorizationCodeRepository,
+        private readonly PersistentTokenFactory $persistentTokenFactory,
+        private readonly AuthorizationCodeRepository $authorizationCodeRepository,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->persistentTokenFactory = $persistentTokenFactory;
-        $this->authorizationCodeRepository = $authorizationCodeRepository;
     }
 
     public function getNewAuthCode()
@@ -31,6 +28,12 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
 
     public function persistNewAuthCode(AuthCodeEntityInterface $authCode)
     {
+        $this->logger->info('OAuth auth code minted', [
+            'auth_code_id' => $authCode->getIdentifier(),
+            'redirect_uri' => $authCode->getRedirectUri(),
+            'client_id' => $authCode->getClient()->getIdentifier(),
+        ]);
+
         $this->store($this->persistentTokenFactory->createAuthorizationCode($authCode));
     }
 
