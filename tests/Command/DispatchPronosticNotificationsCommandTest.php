@@ -63,6 +63,45 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         self::assertStringContainsString('Push de création programmé', $this->tester->getDisplay());
     }
 
+    public function testSkipsCreationBeforePronosticBeginAt(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+2 days', beginAt: '+1 hour');
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+        $this->bus->expects(self::never())->method('dispatch');
+
+        $this->tester->execute([]);
+
+        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+    }
+
+    public function testSkipsRemindersBeforePronosticBeginAt(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+12 hours', beginAt: '+1 hour');
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+        $this->bus->expects(self::never())->method('dispatch');
+
+        $this->tester->execute([]);
+
+        self::assertStringNotContainsString('Push J-1 programmé', $this->tester->getDisplay());
+    }
+
+    public function testSkipsCreationAndDispatchesJMinus1WhenPronosticBeginsAfterJMinus1Threshold(): void
+    {
+        $pronostic = $this->makePronostic(beginAt: '-11 hours', matchAt: '+12 hours');
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::J_MINUS_1)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+        self::assertStringContainsString('Push J-1 programmé', $this->tester->getDisplay());
+    }
+
     public function testSkipsCreationWhenReminderAlreadyExists(): void
     {
         $pronostic = $this->makePronostic(matchAt: '+2 days');
@@ -95,6 +134,24 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     public function testDispatchesHMinus1PushWithinOneHour(): void
     {
         $pronostic = $this->makePronostic(matchAt: '+30 minutes');
+        $pronostic->creationNotified = true;
+        $pronostic->jMinus1Notified = true;
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::H_MINUS_1)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        self::assertStringContainsString('Push H-1 programmé', $this->tester->getDisplay());
+    }
+
+    public function testDispatchesHMinus1WhenPronosticBeginsAfterHMinus1Threshold(): void
+    {
+        $pronostic = $this->makePronostic(beginAt: '-30 minutes', matchAt: '+20 minutes');
         $pronostic->creationNotified = true;
         $pronostic->jMinus1Notified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
@@ -145,13 +202,13 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         return static fn ($command) => $command instanceof PronosticNotificationCommand && $type === $command->type;
     }
 
-    private function makePronostic(string $matchAt, bool $resultPublished = false): Pronostic
+    private function makePronostic(string $matchAt, bool $resultPublished = false, string $beginAt = '-1 day'): Pronostic
     {
         $pronostic = new Pronostic();
         $pronostic->title = 'Test';
         $pronostic->team1 = 'France';
         $pronostic->team2 = 'Sénégal';
-        $pronostic->beginAt = new \DateTimeImmutable('-1 day');
+        $pronostic->beginAt = new \DateTimeImmutable($beginAt);
         $pronostic->matchAt = new \DateTimeImmutable($matchAt);
         $pronostic->gabrielTeam1Score = 1;
         $pronostic->gabrielTeam2Score = 0;

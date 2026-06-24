@@ -47,20 +47,20 @@ class DispatchPronosticNotificationsCommand extends Command
         }
 
         $now = new \DateTimeImmutable();
+        $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
+        $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
 
-        if (!$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
+        if ($pronostic->beginAt < $oneDayBefore && $now >= $pronostic->beginAt && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
             $this->dispatch($pronostic, PronosticReminderTypeEnum::CREATION);
             $this->io->success('Push de création programmé.');
         }
 
-        if ($now < $pronostic->matchAt) {
-            $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
+        if ($now >= $pronostic->beginAt && $now < $pronostic->matchAt) {
             if ($now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
                 $this->dispatch($pronostic, PronosticReminderTypeEnum::J_MINUS_1);
                 $this->io->success('Push J-1 programmé.');
             }
 
-            $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
             if ($now >= $oneHourBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1)) {
                 $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_1);
                 $this->io->success('Push H-1 programmé.');
