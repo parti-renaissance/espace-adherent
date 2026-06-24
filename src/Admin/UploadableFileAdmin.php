@@ -15,7 +15,17 @@ class UploadableFileAdmin extends AbstractAdmin
             ->add('uploadFile', VichFileType::class, [
                 'label' => false,
                 'asset_helper' => true,
+                'allow_delete' => $this->canDeleteFile(),
             ])
         ;
+    }
+
+    private function canDeleteFile(): bool
+    {
+        if (!$this->hasParentFieldDescription()) {
+            return true;
+        }
+
+        return (bool) $this->getParentFieldDescription()->getOption('allow_file_delete', true);
     }
 }
