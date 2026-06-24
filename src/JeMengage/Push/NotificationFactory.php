@@ -30,6 +30,7 @@ use App\JeMengage\Push\Notification\EventUpdatedNotification;
 use App\JeMengage\Push\Notification\NationalEventTicketNotification;
 use App\JeMengage\Push\Notification\NewsCreatedNotification;
 use App\JeMengage\Push\Notification\PrivateMessageNotification;
+use App\JeMengage\Push\Notification\PronosticCreationNotification;
 use App\JeMengage\Push\Notification\PronosticReminderNotification;
 use App\JeMengage\Push\Notification\PronosticResultNotification;
 use App\JeMengage\Router;
@@ -100,9 +101,11 @@ class NotificationFactory
         }
 
         if ($command instanceof PronosticNotificationCommand) {
-            return PronosticReminderTypeEnum::RESULTS === $command->type
-                ? PronosticResultNotification::create($object)
-                : PronosticReminderNotification::create($object, $command->type);
+            return match ($command->type) {
+                PronosticReminderTypeEnum::CREATION => PronosticCreationNotification::create($object),
+                PronosticReminderTypeEnum::RESULTS => PronosticResultNotification::create($object),
+                default => PronosticReminderNotification::create($object, $command->type),
+            };
         }
 
         throw new \RuntimeException('[Notification] Command not supported');

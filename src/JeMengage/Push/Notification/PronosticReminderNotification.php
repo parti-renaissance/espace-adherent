@@ -26,6 +26,6 @@ class PronosticReminderNotification extends AbstractMulticastNotification
             ],
         };
 
-        return new self($title, $body, NotificationScope::national());
+        return new self($title, $body, NotificationScope::pronosticNonParticipants($pronostic->getId()));
     }
 }

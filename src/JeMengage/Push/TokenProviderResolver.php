@@ -32,6 +32,7 @@ class TokenProviderResolver
             NotificationScope::PREFIX_NATIONAL === $scope => $this->pushTokenRepository->findAllForNational(),
             str_starts_with($scope, NotificationScope::PREFIX_ZONE) => $this->getZoneTokens($object),
             str_starts_with($scope, NotificationScope::PREFIX_PUBLICATION) => $this->getAudienceFilterTokens($object),
+            str_starts_with($scope, NotificationScope::PREFIX_PRONOSTIC_NON_PARTICIPANTS) => $object instanceof Pronostic ? $this->pushTokenRepository->findAllForNonParticipants($object) : [],
             str_starts_with($scope, NotificationScope::PREFIX_PRONOSTIC_PARTICIPANTS) => $object instanceof Pronostic ? $this->pushTokenRepository->findAllForPronosticParticipants($object) : [],
             str_starts_with($scope, NotificationScope::PREFIX_COMMITTEE),
             str_starts_with($scope, NotificationScope::PREFIX_EVENT),

@@ -27,18 +27,4 @@ class PronosticParticipationRepository extends ServiceEntityRepository
             'adherent' => $adherent,
         ]);
     }
-
-    /** @return PronosticParticipation[] */
-    public function findAllForPronostic(Pronostic $pronostic): array
-    {
-        return $this->createQueryBuilder('participation')
-            ->addSelect('adherent')
-            ->innerJoin('participation.adherent', 'adherent')
-            ->andWhere('participation.pronostic = :pronostic')
-            ->setParameter('pronostic', $pronostic)
-            ->orderBy('participation.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }
