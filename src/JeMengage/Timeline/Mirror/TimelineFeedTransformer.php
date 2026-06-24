@@ -32,7 +32,7 @@ class TimelineFeedTransformer
     /**
      * @param array<string, mixed> $document the flat normalizer record (+ objectID)
      *
-     * @return array{type: string, publicationDate: \DateTimeImmutable, eventDate: ?\DateTimeImmutable, audience: ?array, display: array<string, mixed>}
+     * @return array{type: string, publicationDate: \DateTimeImmutable, eventDate: ?\DateTimeImmutable, audience: ?array, display: array<string, mixed>, visibility: ?string, committeeUuid: ?string, agoraUuid: ?string}
      */
     public function transform(array $document): array
     {
@@ -43,6 +43,9 @@ class TimelineFeedTransformer
             'eventDate' => $this->parseDate($document['begin_at'] ?? null),
             'audience' => $this->buildAudience($document),
             'display' => $document,
+            'visibility' => $document['visibility'] ?? null,
+            'committeeUuid' => $document['committee_uuid'] ?? null,
+            'agoraUuid' => $document['agora_uuid'] ?? null,
         ];
     }
 

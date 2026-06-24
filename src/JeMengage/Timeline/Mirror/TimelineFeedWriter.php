@@ -19,8 +19,6 @@ use Symfony\Component\Uid\Uuid;
  */
 class TimelineFeedWriter
 {
-    private const CHUNK_SIZE = 500;
-
     public function __construct(
         private readonly Connection $connection,
         private readonly LoggerInterface $logger,
@@ -34,10 +32,11 @@ class TimelineFeedWriter
         }
 
         $this->connection->executeStatement(
-            'INSERT INTO timeline_feed (uuid, type, publication_date, event_date, audience, display, updated_at)
-             VALUES (:uuid, :type, :publication_date, :event_date, :audience, :display, :now)
+            'INSERT INTO timeline_feed (uuid, type, publication_date, event_date, audience, display, visibility, committee_uuid, agora_uuid, updated_at)
+             VALUES (:uuid, :type, :publication_date, :event_date, :audience, :display, :visibility, :committee_uuid, :agora_uuid, :now)
              ON DUPLICATE KEY UPDATE type = VALUES(type), publication_date = VALUES(publication_date),
                 event_date = VALUES(event_date), audience = VALUES(audience), display = VALUES(display),
+                visibility = VALUES(visibility), committee_uuid = VALUES(committee_uuid), agora_uuid = VALUES(agora_uuid),
                 updated_at = VALUES(updated_at)',
             [
                 'uuid' => $document->objectId->toRfc4122(),
@@ -46,6 +45,9 @@ class TimelineFeedWriter
                 'event_date' => $document->eventDate,
                 'audience' => $document->audience,
                 'display' => $document->display,
+                'visibility' => $document->visibility,
+                'committee_uuid' => $document->committeeUuid,
+                'agora_uuid' => $document->agoraUuid,
                 'now' => new \DateTimeImmutable(),
             ],
             [
@@ -99,46 +101,5 @@ class TimelineFeedWriter
         $this->logger->info('TimelineFeed stale rows swept', ['threshold' => $threshold->format('c'), 'deleted_rows' => $deleted]);
 
         return $deleted;
-    }
-
-    /**
-     * @param TimelineFeedDocument[] $documents non-empty, already bounded to CHUNK_SIZE
-     */
-    private function upsertChunk(array $documents): void
-    {
-        $now = new \DateTimeImmutable();
-        $rows = [];
-        $params = [];
-        $types = [];
-
-        foreach (array_values($documents) as $i => $document) {
-            if ($document->isRemoval()) {
-                throw new \InvalidArgumentException('Cannot upsert a removal TimelineFeedDocument.');
-            }
-
-            $rows[] = \sprintf('(:u%1$d, :t%1$d, :p%1$d, :e%1$d, :a%1$d, :d%1$d, :n%1$d)', $i);
-            $params["u$i"] = $document->objectId->toRfc4122();
-            $params["t$i"] = $document->type;
-            $params["p$i"] = $document->publicationDate;
-            $params["e$i"] = $document->eventDate;
-            $params["a$i"] = $document->audience;
-            $params["d$i"] = $document->display;
-            $params["n$i"] = $now;
-            $types["p$i"] = Types::DATETIME_IMMUTABLE;
-            $types["e$i"] = Types::DATETIME_IMMUTABLE;
-            $types["a$i"] = Types::JSON;
-            $types["d$i"] = Types::JSON;
-            $types["n$i"] = Types::DATETIME_IMMUTABLE;
-        }
-
-        $this->connection->executeStatement(
-            'INSERT INTO timeline_feed (uuid, type, publication_date, event_date, audience, display, updated_at) VALUES '
-            .implode(', ', $rows)
-            .' ON DUPLICATE KEY UPDATE type = VALUES(type), publication_date = VALUES(publication_date),
-               event_date = VALUES(event_date), audience = VALUES(audience), display = VALUES(display),
-               updated_at = VALUES(updated_at)',
-            $params,
-            $types,
-        );
     }
 }

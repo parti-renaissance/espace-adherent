@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Rows are written via raw DBAL (TimelineFeedWriter) and only ever hydrated by Doctrine on read.
  */
 #[ORM\Entity(repositoryClass: TimelineFeedRepository::class)]
+#[ORM\Index(fields: ['type', 'publicationDate'])]
 class TimelineFeed
 {
     use EntityIdentityTrait;
@@ -38,6 +39,15 @@ class TimelineFeed
 
     #[ORM\Column(type: 'json')]
     public array $display;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    public ?string $visibility = null;
+
+    #[ORM\Column(length: 36, nullable: true)]
+    public ?string $committeeUuid = null;
+
+    #[ORM\Column(length: 36, nullable: true)]
+    public ?string $agoraUuid = null;
 
     #[ORM\Column(type: 'smallint', options: ['default' => 1])]
     public int $authorImportance = 1;

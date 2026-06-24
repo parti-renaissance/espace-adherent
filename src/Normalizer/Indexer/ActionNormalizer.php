@@ -6,6 +6,7 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 
 class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -59,17 +60,14 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Action $object */
     protected function getZoneCodes(object $object): ?array
     {
-        if ($object->getZones()->isEmpty()) {
+        if (!$cityZones = $object->getZonesOfType(Zone::CITY)) {
             return null;
         }
 
-        $zonesCodes = [];
-
-        foreach ($object->getZones() as $zone) {
-            $zonesCodes[] = $this->buildZoneCodes($zone);
-        }
-
-        return array_values(array_unique(array_merge(...$zonesCodes)));
+        return array_values(array_unique(array_map(
+            static fn (Zone $zone): string => $zone->getTypeCode(),
+            $cityZones,
+        )));
     }
 
     /** @param Action $object */

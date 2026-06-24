@@ -76,6 +76,9 @@ class TimelineFeedResolver
             $canonical['eventDate'],
             $canonical['audience'],
             $canonical['display'],
+            $canonical['visibility'],
+            $canonical['committeeUuid'],
+            $canonical['agoraUuid'],
         );
     }
 

@@ -6,6 +6,7 @@ namespace App\JeMengage\Timeline;
 
 use Algolia\SearchBundle\SearchService;
 use App\Entity\Adherent;
+use App\Entity\AgoraMembership;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\Repository\Timeline\TimelineHiddenFeedRepository;
 
@@ -35,6 +36,15 @@ class DataProvider
             ));
         }
 
+        $timelineFeeds['hits'] = $this->filterRestrictedInstances(
+            $timelineFeeds['hits'],
+            $user->getCommitteeMembership()?->getCommitteeUuid()->toRfc4122(),
+            array_map(
+                static fn (AgoraMembership $membership): string => $membership->agora->getUuid()->toRfc4122(),
+                $user->agoraMemberships->toArray(),
+            ),
+        );
+
         $timelineFeeds['hits'] = $this->pipeline->process($user, $timelineFeeds['hits']);
 
         if (isset($timelineFeeds['params'])) {
@@ -42,5 +52,26 @@ class DataProvider
         }
 
         return $timelineFeeds;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $hits
+     * @param string[]                         $agoraUuids
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function filterRestrictedInstances(array $hits, ?string $committeeUuid, array $agoraUuids): array
+    {
+        return array_values(array_filter($hits, static function (array $hit) use ($committeeUuid, $agoraUuids): bool {
+            if (($committee = $hit['committee_uuid'] ?? null) && $committee !== $committeeUuid) {
+                return false;
+            }
+
+            if (($agora = $hit['agora_uuid'] ?? null) && !\in_array($agora, $agoraUuids, true)) {
+                return false;
+            }
+
+            return true;
+        }));
     }
 }

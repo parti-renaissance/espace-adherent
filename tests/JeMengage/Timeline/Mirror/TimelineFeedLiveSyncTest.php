@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\JeMengage\Timeline\Mirror;
 
+use App\Entity\Committee;
+use App\Entity\Event\Event;
 use App\Entity\Jecoute\News;
+use App\Event\EventVisibilityEnum;
 use Doctrine\DBAL\Connection;
 use Tests\App\AbstractKernelTestCase;
 
@@ -21,10 +24,14 @@ class TimelineFeedLiveSyncTest extends AbstractKernelTestCase
         parent::setUp();
 
         $this->connection = $this->manager->getConnection();
+        // Isolate the fixture mutations (and the mirror rows they trigger) behind a rolled-back
+        // transaction: the writer uses this same connection, so the rollback undoes both.
+        $this->connection->beginTransaction();
     }
 
     protected function tearDown(): void
     {
+        $this->connection->rollBack();
         $this->connection = null;
 
         parent::tearDown();
@@ -65,6 +72,62 @@ class TimelineFeedLiveSyncTest extends AbstractKernelTestCase
         $this->manager->flush();
 
         self::assertFalse($this->rowId($uuid), 'Becoming non-indexable removes the mirror row.');
+    }
+
+    public function testFlushPopulatesDenormalizedColumnsForCommitteeEvent(): void
+    {
+        $event = $this->firstIndexableEvent();
+        $committee = $this->getRepository(Committee::class)->findOneBy([]);
+        self::assertNotNull($committee, 'Fixtures must contain at least one committee.');
+
+        $event->setCommittee($committee);
+        $event->agora = null;
+        $event->visibility = EventVisibilityEnum::PUBLIC;
+        $event->setName('Live-synced committee event');
+        $this->manager->flush();
+
+        $row = $this->denormalizedColumns($event->getUuid()->toRfc4122());
+        self::assertSame('public', $row['visibility']);
+        self::assertSame($committee->getUuidAsString(), $row['committee_uuid']);
+        self::assertNull($row['agora_uuid']);
+    }
+
+    public function testFlushLeavesCommitteeColumnNullForPublicNonCommitteeEvent(): void
+    {
+        $event = $this->firstIndexableEvent();
+
+        $event->setCommittee(null);
+        $event->agora = null;
+        $event->visibility = EventVisibilityEnum::PUBLIC;
+        $event->setName('Live-synced public event');
+        $this->manager->flush();
+
+        $row = $this->denormalizedColumns($event->getUuid()->toRfc4122());
+        self::assertSame('public', $row['visibility']);
+        self::assertNull($row['committee_uuid']);
+        self::assertNull($row['agora_uuid']);
+    }
+
+    private function firstIndexableEvent(): Event
+    {
+        foreach ($this->getRepository(Event::class)->findBy(['published' => true]) as $event) {
+            if ($event->isIndexable()) {
+                return $event;
+            }
+        }
+
+        self::fail('Fixtures must contain at least one indexable event.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function denormalizedColumns(string $uuid): array
+    {
+        return $this->connection->fetchAssociative(
+            'SELECT visibility, committee_uuid, agora_uuid FROM timeline_feed WHERE uuid = :uuid',
+            ['uuid' => $uuid],
+        );
     }
 
     private function rowId(string $objectId): mixed

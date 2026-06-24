@@ -137,6 +137,35 @@ class TimelineFeedTransformerTest extends TestCase
         self::assertNull($result['eventDate']);
     }
 
+    public function testDenormalizedExposureFieldsAreProjectedFromDisplay(): void
+    {
+        $result = $this->transformer->transform([
+            'type' => 'event',
+            'date' => '2026-05-20T10:00:00+00:00',
+            'visibility' => 'public',
+            'committee_uuid' => 'committee-1',
+            'agora_uuid' => null,
+            'audience' => $this->defaultFacets(),
+        ]);
+
+        self::assertSame('public', $result['visibility']);
+        self::assertSame('committee-1', $result['committeeUuid']);
+        self::assertNull($result['agoraUuid']);
+    }
+
+    public function testDenormalizedExposureFieldsDefaultToNullWhenAbsent(): void
+    {
+        $result = $this->transformer->transform([
+            'type' => 'social_network_post',
+            'date' => '2026-05-20T10:00:00+00:00',
+            'audience' => $this->defaultFacets(),
+        ]);
+
+        self::assertNull($result['visibility']);
+        self::assertNull($result['committeeUuid']);
+        self::assertNull($result['agoraUuid']);
+    }
+
     public function testDisplayIsTheUnchangedRecord(): void
     {
         $record = [
