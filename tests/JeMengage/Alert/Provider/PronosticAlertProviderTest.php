@@ -12,6 +12,8 @@ use App\JeMengage\Alert\Provider\PronosticAlertProvider;
 use App\Repository\Pronostic\PronosticParticipationRepository;
 use App\Repository\Pronostic\PronosticRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 class PronosticAlertProviderTest extends TestCase
 {
@@ -27,6 +29,8 @@ class PronosticAlertProviderTest extends TestCase
         $this->provider = new PronosticAlertProvider(
             $this->pronosticRepository,
             $this->participationRepository,
+            $this->createStub(UrlGeneratorInterface::class),
+            $this->createStub(UploaderHelperInterface::class),
         );
 
         $this->pronostic = new Pronostic();

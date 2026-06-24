@@ -11,12 +11,16 @@ use App\JeMengage\Alert\Alert;
 use App\JeMengage\Alert\AlertTypeEnum;
 use App\Repository\Pronostic\PronosticParticipationRepository;
 use App\Repository\Pronostic\PronosticRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 readonly class PronosticAlertProvider implements AlertProviderInterface
 {
     public function __construct(
         private PronosticRepository $pronosticRepository,
         private PronosticParticipationRepository $participationRepository,
+        private UrlGeneratorInterface $urlGenerator,
+        private UploaderHelperInterface $uploaderHelper,
     ) {
     }
 
@@ -55,6 +59,7 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
             $description,
             $participation || $pronostic->isResultPublished() ? 'Voir' : 'Participer',
             '/pronostics/'.$pronostic->getUuid()->toRfc4122(),
+            imageUrl: $this->getImageUrl($pronostic),
             data: $this->buildData($pronostic, $participation, $now),
         );
         $alert->date = $pronostic->matchAt;
@@ -108,5 +113,18 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
         }
 
         return $participation ? 'participated' : 'not_participated';
+    }
+
+    private function getImageUrl(Pronostic $pronostic): ?string
+    {
+        if (!$pronostic->image?->getName()) {
+            return null;
+        }
+
+        return $this->urlGenerator->generate(
+            'asset_url',
+            ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($pronostic->image))],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

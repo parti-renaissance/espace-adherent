@@ -6,6 +6,7 @@ namespace App\Admin\Pronostic;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\Pronostic\Pronostic;
+use App\Form\Admin\UploadableFileType;
 use App\Form\DateTimePickerType;
 use App\Repository\Pronostic\PronosticRepository;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -86,6 +87,10 @@ class PronosticAdmin extends AbstractAdmin
                     'label' => 'Afficher dans l’application',
                     'required' => false,
                     'help' => 'Un seul pronostic doit être affiché à la fois.',
+                ])
+                ->add('image', UploadableFileType::class, [
+                    'label' => 'Image affichée dans l’alerte',
+                    'required' => false,
                 ])
             ->end()
             ->with('Pronostic de Gabriel', ['class' => 'col-md-6'])
