@@ -6,6 +6,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $containerConfigurator->extension('monolog', [
         'channels' => [
             'deprecation',
+            'oauth',
         ],
     ]);
 };

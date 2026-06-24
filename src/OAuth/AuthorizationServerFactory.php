@@ -47,7 +47,7 @@ class AuthorizationServerFactory
         CryptKey $privateKey,
         private readonly OidcBearerResponse $oidcBearerResponse,
         private readonly ClientRepository $entityClientRepository,
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $oauthLogger,
         string $encryptionKey,
         private readonly int $maxIdleTime,
         string $accessTokenTtlInterval,
@@ -115,7 +115,7 @@ class AuthorizationServerFactory
             $this->authCodeRepository,
             $this->refreshTokenRepository,
             new \DateInterval($this->authCodeTtlInterval),
-            $this->logger,
+            $this->oauthLogger,
         );
     }
 }

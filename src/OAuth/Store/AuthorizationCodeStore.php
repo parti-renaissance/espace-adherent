@@ -17,7 +17,7 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
     public function __construct(
         private readonly PersistentTokenFactory $persistentTokenFactory,
         private readonly AuthorizationCodeRepository $authorizationCodeRepository,
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $oauthLogger,
     ) {
     }
 
@@ -28,7 +28,7 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
 
     public function persistNewAuthCode(AuthCodeEntityInterface $authCode)
     {
-        $this->logger->info('OAuth auth code minted', [
+        $this->oauthLogger->info('OAuth auth code minted', [
             'auth_code_id' => $authCode->getIdentifier(),
             'redirect_uri' => $authCode->getRedirectUri(),
             'client_id' => $authCode->getClient()->getIdentifier(),

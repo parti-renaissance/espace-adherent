@@ -84,8 +84,8 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     }
 
     #[Required]
-    public function setLogger(LoggerInterface $logger): void
+    public function setLogger(LoggerInterface $oauthLogger): void
     {
-        $this->logger = $logger;
+        $this->logger = $oauthLogger;
     }
 }

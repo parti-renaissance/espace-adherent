@@ -17,7 +17,7 @@ class RedirectAppController extends AbstractController
     public function __construct(
         private readonly string $adminRenaissanceHost,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $oauthLogger,
     ) {
     }
 
@@ -53,7 +53,7 @@ class RedirectAppController extends AbstractController
             ? current($client->getRedirectUris())
             : $this->resolveRedirectUriForSpaHost($client->getRedirectUris(), $urlGenerator->getSpaHost(), $currentApp);
 
-        $this->logger->info('OAuth app-redirect re-issuing authorize', [
+        $this->oauthLogger->info('OAuth app-redirect re-issuing authorize', [
             'resolved_redirect_uri' => $redirectUri,
             'app_code' => $currentApp,
             'client_code' => $clientCode,
@@ -95,7 +95,7 @@ class RedirectAppController extends AbstractController
         }
 
         if (\count($matches) > 1) {
-            $this->logger->warning('Multiple redirect URIs match the SPA host; using the first match.', [
+            $this->oauthLogger->warning('Multiple redirect URIs match the SPA host; using the first match.', [
                 'spa_host' => $spaHost,
                 'app_code' => $appCode,
                 'matches' => $matches,
@@ -104,7 +104,7 @@ class RedirectAppController extends AbstractController
             return $matches[0];
         }
 
-        $this->logger->warning('No redirect URI matches the SPA host; falling back to the first registered URI.', [
+        $this->oauthLogger->warning('No redirect URI matches the SPA host; falling back to the first registered URI.', [
             'spa_host' => $spaHost,
             'app_code' => $appCode,
         ]);
