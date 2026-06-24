@@ -12,6 +12,13 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'channels' => ['mailchimp_sync'],
                 'formatter' => 'monolog.formatter.json',
             ],
+            'oauth_debug' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'level' => Monolog\Level::Info->value,
+                'channels' => ['oauth'],
+                'formatter' => 'monolog.formatter.json',
+            ],
             'stderr_errors' => [
                 'type' => 'stream',
                 'path' => 'php://stderr',
