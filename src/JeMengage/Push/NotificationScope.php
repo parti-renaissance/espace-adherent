@@ -15,6 +15,7 @@ class NotificationScope
     public const PREFIX_PRIVATE_MESSAGE = 'private_message:';
     public const PREFIX_PUBLICATION = 'publication:';
     public const PREFIX_PRONOSTIC_PARTICIPANTS = 'pronostic_participants:';
+    public const PREFIX_PRONOSTIC_NON_PARTICIPANTS = 'pronostic_non_participants:';
 
     public static function national(): string
     {
@@ -59,5 +60,10 @@ class NotificationScope
     public static function pronosticParticipants(int $pronosticId): string
     {
         return self::PREFIX_PRONOSTIC_PARTICIPANTS.$pronosticId;
+    }
+
+    public static function pronosticNonParticipants(int $pronosticId): string
+    {
+        return self::PREFIX_PRONOSTIC_NON_PARTICIPANTS.$pronosticId;
     }
 }

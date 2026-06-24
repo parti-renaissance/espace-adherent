@@ -1481,19 +1481,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
-    public function createSubscribersQueryBuilder(string $subscriptionTypeCode): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('a')
-            ->select('PARTIAL a.{id, emailAddress, firstName, lastName}')
-            ->innerJoin('a.subscriptionTypes', 'st', Join::WITH, 'st.code = :subscription_type_code')
-            ->where('a.status = :status')
-            ->andWhere('a.emailAddress IS NOT NULL')
-            ->setParameter('subscription_type_code', $subscriptionTypeCode)
-            ->setParameter('status', Adherent::ENABLED)
-        ;
-    }
-
     /**
      * @param Zone[] $zones
      *

@@ -7,14 +7,9 @@ namespace Tests\App\Command;
 use App\Command\DispatchPronosticNotificationsCommand;
 use App\Entity\Pronostic\Pronostic;
 use App\JeMengage\Push\Command\PronosticNotificationCommand;
-use App\Mailer\MailerService;
 use App\Pronostic\PronosticReminderTypeEnum;
-use App\Repository\AdherentRepository;
-use App\Repository\Pronostic\PronosticParticipationRepository;
 use App\Repository\Pronostic\PronosticRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Messenger\Envelope;
@@ -24,9 +19,6 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 {
     private PronosticRepository $pronosticRepository;
     private MessageBusInterface $bus;
-    private MailerService $mailer;
-    private AdherentRepository $adherentRepository;
-    private PronosticParticipationRepository $participationRepository;
     private EntityManagerInterface $entityManager;
     private CommandTester $tester;
 
@@ -34,24 +26,11 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     {
         $this->pronosticRepository = $this->createStub(PronosticRepository::class);
         $this->bus = $this->createMock(MessageBusInterface::class);
-        $this->mailer = $this->createMock(MailerService::class);
-        $this->adherentRepository = $this->createStub(AdherentRepository::class);
-        $this->participationRepository = $this->createStub(PronosticParticipationRepository::class);
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
-
-        $query = $this->createStub(Query::class);
-        $query->method('getResult')->willReturn([]);
-        $qb = $this->createStub(QueryBuilder::class);
-        $qb->method('getQuery')->willReturn($query);
-        $this->adherentRepository->method('createSubscribersQueryBuilder')->willReturn($qb);
-        $this->participationRepository->method('findAllForPronostic')->willReturn([]);
 
         $command = new DispatchPronosticNotificationsCommand(
             $this->bus,
-            $this->mailer,
             $this->pronosticRepository,
-            $this->participationRepository,
-            $this->adherentRepository,
             $this->entityManager,
         );
 
@@ -62,23 +41,26 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
     {
         $this->pronosticRepository->method('findDisplayed')->willReturn(null);
         $this->bus->expects(self::never())->method('dispatch');
-        $this->mailer->expects(self::never())->method('sendMessage');
 
         $this->tester->execute([]);
 
         self::assertSame(0, $this->tester->getStatusCode());
     }
 
-    public function testSendsCreationEmailWhenNoReminder(): void
+    public function testDispatchesCreationPushWhenNoReminder(): void
     {
         $pronostic = $this->makePronostic(matchAt: '+2 days');
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->bus->expects(self::never())->method('dispatch');
-        $this->mailer->expects(self::never())->method('sendMessage');
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::CREATION)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Mail de création envoyé', $this->tester->getDisplay());
+        self::assertStringContainsString('Push de création programmé', $this->tester->getDisplay());
     }
 
     public function testSkipsCreationWhenReminderAlreadyExists(): void
@@ -87,11 +69,45 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         $pronostic->creationNotified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
         $this->bus->expects(self::never())->method('dispatch');
-        $this->mailer->expects(self::never())->method('sendMessage');
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Mail de création envoyé', $this->tester->getDisplay());
+        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+    }
+
+    public function testDispatchesJMinus1PushWithinOneDay(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+12 hours');
+        $pronostic->creationNotified = true;
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::J_MINUS_1)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        self::assertStringContainsString('Push J-1 programmé', $this->tester->getDisplay());
+    }
+
+    public function testDispatchesHMinus1PushWithinOneHour(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+30 minutes');
+        $pronostic->creationNotified = true;
+        $pronostic->jMinus1Notified = true;
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::H_MINUS_1)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        self::assertStringContainsString('Push H-1 programmé', $this->tester->getDisplay());
     }
 
     public function testDispatchesResultsPushWhenResultPublished(): void
@@ -102,13 +118,13 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->bus->expects(self::once())
             ->method('dispatch')
-            ->with(self::callback(fn ($cmd) => $cmd instanceof PronosticNotificationCommand && PronosticReminderTypeEnum::RESULTS === $cmd->type))
-            ->willReturn(new Envelope(new \stdClass()));
-        $this->mailer->expects(self::never())->method('sendMessage');
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::RESULTS)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push + mails de résultats envoyés', $this->tester->getDisplay());
+        self::assertStringContainsString('Push de résultats programmé', $this->tester->getDisplay());
     }
 
     public function testSkipsResultsWhenReminderAlreadyExists(): void
@@ -118,11 +134,15 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         $pronostic->resultNotified = true;
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
         $this->bus->expects(self::never())->method('dispatch');
-        $this->mailer->expects(self::never())->method('sendMessage');
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push + mails de résultats envoyés', $this->tester->getDisplay());
+        self::assertStringNotContainsString('Push de résultats programmé', $this->tester->getDisplay());
+    }
+
+    private function isPushOfType(PronosticReminderTypeEnum $type): callable
+    {
+        return static fn ($command) => $command instanceof PronosticNotificationCommand && $type === $command->type;
     }
 
     private function makePronostic(string $matchAt, bool $resultPublished = false): Pronostic

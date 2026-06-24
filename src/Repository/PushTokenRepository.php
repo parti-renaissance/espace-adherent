@@ -189,6 +189,18 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllForNonParticipants(Pronostic $pronostic): array
+    {
+        $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
+
+        return $qb
+            ->andWhere(\sprintf('%s.id NOT IN (SELECT IDENTITY(pp.adherent) FROM %s pp WHERE pp.pronostic = :pronostic)', $adherentAlias, PronosticParticipation::class))
+            ->setParameter('pronostic', $pronostic)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
+
     public function findAllForAdherentMessage(AdherentMessage $message): array
     {
         /** @var AdherentMessageFilter $filter */
