@@ -13,6 +13,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 class OidcAuthCodeGrant extends AuthCodeGrant
 {
@@ -24,6 +25,7 @@ class OidcAuthCodeGrant extends AuthCodeGrant
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         \DateInterval $authCodeTTL,
+        private readonly ?LoggerInterface $logger = null,
     ) {
         parent::__construct($authCodeRepository, $refreshTokenRepository, $authCodeTTL);
     }
@@ -86,6 +88,15 @@ class OidcAuthCodeGrant extends AuthCodeGrant
         $payload = json_decode($decrypted, true);
         if (\is_array($payload) && isset($payload['nonce']) && \is_string($payload['nonce'])) {
             $this->decryptedNonce = $payload['nonce'];
+        }
+
+        if (null !== $this->logger && \is_array($payload) && isset($payload['auth_code_id'])) {
+            $this->logger->info('OAuth token exchange: auth code redirect_uri trace', [
+                'auth_code_id' => $payload['auth_code_id'],
+                'stored_redirect_uri' => $payload['redirect_uri'] ?? null,
+                'client_id' => $payload['client_id'] ?? null,
+                'has_code_challenge' => !empty($payload['code_challenge']),
+            ]);
         }
 
         return $decrypted;

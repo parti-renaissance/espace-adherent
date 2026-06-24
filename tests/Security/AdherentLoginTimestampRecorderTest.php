@@ -11,6 +11,7 @@ use App\Security\Http\AuthenticationSuccessHandler;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -37,6 +38,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
         $handler->setManager($manager);
         $handler->setAnonymousFollowerSession($this->createStub(AnonymousFollowerSession::class));
         $handler->setUrlGenerator($urlGenerator);
+        $handler->setLogger(new NullLogger());
 
         $handler->onAuthenticationSuccess($request, $token);
 

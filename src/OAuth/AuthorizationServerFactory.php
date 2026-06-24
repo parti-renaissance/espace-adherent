@@ -19,6 +19,7 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class AuthorizationServerFactory
 {
@@ -46,6 +47,7 @@ class AuthorizationServerFactory
         CryptKey $privateKey,
         private readonly OidcBearerResponse $oidcBearerResponse,
         private readonly ClientRepository $entityClientRepository,
+        private readonly LoggerInterface $logger,
         string $encryptionKey,
         private readonly int $maxIdleTime,
         string $accessTokenTtlInterval,
@@ -113,6 +115,7 @@ class AuthorizationServerFactory
             $this->authCodeRepository,
             $this->refreshTokenRepository,
             new \DateInterval($this->authCodeTtlInterval),
+            $this->logger,
         );
     }
 }

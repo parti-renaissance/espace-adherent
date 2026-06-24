@@ -53,6 +53,15 @@ class RedirectAppController extends AbstractController
             ? current($client->getRedirectUris())
             : $this->resolveRedirectUriForSpaHost($client->getRedirectUris(), $urlGenerator->getSpaHost(), $currentApp);
 
+        $this->logger->info('OAuth app-redirect re-issuing authorize', [
+            'resolved_redirect_uri' => $redirectUri,
+            'app_code' => $currentApp,
+            'client_code' => $clientCode,
+            'user_agent' => $request->headers->get('User-Agent'),
+            'referer' => $request->headers->get('Referer'),
+            'state' => $request->query->get('state'),
+        ]);
+
         return $this->redirectToRoute('app_front_oauth_authorize', [
             'app_domain' => $isAdmin ? $this->adminRenaissanceHost : $urlGenerator->getAppHost(),
             'response_type' => 'code',
