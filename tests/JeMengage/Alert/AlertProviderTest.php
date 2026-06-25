@@ -56,7 +56,7 @@ final class AlertProviderTest extends TestCase
             {
             }
 
-            public function getAlerts(Adherent $adherent): array
+            public function getAlerts(?Adherent $adherent): array
             {
                 return $this->alerts;
             }

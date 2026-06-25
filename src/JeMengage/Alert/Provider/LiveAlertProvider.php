@@ -19,8 +19,12 @@ class LiveAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
+        if (null === $adherent) {
+            return [];
+        }
+
         if (!$events = $this->eventRepository->findWithLiveStream()) {
             return [];
         }

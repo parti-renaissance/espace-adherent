@@ -20,14 +20,14 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
         $now = new \DateTimeImmutable();
         if (!$pronostic = $this->pronosticRepository->findDisplayed()) {
             return [];
         }
 
-        $participation = $this->participationRepository->findFor($pronostic, $adherent);
+        $participation = $adherent ? $this->participationRepository->findFor($pronostic, $adherent) : null;
 
         if ($pronostic->isResultPublished()) {
             $label = 'Résultat du pronostic';
@@ -38,7 +38,7 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
                     'draw' => 'Votre duel se termine sur un match nul.',
                     default => 'Les résultats sont disponibles.',
                 }
-                : 'Les résultats sont disponibles.';
+            : 'Les résultats sont disponibles.';
         } elseif ($participation) {
             $label = 'J’ai participé';
             $description = \sprintf('Votre pronostic : %s %d - %d %s', $pronostic->team1, $participation->team1Score, $participation->team2Score, $pronostic->team2);

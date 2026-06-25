@@ -646,6 +646,12 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ],
         'access_control' => [
             [
+                'path' => '^/api/v3/alerts',
+                'roles' => [
+                    'PUBLIC_ACCESS',
+                ],
+            ],
+            [
                 'path' => '^/api/v3/',
                 'roles' => [
                     'ROLE_USER',

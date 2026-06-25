@@ -114,6 +114,10 @@ class OAuthAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
+        if (!$request->headers->has('Authorization') && 'api_vox_alert' === $request->attributes->get('_route')) {
+            return false;
+        }
+
         return true;
     }
 }

@@ -66,6 +66,18 @@ class PronosticAlertProviderTest extends TestCase
         self::assertSame('Participer', $alerts[0]->ctaLabel);
     }
 
+    public function testPublicAlertWhenNoAdherent(): void
+    {
+        $this->pronosticRepository->method('findDisplayed')->willReturn($this->pronostic);
+
+        $alerts = $this->provider->getAlerts(null);
+
+        self::assertCount(1, $alerts);
+        self::assertSame(AlertTypeEnum::PRONOSTIC, $alerts[0]->type);
+        self::assertSame('Participer', $alerts[0]->ctaLabel);
+        self::assertNull($alerts[0]->data['participation']);
+    }
+
     public function testParticipatedVersion(): void
     {
         $participation = new PronosticParticipation($this->pronostic, $this->createStub(Adherent::class), 1, 0);

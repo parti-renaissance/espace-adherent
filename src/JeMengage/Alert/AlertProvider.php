@@ -14,7 +14,7 @@ class AlertProvider
     {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
         $allAlerts = [];
 
