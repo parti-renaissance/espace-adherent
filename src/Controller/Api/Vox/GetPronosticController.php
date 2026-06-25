@@ -18,7 +18,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class GetPronosticController extends AbstractController
 {
     public function __invoke(
-        #[MapEntity(mapping: ['uuid' => 'uuid'])]
         Pronostic $pronostic,
         #[CurrentUser] Adherent $user,
         PronosticParticipationRepository $participationRepository,
