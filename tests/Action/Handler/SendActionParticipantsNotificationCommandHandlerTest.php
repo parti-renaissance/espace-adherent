@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\Action\EventListener;
+namespace Tests\App\Action\Handler;
 
-use App\Action\ActionEvent;
-use App\Action\EventListener\ActionMessageNotifierListener;
+use App\Action\Command\SendActionParticipantsNotificationCommand;
+use App\Action\Handler\SendActionParticipantsNotificationCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
@@ -17,9 +17,10 @@ use Tests\App\AbstractKernelTestCase;
 
 /**
  * The action update/cancel mails target the action participants (no "confirmed" notion on actions).
+ * The notification is dispatched asynchronously by ActionMessageNotifierListener and produced by this handler.
  */
 #[Group('functional')]
-class ActionParticipantsNotificationTest extends AbstractKernelTestCase
+class SendActionParticipantsNotificationCommandHandlerTest extends AbstractKernelTestCase
 {
     private ?Action $action = null;
     private ?Adherent $firstParticipant = null;
@@ -61,18 +62,22 @@ class ActionParticipantsNotificationTest extends AbstractKernelTestCase
         parent::tearDown();
     }
 
-    public function testActionUpdateAndCancellationMailsTargetParticipants(): void
+    public function testUpdateMailTargetsAllParticipants(): void
     {
-        $listener = $this->get(ActionMessageNotifierListener::class);
+        $handler = $this->get(SendActionParticipantsNotificationCommandHandler::class);
+        $handler(new SendActionParticipantsNotificationCommand($this->action->getUuid()));
+
         $repository = $this->getEmailRepository();
-
-        $listener->onActionUpdated(new ActionEvent($this->firstParticipant, $this->action));
-
         self::assertNotEmpty($repository->findRecipientMessages(ActionUpdateMessage::class, $this->firstParticipant->getEmailAddress()));
         self::assertNotEmpty($repository->findRecipientMessages(ActionUpdateMessage::class, $this->secondParticipant->getEmailAddress()));
+    }
 
-        $listener->onActionCancelled(new ActionEvent($this->firstParticipant, $this->action));
+    public function testCancellationMailTargetsAllParticipants(): void
+    {
+        $handler = $this->get(SendActionParticipantsNotificationCommandHandler::class);
+        $handler(new SendActionParticipantsNotificationCommand($this->action->getUuid(), true));
 
+        $repository = $this->getEmailRepository();
         self::assertNotEmpty($repository->findRecipientMessages(ActionCancellationMessage::class, $this->firstParticipant->getEmailAddress()));
         self::assertNotEmpty($repository->findRecipientMessages(ActionCancellationMessage::class, $this->secondParticipant->getEmailAddress()));
     }

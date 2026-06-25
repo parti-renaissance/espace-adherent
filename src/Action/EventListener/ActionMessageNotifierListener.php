@@ -6,24 +6,15 @@ namespace App\Action\EventListener;
 
 use App\Action\ActionEvent;
 use App\Action\Command\SendActionCreationNotificationCommand;
-use App\Entity\Action\Action;
+use App\Action\Command\SendActionParticipantsNotificationCommand;
 use App\Events;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\ActionCancellationMessage;
-use App\Mailer\Message\Renaissance\ActionUpdateMessage;
-use App\Repository\Action\ActionParticipantRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ActionMessageNotifierListener implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly MessageBusInterface $bus,
-        private readonly ActionParticipantRepository $participantRepository,
-        private readonly MailerService $transactionalMailer,
-        private readonly UrlGeneratorInterface $urlGenerator,
-    ) {
+    public function __construct(private readonly MessageBusInterface $bus)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -42,27 +33,11 @@ class ActionMessageNotifierListener implements EventSubscriberInterface
 
     public function onActionUpdated(ActionEvent $event): void
     {
-        $this->notifyParticipants($event->getAction(), ActionUpdateMessage::class);
+        $this->bus->dispatch(new SendActionParticipantsNotificationCommand($event->getAction()->getUuid()));
     }
 
     public function onActionCancelled(ActionEvent $event): void
     {
-        $this->notifyParticipants($event->getAction(), ActionCancellationMessage::class);
-    }
-
-    /**
-     * @param class-string<ActionUpdateMessage|ActionCancellationMessage> $messageClass
-     */
-    private function notifyParticipants(Action $action, string $messageClass): void
-    {
-        if (!$recipients = $this->participantRepository->findParticipantAdherents($action)) {
-            return;
-        }
-
-        $actionUrl = $this->urlGenerator->generate('vox_app', [], UrlGeneratorInterface::ABSOLUTE_URL).'actions/'.$action->getUuid()->toRfc4122();
-
-        foreach (array_chunk($recipients, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
-            $this->transactionalMailer->sendMessage($messageClass::create($chunk, $action, $actionUrl));
-        }
+        $this->bus->dispatch(new SendActionParticipantsNotificationCommand($event->getAction()->getUuid(), true));
     }
 }
