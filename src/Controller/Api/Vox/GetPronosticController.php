@@ -8,7 +8,6 @@ use App\Entity\Adherent;
 use App\Entity\Pronostic\Pronostic;
 use App\Pronostic\PronosticDataBuilder;
 use App\Repository\Pronostic\PronosticParticipationRepository;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
