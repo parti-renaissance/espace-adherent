@@ -20,6 +20,8 @@ use App\Entity\Jecoute\News;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
+use App\Entity\Pronostic\Pronostic;
+use App\Entity\Pronostic\PronosticParticipation;
 use App\Entity\PushToken;
 use App\Entity\TimelineItemPrivateMessage;
 use App\Firebase\PushTokenUnsubscribeReasonEnum;
@@ -170,6 +172,30 @@ class PushTokenRepository extends ServiceEntityRepository
     public function findAllForNational(): array
     {
         return $this->createIdentifierQueryBuilder('t')
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
+
+    public function findAllForPronosticParticipants(Pronostic $pronostic): array
+    {
+        $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
+
+        return $qb
+            ->innerJoin(PronosticParticipation::class, 'pp', Join::WITH, \sprintf('pp.adherent = %s AND pp.pronostic = :pronostic', $adherentAlias))
+            ->setParameter('pronostic', $pronostic)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
+
+    public function findAllForNonParticipants(Pronostic $pronostic): array
+    {
+        $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
+
+        return $qb
+            ->andWhere(\sprintf('%s.id NOT IN (SELECT IDENTITY(pp.adherent) FROM %s pp WHERE pp.pronostic = :pronostic)', $adherentAlias, PronosticParticipation::class))
+            ->setParameter('pronostic', $pronostic)
             ->getQuery()
             ->getSingleColumnResult()
         ;

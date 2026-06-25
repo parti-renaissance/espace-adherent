@@ -7,6 +7,7 @@ namespace App\JeMengage;
 use App\Entity\Action\Action;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\Event\Event;
+use App\Entity\Pronostic\Pronostic;
 use App\Entity\TimelineItemPrivateMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -33,6 +34,10 @@ class Router
 
         if ($object instanceof AdherentMessage) {
             return '/publications/'.$object->getUuid();
+        }
+
+        if ($object instanceof Pronostic) {
+            return '/pronostics/'.$object->getUuid();
         }
 
         if ($object instanceof TimelineItemPrivateMessage && $object->ctaUrl) {
