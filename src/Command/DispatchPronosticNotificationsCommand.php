@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:pronostic:dispatch-notifications',
-    description: 'Dispatch pronostic push notifications (creation, J-1, H-1, results) for the displayed pronostic.',
+    description: 'Dispatch pronostic push notifications (creation, J-1, H-1, H-5min, results) for the displayed pronostic.',
 )]
 class DispatchPronosticNotificationsCommand extends Command
 {
@@ -49,10 +49,20 @@ class DispatchPronosticNotificationsCommand extends Command
         $now = new \DateTimeImmutable();
         $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
         $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
+        $fiveMinutesBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-5 minutes');
 
         if ($pronostic->beginAt < $oneDayBefore && $now >= $pronostic->beginAt && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
+            $jMinus1Skipped = $now >= $oneDayBefore;
+            if ($jMinus1Skipped) {
+                $pronostic->markReminderSent(PronosticReminderTypeEnum::J_MINUS_1);
+            }
+
             $this->dispatch($pronostic, PronosticReminderTypeEnum::CREATION);
             $this->io->success('Push de création programmé.');
+
+            if ($jMinus1Skipped) {
+                $this->io->note('Push J-1 ignoré : seuil J-1 déjà dépassé.');
+            }
         }
 
         if ($now >= $pronostic->beginAt && $now < $pronostic->matchAt) {
@@ -64,6 +74,11 @@ class DispatchPronosticNotificationsCommand extends Command
             if ($now >= $oneHourBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1)) {
                 $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_1);
                 $this->io->success('Push H-1 programmé.');
+            }
+
+            if ($now >= $fiveMinutesBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_5_MIN)) {
+                $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_5_MIN);
+                $this->io->success('Push H-5min programmé.');
             }
         }
 

@@ -16,13 +16,17 @@ class PronosticReminderNotification extends AbstractMulticastNotification
         $match = \sprintf('%s - %s', $pronostic->team1, $pronostic->team2);
 
         [$title, $body] = match ($type) {
+            PronosticReminderTypeEnum::H_MINUS_5_MIN => [
+                '🔴 Plus que 5 minutes pour faire tes pronos !',
+                'Les joueurs sont dans le couloir. Plus que 5 minutes pour enregistrer ton pronostic. Vite !',
+            ],
             PronosticReminderTypeEnum::H_MINUS_1 => [
-                'Dernière heure pour pronostiquer !',
-                \sprintf('Le match %s commence dans 1h. Donnez vite votre pronostic !', $match),
+                '🚨 Rien ne résiste à un bon prono !',
+                \sprintf('L’échauffement est terminé. Ne laisse pas Gabriel Attal gagner d’avance sur %s. Valide ton score !', $match),
             ],
             default => [
-                'Plus qu’un jour pour pronostiquer !',
-                \sprintf('Le match %s commence demain. Donnez votre pronostic avant le coup d’envoi !', $match),
+                '⏳ Il a déjà fait son choix...',
+                \sprintf('Gabriel a verrouillé son score pour %s demain. À ton tour d’entrer sur le terrain.', $match),
             ],
         };
 

@@ -13,8 +13,8 @@ class PronosticResultNotification extends AbstractMulticastNotification
     public static function create(Pronostic $pronostic): self
     {
         return new self(
-            'Résultats du pronostic',
-            \sprintf('Les résultats de « %s » sont disponibles. Avez-vous gagné ?', $pronostic->title),
+            '🏆 Tu perds, tu retentes !',
+            'Découvre immédiatement si tu as réussi à donner une leçon de pronostic à Gabriel Attal.',
             NotificationScope::pronosticParticipants($pronostic->getId()),
         );
     }

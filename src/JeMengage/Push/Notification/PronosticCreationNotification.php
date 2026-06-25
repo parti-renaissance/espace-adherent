@@ -15,8 +15,8 @@ class PronosticCreationNotification extends AbstractMulticastNotification
         $match = \sprintf('%s - %s', $pronostic->team1, $pronostic->team2);
 
         return new self(
-            'Nouveau pronostic à tenter !',
-            \sprintf('Pronostiquez le résultat de %s et tentez votre chance !', $match),
+            '⚽ Défiez les pronos de Gabriel Attal',
+            \sprintf("Vous défiez ses pronos, il vous apprend à les respecter !\nGabriel Attal a fait son choix pour %s. Pouvez-vous faire mieux ?", $match),
             NotificationScope::national(),
         );
     }
