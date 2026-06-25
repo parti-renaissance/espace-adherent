@@ -184,9 +184,88 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, N
 
     public function isWonBy(PronosticParticipation $participation): bool
     {
-        return $this->isResultPublished()
-            && $this->resultTeam1Score === $participation->team1Score
-            && $this->resultTeam2Score === $participation->team2Score;
+        return 'won' === $this->getParticipationResultStatusCode($participation);
+    }
+
+    public function getParticipationResultStatusCode(PronosticParticipation $participation): string
+    {
+        if (
+            !$this->isResultPublished()
+            || null === $this->resultTeam1Score
+            || null === $this->resultTeam2Score
+            || null === $this->gabrielTeam1Score
+            || null === $this->gabrielTeam2Score
+        ) {
+            return 'pending';
+        }
+
+        $resultOutcome = self::getOutcome($this->resultTeam1Score, $this->resultTeam2Score);
+        $participantOutcome = self::getOutcome($participation->team1Score, $participation->team2Score);
+        $gabrielOutcome = self::getOutcome($this->gabrielTeam1Score, $this->gabrielTeam2Score);
+
+        $participantHasCorrectOutcome = $participantOutcome === $resultOutcome;
+        $gabrielHasCorrectOutcome = $gabrielOutcome === $resultOutcome;
+
+        if ($participantHasCorrectOutcome !== $gabrielHasCorrectOutcome) {
+            return $participantHasCorrectOutcome ? 'won' : 'lost';
+        }
+
+        if ($participantHasCorrectOutcome && $gabrielHasCorrectOutcome) {
+            $participantHasExactScore = self::hasExactScore(
+                $participation->team1Score,
+                $participation->team2Score,
+                $this->resultTeam1Score,
+                $this->resultTeam2Score
+            );
+            $gabrielHasExactScore = self::hasExactScore(
+                $this->gabrielTeam1Score,
+                $this->gabrielTeam2Score,
+                $this->resultTeam1Score,
+                $this->resultTeam2Score
+            );
+
+            if ($participantHasExactScore && $gabrielHasExactScore) {
+                return 'draw';
+            }
+
+            if ($participantHasExactScore !== $gabrielHasExactScore) {
+                return $participantHasExactScore ? 'won' : 'lost';
+            }
+        }
+
+        $participantError = self::getScoreError(
+            $participation->team1Score,
+            $participation->team2Score,
+            $this->resultTeam1Score,
+            $this->resultTeam2Score
+        );
+        $gabrielError = self::getScoreError(
+            $this->gabrielTeam1Score,
+            $this->gabrielTeam2Score,
+            $this->resultTeam1Score,
+            $this->resultTeam2Score
+        );
+
+        return match ($participantError <=> $gabrielError) {
+            -1 => 'won',
+            1 => 'lost',
+            default => 'draw',
+        };
+    }
+
+    private static function getOutcome(int $team1Score, int $team2Score): int
+    {
+        return $team1Score <=> $team2Score;
+    }
+
+    private static function hasExactScore(int $team1Score, int $team2Score, int $resultTeam1Score, int $resultTeam2Score): bool
+    {
+        return $team1Score === $resultTeam1Score && $team2Score === $resultTeam2Score;
+    }
+
+    private static function getScoreError(int $team1Score, int $team2Score, int $resultTeam1Score, int $resultTeam2Score): int
+    {
+        return abs($resultTeam1Score - $team1Score) + abs($resultTeam2Score - $team2Score);
     }
 
     #[Assert\Callback]

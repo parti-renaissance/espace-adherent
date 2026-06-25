@@ -24,18 +24,64 @@ class PronosticTest extends TestCase
 
     public function testExactScoreWins(): void
     {
-        $pronostic = new Pronostic();
-        $pronostic->resultTeam1Score = 2;
-        $pronostic->resultTeam2Score = 1;
-        $pronostic->resultPublishedAt = new \DateTimeImmutable();
+        $pronostic = $this->createPublishedPronostic(2, 1, 3, 1);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 1);
 
-        $winner = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 1);
-        $loser = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 1, 0);
+        self::assertTrue($pronostic->isWonBy($participation));
+        self::assertSame('won', $participation->getResultStatusCode());
+        self::assertSame('Gagné', $participation->getResultStatus());
+    }
 
-        self::assertTrue($pronostic->isWonBy($winner));
-        self::assertSame('Gagné', $winner->getResultStatus());
-        self::assertFalse($pronostic->isWonBy($loser));
-        self::assertSame('Perdu', $loser->getResultStatus());
+    public function testCorrectOutcomeWinsAgainstWrongOutcome(): void
+    {
+        $pronostic = $this->createPublishedPronostic(1, 1, 2, 1);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 2);
+
+        self::assertSame('won', $participation->getResultStatusCode());
+    }
+
+    public function testWrongOutcomeLosesAgainstCorrectOutcome(): void
+    {
+        $pronostic = $this->createPublishedPronostic(1, 1, 2, 2);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 1);
+
+        self::assertFalse($pronostic->isWonBy($participation));
+        self::assertSame('lost', $participation->getResultStatusCode());
+        self::assertSame('Perdu', $participation->getResultStatus());
+    }
+
+    public function testBothExactScoresEndInDraw(): void
+    {
+        $pronostic = $this->createPublishedPronostic(2, 1, 2, 1);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 1);
+
+        self::assertFalse($pronostic->isWonBy($participation));
+        self::assertSame('draw', $participation->getResultStatusCode());
+        self::assertSame('Match nul', $participation->getResultStatus());
+    }
+
+    public function testPrecisionWinsWhenNoOneHasCorrectOutcome(): void
+    {
+        $pronostic = $this->createPublishedPronostic(2, 0, 0, 1);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 3, 1);
+
+        self::assertSame('won', $participation->getResultStatusCode());
+    }
+
+    public function testSamePrecisionEndsInDraw(): void
+    {
+        $pronostic = $this->createPublishedPronostic(2, 0, 3, 0);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 1);
+
+        self::assertSame('draw', $participation->getResultStatusCode());
+    }
+
+    public function testDrawResultCanBePredictedAsCorrectOutcome(): void
+    {
+        $pronostic = $this->createPublishedPronostic(1, 1, 2, 1);
+        $participation = new PronosticParticipation($pronostic, $this->createStub(Adherent::class), 2, 2);
+
+        self::assertSame('won', $participation->getResultStatusCode());
     }
 
     public function testResultPublicationDateIsSetAutomatically(): void
@@ -101,6 +147,18 @@ class PronosticTest extends TestCase
         $pronostic->gabrielTeam2Score = 1;
         $pronostic->beginAt = new \DateTimeImmutable('-1 day');
         $pronostic->matchAt = new \DateTimeImmutable('+1 day');
+
+        return $pronostic;
+    }
+
+    private function createPublishedPronostic(int $resultTeam1Score, int $resultTeam2Score, int $gabrielTeam1Score, int $gabrielTeam2Score): Pronostic
+    {
+        $pronostic = $this->createValidPronostic();
+        $pronostic->resultTeam1Score = $resultTeam1Score;
+        $pronostic->resultTeam2Score = $resultTeam2Score;
+        $pronostic->resultPublishedAt = new \DateTimeImmutable();
+        $pronostic->gabrielTeam1Score = $gabrielTeam1Score;
+        $pronostic->gabrielTeam2Score = $gabrielTeam2Score;
 
         return $pronostic;
     }
