@@ -78,7 +78,7 @@ class PronosticAlertProviderTest extends TestCase
         self::assertSame('Voir', $alerts[0]->ctaLabel);
     }
 
-    public function testNoResultAlertForNonParticipant(): void
+    public function testResultAlertForNonParticipant(): void
     {
         $this->pronostic->matchAt = new \DateTimeImmutable('-1 hour');
         $this->pronostic->resultTeam1Score = 2;
@@ -88,7 +88,26 @@ class PronosticAlertProviderTest extends TestCase
         $this->pronosticRepository->method('findDisplayed')->willReturn($this->pronostic);
         $this->participationRepository->method('findFor')->willReturn(null);
 
-        self::assertSame([], $this->provider->getAlerts($this->createStub(Adherent::class)));
+        $alerts = $this->provider->getAlerts($this->createStub(Adherent::class));
+
+        self::assertCount(1, $alerts);
+        self::assertSame('Résultat du pronostic', $alerts[0]->label);
+        self::assertSame('Les résultats sont disponibles.', $alerts[0]->description);
+        self::assertSame('Voir', $alerts[0]->ctaLabel);
+    }
+
+    public function testClosedPronosticStillDisplaysAlert(): void
+    {
+        $this->pronostic->matchAt = new \DateTimeImmutable('-1 hour');
+        $this->pronosticRepository->method('findDisplayed')->willReturn($this->pronostic);
+        $this->participationRepository->method('findFor')->willReturn(null);
+
+        $alerts = $this->provider->getAlerts($this->createStub(Adherent::class));
+
+        self::assertCount(1, $alerts);
+        self::assertSame('Pronostic terminé', $alerts[0]->label);
+        self::assertSame('Les participations sont fermées.', $alerts[0]->description);
+        self::assertSame('Voir', $alerts[0]->ctaLabel);
     }
 
     public function testResultWonVersion(): void

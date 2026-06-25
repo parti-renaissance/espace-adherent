@@ -27,22 +27,19 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
             return [];
         }
 
-        if ($now >= $pronostic->matchAt && !$pronostic->isResultPublished()) {
-            return [];
-        }
-
         $participation = $this->participationRepository->findFor($pronostic, $adherent);
-
-        if ($pronostic->isResultPublished() && !$participation) {
-            return [];
-        }
 
         if ($pronostic->isResultPublished()) {
             $label = 'Résultat du pronostic';
-            $description = $pronostic->isWonBy($participation) ? 'Bravo, vous avez gagné !' : 'Votre pronostic est perdu.';
+            $description = $participation
+                ? ($pronostic->isWonBy($participation) ? 'Bravo, vous avez gagné !' : 'Votre pronostic est perdu.')
+                : 'Les résultats sont disponibles.';
         } elseif ($participation) {
             $label = 'J’ai participé';
             $description = \sprintf('Votre pronostic : %s %d - %d %s', $pronostic->team1, $participation->team1Score, $participation->team2Score, $pronostic->team2);
+        } elseif ($now >= $pronostic->matchAt) {
+            $label = 'Pronostic terminé';
+            $description = 'Les participations sont fermées.';
         } else {
             $label = 'Je n’ai pas encore participé';
             $description = 'Donnez votre pronostic avant le début du match.';
@@ -53,7 +50,7 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
             $label,
             $pronostic->title,
             $description,
-            $participation || $pronostic->isResultPublished() ? 'Voir' : 'Participer',
+            $participation || $pronostic->isResultPublished() || $now >= $pronostic->matchAt ? 'Voir' : 'Participer',
             '/pronostics/'.$pronostic->getUuid()->toRfc4122(),
             imageUrl: $this->dataBuilder->getImageUrl($pronostic),
             data: $this->dataBuilder->build($pronostic, $participation, $now),
