@@ -38,11 +38,17 @@ readonly class PronosticDataBuilder
         ];
 
         if ($participation && $pronostic->isResultPublished()) {
+            $resultStatusCode = $participation->getResultStatusCode();
             $data['result'] = [
                 'team_1_score' => $pronostic->resultTeam1Score,
                 'team_2_score' => $pronostic->resultTeam2Score,
             ];
-            $data['won'] = $pronostic->isWonBy($participation);
+            $data['result_status'] = $resultStatusCode;
+            $data['won'] = match ($resultStatusCode) {
+                'won' => true,
+                'lost' => false,
+                default => null,
+            };
         }
 
         return $data;

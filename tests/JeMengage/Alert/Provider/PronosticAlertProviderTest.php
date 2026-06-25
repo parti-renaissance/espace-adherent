@@ -116,6 +116,8 @@ class PronosticAlertProviderTest extends TestCase
         $this->pronostic->resultTeam1Score = 2;
         $this->pronostic->resultTeam2Score = 1;
         $this->pronostic->resultPublishedAt = new \DateTimeImmutable('-30 minutes');
+        $this->pronostic->gabrielTeam1Score = 3;
+        $this->pronostic->gabrielTeam2Score = 1;
         $participation = new PronosticParticipation($this->pronostic, $this->createStub(Adherent::class), 2, 1);
 
         $this->pronosticRepository->method('findDisplayed')->willReturn($this->pronostic);
@@ -125,5 +127,26 @@ class PronosticAlertProviderTest extends TestCase
 
         self::assertSame('Résultat du pronostic', $alerts[0]->label);
         self::assertSame('Bravo, vous avez gagné !', $alerts[0]->description);
+        self::assertSame('won', $alerts[0]->data['result_status']);
+        self::assertTrue($alerts[0]->data['won']);
+    }
+
+    public function testResultDrawVersion(): void
+    {
+        $this->pronostic->matchAt = new \DateTimeImmutable('-1 hour');
+        $this->pronostic->resultTeam1Score = 2;
+        $this->pronostic->resultTeam2Score = 1;
+        $this->pronostic->resultPublishedAt = new \DateTimeImmutable('-30 minutes');
+        $participation = new PronosticParticipation($this->pronostic, $this->createStub(Adherent::class), 2, 1);
+
+        $this->pronosticRepository->method('findDisplayed')->willReturn($this->pronostic);
+        $this->participationRepository->method('findFor')->willReturn($participation);
+
+        $alerts = $this->provider->getAlerts($this->createStub(Adherent::class));
+
+        self::assertSame('Résultat du pronostic', $alerts[0]->label);
+        self::assertSame('Votre duel se termine sur un match nul.', $alerts[0]->description);
+        self::assertSame('draw', $alerts[0]->data['result_status']);
+        self::assertNull($alerts[0]->data['won']);
     }
 }
