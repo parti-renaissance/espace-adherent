@@ -22,8 +22,12 @@ class AppAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
+        if (null === $adherent) {
+            return [];
+        }
+
         if (!$appAlerts = $this->repository->findAllActive()) {
             return [];
         }
