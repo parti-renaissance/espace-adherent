@@ -57,6 +57,7 @@ class PronosticParticipation implements \Stringable
         return match ($this->getResultStatusCode()) {
             'won' => 'Gagné',
             'lost' => 'Perdu',
+            'draw' => 'Match nul',
             default => 'En attente',
         };
     }
@@ -67,6 +68,6 @@ class PronosticParticipation implements \Stringable
             return 'pending';
         }
 
-        return $this->pronostic->isWonBy($this) ? 'won' : 'lost';
+        return $this->pronostic->getParticipationResultStatusCode($this);
     }
 }

@@ -32,8 +32,13 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
         if ($pronostic->isResultPublished()) {
             $label = 'Résultat du pronostic';
             $description = $participation
-                ? ($pronostic->isWonBy($participation) ? 'Bravo, vous avez gagné !' : 'Votre pronostic est perdu.')
-                : 'Les résultats sont disponibles.';
+                ? match ($participation->getResultStatusCode()) {
+                    'won' => 'Bravo, vous avez gagné !',
+                    'lost' => 'Votre pronostic est perdu.',
+                    'draw' => 'Votre duel se termine sur un match nul.',
+                    default => 'Les résultats sont disponibles.',
+                }
+            : 'Les résultats sont disponibles.';
         } elseif ($participation) {
             $label = 'J’ai participé';
             $description = \sprintf('Votre pronostic : %s %d - %d %s', $pronostic->team1, $participation->team1Score, $participation->team2Score, $pronostic->team2);

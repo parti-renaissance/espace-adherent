@@ -56,7 +56,7 @@ class DispatchPronosticNotificationsCommand extends Command
         }
 
         if ($now >= $pronostic->beginAt && $now < $pronostic->matchAt) {
-            if ($now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
+            if ($pronostic->beginAt <= $oneDayBefore && $now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
                 $this->dispatch($pronostic, PronosticReminderTypeEnum::J_MINUS_1);
                 $this->io->success('Push J-1 programmé.');
             }
