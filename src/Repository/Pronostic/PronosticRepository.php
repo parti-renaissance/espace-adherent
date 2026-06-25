@@ -20,7 +20,14 @@ class PronosticRepository extends ServiceEntityRepository
 
     public function findDisplayed(): ?Pronostic
     {
-        return $this->findOneBy(['displayed' => true]);
+        return $this->createQueryBuilder('pronostic')
+            ->where('pronostic.displayed = true')
+            ->andWhere('pronostic.beginAt <= :now')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     public function unsetDisplayedExcept(Pronostic $pronostic): void

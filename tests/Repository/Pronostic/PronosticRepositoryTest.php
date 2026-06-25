@@ -41,6 +41,23 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         self::assertFalse($this->reload($other2)->displayed);
     }
 
+    public function testFindDisplayedReturnsStartedPronostic(): void
+    {
+        $pronostic = $this->createDisplayedPronostic('Started');
+        $this->manager->flush();
+
+        self::assertSame($pronostic->getId(), $this->repository->findDisplayed()?->getId());
+    }
+
+    public function testFindDisplayedIgnoresNotStartedPronostic(): void
+    {
+        $pronostic = $this->createDisplayedPronostic('Not started');
+        $pronostic->beginAt = new \DateTimeImmutable('+1 day');
+        $this->manager->flush();
+
+        self::assertNull($this->repository->findDisplayed());
+    }
+
     private function createDisplayedPronostic(string $title): Pronostic
     {
         $pronostic = new Pronostic();
