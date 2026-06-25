@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repository\Timeline;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Timeline\TimelineFeed;
 use App\Entity\Timeline\TimelineHiddenFeed;
+use App\Event\EventVisibilityEnum;
+use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -54,5 +58,53 @@ class TimelineFeedRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @return TimelineFeed[]
+     */
+    public function findPublicFeed(int $page, int $size, ?Zone $zone = null): array
+    {
+        return $this->createPublicFeedQueryBuilder($zone)
+            ->orderBy('tf.publicationDate', 'DESC')
+            ->setFirstResult($page * $size)
+            ->setMaxResults($size)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function countPublicFeed(?Zone $zone = null): int
+    {
+        return (int) $this->createPublicFeedQueryBuilder($zone)
+            ->select('COUNT(tf.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function createPublicFeedQueryBuilder(?Zone $zone): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('tf')
+            ->andWhere('tf.type IN (:types)')
+            ->setParameter('types', [
+                TimelineFeedTypeEnum::SOCIAL_NETWORK_POST,
+                TimelineFeedTypeEnum::EVENT,
+                TimelineFeedTypeEnum::ACTION,
+            ])
+            ->andWhere('(tf.type != :event OR (tf.visibility = :public AND tf.committeeUuid IS NULL AND tf.agoraUuid IS NULL))')
+            ->setParameter('event', TimelineFeedTypeEnum::EVENT)
+            ->setParameter('public', EventVisibilityEnum::PUBLIC->value)
+            ->andWhere('tf.uuid NOT IN (SELECT h.uuid FROM '.TimelineHiddenFeed::class.' h)')
+        ;
+
+        if (null !== $zone) {
+            $qb
+                ->andWhere('(JSON_CONTAINS(tf.display, :zoneCode, \'$.zone_codes\') = 1 OR JSON_CONTAINS(tf.display, \'true\', \'$.is_national\') = 1)')
+                ->setParameter('zoneCode', json_encode($zone->getTypeCode()))
+            ;
+        }
+
+        return $qb;
     }
 }

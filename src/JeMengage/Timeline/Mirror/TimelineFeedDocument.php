@@ -11,8 +11,10 @@ use Symfony\Component\Uid\Uuid;
  *
  * `$objectId` is the source item UUID (the Algolia objectID, used as the indexer external_id).
  * `$display` is the unchanged normalizer record; `$audience` is the derived {include, exclude}
- * targeting model (null = no constraint). A removal (entity no longer indexable) is signalled by a
- * null `$display`, in which case the mirror row should be deleted.
+ * targeting model (null = no constraint). `$visibility`/`$committeeUuid`/`$agoraUuid` are exposure
+ * facts projected from the display (like `$eventDate`), promoted to mirror columns for the indexed
+ * public read. A removal (entity no longer indexable) is signalled by a null `$display`, in which
+ * case the mirror row should be deleted.
  */
 class TimelineFeedDocument
 {
@@ -23,6 +25,9 @@ class TimelineFeedDocument
         public readonly ?\DateTimeImmutable $eventDate,
         public readonly ?array $audience,
         public readonly ?array $display,
+        public readonly ?string $visibility = null,
+        public readonly ?string $committeeUuid = null,
+        public readonly ?string $agoraUuid = null,
     ) {
     }
 
