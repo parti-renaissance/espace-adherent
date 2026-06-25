@@ -22,7 +22,7 @@ class TimelineRankerClientTest extends TestCase
             return new MockResponse('{"items":[{"external_id":"a","kind":"event","hot_score":1.7},{"external_id":"b","kind":"publication","hot_score":0.9}]}');
         }, 'https://ranker.test');
 
-        $response = new TimelineRankerClient($http)->getItems($this->profile());
+        $response = new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1']);
 
         self::assertCount(1, $requests);
         [$method, $url, $options] = $requests[0];
@@ -30,6 +30,21 @@ class TimelineRankerClientTest extends TestCase
         self::assertSame('https://ranker.test/get_items', $url);
         self::assertSame('42', json_decode($options['body'], true)['user_id']);
         self::assertSame(['a', 'b'], $response->getExternalIds());
+    }
+
+    public function testGetItemsSendsCandidateIds(): void
+    {
+        $requests = [];
+        $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests) {
+            $requests[] = $options;
+
+            return new MockResponse('{"items":[]}');
+        }, 'https://ranker.test');
+
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1', 'cand-2']);
+
+        // The locally authorized candidate set rides in the same JSON body as the profile, as a list.
+        self::assertSame(['cand-1', 'cand-2'], json_decode($requests[0]['body'], true)['candidate_ids']);
     }
 
     public function testGetItemsForwardsSessionIdAlongsideProfile(): void
@@ -41,7 +56,7 @@ class TimelineRankerClientTest extends TestCase
             return new MockResponse('{"items":[]}');
         }, 'https://ranker.test');
 
-        new TimelineRankerClient($http)->getItems($this->profile(), 'sess-123');
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1'], 'sess-123');
 
         // session_id rides as a sibling of the (server-derived) profile fields in the same JSON body.
         $body = json_decode($requests[0]['body'], true);
@@ -58,7 +73,7 @@ class TimelineRankerClientTest extends TestCase
             return new MockResponse('{"items":[]}');
         }, 'https://ranker.test');
 
-        new TimelineRankerClient($http)->getItems($this->profile());
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1']);
 
         self::assertArrayNotHasKey('session_id', json_decode($requests[0]['body'], true));
     }
@@ -69,7 +84,7 @@ class TimelineRankerClientTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        new TimelineRankerClient($http)->getItems($this->profile());
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1']);
     }
 
     public function testGetItemsThrowsOnInvalidPayload(): void
@@ -78,7 +93,7 @@ class TimelineRankerClientTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        new TimelineRankerClient($http)->getItems($this->profile());
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1']);
     }
 
     public function testGetItemsThrowsOnEmptyBody(): void
@@ -89,7 +104,7 @@ class TimelineRankerClientTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        new TimelineRankerClient($http)->getItems($this->profile());
+        new TimelineRankerClient($http)->getItems($this->profile(), ['cand-1']);
     }
 
     private function profile(): UserProfile

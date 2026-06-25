@@ -6,23 +6,29 @@ namespace App\JeMengage\Timeline\Indexer;
 
 use App\Entity\Adherent;
 use App\Entity\Timeline\TimelineFeed;
+use App\JeMengage\Timeline\CandidateSelection\AudienceContextFactory;
+use App\JeMengage\Timeline\CandidateSelection\AuthorizedCandidateFinder;
+use App\JeMengage\Timeline\CandidateSelection\TimelineRequestFilter;
 use App\JeMengage\Timeline\FeedProcessorPipeline;
 use App\Repository\Timeline\TimelineFeedRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
 
 /**
- * Canary read path: delegates selection and ordering to the external indexer (POST /get_items), hydrates
- * the documents from the local timeline_feed mirror, applies the existing FeedProcessor chain and returns
- * an Algolia-shaped envelope. Any indexer failure propagates as a RuntimeException; the controller catches
- * it and falls back to the regular Algolia feed, so a canary defect never breaks the timeline.
+ * Ranker read path with a local authorization boundary (DESIGN Decision 3): the candidate set is
+ * computed app-side from the authenticated Adherent, sent to the external ranker (candidate_ids)
+ * alongside the UserProfile, and the ranker response is CLAMPED to that same set — an id outside it
+ * is never served, whatever the ranker answers. Hydration from the local mirror, the FeedProcessor
+ * chain and the Algolia-shaped envelope are unchanged. Any ranker failure propagates as a
+ * RuntimeException; the controller catches it and falls back to the regular Algolia feed.
  */
 class IndexerTimelineProvider
 {
     private const int PAGE_SIZE = 10;
 
     public function __construct(
-        private readonly UserProfileFactory $profileFactory,
+        private readonly AudienceContextFactory $contextFactory,
+        private readonly AuthorizedCandidateFinder $candidateFinder,
         private readonly TimelineRankerClient $rankerClient,
         private readonly TimelineFeedRepository $repository,
         private readonly FeedProcessorPipeline $pipeline,
@@ -30,23 +36,50 @@ class IndexerTimelineProvider
     ) {
     }
 
-    public function findItems(Adherent $user, int $page, string $sessionId): array
+    public function findItems(Adherent $user, int $page, string $sessionId, ?TimelineRequestFilter $filter = null): array
     {
-        $response = $this->rankerClient->getItems($this->profileFactory->create($user), $sessionId);
+        // One resolution of the user dimensions per request: the same context feeds the local
+        // filtering and the ranker profile payload. The view filter restricts the candidates, so
+        // the clamp enforces the filtered view even if the ranker ignores the request context.
+        $context = $this->contextFactory->create($user);
+        $candidates = $this->candidateFinder->findCandidateUuids($context, $filter);
 
-        // Indexer-ranked external_ids, valid UUIDs only, kept in the indexer order (the ranking authority).
-        // No over-fetch/slice: the indexer de-dupes by what it returned for this session, so trimming the
-        // batch here would permanently drop items it has already marked as seen.
+        // Nothing is authorized: any ranker answer would be entirely clamped, skip the call.
+        if ([] === $candidates) {
+            return $this->envelope([], $page, $page + 1);
+        }
+
+        $response = $this->rankerClient->getItems($context->profile, $candidates, $sessionId);
+
+        // Clamp: ranker-returned ids are kept in the ranker order (the ranking authority) but only
+        // when they belong to the candidate set sent in this very request. Out-of-set ids are an
+        // incident signal (misbehaving/compromised ranker), not a nominal case.
+        $allowed = array_flip($candidates);
         $orderedIds = [];
+        $clamped = [];
         foreach ($response->getExternalIds() as $externalId) {
-            if (Uuid::isValid($externalId)) {
+            if (!Uuid::isValid($externalId)) {
+                continue;
+            }
+
+            if (isset($allowed[$externalId])) {
                 $orderedIds[] = $externalId;
+            } else {
+                $clamped[] = $externalId;
             }
         }
 
-        // Hydrate then re-order per the indexer authority (the SQL IN clause does not preserve order);
-        // an indexer item without a local mirror row (depublished/deleted) is skipped silently. Skipped
-        // orphans yield a short page — accepted (the next scroll fills in).
+        if ([] !== $clamped) {
+            $this->logger->warning('Timeline ranker returned ids outside the authorized candidate set.', [
+                'user_id' => $context->profile->userId,
+                'count' => \count($clamped),
+                'sample' => \array_slice($clamped, 0, 5),
+            ]);
+        }
+
+        // Hydrate then re-order per the ranker authority (the SQL IN clause does not preserve order);
+        // a candidate without a local mirror row at hydration time is skipped silently (the repository
+        // hidden guard stays as defense in depth on top of the candidate exclusion).
         $rowsByUuid = [];
         foreach ($this->repository->findPublishableByUuids($orderedIds) as $row) {
             /** @var TimelineFeed $row */
@@ -58,16 +91,15 @@ class IndexerTimelineProvider
             if (isset($rowsByUuid[$externalId])) {
                 $displays[] = $rowsByUuid[$externalId]->display;
             } else {
-                $this->logger->debug('Canary timeline: indexer item without local row, skipped.', ['external_id' => $externalId]);
+                $this->logger->debug('Timeline: ranked candidate without local row, skipped.', ['external_id' => $externalId]);
             }
         }
 
         $hits = $this->pipeline->process($user, $displays);
 
-        // nbPages over an unknown total: while the indexer keeps returning items, claim one more page
-        // (page + 2) so the app keeps scrolling; when it returns none, this is the last page (page + 1).
-        // The signal is keyed on what the indexer returned, not on the hydrated hit count — an all-orphan
-        // batch yields zero hits while the stream is not exhausted.
+        // nbPages over an unknown total, keyed on the POST-clamp list: while the ranker returns
+        // servable items, claim one more page (page + 2); an all-clamped batch ends the pagination
+        // (page + 1) — a clamped id is never servable, retrying pages would only loop on empties.
         $nbPages = [] !== $orderedIds ? $page + 2 : $page + 1;
 
         return $this->envelope($hits, $page, $nbPages);

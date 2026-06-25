@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Vox;
 
-use App\AdherentMessage\PublicationZone;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\Geo\Zone;
+use App\JeMengage\Timeline\CandidateSelection\AudienceContext;
+use App\JeMengage\Timeline\CandidateSelection\AudienceContextFactory;
+use App\JeMengage\Timeline\CandidateSelection\RequestFilterCondition;
+use App\JeMengage\Timeline\CandidateSelection\TimelineRequestFilter;
+use App\JeMengage\Timeline\CandidateSelection\TimelineRequestFilterFactory;
 use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\Indexer\IndexerTimelineProvider;
 use App\JeMengage\Timeline\Indexer\TimelineSessionResolver;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
-use App\JeMengage\Timeline\UserScopeTargetResolver;
-use App\Repository\Geo\ZoneRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,8 +40,8 @@ class GetTimelineFeedsController extends AbstractController
     ];
 
     public function __construct(
-        private readonly ZoneRepository $zoneRepository,
-        private readonly UserScopeTargetResolver $scopeTargetResolver,
+        private readonly AudienceContextFactory $contextFactory,
+        private readonly TimelineRequestFilterFactory $requestFilterFactory,
         private readonly IndexerTimelineProvider $indexerTimelineProvider,
         private readonly TimelineSessionResolver $sessionResolver,
         private readonly LoggerInterface $logger,
@@ -57,8 +57,10 @@ class GetTimelineFeedsController extends AbstractController
         $appSessionId = trim((string) $request->query->get('session_id'));
         $sessionId = $this->sessionResolver->resolve($user, '' === $appSessionId ? Uuid::v4()->toRfc4122() : $appSessionId);
 
+        $filter = $this->requestFilterFactory->createFromRequest($request, $user);
+
         try {
-            return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId));
+            return $this->json($this->indexerTimelineProvider->findItems($user, $page, $sessionId, $filter));
         } catch (\RuntimeException $exception) {
             $this->logger->error('Timeline ranker failed, falling back to Algolia.', [
                 'exception' => $exception,
@@ -66,23 +68,21 @@ class GetTimelineFeedsController extends AbstractController
             ]);
         }
 
-        $userId = $user->getId();
-        $tags = $user->tags ?? [];
+        // Algolia fallback. The user targeting dimensions come from the same AudienceContext the
+        // ranker path uses (single source); the clause strings below are characterization-locked
+        // (GetTimelineFeedsAlgoliaClausesTest golden files).
+        $context = $this->contextFactory->create($user);
 
         $baseOr = [
             'is_national:true',
-            "adherent_ids:$userId",
+            'adherent_ids:'.$context->profile->userId,
             'type:publication',
         ];
 
         // Assembly zone + the user's own city, so militant events — indexed with their city code
         // only — surface in the right local timelines.
-        if ($assemblyZone = $user->getAssemblyZone()) {
-            $baseOr[] = 'zone_codes:'.$assemblyZone->getTypeCode();
-        }
-
-        foreach ($user->getZonesOfType(Zone::CITY) as $zone) {
-            $baseOr[] = 'zone_codes:'.$zone->getTypeCode();
+        foreach ($context->reachZones as $reachZone) {
+            $baseOr[] = 'zone_codes:'.$this->algoliaReachCode($reachZone);
         }
 
         $baseOr = array_filter($baseOr);
@@ -91,14 +91,9 @@ class GetTimelineFeedsController extends AbstractController
         $includeTagConditions = [];
         $excludeTagConditions = [];
 
-        foreach ($tags as $tag) {
-            $parts = explode(':', $tag);
-            $prefix = '';
-            foreach ($parts as $i => $part) {
-                $prefix = (0 === $i) ? $part : "$prefix:$part";
-                $includeTagConditions[] = 'audience.include:"tag:'.$prefix.'"';
-                $excludeTagConditions[] = 'NOT audience.exclude:"tag:'.$prefix.'"';
-            }
+        foreach ($context->tagPrefixes as $prefix) {
+            $includeTagConditions[] = 'audience.include:"tag:'.$prefix.'"';
+            $excludeTagConditions[] = 'NOT audience.exclude:"tag:'.$prefix.'"';
         }
 
         $tagClause = '(NOT type:publication OR audience.tag:false';
@@ -107,13 +102,8 @@ class GetTimelineFeedsController extends AbstractController
         }
         $tagClause .= ')';
 
-        // Bloc 3 : zone
-        $userZonesByType = $this->zonesForUserGroupedByType($user);
-
         $zoneClauses = [];
-        foreach (PublicationZone::ZONE_TYPES as $type) {
-            $codes = $userZonesByType[$type] ?? [];
-
+        foreach ($context->zoneCodesByType as $type => $codes) {
             $zoneCond = ['NOT type:publication', 'audience.zone:false', 'audience.include:"zone:'.$type.':none"'];
 
             foreach ($codes as $code) {
@@ -123,21 +113,21 @@ class GetTimelineFeedsController extends AbstractController
             $zoneClauses[] = '('.implode(' OR ', $zoneCond).')';
         }
 
-        if ($membership = $user->getCommitteeMembership()) {
-            $committeeUuid = $membership->getCommittee()->getUuid()->toRfc4122();
-            $committeeClause = '(NOT type:publication OR audience.committee:false OR audience.include:"committee:'.$committeeUuid.'")';
+        if ([] !== $context->profile->committees) {
+            $committeeClause = '(NOT type:publication OR audience.committee:false OR audience.include:"committee:'.$context->profile->committees[0].'")';
         } else {
             $committeeClause = '(NOT type:publication OR audience.committee:false)';
         }
 
+        $age = $context->profile->age ?? 0;
         $ageCivilityClauses = [
-            '(audience.age_min = 0 OR audience.age_min <= '.($user->getAge() ?? 0).')',
-            '(audience.age_max = 0 OR audience.age_max >= '.($user->getAge() ?? 0).')',
-            '(NOT type:publication OR audience.civility:false OR audience.include:"gender:'.$user->getGender().'")',
-            '(NOT type:publication OR audience.committee_member:2 OR audience.committee_member:'.(null !== $user->getCommitteeMembership() ? 1 : 0).')',
+            '(audience.age_min = 0 OR audience.age_min <= '.$age.')',
+            '(audience.age_max = 0 OR audience.age_max >= '.$age.')',
+            '(NOT type:publication OR audience.civility:false OR audience.include:"gender:'.$context->profile->civility.'")',
+            '(NOT type:publication OR audience.committee_member:2 OR audience.committee_member:'.$context->profile->committeeMember.')',
         ];
 
-        $mandateTypes = array_map(fn (ElectedRepresentativeAdherentMandate $m) => $m->mandateType, $user->findElectedRepresentativeMandates(true));
+        $mandateTypes = $context->profile->mandateTypes;
         $excludeMandatClauses = [];
         $mandateClause = '(NOT type:publication OR audience.mandate_type:false)';
 
@@ -147,7 +137,7 @@ class GetTimelineFeedsController extends AbstractController
             $mandateClause = '(NOT type:publication OR audience.mandate_type:false OR '.implode(' OR ', $mandateInclude).')';
         }
 
-        $declaredMandates = $user->getMandates();
+        $declaredMandates = $context->profile->declaredMandates;
         $excludeDeclaredMandateClauses = [];
         $declaredMandateClause = '(NOT type:publication OR audience.declared_mandate:false)';
 
@@ -160,12 +150,13 @@ class GetTimelineFeedsController extends AbstractController
         $dateClauses = [];
 
         foreach ([
-            'first_membership_' => $user->getFirstMembershipDonation(),
-            'last_membership_' => $user->getLastMembershipDonation(),
-            'registered_' => $user->getRegisteredAt(),
+            'first_membership_' => $context->profile->firstMembershipDate,
+            'last_membership_' => $context->profile->lastMembershipDate,
+            'registered_' => $context->profile->registeredDate,
         ] as $key => $date) {
             if ($date) {
-                $dateClauses[] = \sprintf('(audience.%1$ssince = 0 OR audience.%1$ssince <= '.($timestamp = $date->getTimestamp()).')', $key);
+                $timestamp = new \DateTimeImmutable($date)->getTimestamp();
+                $dateClauses[] = \sprintf('(audience.%1$ssince = 0 OR audience.%1$ssince <= '.$timestamp.')', $key);
                 $dateClauses[] = \sprintf('(audience.%1$sbefore = 0 OR audience.%1$sbefore >= '.$timestamp.')', $key);
             } else {
                 $dateClauses[] = \sprintf('audience.%ssince = 0', $key);
@@ -173,41 +164,7 @@ class GetTimelineFeedsController extends AbstractController
             }
         }
 
-        $userFilter = [];
-        if ($zone = $request->query->get('zone')) {
-            $zoneFilter = 'is_national:true';
-            if (Uuid::isValid($zone) && $zone = $this->zoneRepository->findOneByUuid($zone)) {
-                $zoneFilter = 'zone_codes:'.$zone->getTypeCode();
-            }
-            $userFilter[] = $zoneFilter;
-        }
-
-        if (($committee = $request->query->get('committee')) && Uuid::isValid($committee)) {
-            $userFilter[] = 'committee_uuid:'.$committee;
-        }
-
-        if ($instance = $request->query->get('instance')) {
-            $filterValue = match ($instance) {
-                'committee' => $user->getCommitteeMembership()?->getCommitteeUuid(),
-                'circonscription' => ($user->isForeignResident()
-                    ? $user->getZonesOfType(Zone::FOREIGN_DISTRICT)
-                    : $user->getZonesOfType(Zone::DISTRICT))[0]?->getTypeCode(),
-                'assembly' => $user->getAssemblyZone()?->getTypeCode(),
-                'agora' => ($user->agoraMemberships->first() ?: null)?->agora->getUuid()->toRfc4122(),
-                default => null,
-            };
-
-            $filterKey = match ($instance) {
-                'committee' => 'committee_uuid',
-                'circonscription', 'assembly' => 'zone_codes',
-                'agora' => 'agora_uuid',
-                default => null,
-            };
-
-            if ($filterKey && $filterValue) {
-                $userFilter[] = \sprintf('%s:%s', $filterKey, $filterValue);
-            }
-        }
+        $userFilter = $this->buildUserFilterClauses($filter);
 
         // Construction finale
         $parts = array_filter([
@@ -223,7 +180,7 @@ class GetTimelineFeedsController extends AbstractController
             $declaredMandateClause,
             ...$excludeDeclaredMandateClauses,
             ...$dateClauses,
-            $this->buildScopeTargetClause($user),
+            $this->buildScopeTargetClause($context),
         ]);
 
         $tagFilters = [self::TIMELINE_FEED_TYPES];
@@ -231,23 +188,37 @@ class GetTimelineFeedsController extends AbstractController
         return $this->json($dataProvider->findItems($user, $page, $parts, $tagFilters));
     }
 
-    private function zonesForUserGroupedByType(Adherent $user): array
+    /**
+     * @return string[]
+     */
+    private function buildUserFilterClauses(?TimelineRequestFilter $filter): array
     {
-        $byType = array_fill_keys(PublicationZone::ZONE_TYPES, []);
-
-        foreach ($user->getDeepZones() as $zone) {
-            $type = $zone->getType();
-            $code = $zone->getCode();
-            if (isset($byType[$type]) && $code) {
-                $byType[$type][] = $code;
-            }
+        if (null === $filter) {
+            return [];
         }
 
-        foreach ($byType as $t => $list) {
-            $byType[$t] = array_values(array_unique(array_filter($list)));
+        $clauses = [];
+        foreach ($filter->conditions as $condition) {
+            $clauses[] = match ($condition->kind) {
+                RequestFilterCondition::NATIONAL => 'is_national:true',
+                RequestFilterCondition::ZONE => 'zone_codes:'.$this->algoliaReachCode((string) $condition->value),
+                RequestFilterCondition::COMMITTEE => 'committee_uuid:'.$condition->value,
+                RequestFilterCondition::AGORA => 'agora_uuid:'.$condition->value,
+                default => null,
+            };
         }
 
-        return $byType;
+        return array_values(array_filter($clauses));
+    }
+
+    /**
+     * Canonical "type:code" -> Algolia zone_codes shape "type_code" (Zone::getTypeCode()). Zone
+     * codes never contain a colon (the canonical shape splits on the first one), so replacing the
+     * first occurrence is exact.
+     */
+    private function algoliaReachCode(string $canonicalZone): string
+    {
+        return preg_replace('/:/', '_', $canonicalZone, 1);
     }
 
     /**
@@ -256,11 +227,11 @@ class GetTimelineFeedsController extends AbstractController
      * Publications with scopeTargets are visible only to users having one of the targeted roles
      * or being team members with matching scope and role.
      */
-    private function buildScopeTargetClause(Adherent $user): string
+    private function buildScopeTargetClause(AudienceContext $context): string
     {
         $clause = '(NOT type:publication OR audience.scope_targets:false';
 
-        foreach ($this->scopeTargetResolver->resolve($user) as $key) {
+        foreach ($context->profile->scopeTargets as $key) {
             $clause .= ' OR audience.include:"scope_targets:'.$key.'"';
         }
 

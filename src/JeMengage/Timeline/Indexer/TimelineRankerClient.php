@@ -24,9 +24,15 @@ class TimelineRankerClient
     {
     }
 
-    public function getItems(UserProfile $profile, ?string $sessionId = null): FeedResponse
+    /**
+     * @param string[] $candidateUuids locally authorized timeline_feed uuids, newest first — the
+     *                                 ranker picks within them; the caller clamps the response to
+     *                                 this same set either way (the guard does not trust the ranker)
+     */
+    public function getItems(UserProfile $profile, array $candidateUuids, ?string $sessionId = null): FeedResponse
     {
         $body = $profile->jsonSerialize();
+        $body['candidate_ids'] = array_values($candidateUuids);
         if (null !== $sessionId) {
             $body['session_id'] = $sessionId;
         }
