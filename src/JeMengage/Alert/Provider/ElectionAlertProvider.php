@@ -20,8 +20,12 @@ class ElectionAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
+        if (null === $adherent) {
+            return [];
+        }
+
         $designations = $this->electionManager->findActiveDesignations(
             $adherent,
             [

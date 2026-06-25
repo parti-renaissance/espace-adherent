@@ -20,14 +20,14 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlerts(Adherent $adherent): array
+    public function getAlerts(?Adherent $adherent): array
     {
         $now = new \DateTimeImmutable();
         if (!$pronostic = $this->pronosticRepository->findDisplayed()) {
             return [];
         }
 
-        $participation = $this->participationRepository->findFor($pronostic, $adherent);
+        $participation = $adherent ? $this->participationRepository->findFor($pronostic, $adherent) : null;
 
         if ($pronostic->isResultPublished()) {
             $label = 'Résultat du pronostic';
