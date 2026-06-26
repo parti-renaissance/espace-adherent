@@ -30,6 +30,19 @@ class PronosticRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findLatest(): ?Pronostic
+    {
+        return $this->createQueryBuilder('pronostic')
+            ->where('pronostic.beginAt <= :now')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->orderBy('pronostic.matchAt', 'DESC')
+            ->addOrderBy('pronostic.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function unsetDisplayedExcept(Pronostic $pronostic): void
     {
         $this->createQueryBuilder('pronostic')
