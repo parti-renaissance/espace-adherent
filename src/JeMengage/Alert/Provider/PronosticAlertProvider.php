@@ -56,7 +56,7 @@ readonly class PronosticAlertProvider implements AlertProviderInterface
             $pronostic->title,
             $description,
             $participation || $pronostic->isResultPublished() || $now >= $pronostic->matchAt ? 'Voir' : 'Participer',
-            '/pronostics/'.$pronostic->getUuid()->toRfc4122(),
+            '/prono/'.$pronostic->getUuid()->toRfc4122(),
             imageUrl: $this->dataBuilder->getImageUrl($pronostic),
             data: $this->dataBuilder->build($pronostic, $participation, $now),
         );
