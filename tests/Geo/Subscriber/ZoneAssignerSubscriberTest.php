@@ -43,6 +43,30 @@ class ZoneAssignerSubscriberTest extends TestCase
         ;
     }
 
+    public function testMilitantEventInArrondissementGetsBoroughZone(): void
+    {
+        $boroughZone = new Zone(Zone::BOROUGH, '75108', 'Paris 8e');
+
+        $address = $this->createStub(NullablePostAddress::class);
+        $address->method('getInseeCode')->willReturn('75108');
+
+        $event = $this->createMock(Event::class);
+        $event->method('getZones')->willReturn(new ZoneCollection());
+        $event->method('getCommittee')->willReturn(null);
+        $event->method('isOnline')->willReturn(false);
+        $event->method('getPostAddress')->willReturn($address);
+        $event->expects(self::once())->method('setZones')->with([$boroughZone]);
+
+        // Paris/Lyon/Marseille addresses resolve to a BOROUGH, never the parent CITY.
+        $zoneMatcher = $this->createStub(ZoneMatcher::class);
+        $zoneMatcher->method('match')->willReturn([$boroughZone]);
+
+        $this
+            ->subscriber($this->militantScope([new Zone(Zone::CITY, '69123', 'Lyon')]), $zoneMatcher)
+            ->assignZoneToEvent(new EventEvent(null, $event))
+        ;
+    }
+
     public function testMilitantEventWithAddressButNoInseeFallsBackToAdherentCityZone(): void
     {
         $adherentCityZone = new Zone(Zone::CITY, '69123', 'Lyon');
@@ -132,13 +156,13 @@ class ZoneAssignerSubscriberTest extends TestCase
         );
     }
 
-    private function militantScope(array $adherentCityZones): Scope
+    private function militantScope(array $adherentCommuneZones): Scope
     {
-        // The militant scope is zone-less; the online fallback reads the city from the adherent.
+        // The militant scope is zone-less; the online fallback reads the commune from the adherent.
         $adherent = $this->createStub(Adherent::class);
         $adherent
-            ->method('getZonesOfType')
-            ->willReturnCallback(static fn (string $type) => Zone::CITY === $type ? $adherentCityZones : [])
+            ->method('getCityOrBoroughZones')
+            ->willReturn($adherentCommuneZones)
         ;
 
         return new Scope('militant', 'Militant', 'Militant', [], [], [], $adherent);

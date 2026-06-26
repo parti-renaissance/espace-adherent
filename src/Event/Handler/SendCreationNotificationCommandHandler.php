@@ -67,7 +67,7 @@ class SendCreationNotificationCommandHandler
     private function resolveNotificationZones(Event $event): array
     {
         if (ScopeEnum::MILITANT === $event->getAuthorScope()) {
-            return $event->getZonesOfType(Zone::CITY);
+            return $event->getCityOrBoroughZones();
         }
 
         return $event->getZones()->toArray();

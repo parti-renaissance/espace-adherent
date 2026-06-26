@@ -45,7 +45,7 @@ final class NotificationTargetingStrategyTest extends TestCase
         $zone = $this->createStub(Zone::class);
         $zone->method('getCode')->willReturn('92');
 
-        $action = $this->mockAction(cityZone: $zone);
+        $action = $this->mockAction(communeZone: $zone);
 
         self::assertSame('zone:92', ActionCreatedNotification::create($action)->getScope());
     }
@@ -181,7 +181,7 @@ final class NotificationTargetingStrategyTest extends TestCase
         return $event;
     }
 
-    private function mockAction(?Zone $cityZone = null): Action
+    private function mockAction(?Zone $communeZone = null): Action
     {
         $action = $this->createStub(Action::class);
         $action->type = 'pap';
@@ -190,7 +190,7 @@ final class NotificationTargetingStrategyTest extends TestCase
         $action->method('getAuthor')->willReturn(null);
         $action->method('getPostalCode')->willReturn('92110');
         $action->method('getAddress')->willReturn('92 bd Victor Hugo');
-        $action->method('getZonesOfType')->willReturn($cityZone ? [$cityZone] : []);
+        $action->method('getCityOrBoroughZones')->willReturn($communeZone ? [$communeZone] : []);
         $action->method('getId')->willReturn(1);
 
         return $action;

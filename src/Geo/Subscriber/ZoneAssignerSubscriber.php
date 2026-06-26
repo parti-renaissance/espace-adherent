@@ -91,30 +91,32 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * A militant event is attached to the commune of its address, or to the adherent's city when online.
+     * A militant event is attached to the commune of its address, or to the adherent's commune when
+     * online. For Paris/Lyon/Marseille the commune-level zone is the arrondissement (borough), which
+     * a French address resolves to in place of its parent city.
      *
      * @return Zone[]
      */
     private function resolveMilitantZones(Event $event, ?Adherent $adherent): array
     {
         if ($address = $event->getPostAddress()) {
-            $cityZones = array_filter(
+            $communeZones = array_filter(
                 $this->zoneMatcher->match($address),
-                static fn (Zone $zone) => Zone::CITY === $zone->getType(),
+                static fn (Zone $zone) => \in_array($zone->getType(), [Zone::CITY, Zone::BOROUGH], true),
             );
 
-            if ($cityZones) {
-                return [array_values($cityZones)[0]];
+            if ($communeZones) {
+                return [array_values($communeZones)[0]];
             }
         }
 
-        // Online event without a usable address: fall back to the adherent's own city.
-        // The militant scope is zone-less, so the city is read directly from the adherent.
+        // Online event without a usable address: fall back to the adherent's own commune.
+        // The militant scope is zone-less, so the commune is read directly from the adherent.
         if (!$adherent) {
             return [];
         }
 
-        return $adherent->getZonesOfType(Zone::CITY);
+        return $adherent->getCityOrBoroughZones();
     }
 
     public function assignZoneToAdherent(UserEvent $event): void

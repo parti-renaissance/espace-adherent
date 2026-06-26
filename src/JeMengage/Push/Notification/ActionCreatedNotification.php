@@ -6,7 +6,6 @@ namespace App\JeMengage\Push\Notification;
 
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;
-use App\Entity\Geo\Zone;
 use App\Firebase\Notification\AbstractMulticastNotification;
 use App\JeMengage\Push\NotificationScope;
 
@@ -14,16 +13,16 @@ class ActionCreatedNotification extends AbstractMulticastNotification
 {
     public static function create(Action $action): self
     {
-        $cityZones = $action->getZonesOfType(Zone::CITY);
+        $communeZones = $action->getCityOrBoroughZones();
 
-        if (!$cityZones) {
-            throw new \RuntimeException(\sprintf('Action #%d has no city zone — cannot resolve notification scope.', $action->getId()));
+        if (!$communeZones) {
+            throw new \RuntimeException(\sprintf('Action #%d has no city or borough zone — cannot resolve notification scope.', $action->getId()));
         }
 
         return new self(
             static::createTitle($action),
             static::createBody($action),
-            NotificationScope::zone(reset($cityZones)->getCode()),
+            NotificationScope::zone(reset($communeZones)->getCode()),
         );
     }
 
