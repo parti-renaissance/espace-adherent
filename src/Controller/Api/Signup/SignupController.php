@@ -96,6 +96,9 @@ class SignupController extends AbstractSignupController
             address: $this->buildAddress($signupRequest),
             emailOptIn: $signupRequest->emailOptIn,
             smsOptIn: $signupRequest->smsOptIn,
+            utmSource: $signupRequest->utmSource,
+            utmCampaign: $signupRequest->utmCampaign,
+            referrerCode: $signupRequest->referrerCode,
         ));
 
         return $this->json(null, Response::HTTP_CREATED);

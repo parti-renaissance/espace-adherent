@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Membership\Signup;
 
+use App\Adherent\Referral\Command\LinkReferrerWithNewAdherentCommand;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
@@ -72,6 +73,14 @@ class SignupHandler
 
         $adherent = $this->register($command, $email);
 
+        if ($command->referrerCode) {
+            $this->bus->dispatch(new LinkReferrerWithNewAdherentCommand(
+                $adherent->getUuid(),
+                false,
+                $command->referrerCode,
+            ));
+        }
+
         $this->bus->dispatch(new SendSignupConfirmationCommand($adherent));
     }
 
@@ -85,6 +94,8 @@ class SignupHandler
             $command->phone,
             $command->address,
         );
+        $adherent->utmSource = $command->utmSource;
+        $adherent->utmCampaign = $command->utmCampaign;
         $this->entityManager->persist($adherent);
 
         $this->logSourceIfMissing($this->entityManager, $adherent, $command->source);

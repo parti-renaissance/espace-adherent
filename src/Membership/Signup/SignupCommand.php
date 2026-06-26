@@ -19,6 +19,9 @@ class SignupCommand
         public ?Address $address = null,
         public bool $emailOptIn = false,
         public bool $smsOptIn = false,
+        public ?string $utmSource = null,
+        public ?string $utmCampaign = null,
+        public ?string $referrerCode = null,
     ) {
     }
 }

@@ -81,6 +81,18 @@ class SignupRequest implements RecaptchaChallengeInterface, EmailForceableReques
     #[Groups(['signup:write'])]
     public bool $forceEmail = false;
 
+    #[Assert\Length(max: 255)]
+    #[Groups(['signup:write'])]
+    public ?string $utmSource = null;
+
+    #[Assert\Length(max: 255)]
+    #[Groups(['signup:write'])]
+    public ?string $utmCampaign = null;
+
+    #[Assert\Length(max: 7)]
+    #[Groups(['signup:write'])]
+    public ?string $referrerCode = null;
+
     public function isEmailForced(): bool
     {
         return $this->forceEmail;
