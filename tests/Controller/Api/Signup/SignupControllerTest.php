@@ -7,6 +7,7 @@ namespace Tests\App\Controller\Api\Signup;
 use App\Entity\Adherent;
 use App\Entity\AdherentSignupSource;
 use App\Entity\PostAddress;
+use App\Entity\Referral;
 use App\Entity\SignupSource;
 use App\Mailer\Message\Campaign\CampaignWelcomeMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
@@ -81,6 +82,117 @@ class SignupControllerTest extends AbstractApiTestCase
         self::assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
         self::assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
         self::assertNotNull($this->findSignupSource($adherent, 'newsletter'));
+    }
+
+    public function testSignupPersistsUtmParameters(): void
+    {
+        $email = 'utm-signup@example.test';
+
+        $this->post([
+            'email' => $email,
+            'source' => 'newsletter',
+            'utm_source' => 'newsletter-2026',
+            'utm_campaign' => 'spring-drive',
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertNotNull($adherent);
+        // Distinct values pin the field mapping: a swapped source/campaign would fail here.
+        self::assertSame('newsletter-2026', $adherent->utmSource);
+        self::assertSame('spring-drive', $adherent->utmCampaign);
+    }
+
+    public function testSignupLinksReferrerByPublicId(): void
+    {
+        // 123-456 is Michelle Dufour's public id (LoadAdherentData): she is the referrer (parrain).
+        $email = 'referred-signup@example.test';
+
+        $this->post([
+            'email' => $email,
+            'source' => 'newsletter',
+            'referrer_code' => '123-456',
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        $referred = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertNotNull($referred);
+
+        // The link command is async but routed sync in test, so the Referral row exists right away.
+        $referral = $this->manager->getRepository(Referral::class)->findOneBy(['referred' => $referred]);
+        self::assertNotNull($referral, 'A Referral must link the new adherent to the referrer.');
+        self::assertNotNull($referral->referrer);
+        self::assertSame('michelle.dufour@example.ch', $referral->referrer->getEmailAddress());
+    }
+
+    public function testSignupWithUnknownReferrerCodeStillSucceedsWithoutReferral(): void
+    {
+        // An unknown referrer code must not break signup: the account is created, simply with no link.
+        // 999-999 matches no fixture public id, so findByPublicId returns null and no Referral is created.
+        $email = 'unknown-referrer-signup@example.test';
+
+        $this->post([
+            'email' => $email,
+            'source' => 'newsletter',
+            'referrer_code' => '999-999',
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertNotNull($adherent);
+        self::assertNull(
+            $this->manager->getRepository(Referral::class)->findOneBy(['referred' => $adherent]),
+            'An unknown referrer code must not create a Referral.'
+        );
+    }
+
+    public function testSignupReferrerCodeIgnoredForExistingActiveAdherent(): void
+    {
+        // Referrer linking is captured only on new-account creation; re-submitting signup for an
+        // existing active adherent must not create a Referral, even with a valid referrer code.
+        $email = 'existing-active-referrer@example.test';
+        $this->createAdherentWithStatus($email, Adherent::ENABLED);
+
+        $this->post([
+            'email' => $email,
+            'source' => 'newsletter',
+            'referrer_code' => '123-456',
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $this->client->getResponse());
+
+        $this->manager->clear();
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+        self::assertNull(
+            $this->manager->getRepository(Referral::class)->findOneBy(['referred' => $adherent]),
+            'A re-signup of an existing active adherent must not create a Referral.'
+        );
+    }
+
+    public function testRejectsTooLongUtmSourceReturns400(): void
+    {
+        // #[Assert\Length(max: 255)] on utmSource: 256 chars must be rejected with no side effects.
+        $email = 'long-utm-signup@example.test';
+
+        $this->post([
+            'email' => $email,
+            'source' => 'newsletter',
+            'utm_source' => str_repeat('a', 256),
+            'recaptcha' => 'fake',
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+        self::assertNull($this->getAdherentRepository()->findOneByEmail($email));
     }
 
     public function testSignupWithoutOptInsDoesNotSubscribe(): void
