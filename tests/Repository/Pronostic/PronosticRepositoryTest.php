@@ -58,7 +58,31 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         self::assertNull($this->repository->findDisplayed());
     }
 
+    public function testFindLatestReturnsMostRecentStartedByMatchAtRegardlessOfDisplayed(): void
+    {
+        $this->createPronostic('Old', matchAt: '-2 days', displayed: true);
+        $latest = $this->createPronostic('Latest', matchAt: '+1 day', displayed: false);
+        $this->createPronostic('Middle', matchAt: '-1 hour', displayed: false);
+        $this->manager->flush();
+
+        self::assertSame($latest->getId(), $this->repository->findLatest()?->getId());
+    }
+
+    public function testFindLatestIgnoresNotStartedPronostic(): void
+    {
+        $pronostic = $this->createPronostic('Not started', matchAt: '+3 days');
+        $pronostic->beginAt = new \DateTimeImmutable('+1 day');
+        $this->manager->flush();
+
+        self::assertNull($this->repository->findLatest());
+    }
+
     private function createDisplayedPronostic(string $title): Pronostic
+    {
+        return $this->createPronostic($title, displayed: true);
+    }
+
+    private function createPronostic(string $title, string $matchAt = '+1 day', bool $displayed = false): Pronostic
     {
         $pronostic = new Pronostic();
         $pronostic->title = $title;
@@ -67,8 +91,8 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         $pronostic->gabrielTeam1Score = 1;
         $pronostic->gabrielTeam2Score = 0;
         $pronostic->beginAt = new \DateTimeImmutable('-1 day');
-        $pronostic->matchAt = new \DateTimeImmutable('+1 day');
-        $pronostic->displayed = true;
+        $pronostic->matchAt = new \DateTimeImmutable($matchAt);
+        $pronostic->displayed = $displayed;
 
         $this->manager->persist($pronostic);
 
