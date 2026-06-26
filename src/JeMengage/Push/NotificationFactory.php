@@ -104,7 +104,8 @@ class NotificationFactory
             return match ($command->type) {
                 PronosticReminderTypeEnum::CREATION => PronosticCreationNotification::create($object),
                 PronosticReminderTypeEnum::J_MINUS_1,
-                PronosticReminderTypeEnum::H_MINUS_1 => PronosticReminderNotification::create($object, $command->type),
+                PronosticReminderTypeEnum::H_MINUS_1,
+                PronosticReminderTypeEnum::H_MINUS_5_MIN => PronosticReminderNotification::create($object, $command->type),
                 PronosticReminderTypeEnum::RESULTS => PronosticResultNotification::create($object),
             };
         }

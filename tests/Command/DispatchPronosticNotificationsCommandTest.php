@@ -63,6 +63,25 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         self::assertStringContainsString('Push de création programmé', $this->tester->getDisplay());
     }
 
+    public function testOnlyDispatchesCreationWhenJMinus1ThresholdAlreadyPassed(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+12 hours', beginAt: '-2 days');
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::CREATION)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        $display = $this->tester->getDisplay();
+        self::assertStringContainsString('Push de création programmé', $display);
+        self::assertStringNotContainsString('Push J-1 programmé', $display);
+        self::assertTrue($pronostic->jMinus1Notified);
+    }
+
     public function testSkipsCreationBeforePronosticBeginAt(): void
     {
         $pronostic = $this->makePronostic(matchAt: '+2 days', beginAt: '+1 hour');
@@ -160,6 +179,25 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         $this->tester->execute([]);
 
         self::assertStringContainsString('Push H-1 programmé', $this->tester->getDisplay());
+    }
+
+    public function testDispatchesHMinus5MinPushWithinFiveMinutes(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '+3 minutes');
+        $pronostic->creationNotified = true;
+        $pronostic->jMinus1Notified = true;
+        $pronostic->hMinus1Notified = true;
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::H_MINUS_5_MIN)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $this->tester->execute([]);
+
+        self::assertStringContainsString('Push H-5min programmé', $this->tester->getDisplay());
     }
 
     public function testDispatchesResultsPushWhenResultPublished(): void

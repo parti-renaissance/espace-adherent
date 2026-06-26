@@ -89,6 +89,9 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, N
     public bool $hMinus1Notified = false;
 
     #[ORM\Column(options: ['default' => false])]
+    public bool $hMinus5MinNotified = false;
+
+    #[ORM\Column(options: ['default' => false])]
     public bool $resultNotified = false;
 
     /** @var Collection<int, PronosticParticipation> */
@@ -154,6 +157,7 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, N
             PronosticReminderTypeEnum::CREATION => $this->creationNotified,
             PronosticReminderTypeEnum::J_MINUS_1 => $this->jMinus1Notified,
             PronosticReminderTypeEnum::H_MINUS_1 => $this->hMinus1Notified,
+            PronosticReminderTypeEnum::H_MINUS_5_MIN => $this->hMinus5MinNotified,
             PronosticReminderTypeEnum::RESULTS => $this->resultNotified,
         };
     }
@@ -164,6 +168,7 @@ class Pronostic implements \Stringable, EntityAdministratorBlameableInterface, N
             PronosticReminderTypeEnum::CREATION => $this->creationNotified = true,
             PronosticReminderTypeEnum::J_MINUS_1 => $this->jMinus1Notified = true,
             PronosticReminderTypeEnum::H_MINUS_1 => $this->hMinus1Notified = true,
+            PronosticReminderTypeEnum::H_MINUS_5_MIN => $this->hMinus5MinNotified = true,
             PronosticReminderTypeEnum::RESULTS => $this->resultNotified = true,
         };
     }
