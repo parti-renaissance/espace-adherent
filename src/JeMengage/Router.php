@@ -37,7 +37,7 @@ class Router
         }
 
         if ($object instanceof Pronostic) {
-            return '/pronostics/'.$object->getUuid();
+            return '/prono/'.$object->getUuid();
         }
 
         if ($object instanceof TimelineItemPrivateMessage && $object->ctaUrl) {
