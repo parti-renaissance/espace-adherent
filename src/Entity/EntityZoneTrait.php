@@ -93,6 +93,19 @@ trait EntityZoneTrait
     }
 
     /**
+     * @return Zone[]
+     */
+    public function getCityOrBoroughZones(): array
+    {
+        return array_filter(
+            $this->zones->toArray(),
+            static function (Zone $zone): bool {
+                return \in_array($zone->getType(), [Zone::CITY, Zone::BOROUGH], true);
+            }
+        );
+    }
+
+    /**
      * Return DPT zone or FDE zone if adherent is outside France
      */
     public function getAssemblyZone(): ?Zone

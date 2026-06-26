@@ -45,6 +45,24 @@ class NotifyForActionSubscriberTest extends TestCase
         $subscriber->onActionEvent(new ActionEvent(null, $action), Events::ACTION_CREATED);
     }
 
+    public function testActionCreationWithBoroughZoneDispatchesCommand(): void
+    {
+        // Paris/Lyon/Marseille actions are attached to an arrondissement (borough), not a city zone.
+        $action = new Action();
+        $action->addZone(new Zone(Zone::BOROUGH, '75108', 'Paris 8e'));
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(NotifyForActionCommand::class))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $subscriber = new NotifyForActionSubscriber($bus);
+        $subscriber->onActionEvent(new ActionEvent(null, $action), Events::ACTION_CREATED);
+    }
+
     public function testActionUpdateWithoutCityZoneStillDispatches(): void
     {
         // The city-zone guard only applies to the creation push; update/cancel target participants.

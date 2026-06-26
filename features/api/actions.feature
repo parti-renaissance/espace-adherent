@@ -188,6 +188,28 @@ Feature:
         Then the response status code should be 400
         And the JSON node "message" should be equal to "Vous ne pouvez pas vous désinscrire d'une action que vous avez créé."
 
+    Scenario: Creating an action in a Paris arrondissement notifies that borough, not the parent city
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "POST" request to "/api/v3/actions?scope=president_departmental_assembly" with body:
+            """
+            {
+                "type": "pap",
+                "date": "2024-06-01 10:00:00",
+                "description": "<p>Action dans le 8ème arrondissement</p>",
+                "post_address": {
+                    "address": "68 rue du Rocher",
+                    "postal_code": "75008",
+                    "city_name": "Paris 8ème",
+                    "country": "FR"
+                }
+            }
+            """
+        Then the response status code should be 201
+        And I should have 1 notification "ActionCreatedNotification" with data:
+            | key   | value                                     |
+            | data  | {"link":"http://vox.code/actions/@uuid@"} |
+            | scope | zone:75108                                |
+
     Scenario: editable falls back to "all my scopes with ACTIONS feature" when no ?scope= is passed
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "POST" request to "/api/v3/actions" with body:

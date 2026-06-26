@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Action\EventListener;
 
 use App\Action\ActionEvent;
-use App\Entity\Geo\Zone;
 use App\Events;
 use App\JeMengage\Push\Command\NotifyForActionCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,8 +36,9 @@ class NotifyForActionSubscriber implements EventSubscriberInterface
         $action = $event->getAction();
         $notificationEvent = self::EVENT_MAP[$eventName];
 
-        // The creation push targets the commune: skip it when the action has no city zone (no audience).
-        if (NotifyForActionCommand::EVENT_CREATE === $notificationEvent && !$action->getZonesOfType(Zone::CITY)) {
+        // The creation push targets the commune or arrondissement: skip it when the action has no
+        // city/borough zone (no audience).
+        if (NotifyForActionCommand::EVENT_CREATE === $notificationEvent && !$action->getCityOrBoroughZones()) {
             return;
         }
 

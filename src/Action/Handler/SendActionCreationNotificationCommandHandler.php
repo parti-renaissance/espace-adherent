@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Action\Handler;
 
 use App\Action\Command\SendActionCreationNotificationCommand;
-use App\Entity\Geo\Zone;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\ActionNotificationMessage;
 use App\Repository\Action\ActionRepository;
@@ -39,11 +38,11 @@ class SendActionCreationNotificationCommandHandler
             return;
         }
 
-        if (!$cityZones = $action->getZonesOfType(Zone::CITY)) {
+        if (!$communeZones = $action->getCityOrBoroughZones()) {
             return;
         }
 
-        $recipients = $this->adherentRepository->findMembersAndAdherentsInZones($cityZones, SubscriptionTypeEnum::EVENT_EMAIL);
+        $recipients = $this->adherentRepository->findMembersAndAdherentsInZones($communeZones, SubscriptionTypeEnum::EVENT_EMAIL);
 
         if (!$recipients) {
             return;

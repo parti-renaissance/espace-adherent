@@ -9,7 +9,6 @@ use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\Event\Event;
-use App\Entity\Geo\Zone;
 use App\Entity\NotificationObjectInterface;
 use App\Entity\Pronostic\Pronostic;
 use App\Entity\ZoneableEntityInterface;
@@ -53,12 +52,13 @@ class TokenProviderResolver
             $zones = $object->getZones()->toArray();
         }
 
-        // An action targets its commune (city zone) directly, like a militant event — getZones() may
-        // also hold parent zones (department, region), so the city zone is selected explicitly.
+        // An action targets its commune directly, like a militant event — getZones() may also hold
+        // parent zones (department, region), so the commune-level zone is selected explicitly. For
+        // Paris/Lyon/Marseille that zone is the arrondissement (borough), not the parent city.
         if ($object instanceof Action) {
-            $cityZones = $object->getZonesOfType(Zone::CITY);
+            $communeZones = $object->getCityOrBoroughZones();
 
-            return $cityZones ? $this->pushTokenRepository->findAllForZone(reset($cityZones)) : [];
+            return $communeZones ? $this->pushTokenRepository->findAllForZone(reset($communeZones)) : [];
         }
 
         // A militant event targets its city zone directly, without climbing to the assembly (department) zone.

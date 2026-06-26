@@ -14,9 +14,10 @@ use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
 /**
- * The action creation mail targets the commune (city zone) audience: adherents + members (sympathisant:membre)
+ * The action creation mail targets the commune-level audience: adherents + members (sympathisant:membre)
  * subscribed to event_email; other sympathisants (e.g. adhesion_incomplete) are excluded.
- * Asserted on commune 77288 from the shared LoadAdherentData set.
+ * For Paris/Lyon/Marseille the commune-level zone is the arrondissement (borough).
+ * Asserted on commune 77288 and Paris arrondissement 75108 from the shared LoadAdherentData set.
  */
 #[Group('functional')]
 class SendActionCreationNotificationCommandHandlerTest extends AbstractKernelTestCase
@@ -28,45 +29,32 @@ class SendActionCreationNotificationCommandHandlerTest extends AbstractKernelTes
     private const USER_IN = 'adherent-male-a@en-marche-dev.fr';
     private const ADHERENT_OTHER_ZONE = 'laura@deloche.com';
 
-    private ?Action $action = null;
+    // Adherent of Paris arrondissement 75108 (zone_borough_75108), subscribed to event_email.
+    private const BOROUGH_ADHERENT_IN = 'jacques.picard@en-marche.fr';
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $commune = $this->getRepository(Zone::class)->findOneBy(['code' => '77288', 'type' => Zone::CITY]);
-        $author = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
-
-        $action = new Action();
-        $action->type = 'pap';
-        $action->date = new \DateTime('+2 days');
-        $action->description = '<p>Action de terrain</p>';
-        $action->setPostAddress($this->createPostAddress('2 avenue Jean Jaurès', '77000-77288'));
-        $action->setAuthor($author);
-        $action->addZone($commune);
-
-        $this->manager->persist($action);
-        $this->manager->flush();
-
-        $this->action = $action;
-    }
+    /** @var Action[] */
+    private array $actions = [];
 
     protected function tearDown(): void
     {
-        if (null !== $this->action && $managed = $this->manager->find(Action::class, $this->action->getId())) {
-            $this->manager->remove($managed);
-            $this->manager->flush();
+        foreach ($this->actions as $action) {
+            if ($managed = $this->manager->find(Action::class, $action->getId())) {
+                $this->manager->remove($managed);
+            }
         }
+        $this->manager->flush();
 
-        $this->action = null;
+        $this->actions = [];
 
         parent::tearDown();
     }
 
     public function testActionCreationMailTargetsCommuneMembersAndAdherentsWithEventPreference(): void
     {
+        $action = $this->persistAction($this->zone('77288', Zone::CITY), '77000-77288');
+
         $handler = $this->get(SendActionCreationNotificationCommandHandler::class);
-        $handler(new SendActionCreationNotificationCommand($this->action->getUuid()));
+        $handler(new SendActionCreationNotificationCommand($action->getUuid()));
 
         $repository = $this->getEmailRepository();
         $received = static fn (string $email): bool => [] !== $repository->findRecipientMessages(ActionNotificationMessage::class, $email);
@@ -81,5 +69,44 @@ class SendActionCreationNotificationCommandHandlerTest extends AbstractKernelTes
         self::assertFalse($received(self::ADHERENT_NO_SUB));
         self::assertFalse($received(self::USER_IN));
         self::assertFalse($received(self::ADHERENT_OTHER_ZONE));
+    }
+
+    public function testActionCreationMailReachesArrondissementAudience(): void
+    {
+        $action = $this->persistAction($this->zone('75108', Zone::BOROUGH), '75008-75108');
+
+        $handler = $this->get(SendActionCreationNotificationCommandHandler::class);
+        $handler(new SendActionCreationNotificationCommand($action->getUuid()));
+
+        $repository = $this->getEmailRepository();
+        $received = static fn (string $email): bool => [] !== $repository->findRecipientMessages(ActionNotificationMessage::class, $email);
+
+        // An action attached to a Paris arrondissement (borough) reaches that arrondissement's adherents.
+        self::assertTrue($received(self::BOROUGH_ADHERENT_IN));
+        // Adherents of other communes are not reached.
+        self::assertFalse($received(self::ADHERENT_OTHER_ZONE));
+    }
+
+    private function persistAction(Zone $zone, string $address): Action
+    {
+        $action = new Action();
+        $action->type = 'pap';
+        $action->date = new \DateTime('+2 days');
+        $action->description = '<p>Action de terrain</p>';
+        $action->setPostAddress($this->createPostAddress('2 avenue Jean Jaurès', $address));
+        $action->setAuthor($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID));
+        $action->addZone($zone);
+
+        $this->manager->persist($action);
+        $this->manager->flush();
+
+        $this->actions[] = $action;
+
+        return $action;
+    }
+
+    private function zone(string $code, string $type): Zone
+    {
+        return $this->getRepository(Zone::class)->findOneBy(['code' => $code, 'type' => $type]);
     }
 }
