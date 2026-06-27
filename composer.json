@@ -126,6 +126,7 @@
         "symfony/security-core": "^7.4",
         "symfony/security-csrf": "^7.4",
         "symfony/serializer": "^7.4",
+        "symfony/slack-notifier": "^7.4",
         "symfony/string": "^7.4",
         "symfony/telegram-notifier": "^7.4",
         "symfony/thanks": "^1.2",

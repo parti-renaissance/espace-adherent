@@ -7,6 +7,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         'notifier' => [
             'chatter_transports' => [
                 'telegram' => '%env(REBOT_TELEGRAM_DSN)%',
+                'slack' => '%env(SLACK_DSN)%',
+                'clickup' => '%env(CLICKUP_DSN)%',
             ],
         ],
     ]);
