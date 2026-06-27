@@ -24,6 +24,7 @@ use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -48,7 +49,12 @@ class OAuthServerController extends AbstractController
 
             $client = $repository->findOneByUuid($authRequest->getClient()->getIdentifier());
 
-            $this->denyAccessUnlessGranted(OAuthClientVoter::PERMISSION, $client);
+            if (!$this->isGranted(OAuthClientVoter::PERMISSION, $client)) {
+                return $this
+                    ->render('oauth/access_denied.html.twig')
+                    ->setStatusCode(SymfonyResponse::HTTP_FORBIDDEN)
+                ;
+            }
 
             $form = $this
                 ->createForm(ConfirmActionType::class)
