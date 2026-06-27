@@ -14,8 +14,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
             'transports' => [
                 'sync' => 'sync://',
+                'test_async' => 'in-memory://',
             ],
             'routing' => [
+                App\Sentry\Webhook\Command\SentryWebhookCommand::class => 'test_async',
                 App\Donation\Command\ReceivePayboxIpnResponseCommand::class => 'sync',
                 App\Messenger\Message\UuidDefaultAsyncMessage::class => 'sync',
                 App\JeMengage\Push\Command\SendPushChunkCommand::class => 'sync',
