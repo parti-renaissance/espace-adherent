@@ -2,6 +2,8 @@
 
 {% block title 'Connectez-vous avec vos identifiants' %}
 
+{% block security_container_classes 'lg:max-w-[520px]' %}
+
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 {% form_theme magicLink 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
@@ -15,7 +17,7 @@
         <div class="bg-vox-gray-100 rounded-2xl p-4 flex flex-col gap-4">
             <div class="flex flex-col gap-2">
                 <h2 class="font-plaak uppercase tracking-tight text-[20px] text-vox-gray-900">Connexion par lien magique</h2>
-                <p class="text-[14px] leading-5 text-vox-gray-600">Vous renseignez votre email, vous recevez un lien de connexion sur lequel vous cliquez, vous êtes connecté.</p>
+                <p class="text-[14px] leading-5 text-vox-gray-600">Connectez-vous depuis un lien reçu par email, c'est simple et sans mot-de-passe.</p>
             </div>
 
             {{ form_start(magicLink, {
