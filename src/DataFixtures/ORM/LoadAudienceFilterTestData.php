@@ -43,6 +43,7 @@ class LoadAudienceFilterTestData extends Fixture
     public const EMAIL_DONATOR_CURRENT_YEAR = 'audience-filter-donator-current-year@audience-filter-test.local';
     public const EMAIL_FIRST_NAME_CHARLES = 'audience-filter-first-name-charles@audience-filter-test.local';
     public const EMAIL_LAST_NAME_SPECIAL = 'audience-filter-last-name-special@audience-filter-test.local';
+    public const EMAIL_HARD_BOUNCED = 'audience-filter-hard-bounced@audience-filter-test.local';
 
     public const FIRST_NAME_CHARLES = 'Charles-Audience-Filter';
     public const LAST_NAME_SPECIAL = 'Special-Audience-Filter';
@@ -270,6 +271,18 @@ class LoadAudienceFilterTestData extends Fixture
             'birthdate' => '1985-01-01',
             'registered_at' => '2024-01-01 12:00:00',
         ]);
+
+        // Hard-bounced adherent: technical email suppression must exclude it from the email audience,
+        // even though it stays SUBSCRIBED (the bounce flag is independent of consent status).
+        $hardBounced = $this->createAdherent($manager, [
+            'email' => self::EMAIL_HARD_BOUNCED,
+            'first_name' => 'Audience',
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+        $hardBounced->markAsEmailHardBounced();
 
         $manager->flush();
     }

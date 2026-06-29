@@ -71,13 +71,43 @@ class SesEmailClientTest extends TestCase
         $this->createClient($httpClient)->sendEmail($this->basicEmail());
     }
 
-    private function createClient(HttpClientInterface $httpClient): SesEmailClient
+    public function testConfigurationSetNameIsIncludedWhenConfigured(): void
+    {
+        $capturedBody = null;
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$capturedBody): MockResponse {
+            $capturedBody = $options['body'] ?? null;
+
+            return new MockResponse(json_encode(['MessageId' => 'ses-msg-1']), ['http_code' => 200]);
+        });
+
+        $this->createClient($httpClient, 'renaissance-publications')->sendEmail($this->basicEmail());
+
+        self::assertIsString($capturedBody);
+        self::assertStringContainsString('renaissance-publications', $capturedBody);
+    }
+
+    public function testConfigurationSetNameIsOmittedWhenEmpty(): void
+    {
+        $capturedBody = null;
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$capturedBody): MockResponse {
+            $capturedBody = $options['body'] ?? null;
+
+            return new MockResponse(json_encode(['MessageId' => 'ses-msg-1']), ['http_code' => 200]);
+        });
+
+        $this->createClient($httpClient)->sendEmail($this->basicEmail());
+
+        self::assertIsString($capturedBody);
+        self::assertStringNotContainsString('ConfigurationSetName', $capturedBody);
+    }
+
+    private function createClient(HttpClientInterface $httpClient, ?string $configurationSetName = null): SesEmailClient
     {
         return new SesEmailClient(new SesClient(
             ['region' => 'eu-west-3', 'accessKeyId' => 'test-key', 'accessKeySecret' => 'test-secret'],
             null,
             $httpClient,
-        ));
+        ), $configurationSetName);
     }
 
     private function basicEmail(): SesEmail

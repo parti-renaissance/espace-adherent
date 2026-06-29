@@ -355,6 +355,16 @@ class AdherentRepositoryAudienceFilterTest extends AbstractKernelTestCase
         $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
     }
 
+    public function testHardBouncedAdherentIsExcludedFromEmailAudience(): void
+    {
+        // No email-specific filter: the default audience is all subscribed, non-bounced adherents.
+        $ids = $this->findIds(static function (AdherentMessageFilter $filter): void {
+        });
+
+        $this->assertContains($this->idOf(LoadAudienceFilterTestData::EMAIL_MALE_YOUNG), $ids);
+        $this->assertNotContains($this->idOf(LoadAudienceFilterTestData::EMAIL_HARD_BOUNCED), $ids);
+    }
+
     /**
      * @return list<int>
      */

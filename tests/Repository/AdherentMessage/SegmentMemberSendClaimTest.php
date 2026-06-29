@@ -115,6 +115,49 @@ class SegmentMemberSendClaimTest extends AbstractKernelTestCase
         self::assertSame([1, 3], $this->repository->findChunkNumbersToSend($segment->id));
     }
 
+    public function testFindClaimableRecipientsByChunkExcludesHardBouncedAdherent(): void
+    {
+        $segment = $this->createSegment();
+        $kept = $this->addMember($segment, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
+
+        $bounced = $this->createSubscribedAdherent();
+        $bounced->markAsEmailHardBounced();
+        // Still SUBSCRIBED: exclusion is driven by the bounce flag, not by consent status — this is what
+        // makes the suppression durable against a Mailchimp re-sync that would reset mailchimpStatus.
+        self::assertTrue($bounced->isEmailSubscribed());
+        $this->addMember($segment, $bounced, 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+
+        $rows = $this->repository->findClaimableRecipientsByChunk($segment->id, 1);
+
+        self::assertCount(1, $rows);
+        self::assertSame($kept->id, $rows[0]['id']);
+    }
+
+    public function testCountRemainingToSendExcludesHardBouncedAdded(): void
+    {
+        $segment = $this->createSegment();
+        $this->addMember($segment, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
+        $bounced = $this->createSubscribedAdherent();
+        $bounced->markAsEmailHardBounced();
+        $this->addMember($segment, $bounced, 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+
+        self::assertSame(1, $this->repository->countRemainingToSend($segment->id));
+    }
+
+    public function testFindChunkNumbersToSendExcludesChunkWithOnlyHardBounced(): void
+    {
+        $segment = $this->createSegment();
+        $this->addMember($segment, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
+        $bounced = $this->createSubscribedAdherent();
+        $bounced->markAsEmailHardBounced();
+        $this->addMember($segment, $bounced, 2, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+
+        self::assertSame([1], $this->repository->findChunkNumbersToSend($segment->id));
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

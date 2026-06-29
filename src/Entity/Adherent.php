@@ -420,6 +420,9 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $unsubscribeRequestedAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $emailHardBouncedAt = null;
+
     /**
      * @var CandidateManagedArea|null
      */
@@ -903,6 +906,10 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
 
     public function setEmailAddress(string $emailAddress): void
     {
+        if ($emailAddress !== $this->emailAddress) {
+            $this->emailHardBouncedAt = null;
+        }
+
         $this->emailAddress = $emailAddress;
     }
 
@@ -2250,6 +2257,18 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     {
         $this->mailchimpStatus = ContactStatusEnum::CLEANED;
         $this->subscriptionTypes->clear();
+    }
+
+    public function markAsEmailHardBounced(): void
+    {
+        if (null === $this->emailHardBouncedAt) {
+            $this->emailHardBouncedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function isEmailHardBounced(): bool
+    {
+        return null !== $this->emailHardBouncedAt;
     }
 
     #[Groups(['user_profile'])]

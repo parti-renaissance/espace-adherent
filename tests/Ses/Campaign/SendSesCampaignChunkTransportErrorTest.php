@@ -18,6 +18,7 @@ use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailer\Template\Manager;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
+use App\Repository\AdherentRepository;
 use App\Repository\MailchimpCampaignRepository;
 use App\Ses\Campaign\Handler\SendSesCampaignChunkHandler;
 use App\Ses\Campaign\Message\SendSesCampaignChunkMessage;
@@ -27,6 +28,7 @@ use App\Ses\Client\SesSendOutcome;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipientContextFactory;
 use App\Ses\Rendering\SesRecipientEmailFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
@@ -98,6 +100,8 @@ class SendSesCampaignChunkTransportErrorTest extends AbstractKernelTestCase
             new SesRecipientEmailFactory(new VariableParser(), new SesVariableRenderer(), new SesRecipientContextFactory()),
             $client,
             new CampaignReachInserter($memberRepository, self::getContainer()->get(BulkInsertHelper::class)),
+            self::getContainer()->get(AdherentRepository::class),
+            self::getContainer()->get(EntityManagerInterface::class),
         );
     }
 

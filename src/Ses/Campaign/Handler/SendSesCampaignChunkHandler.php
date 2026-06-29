@@ -6,6 +6,7 @@ namespace App\Ses\Campaign\Handler;
 
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
+use App\Repository\AdherentRepository;
 use App\Repository\MailchimpCampaignRepository;
 use App\Ses\Campaign\Message\SendSesCampaignChunkMessage;
 use App\Ses\Campaign\Reach\CampaignReachInserter;
@@ -13,6 +14,7 @@ use App\Ses\Client\SesEmailClient;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipient;
 use App\Ses\Rendering\SesRecipientEmailFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -40,6 +42,8 @@ class SendSesCampaignChunkHandler
         private readonly SesRecipientEmailFactory $recipientEmailFactory,
         private readonly SesEmailClient $emailClient,
         private readonly CampaignReachInserter $reachInserter,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly EntityManagerInterface $entityManager,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -108,6 +112,8 @@ class SendSesCampaignChunkHandler
                         'row' => $rowId,
                         'reason' => $outcome->rejectionReason,
                     ]);
+
+                    $this->suppressRecipientIfOnSuppressionList($outcome->rejectionReason, (string) $row['email']);
                 }
 
                 $this->memberRepository->markRowSent($rowId);
@@ -115,6 +121,29 @@ class SendSesCampaignChunkHandler
         }
 
         $this->completeIfDone($campaign, $segment->id);
+    }
+
+    /**
+     * A synchronous SES rejection because the address is on the account-level suppression list means the
+     * mailbox is already known-dead: flag it locally so the next audience excludes it (this is the only
+     * signal we get — a suppression-list address is never even attempted, so it produces no async SNS
+     * bounce). Other permanent rejections (sender config, sandbox-unverified) are not the recipient's
+     * fault, and an actually invalid mailbox surfaces as an async SNS hard bounce instead — both are left
+     * as a warning only, to avoid wrongly suppressing live addresses on a systemic error.
+     */
+    private function suppressRecipientIfOnSuppressionList(?string $rejectionReason, string $email): void
+    {
+        if (null === $rejectionReason || !str_contains(strtolower($rejectionReason), 'suppression list')) {
+            return;
+        }
+
+        $adherent = $this->adherentRepository->findOneByEmail($email);
+        if (null === $adherent) {
+            return;
+        }
+
+        $adherent->markAsEmailHardBounced();
+        $this->entityManager->flush();
     }
 
     private function completeIfDone(MailchimpCampaign $campaign, int $staticSegmentId): void

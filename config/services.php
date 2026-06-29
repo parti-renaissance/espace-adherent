@@ -131,6 +131,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$gcloudBucket', '%env(GCLOUD_BUCKET)%')
         ->bind('$scraperSourceBuckets', '%env(SCRAPER_SOURCE_BUCKETS)%')
         ->bind('$maxConcurrentTranscodingJobs', '%env(int:TRANSCODER_MAX_CONCURRENT_JOBS)%')
+        ->bind('$sesWebhookKey', '%env(SES_WEBHOOK_KEY)%')
+        ->bind('$sesNotificationTopicArn', '%env(SES_NOTIFICATION_TOPIC_ARN)%')
+        ->bind('$sesConfigurationSetName', '%env(SES_CONFIGURATION_SET_NAME)%')
     ;
 
     $services->instanceof(App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface::class)

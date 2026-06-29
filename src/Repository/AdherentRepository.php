@@ -2053,7 +2053,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if (null !== $byEmail) {
             if ($byEmail) {
-                $emailConds = ['a.mailchimp_status = :mailchimp_subscribed'];
+                $emailConds = ['a.mailchimp_status = :mailchimp_subscribed', 'a.email_hard_bounced_at IS NULL'];
                 if ($stId) {
                     $emailConds[] = 'EXISTS (
                         SELECT 1

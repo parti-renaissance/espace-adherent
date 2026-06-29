@@ -13,6 +13,7 @@ use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\Command\VerifyCampaignDeliveryCommand;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
@@ -835,6 +836,92 @@ final class ManagerTest extends TestCase
         self::assertNotNull($adherent->mailchimpLastSyncedAt);
         // BETA error is preserved for monitoring
         self::assertSame('Invalid Resource', $adherent->lastMailchimpFailedSyncResponse);
+    }
+
+    public function testEditMemberKeepsUnsubscribeWhenComplaintFreezeIsSet(): void
+    {
+        // A SES complaint applies markAsUnsubscribe(): UNSUBSCRIBED + unsubscribeRequestedAt (the freeze).
+        // Mailchimp never saw the complaint, so its remote status is still SUBSCRIBED. editMember must NOT
+        // revert the local status — this is what makes the complaint suppression durable (Decision 3 / C1).
+        $adherent = $this->createAdherent();
+        $adherent->markAsUnsubscribe();
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => ContactStatusEnum::SUBSCRIBED, 'contact_id' => null, 'sms_subscription_status' => null])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->expects(self::once())
+            ->method('addContact')
+            ->with($contactRequest, 'list-id', true)
+            ->willReturn('new-contact-id')
+        ;
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame(ContactStatusEnum::UNSUBSCRIBED, $adherent->getMailchimpStatus());
+    }
+
+    public function testEditMemberRevertsUnsubscribeWithoutComplaintFreeze(): void
+    {
+        // Proves the freeze is load-bearing: a naive unsubscribe (no unsubscribeRequestedAt) IS reverted by
+        // editMember when the Mailchimp remote is still SUBSCRIBED. This is exactly the regression that the
+        // freeze in markAsUnsubscribe() guards against — drop it and the complaint becomes non-durable.
+        $adherent = $this->createAdherent();
+        $adherent->setEmailUnsubscribed(true);
+        $message = $this->createCommand($adherent);
+        $contactRequest = new ContactRequest('test@example.com');
+
+        self::assertNull($adherent->unsubscribeRequestedAt);
+
+        $this->mailchimpObjectIdMapping
+            ->method('getListIdFromSource')
+            ->willReturn('list-id')
+        ;
+
+        $this->driver
+            ->method('getMemberInfo')
+            ->willReturn(['status' => ContactStatusEnum::SUBSCRIBED, 'contact_id' => null, 'sms_subscription_status' => null])
+        ;
+
+        $this->requestBuilder
+            ->method('updateFromAdherent')
+            ->willReturnSelf()
+        ;
+
+        $this->requestBuilder
+            ->method('buildContactRequest')
+            ->willReturn($contactRequest)
+        ;
+
+        $this->driver
+            ->expects(self::once())
+            ->method('addContact')
+            ->with($contactRequest, 'list-id', true)
+            ->willReturn('new-contact-id')
+        ;
+
+        $this->manager->editMember($adherent, $message);
+
+        self::assertSame(ContactStatusEnum::SUBSCRIBED, $adherent->getMailchimpStatus());
     }
 
     public function testSendMailchimpCampaignSuccessMarksAsSendingAndDispatchesFollowups(): void
