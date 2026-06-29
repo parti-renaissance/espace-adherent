@@ -47,6 +47,16 @@ class DispatchPronosticNotificationsCommand extends Command
         }
 
         $now = new \DateTimeImmutable();
+        $alertExpiresAt = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('+24 hours');
+
+        if ($now >= $alertExpiresAt) {
+            $pronostic->displayed = false;
+            $this->entityManager->flush();
+            $this->io->success('Pronostic masqué : le match est terminé depuis plus de 24 heures.');
+
+            return self::SUCCESS;
+        }
+
         $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
         $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
         $fiveMinutesBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-5 minutes');
