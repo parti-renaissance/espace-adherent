@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\ActivityPositionsEnum;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -84,6 +85,77 @@ class AdherentTest extends AbstractKernelTestCase
 
         $adherent->setEmailAddress($adherent->getEmailAddress());
         $this->assertTrue($adherent->isEmailHardBounced(), 'same address must not reset suppression');
+    }
+
+    public function testMarkAsEmailComplainedSetsTimestampOnce(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $this->assertFalse($adherent->isEmailComplained());
+
+        $adherent->markAsEmailComplained();
+        $this->assertTrue($adherent->isEmailComplained());
+        $first = $adherent->emailComplainedAt;
+
+        $adherent->markAsEmailComplained();
+        $this->assertSame($first, $adherent->emailComplainedAt, 'idempotent: keeps the first occurrence date');
+    }
+
+    public function testCanReceiveEmailWhenSubscribedAndDeliverable(): void
+    {
+        $adherent = $this->createNewAdherent();
+
+        $this->assertTrue($adherent->isEmailSubscribed());
+        $this->assertTrue($adherent->canReceiveEmail());
+    }
+
+    public function testCannotReceiveEmailWhenHardBounced(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailHardBounced();
+
+        $this->assertTrue($adherent->isEmailSubscribed(), 'consent is untouched by a bounce');
+        $this->assertFalse($adherent->canReceiveEmail());
+    }
+
+    public function testCannotReceiveEmailWhenComplained(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailComplained();
+
+        $this->assertFalse($adherent->canReceiveEmail());
+    }
+
+    public function testCannotReceiveEmailWhenUnsubscribed(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->setEmailUnsubscribed(true);
+
+        $this->assertFalse($adherent->isEmailSubscribed());
+        $this->assertFalse($adherent->canReceiveEmail());
+    }
+
+    public function testReSubscribeClearsComplaint(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailComplained();
+        $adherent->setEmailUnsubscribed(true);
+        $this->assertTrue($adherent->isEmailComplained());
+
+        $adherent->setEmailUnsubscribed(false);
+
+        $this->assertFalse($adherent->isEmailComplained(), 'invariant: a re-subscribe clears the complaint');
+        $this->assertSame(ContactStatusEnum::SUBSCRIBED, $adherent->getMailchimpStatus());
+        $this->assertTrue($adherent->canReceiveEmail());
+    }
+
+    public function testChangingEmailAddressResetsComplaint(): void
+    {
+        $adherent = $this->createNewAdherent();
+        $adherent->markAsEmailComplained();
+        $this->assertTrue($adherent->isEmailComplained());
+
+        $adherent->setEmailAddress('a-new-fresh-address@example.org');
+        $this->assertFalse($adherent->isEmailComplained(), 'a new address gets a fresh chance');
     }
 
     public function testAdherentsAreEqual(): void

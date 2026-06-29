@@ -54,6 +54,10 @@ class ProcessSesNotificationCommandHandler
             if (SesFeedbackType::HARD_BOUNCE === $event->type) {
                 $adherent->markAsEmailHardBounced();
             } else {
+                // A complaint is recorded as such (distinct from a voluntary unsubscribe) and also
+                // withdraws consent (markAsUnsubscribe => UNSUBSCRIBED), keeping the invariant
+                // complained => unsubscribed.
+                $adherent->markAsEmailComplained();
                 $adherent->markAsUnsubscribe();
                 $this->subscriptionHandler->handleUpdateSubscription($adherent, []);
             }

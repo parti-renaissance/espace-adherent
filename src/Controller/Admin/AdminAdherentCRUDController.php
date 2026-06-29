@@ -291,6 +291,12 @@ class AdminAdherentCRUDController extends CRUDController
         if ($request->isMethod(Request::METHOD_POST)) {
             $this->validateCsrfToken($request, 'admin.adherent.send_email');
 
+            if ($adherent->isEmailHardBounced() || $adherent->isEmailComplained()) {
+                $this->addFlash('sonata_flash_error', 'Adresse non éligible au réabonnement (plainte ou retour en erreur).');
+
+                return $this->redirect($this->admin->generateObjectUrl('edit', $adherent));
+            }
+
             $bus->dispatch(new SendResubscribeEmailCommand($adherent));
 
             $this->addFlash('sonata_flash_success', 'Email a bien été envoyé');

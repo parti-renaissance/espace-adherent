@@ -7,6 +7,7 @@ namespace App\Ses\Rendering;
 use App\AdherentMessage\Variable\Parser;
 use App\AdherentMessage\Variable\Renderer\SesVariableRenderer;
 use App\Ses\Client\SesEmail;
+use App\Ses\Unsubscribe\UnsubscribeUrlGenerator;
 
 /**
  * Produces the final, personalised SesEmail for one recipient from the message-level HTML assembled
@@ -19,6 +20,7 @@ class SesRecipientEmailFactory
         private readonly Parser $parser,
         private readonly SesVariableRenderer $variableRenderer,
         private readonly SesRecipientContextFactory $contextFactory,
+        private readonly UnsubscribeUrlGenerator $unsubscribeUrlGenerator,
     ) {
     }
 
@@ -29,6 +31,11 @@ class SesRecipientEmailFactory
 
         $html = $this->variableRenderer->render($assembled->html, $variables, $context);
 
+        // {{unsubscribe_url}} is a system placeholder, not a Dictionary code (the Parser does not extract
+        // it): resolve it directly per recipient and feed the same URL to the List-Unsubscribe header.
+        $unsubscribeUrl = $this->unsubscribeUrlGenerator->generate($recipient->uuid);
+        $html = strtr($html, ['{{unsubscribe_url}}' => $unsubscribeUrl]);
+
         return new SesEmail(
             $recipient->email,
             $assembled->subject,
@@ -36,6 +43,7 @@ class SesRecipientEmailFactory
             $assembled->fromEmail,
             $assembled->fromName,
             $assembled->replyTo,
+            $unsubscribeUrl,
         );
     }
 }

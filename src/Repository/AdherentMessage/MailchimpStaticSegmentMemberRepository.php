@@ -10,6 +10,7 @@ use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
 {
@@ -262,12 +263,12 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
      * Sendable rows of a chunk: status Added + adherent still consented. Includes the row id so the
      * worker can claim each row individually (per-recipient at-most-once).
      *
-     * @return list<array{id: int, email: string, firstName: ?string, lastName: ?string, gender: ?string, publicId: ?string}>
+     * @return list<array{id: int, email: string, uuid: Uuid, firstName: ?string, lastName: ?string, gender: ?string, publicId: ?string}>
      */
     public function findClaimableRecipientsByChunk(int $staticSegmentId, int $chunkNumber): array
     {
         return $this->createQueryBuilder('m')
-            ->select('m.id, a.emailAddress AS email, a.firstName, a.lastName, a.gender, a.publicId')
+            ->select('m.id, a.emailAddress AS email, a.uuid, a.firstName, a.lastName, a.gender, a.publicId')
             ->innerJoin('m.adherent', 'a')
             ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
             ->andWhere('m.chunkNumber = :chunkNumber')

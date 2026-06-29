@@ -423,6 +423,9 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $emailHardBouncedAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $emailComplainedAt = null;
+
     /**
      * @var CandidateManagedArea|null
      */
@@ -908,6 +911,7 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
     {
         if ($emailAddress !== $this->emailAddress) {
             $this->emailHardBouncedAt = null;
+            $this->emailComplainedAt = null;
         }
 
         $this->emailAddress = $emailAddress;
@@ -1589,6 +1593,8 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
             $this->mailchimpStatus = ContactStatusEnum::UNSUBSCRIBED;
         } else {
             $this->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
+            // A re-subscribe clears a prior complaint (invariant: complained => unsubscribed).
+            $this->emailComplainedAt = null;
         }
     }
 
@@ -2271,10 +2277,36 @@ class Adherent implements UserInterface, UserEntityInterface, ClaimSetInterface,
         return null !== $this->emailHardBouncedAt;
     }
 
+    public function markAsEmailComplained(): void
+    {
+        if (null === $this->emailComplainedAt) {
+            $this->emailComplainedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function isEmailComplained(): bool
+    {
+        return null !== $this->emailComplainedAt;
+    }
+
+    /**
+     * CONSENT axis only (Mailchimp contact status). For a send decision, use canReceiveEmail().
+     */
     #[Groups(['user_profile'])]
     public function isEmailSubscribed(): bool
     {
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
+    }
+
+    /**
+     * Canonical accessor: can we send an email to this person?
+     * Combines consent (isEmailSubscribed) AND deliverability (no hard bounce, no complaint).
+     */
+    #[Groups(['user_profile'])]
+    #[SerializedName('can_receive_email')]
+    public function canReceiveEmail(): bool
+    {
+        return $this->isEmailSubscribed() && !$this->isEmailHardBounced() && !$this->isEmailComplained();
     }
 
     public function hasPhoningManagerRole(): bool

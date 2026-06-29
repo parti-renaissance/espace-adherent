@@ -27,18 +27,28 @@ class SesEmailClient
 
     public function sendEmail(SesEmail $email): SesSendOutcome
     {
+        $simpleContent = [
+            'Subject' => ['Data' => $email->subject, 'Charset' => 'UTF-8'],
+            'Body' => [
+                'Html' => ['Data' => $email->html, 'Charset' => 'UTF-8'],
+            ],
+        ];
+
+        if (null !== $email->listUnsubscribeUrl) {
+            // RFC 8058 one-click unsubscribe: the provider POSTs to the URL with this body.
+            $simpleContent['Headers'] = [
+                ['Name' => 'List-Unsubscribe', 'Value' => '<'.$email->listUnsubscribeUrl.'>'],
+                ['Name' => 'List-Unsubscribe-Post', 'Value' => 'List-Unsubscribe=One-Click'],
+            ];
+        }
+
         $request = new SendEmailRequest([
             'FromEmailAddress' => $this->formatFrom($email),
             'Destination' => ['ToAddresses' => [$email->to]],
             'ReplyToAddresses' => null !== $email->replyTo ? [$email->replyTo] : [],
             'ConfigurationSetName' => $this->sesConfigurationSetName ?: null,
             'Content' => [
-                'Simple' => [
-                    'Subject' => ['Data' => $email->subject, 'Charset' => 'UTF-8'],
-                    'Body' => [
-                        'Html' => ['Data' => $email->html, 'Charset' => 'UTF-8'],
-                    ],
-                ],
+                'Simple' => $simpleContent,
             ],
         ]);
 
