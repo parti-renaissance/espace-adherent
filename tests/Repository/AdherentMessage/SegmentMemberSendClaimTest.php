@@ -49,6 +49,21 @@ class SegmentMemberSendClaimTest extends AbstractKernelTestCase
         self::assertNotNull($member->processedAt);
     }
 
+    public function testMarkRowRefusedTransitionsFromSendingAndRecordsReason(): void
+    {
+        $segment = $this->createSegment();
+        $member = $this->addMember($segment, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
+        $this->manager->flush();
+
+        $this->repository->claimRowForSending($member->id);
+        $this->repository->markRowRefused($member->id, 'Email address is not verified.');
+
+        $this->manager->refresh($member);
+        self::assertSame(SegmentMemberStatusEnum::Refused, $member->processingStatus);
+        self::assertSame('Email address is not verified.', $member->errorMessage);
+        self::assertNotNull($member->processedAt);
+    }
+
     public function testReopenRowReturnsClaimedRowToAdded(): void
     {
         $segment = $this->createSegment();

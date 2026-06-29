@@ -322,6 +322,25 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
         ;
     }
 
+    public function markRowRefused(int $rowId, ?string $reason): void
+    {
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':refused')
+            ->set('m.processedAt', ':now')
+            ->set('m.errorMessage', ':reason')
+            ->where('m.id = :id')
+            ->andWhere('m.processingStatus = :sending')
+            ->setParameter('refused', SegmentMemberStatusEnum::Refused)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setParameter('reason', $reason)
+            ->setParameter('id', $rowId)
+            ->setParameter('sending', SegmentMemberStatusEnum::Sending)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
     /**
      * Reopens a claimed row after a transport failure (Sending -> Added) so a Messenger retry can
      * pick it up again. The send did not happen, so no duplicate results from reopening.

@@ -26,9 +26,10 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
  * Sends one chunk of a campaign through SES, one recipient at a time, with per-row at-most-once.
  *
  * Each row is claimed atomically (Added -> Sending) before its SES call: a redelivery or a concurrent
- * worker can only ever pick rows still Added, so no recipient is sent twice (red-team #2). A permanent
- * rejection and a success both close the row (markRowSent) — only a transport failure reopens it
- * (Sending -> Added) and rethrows so Messenger retries the chunk without resending the rows already done.
+ * worker can only ever pick rows still Added, so no recipient is sent twice (red-team #2). Both a success
+ * (markRowSent) and a permanent rejection (markRowRefused, with the SES reason) close the row terminally;
+ * only a transport failure reopens it (Sending -> Added) and rethrows so Messenger retries the chunk
+ * without resending the rows already done.
  *
  * When the chunk leaves no sendable row in the whole segment, the campaign is completed atomically
  * (Sending -> Sent) and the reach is recorded — both idempotent, so two chunks finishing together do it once.
@@ -110,7 +111,6 @@ class SendSesCampaignChunkHandler
                 }
 
                 if (!$outcome->isSent()) {
-                    // Permanent rejection (unverified/invalid address): the row is done, not retried.
                     $this->logger->warning('[SES][Campaign] Recipient permanently rejected', [
                         'campaign_id' => $message->campaignId,
                         'chunk' => $message->chunkNumber,
@@ -119,6 +119,9 @@ class SendSesCampaignChunkHandler
                     ]);
 
                     $this->suppressRecipientIfOnSuppressionList($outcome->rejectionReason, (string) $row['email']);
+                    $this->memberRepository->markRowRefused($rowId, $outcome->rejectionReason);
+
+                    continue;
                 }
 
                 $this->memberRepository->markRowSent($rowId);

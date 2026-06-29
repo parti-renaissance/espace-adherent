@@ -71,6 +71,21 @@ class SesEmailClientTest extends TestCase
         $this->createClient($httpClient)->sendEmail($this->basicEmail());
     }
 
+    public function testEmptyMessageIdThrowsForRetryInsteadOfSilentSuccess(): void
+    {
+        // A 200 without a usable MessageId means SES never really accepted the send (e.g. an unsigned
+        // request when no credentials resolve): it must surface as a retryable failure, never a silent
+        // "sent" that marks the recipient done without an email ever leaving.
+        $httpClient = new MockHttpClient(static fn (): MockResponse => new MockResponse(
+            json_encode(['MessageId' => '']),
+            ['http_code' => 200]
+        ));
+
+        $this->expectException(\RuntimeException::class);
+
+        $this->createClient($httpClient)->sendEmail($this->basicEmail());
+    }
+
     public function testConfigurationSetNameIsIncludedWhenConfigured(): void
     {
         $capturedBody = null;
