@@ -121,15 +121,16 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
         self::assertSame(MailchimpStatusEnum::Sent, $this->reloadStatus($campaign));
     }
 
-    public function testPermanentRejectionMarksRowSentWithoutRethrow(): void
+    public function testPermanentRejectionMarksRowRefusedWithReasonAndExcludesFromReach(): void
     {
         $campaign = $this->createCampaign();
         $campaign->status = MailchimpStatusEnum::Sending;
         $this->addMember($campaign, $this->createSubscribedAdherent(), 1, SegmentMemberStatusEnum::Added);
         $this->manager->flush();
 
-        // A permanent rejection (unverified/invalid address) is terminal: the row is closed (Sent), not
-        // reopened, and nothing bubbles up — unlike a transport failure.
+        // A permanent rejection (unverified/invalid address) is terminal but is NOT a delivery: the row is
+        // closed as Refused with the SES reason recorded next to it, nothing bubbles up (unlike a transport
+        // failure), the campaign still completes, and the recipient is excluded from the reach.
         $client = $this->createMock(SesEmailClient::class);
         $client
             ->expects(self::once())
@@ -140,9 +141,13 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
         $this->createHandler($client)(new SendSesCampaignChunkMessage($campaign->getId(), 1));
 
         $segmentId = $campaign->getMailchimpStaticSegment()->id;
+        $messageId = $campaign->getMessage()->getId();
 
-        self::assertSame(1, $this->countByStatus($segmentId, SegmentMemberStatusEnum::Sent));
+        self::assertSame(0, $this->countByStatus($segmentId, SegmentMemberStatusEnum::Sent));
+        self::assertSame(1, $this->countByStatus($segmentId, SegmentMemberStatusEnum::Refused));
+        self::assertSame('Email address is not verified.', $this->firstErrorMessage($segmentId));
         self::assertSame(MailchimpStatusEnum::Sent, $this->reloadStatus($campaign));
+        self::assertSame(0, $this->countReach($messageId));
     }
 
     public function testSuppressionListRejectionMarksRecipientHardBounced(): void
@@ -257,6 +262,18 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
             ->andWhere('m.processingStatus = :st')
             ->setParameter('sid', $segmentId)
             ->setParameter('st', $status)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function firstErrorMessage(int $segmentId): ?string
+    {
+        return $this->getRepository(MailchimpStaticSegmentMember::class)
+            ->createQueryBuilder('m')
+            ->select('m.errorMessage')
+            ->where('IDENTITY(m.staticSegment) = :sid')
+            ->setParameter('sid', $segmentId)
             ->getQuery()
             ->getSingleScalarResult()
         ;

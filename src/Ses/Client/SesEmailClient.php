@@ -13,9 +13,10 @@ use AsyncAws\Ses\SesClient;
  * recipient and classifies the result.
  *
  * Error policy (see SesSendOutcome): a permanent 4xx rejection becomes a returned outcome; throttling
- * (429) and any other failure (5xx, network) propagate as exceptions so the caller reopens the row and
- * lets Messenger retry. Client-side rate limiting is intentionally NOT done here: at the target volume
- * (a few thousand per send) the 429-as-retryable path is sufficient throttling protection.
+ * (429), a 200 with no MessageId (the send was not really accepted, e.g. an unsigned request when no
+ * credentials resolve) and any other failure (5xx, network) propagate as exceptions so the caller reopens
+ * the row and lets Messenger retry — never a silent "sent". Client-side rate limiting is intentionally NOT
+ * done here: at the target volume (a few thousand per send) the 429-as-retryable path is sufficient.
  */
 class SesEmailClient
 {
@@ -62,7 +63,7 @@ class SesEmailClient
         ]);
 
         try {
-            return SesSendOutcome::sent((string) $this->client->sendEmail($request)->getMessageId());
+            $messageId = (string) $this->client->sendEmail($request)->getMessageId();
         } catch (ClientException $exception) {
             if (429 === $exception->getResponse()->getStatusCode()) {
                 throw $exception;
@@ -70,6 +71,12 @@ class SesEmailClient
 
             return SesSendOutcome::rejected($exception->getMessage());
         }
+
+        if ('' === $messageId) {
+            throw new \RuntimeException('SES SendEmail returned no MessageId: the send was not accepted.');
+        }
+
+        return SesSendOutcome::sent($messageId);
     }
 
     private function formatFrom(SesEmail $email): string
