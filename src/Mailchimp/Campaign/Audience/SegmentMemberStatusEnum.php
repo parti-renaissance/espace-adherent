@@ -10,4 +10,6 @@ enum SegmentMemberStatusEnum: string
     case Added = 'added';
     case Refused = 'refused';
     case Errored = 'errored';
+    case Sending = 'sending';
+    case Sent = 'sent';
 }

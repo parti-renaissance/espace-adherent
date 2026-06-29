@@ -14,6 +14,7 @@ class LoadEmailSenderData extends Fixture
     public const SENDER_NE_PAS_REPONDRE_RENAISSANCE = 'email-sender-ne-pas-repondre-renaissance';
     public const SENDER_CONTACT_PARTI = 'email-sender-contact-parti';
     public const SENDER_NE_PAS_REPONDRE_PARTI = 'email-sender-ne-pas-repondre-parti';
+    public const SENDER_STAGING_SES = 'email-sender-staging-ses';
 
     public function load(ObjectManager $manager): void
     {
@@ -22,6 +23,7 @@ class LoadEmailSenderData extends Fixture
             self::SENDER_NE_PAS_REPONDRE_RENAISSANCE => ['Ne pas répondre', 'ne-pas-repondre@renaissance.code'],
             self::SENDER_CONTACT_PARTI => ['Contact Parti', 'contact@parti.re'],
             self::SENDER_NE_PAS_REPONDRE_PARTI => ['Ne pas répondre Parti', 'ne-pas-repondre@parti.re'],
+            self::SENDER_STAGING_SES => ['Staging SES', 'contact@staging.parti-renaissance.fr'],
         ];
 
         foreach ($senders as $reference => [$name, $email]) {

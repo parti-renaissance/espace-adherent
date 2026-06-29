@@ -234,6 +234,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {
@@ -332,6 +333,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {
@@ -447,6 +449,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {
@@ -556,6 +559,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {
@@ -677,6 +681,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {
@@ -3315,6 +3320,7 @@ Feature:
                 "recipient_count": 0,
                 "send_status": {
                     "preparation_status": "not_started",
+                    "campaign_status": "save",
                     "block_reason": null,
                     "can_send": false,
                     "counts": {

@@ -9,14 +9,13 @@ use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
-use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
+use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 #[AsMessageHandler]
 class FinalizeCampaignAudienceHandler
@@ -63,9 +62,8 @@ class FinalizeCampaignAudienceHandler
             return;
         }
 
-        $segmentId = $campaign->getStaticSegmentId();
         $staticSegment = $campaign->getMailchimpStaticSegment();
-        if (null === $segmentId || null === $staticSegment) {
+        if (null === $staticSegment) {
             $this->logger->error('[AudienceFinalize] Static segment missing', ['campaign_id' => $campaign->getId()]);
 
             return;
@@ -114,7 +112,11 @@ class FinalizeCampaignAudienceHandler
     }
 
     /**
-     * Dispatches the deferred SendMailchimpCampaignCommand if the campaign asked for it.
+     * Dispatches the deferred TriggerSesCampaignMessage if the campaign asked for it.
+     *
+     * No DelayStamp: unlike the legacy Mailchimp send (which waited 60s for static-segment
+     * propagation), the SES audience is already complete in the DB at finalize time, so the
+     * fan-out can start immediately.
      *
      * Order is intentional: dispatch first, then clearPendingSend. If the dispatch raises
      * (broker down, transport error), pendingSend stays true so the Messenger retry of
@@ -138,7 +140,7 @@ class FinalizeCampaignAudienceHandler
         }
 
         try {
-            $this->bus->dispatch(new SendMailchimpCampaignCommand($campaign->getId()), [new DelayStamp(60_000)]);
+            $this->bus->dispatch(new TriggerSesCampaignMessage((int) $campaign->getId()));
             $campaign->clearPendingSend();
         } catch (\Throwable $e) {
             $this->logger->error('[AudienceFinalize] Auto-send dispatch failed', [

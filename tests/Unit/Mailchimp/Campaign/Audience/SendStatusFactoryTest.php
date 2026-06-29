@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Mailchimp\Campaign\Audience;
 
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -73,6 +74,7 @@ class SendStatusFactoryTest extends TestCase
         $payload = new SendStatusFactory()->build($campaign);
 
         self::assertSame(PreparationStatusEnum::NotStarted->value, $payload['preparation_status']);
+        self::assertSame(MailchimpStatusEnum::Save->value, $payload['campaign_status']);
         self::assertNull($payload['counts']['expected']);
         self::assertNull($payload['counts']['prepared']);
         self::assertNull($payload['counts']['diff']);

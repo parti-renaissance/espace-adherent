@@ -42,6 +42,8 @@
         "api-platform/doctrine-orm": "^4.3",
         "api-platform/symfony": "^4.3",
         "api-platform/validator": "^4.3",
+        "async-aws/async-aws-bundle": "^1.17",
+        "async-aws/ses": "^1.15",
         "beberlei/doctrineextensions": "^1.2",
         "cakephp/chronos": "^3.1",
         "cocur/slugify": "^4.0",
