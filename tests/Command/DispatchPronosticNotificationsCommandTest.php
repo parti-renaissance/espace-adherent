@@ -230,6 +230,26 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         self::assertStringNotContainsString('Push de résultats programmé', $this->tester->getDisplay());
     }
 
+    public function testHidesDisplayedPronosticTwentyFourHoursAfterMatch(): void
+    {
+        $pronostic = $this->makePronostic(matchAt: '-25 hours', resultPublished: true);
+        $pronostic->displayed = true;
+        $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
+        $this->bus->expects(self::never())->method('dispatch');
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects(self::once())->method('flush');
+        $tester = new CommandTester(new DispatchPronosticNotificationsCommand(
+            $this->bus,
+            $this->pronosticRepository,
+            $entityManager,
+        ));
+
+        $tester->execute([]);
+
+        self::assertFalse($pronostic->displayed);
+        self::assertStringContainsString('Pronostic masqué', $tester->getDisplay());
+    }
+
     private function isPushOfType(PronosticReminderTypeEnum $type): callable
     {
         return static fn ($command) => $command instanceof PronosticNotificationCommand && $type === $command->type;
