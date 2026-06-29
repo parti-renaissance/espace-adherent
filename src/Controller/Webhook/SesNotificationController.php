@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Webhook;
 
-use App\Ses\Webhook\Command\ProcessSesNotificationCommand;
+use App\Ses\Webhook\SesNotificationRouter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/ses/notification/{key}', name: 'app_ses_notification_webhook', methods: ['POST'])]
 class SesNotificationController extends AbstractController
 {
     public function __construct(
-        private readonly MessageBusInterface $messageBus,
+        private readonly SesNotificationRouter $router,
         private readonly LoggerInterface $logger,
         private readonly string $sesWebhookKey,
         private readonly string $sesNotificationTopicArn,
@@ -52,7 +51,7 @@ class SesNotificationController extends AbstractController
         }
 
         if ('Notification' === $type) {
-            $this->messageBus->dispatch(new ProcessSesNotificationCommand($payload));
+            $this->router->dispatch($payload);
 
             return new Response('OK');
         }

@@ -44,6 +44,8 @@ class SesRecipientEmailFactory
             $assembled->fromName,
             $assembled->replyTo,
             $unsubscribeUrl,
+            campaignUuid: $assembled->campaignUuid,
+            adherentUuid: $recipient->uuid,
         );
     }
 }

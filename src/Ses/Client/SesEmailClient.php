@@ -42,22 +42,30 @@ class SesEmailClient
             ];
         }
 
+        $emailTags = [];
+        if (null !== $email->campaignUuid) {
+            $emailTags[] = ['Name' => 'campaign_uuid', 'Value' => $email->campaignUuid];
+        }
+        if (null !== $email->adherentUuid) {
+            $emailTags[] = ['Name' => 'adherent_uuid', 'Value' => $email->adherentUuid];
+        }
+
         $request = new SendEmailRequest([
             'FromEmailAddress' => $this->formatFrom($email),
             'Destination' => ['ToAddresses' => [$email->to]],
             'ReplyToAddresses' => null !== $email->replyTo ? [$email->replyTo] : [],
             'ConfigurationSetName' => $this->sesConfigurationSetName ?: null,
+            'EmailTags' => $emailTags ?: null,
             'Content' => [
                 'Simple' => $simpleContent,
             ],
         ]);
 
         try {
-            // getMessageId() resolves the lazy result, raising a ClientException on a 4xx response.
             return SesSendOutcome::sent((string) $this->client->sendEmail($request)->getMessageId());
         } catch (ClientException $exception) {
             if (429 === $exception->getResponse()->getStatusCode()) {
-                throw $exception; // throttling: retryable, let Messenger retry
+                throw $exception;
             }
 
             return SesSendOutcome::rejected($exception->getMessage());
@@ -70,8 +78,6 @@ class SesEmailClient
             return $email->fromEmail;
         }
 
-        // Defence in depth: strip CR/LF from the display name so it can never inject anything,
-        // even though the structured SESv2 JSON API already builds the headers server-side.
         $name = str_replace(["\r", "\n"], '', $email->fromName);
 
         return \sprintf('%s <%s>', $name, $email->fromEmail);

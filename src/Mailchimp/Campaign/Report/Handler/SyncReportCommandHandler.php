@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace App\Mailchimp\Campaign\Report\Handler;
 
 use App\AdherentMessage\Command\CreatePublicationReachFromEmailCommand;
+use App\AdherentMessage\Stats\EmailAppHitWriter;
+use App\AdherentMessage\Stats\ReportSyncDelayCalculator;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpCampaignReport;
-use App\JeMengage\Hit\EventTypeEnum;
-use App\JeMengage\Hit\SourceGroupEnum;
-use App\JeMengage\Hit\TargetTypeEnum;
 use App\Mailchimp\Campaign\Report\Command\SyncReportCommand;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
-use Doctrine\DBAL\Connection;
+use App\Repository\AppHitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Uid\Uuid;
 
 #[AsMessageHandler]
 class SyncReportCommandHandler
@@ -32,6 +30,9 @@ class SyncReportCommandHandler
         private readonly MessageBusInterface $bus,
         private readonly EntityManagerInterface $entityManager,
         private readonly PropertyAccessorInterface $propertyAccessor,
+        private readonly EmailAppHitWriter $appHitWriter,
+        private readonly AppHitRepository $appHitRepository,
+        private readonly ReportSyncDelayCalculator $delayCalculator,
     ) {
     }
 
@@ -51,7 +52,7 @@ class SyncReportCommandHandler
                 $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
             }
 
-            if ($command->autoReschedule && $nextRunDelay = $this->calculateDelay($adherentMessage->getSentAt())) {
+            if ($command->autoReschedule && $nextRunDelay = $this->delayCalculator->calculate($adherentMessage->getSentAt())) {
                 $this->bus->dispatch(new SyncReportCommand($command->getUuid(), lowPriority: $command->lowPriority, delay: $nextRunDelay));
             }
         }
@@ -71,23 +72,6 @@ class SyncReportCommandHandler
         }
     }
 
-    private function calculateDelay(\DateTimeInterface $originTs): ?int
-    {
-        $age = new \DateTime()->getTimestamp() - $originTs->getTimestamp();
-
-        $min = 60;
-        $hour = 3600;
-        $day = 86400;
-
-        return match (true) {
-            $age < 1 * $hour => 5 * $min * 1000,   // 5 min
-            $age < 6 * $hour => 10 * $min * 1000,   // 10 min
-            $age < 3 * $day => 1 * $hour * 1000,  // 1 h
-            $age < 14 * $day => 1 * $day * 1000,  // 1 j
-            default => null,               // stop
-        };
-    }
-
     private function saveOpens(AdherentMessage $adherentMessage, MailchimpCampaign $campaign): void
     {
         $this->saveEvents(
@@ -97,14 +81,7 @@ class SyncReportCommandHandler
                 $rows = [];
                 foreach (array_filter($member['opens'] ?? [], static fn (array $o) => empty($o['is_proxy_open'])) as $open) {
                     $tsUtc = new \DateTimeImmutable($open['timestamp'])->setTimezone($utc);
-                    $rows[] = [
-                        'event_type' => EventTypeEnum::Open->value,
-                        'source' => 'email',
-                        'object_type' => TargetTypeEnum::Publication->value,
-                        'object_id' => $objectId,
-                        'app_date' => $tsUtc->format('Y-m-d H:i:s'),
-                        'fingerprint' => $this->buildFingerprint([$adherentId, 'email', 'open', $objectId, $tsUtc->format('c')]),
-                    ];
+                    $rows[] = $this->appHitWriter->buildOpenRow($adherentId, $objectId, $tsUtc);
                 }
 
                 return $rows;
@@ -121,26 +98,20 @@ class SyncReportCommandHandler
                 $rows = [];
                 foreach (array_filter($member['activity'] ?? [], static fn (array $a) => ($a['action'] ?? null) === 'click' && !empty($a['url'])) as $click) {
                     $tsUtc = new \DateTimeImmutable($click['timestamp'])->setTimezone($utc);
-                    $rows[] = [
-                        'event_type' => EventTypeEnum::Click->value,
-                        'source' => 'email',
-                        'target_url' => $url = $click['url'],
-                        'object_type' => TargetTypeEnum::Publication->value,
-                        'object_id' => $objectId,
-                        'app_date' => $tsUtc->format('Y-m-d H:i:s'),
-                        'fingerprint' => $this->buildFingerprint([$adherentId, 'email', 'click', $url, $objectId, $tsUtc->format('c')]),
-                    ];
+                    $rows[] = $this->appHitWriter->buildClickRow($adherentId, $objectId, $click['url'], $tsUtc);
                 }
 
                 return $rows;
-            },
-            detectSuspicious: true
+            }
         );
+
+        // Flag bot/scanner clicks (>=2 links in the same second) once all click rows are persisted.
+        // Single source of truth shared with the SES engagement flow (RefreshSesPublicationStatsHandler).
+        $this->appHitRepository->markSuspiciousEmailClicks($adherentMessage->getUuid()->toRfc4122());
     }
 
-    private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage, callable $extractRows, bool $detectSuspicious = false): void
+    private function saveEvents(AdherentMessage $adherentMessage, callable $fetchPage, callable $extractRows): void
     {
-        $conn = $this->entityManager->getConnection();
         $objectId = $adherentMessage->getUuid()->toRfc4122();
         $offset = 0;
         $utc = new \DateTimeZone('UTC');
@@ -167,122 +138,18 @@ class SyncReportCommandHandler
                     continue;
                 }
 
-                $eventRows = $extractRows($member, $adherentId, $objectId, $utc);
-                if (!$eventRows) {
-                    continue;
-                }
-
-                foreach ($eventRows as $r) {
-                    $rows[] = ['adherent_id' => $adherentId, ...$r];
+                foreach ($extractRows($member, $adherentId, $objectId, $utc) as $row) {
+                    $rows[] = $row;
                 }
             }
 
             if ($rows) {
-                if ($detectSuspicious) {
-                    $rows = $this->markSuspiciousClicks($rows);
-                }
-                $this->insertBatchAppHits($conn, $rows);
+                $this->appHitWriter->insertHits($rows);
             }
 
             $offset += \count($members);
             sleep(1);
         }
-    }
-
-    private function buildFingerprint(array $parts): string
-    {
-        return hash('sha256', implode('|', $parts));
-    }
-
-    /**
-     * Marks clicks as suspicious if the same adherent clicked multiple links at the same second.
-     * This typically indicates a bot/scanner (antivirus, email proxy) following all links automatically.
-     */
-    private function markSuspiciousClicks(array $rows): array
-    {
-        if (!$rows) {
-            return [];
-        }
-
-        // Group by (adherent_id, app_date truncated to second)
-        $grouped = [];
-        foreach ($rows as $i => $row) {
-            $key = $row['adherent_id'].'|'.$row['app_date'];
-            $grouped[$key][] = $i;
-        }
-
-        // Mark as suspicious if >=2 clicks in the same group
-        foreach ($rows as $i => $row) {
-            $key = $row['adherent_id'].'|'.$row['app_date'];
-            $rows[$i]['suspicious'] = \count($grouped[$key]) >= 2 ? 1 : 0;
-        }
-
-        return $rows;
-    }
-
-    private function insertBatchAppHits(Connection $conn, array $rows): void
-    {
-        if (!$rows) {
-            return;
-        }
-
-        // Filter out rows whose fingerprint already exists in the database
-        $fingerprints = array_column($rows, 'fingerprint');
-        $existing = [];
-
-        foreach (array_chunk($fingerprints, 1000) as $chunk) {
-            $placeholders = implode(',', array_fill(0, \count($chunk), '?'));
-            $result = $conn->fetchFirstColumn("SELECT fingerprint FROM app_hit WHERE fingerprint IN ($placeholders)", $chunk);
-            foreach ($result as $fp) {
-                $existing[$fp] = true;
-            }
-        }
-
-        $rows = array_filter($rows, static fn (array $r) => !isset($existing[$r['fingerprint']]));
-
-        if (!$rows) {
-            return;
-        }
-
-        // Sort by fingerprint to avoid deadlocks
-        usort($rows, static fn (array $a, array $b) => strcmp($a['fingerprint'] ?? '', $b['fingerprint'] ?? ''));
-
-        $autoCols = ['uuid', 'activity_session_uuid', 'created_at', 'updated_at', 'source_group'];
-        $dynamicCols = array_keys(reset($rows));
-        $cols = array_values(array_unique(array_merge($autoCols, $dynamicCols)));
-
-        $placeholders = [];
-        $params = [];
-
-        $nowUtc = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
-
-        foreach ($rows as $r) {
-            $autoGeneratedData = [
-                'uuid' => Uuid::v4()->toRfc4122(),
-                'activity_session_uuid' => Uuid::v4()->toRfc4122(),
-                'created_at' => $nowUtc,
-                'updated_at' => $nowUtc,
-                'source_group' => SourceGroupEnum::Email->value,
-            ];
-
-            $placeholders[] = '('.implode(',', array_fill(0, \count($cols), '?')).')';
-
-            foreach ($cols as $c) {
-                if (\array_key_exists($c, $autoGeneratedData)) {
-                    $params[] = $autoGeneratedData[$c];
-                } else {
-                    $params[] = $r[$c] ?? null;
-                }
-            }
-        }
-
-        $sql = \sprintf(
-            'INSERT INTO app_hit (%s) VALUES %s ON DUPLICATE KEY UPDATE fingerprint = VALUES(fingerprint)',
-            implode(',', $cols),
-            implode(',', $placeholders)
-        );
-
-        $conn->executeStatement($sql, $params);
     }
 
     private function saveGeneralStats(MailchimpCampaign $campaign): void

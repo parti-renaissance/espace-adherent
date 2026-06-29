@@ -163,6 +163,26 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                         ],
                     ],
                 ],
+                'ses_engagement' => [
+                    'dsn' => '%env(RABBITMQ_DSN)%',
+                    'retry_strategy' => [
+                        'delay' => 2000,
+                    ],
+                    'options' => [
+                        'exchange' => [
+                            'name' => 'messenger-topic',
+                            'type' => 'topic',
+                            'default_publish_routing_key' => 'ses.engagement',
+                        ],
+                        'queues' => [
+                            'ses_engagement' => [
+                                'binding_keys' => [
+                                    'ses.engagement',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
                 'notification' => [
                     'dsn' => '%env(RABBITMQ_DSN)%',
                     'retry_strategy' => [
@@ -255,6 +275,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 App\Notifier\AsyncNotificationInterface::class => 'notification',
                 App\Pap\Command\AsynchronousMessageInterface::class => 'pap',
                 App\Ses\Campaign\Message\SesCampaignMessageInterface::class => 'ses_campaign',
+                App\Ses\Webhook\SesEngagementMessageInterface::class => 'ses_engagement',
             ],
         ],
     ]);
