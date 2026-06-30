@@ -76,7 +76,8 @@ class DispatchPronosticNotificationsCommand extends Command
     private function dispatchCreationReminder(Pronostic $pronostic, \DateTimeImmutable $now): void
     {
         $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
-        if ($pronostic->beginAt >= $oneDayBefore || $now < $pronostic->beginAt || $pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
+
+        if ($now < $pronostic->beginAt || $pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
             return;
         }
 
