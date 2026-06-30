@@ -26,10 +26,6 @@ class AdherentMessageManager
 
     public function updateFilter(AdherentMessageInterface $message, ?AdherentMessageFilterInterface $filter): void
     {
-        if ($message->getFilter() !== $filter) {
-            $message->setSynchronized(false);
-        }
-
         $message->setFilter($filter);
 
         $this->eventDispatcher->dispatch(new MessageEvent($message), Events::MESSAGE_FILTER_PRE_EDIT);

@@ -52,8 +52,6 @@ interface AdherentMessageInterface extends AuthorInstanceInterface, IndexableEnt
 
     public function isSynchronized(): bool;
 
-    public function setSynchronized(bool $value): void;
-
     /** @return MailchimpCampaign[] */
     public function getMailchimpCampaigns(): array;
 

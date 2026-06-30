@@ -12,6 +12,7 @@ use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\PrepareResult;
 use App\Mailchimp\Campaign\Audience\SendStatusFactory;
+use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -36,7 +37,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::never())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
 
         $result = $preparer->prepare($message, $bob);
 
@@ -64,7 +65,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
 
         $result = $preparer->prepare($message, $alice);
 
@@ -95,7 +96,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
 
         $result = $preparer->prepare($message, $alice);
 
@@ -105,6 +106,37 @@ class AudienceMessagePreparerTest extends TestCase
         self::assertTrue($campaign->isPendingSend());
         self::assertInstanceOf(PrepareCampaignAudienceMessage::class, $dispatched);
         self::assertSame(1, $dispatched->lockedById);
+    }
+
+    public function testPrepareEnsuresLocalSegmentForResolvedCampaign(): void
+    {
+        $alice = $this->createUser(1, 'alice@example.com');
+
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $message->addMailchimpCampaign($campaign);
+
+        $initializer = $this->createMock(StaticSegmentInitializer::class);
+        $initializer
+            ->expects(self::once())
+            ->method('ensureLocalSegment')
+            ->with(self::identicalTo($campaign));
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PrepareCampaignAudienceMessage::class))
+            ->willReturn(new Envelope(new \stdClass()));
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('flush');
+
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $initializer);
+
+        $result = $preparer->prepare($message, $alice);
+
+        self::assertTrue($result->isPreparing());
     }
 
     public function testPrepareDispatchFailureLogsErrorAndRethrows(): void
@@ -137,7 +169,7 @@ class AudienceMessagePreparerTest extends TestCase
                 }),
             );
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $logger);
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $logger);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('broker down');
@@ -152,7 +184,7 @@ class AudienceMessagePreparerTest extends TestCase
         $bus = $this->createStub(MessageBusInterface::class);
         $em = $this->createStub(EntityManagerInterface::class);
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory());
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
 
         $this->expectException(\LogicException::class);
         $preparer->prepare($message, $this->createUser(1, 'alice@example.com'));

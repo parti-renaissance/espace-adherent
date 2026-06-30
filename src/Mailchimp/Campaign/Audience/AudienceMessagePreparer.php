@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
+use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -21,6 +22,7 @@ class AudienceMessagePreparer
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
         private readonly SendStatusFactory $sendStatusFactory,
+        private readonly StaticSegmentInitializer $staticSegmentInitializer,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -33,6 +35,8 @@ class AudienceMessagePreparer
         if ($this->isLockedByOther($campaign, $currentUser)) {
             return PrepareResult::conflict($this->sendStatusFactory->build($campaign));
         }
+
+        $this->staticSegmentInitializer->ensureLocalSegment($campaign);
 
         $campaign->markAsPreparing($currentUser);
         $campaign->markAsPendingSend();

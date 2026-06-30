@@ -47,6 +47,10 @@ class SyncReportCommandHandler
             return;
         }
 
+        if (!$this->hasMailchimpSentCampaign($adherentMessage)) {
+            return;
+        }
+
         if (3 === $command->step) {
             if ($command->firstRun && $adherentMessage->isPublication()) {
                 $this->bus->dispatch(new CreatePublicationReachFromEmailCommand($adherentMessage->getUuid()));
@@ -70,6 +74,11 @@ class SyncReportCommandHandler
         if ($command->step < 3) {
             $this->bus->dispatch(new SyncReportCommand($command->getUuid(), $command->firstRun, $command->autoReschedule, $command->step + 1, $command->lowPriority));
         }
+    }
+
+    private function hasMailchimpSentCampaign(AdherentMessage $adherentMessage): bool
+    {
+        return array_any($adherentMessage->getMailchimpCampaigns(), fn ($campaign) => $campaign->getExternalId());
     }
 
     private function saveOpens(AdherentMessage $adherentMessage, MailchimpCampaign $campaign): void

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\AdherentMessage;
 
-use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
@@ -19,7 +18,7 @@ use Gedmo\Timestampable\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: MailchimpCampaignRepository::class)]
-class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, Timestampable
+class MailchimpCampaign implements Timestampable
 {
     use TimestampableEntity;
 
@@ -47,12 +46,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
      */
     #[ORM\Column(nullable: true)]
     private $externalId;
-
-    /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $synchronized = false;
 
     /**
      * @var int|null
@@ -142,16 +135,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
     public function setExternalId(string $externalId): void
     {
         $this->externalId = $externalId;
-    }
-
-    public function setSynchronized(bool $value): void
-    {
-        $this->synchronized = $value;
-    }
-
-    public function isSynchronized(): bool
-    {
-        return $this->synchronized;
     }
 
     public function getRecipientCount(): ?int
@@ -251,8 +234,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface, T
 
     public function reset(): void
     {
-        $this->synchronized = false;
-
         $this->recipientCount =
         $this->label =
         $this->city =

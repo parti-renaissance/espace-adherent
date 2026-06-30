@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20260629230341 extends AbstractMigration
+{
+    public function up(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE adherent_message_filters DROP synchronized');
+        $this->addSql('ALTER TABLE mailchimp_campaign DROP synchronized');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE adherent_message_filters ADD synchronized TINYINT DEFAULT 0 NOT NULL');
+        $this->addSql('ALTER TABLE mailchimp_campaign ADD synchronized TINYINT DEFAULT 0 NOT NULL');
+    }
+}
