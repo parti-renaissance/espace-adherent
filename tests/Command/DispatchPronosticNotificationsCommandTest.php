@@ -104,16 +104,22 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
         self::assertStringNotContainsString('Push J-1 programmé', $this->tester->getDisplay());
     }
 
-    public function testSkipsCreationAndJMinus1WhenPronosticBeginsAfterJMinus1Threshold(): void
+    public function testDispatchesCreationAndSkipsJMinus1WhenPronosticBeginsAfterJMinus1Threshold(): void
     {
-        $pronostic = $this->makePronostic(beginAt: '-11 hours', matchAt: '+12 hours');
+        $pronostic = $this->makePronostic(matchAt: '+12 hours', beginAt: '-11 hours');
+
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->bus->expects(self::never())->method('dispatch');
+
+        $this->bus->expects(self::once())->method('dispatch');
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+        self::assertStringContainsString('Push de création programmé', $this->tester->getDisplay());
         self::assertStringNotContainsString('Push J-1 programmé', $this->tester->getDisplay());
+        self::assertStringContainsString('Push J-1 ignoré', $this->tester->getDisplay());
+
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1));
     }
 
     public function testSkipsCreationWhenReminderAlreadyExists(): void
