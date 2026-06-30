@@ -36,6 +36,15 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testAssetIsPubliclyServedOnAdminHost(): void
+    {
+        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('admin_renaissance_host'));
+
+        $this->client->request(Request::METHOD_GET, '/assets/nonexistent.png');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
     public function testInvalidAssetWithSignatureIsNotFound(): void
     {
         $this->client->request(Request::METHOD_GET, '/assets/invalid.jpg', [
