@@ -78,6 +78,7 @@
         "nelmio/cors-bundle": "^2.2",
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^4.1",
+        "pelago/emogrifier": "^8.2",
         "phpoffice/phpspreadsheet": "^5.0",
         "runroom-packages/sortable-behavior-bundle": "^0.21.0",
         "sabre/dav": "^4.1",

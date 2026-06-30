@@ -20,8 +20,10 @@ use App\Mailer\Template\Manager;
  */
 class SesMessageAssembler
 {
-    public function __construct(private readonly Manager $templateManager)
-    {
+    public function __construct(
+        private readonly Manager $templateManager,
+        private readonly EmailCssInliner $cssInliner,
+    ) {
     }
 
     public function assemble(AdherentMessageInterface $adherentMessage): AssembledCampaignEmail
@@ -44,6 +46,9 @@ class SesMessageAssembler
         // Substitute the message-level {{var}} placeholders. Dictionary codes such as {{Prénom}} are
         // not present in $vars, so they survive for the per-recipient pass (Phase 5).
         $html = strtr($html, $this->buildPlaceholderReplacements($vars));
+
+        // Inline the margin reset (Gmail strips <head><style>; SES is a pure transport and does not inline).
+        $html = $this->cssInliner->inline($html);
 
         $sender = $template->getEffectiveSender();
 

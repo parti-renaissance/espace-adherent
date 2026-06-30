@@ -26,6 +26,7 @@ use App\Ses\Campaign\Reach\CampaignReachInserter;
 use App\Ses\Client\SesEmail;
 use App\Ses\Client\SesEmailClient;
 use App\Ses\Client\SesSendOutcome;
+use App\Ses\Rendering\EmailCssInliner;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipientContextFactory;
 use App\Ses\Rendering\SesRecipientEmailFactory;
@@ -33,6 +34,7 @@ use App\Ses\Unsubscribe\UnsubscribeUrlGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\AbstractKernelTestCase;
 
@@ -212,7 +214,10 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
         return new SendSesCampaignChunkHandler(
             self::getContainer()->get(MailchimpCampaignRepository::class),
             $memberRepository,
-            new SesMessageAssembler(self::getContainer()->get(Manager::class)),
+            new SesMessageAssembler(
+                self::getContainer()->get(Manager::class),
+                new EmailCssInliner(new NullLogger()),
+            ),
             new SesRecipientEmailFactory(new VariableParser(), new SesVariableRenderer(), new SesRecipientContextFactory(), self::getContainer()->get(UnsubscribeUrlGenerator::class)),
             $client,
             new CampaignReachInserter($memberRepository, self::getContainer()->get(BulkInsertHelper::class)),
