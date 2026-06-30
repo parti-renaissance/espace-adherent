@@ -23,6 +23,8 @@ class AppSession implements \Stringable
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    public const int ACTIVE_DURATION_IN_MONTHS = 6;
+
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(inversedBy: 'appSessions')]
     public ?Adherent $adherent = null;
