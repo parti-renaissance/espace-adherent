@@ -33,4 +33,3 @@ node_modules
 /.env.*.local
 *.DS_Store
 ai-work/
-TECH_DEBT.md

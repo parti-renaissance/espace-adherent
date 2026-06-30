@@ -63,7 +63,8 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message1->setSubject($faker->sentence(5));
         $message1->setLabel($faker->sentence(2));
 
-        $message1->addMailchimpCampaign(new MailchimpCampaign($message1));
+        // No Mailchimp campaign: this draft stays "not yet synchronized" (isSynchronized() requires a
+        // campaign), so it exercises the "not yet ready to send" guard (see adherent_messages.feature).
         $message1->setFilter(new AdherentMessageFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
 
         // message sent
@@ -122,7 +123,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
                     $message->setFilter($filter);
                 }
                 $message->addMailchimpCampaign(new MailchimpCampaign($message));
-                $message->getMailchimpCampaigns()[0]->setSynchronized(true);
 
                 $manager->persist($message);
             }

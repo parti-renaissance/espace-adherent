@@ -327,11 +327,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
             return false;
         }
 
-        if (!$this->content || !$this->subject) {
-            return false;
-        }
-
-        return !$this->filter || $this->filter->isSynchronized();
+        return $this->content && $this->subject;
     }
 
     public function isFullySent(): bool
@@ -343,13 +339,6 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
         }
 
         return (bool) $status;
-    }
-
-    public function setSynchronized(bool $value): void
-    {
-        $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) use ($value) {
-            $campaign->setSynchronized($value);
-        });
     }
 
     public function getFilter(): ?AdherentMessageFilterInterface
@@ -447,7 +436,7 @@ class AdherentMessage implements AdherentMessageInterface, NotificationObjectInt
     public function getMailchimpId(): ?string
     {
         foreach ($this->mailchimpCampaigns as $campaign) {
-            if ($campaign->isSynchronized() && $campaign->getExternalId()) {
+            if ($campaign->getExternalId()) {
                 return $campaign->getExternalId();
             }
         }

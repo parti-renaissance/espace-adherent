@@ -101,7 +101,7 @@ Feature:
                         "status": "sent",
                         "recipient_count": 0,
                         "source": "cadre",
-                        "synchronized": false,
+                        "synchronized": true,
                         "editable": true,
                         "preview_link": null,
                         "from_name": "Referent Referent | Renaissance",
@@ -249,7 +249,7 @@ Feature:
                 },
                 "preview_link": null,
                 "source": "vox",
-                "synchronized": false,
+                "synchronized": true,
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
@@ -348,7 +348,7 @@ Feature:
                 },
                 "preview_link": null,
                 "source": "vox",
-                "synchronized": false,
+                "synchronized": true,
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
@@ -464,7 +464,7 @@ Feature:
                 },
                 "preview_link": null,
                 "source": "vox",
-                "synchronized": false,
+                "synchronized": true,
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
@@ -557,21 +557,6 @@ Feature:
                 "subject": "Mon nouveau objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
-                "send_status": {
-                    "preparation_status": "not_started",
-                    "campaign_status": "save",
-                    "block_reason": null,
-                    "can_send": false,
-                    "counts": {
-                        "expected": null,
-                        "prepared": null,
-                        "diff": null
-                    },
-                    "prepared_at": null,
-                    "progress": {
-                        "chunks_done": 0
-                    }
-                },
                 "preview_link": null,
                 "source": "vox",
                 "synchronized": false,
@@ -696,7 +681,7 @@ Feature:
                 },
                 "preview_link": null,
                 "source": "vox",
-                "synchronized": false,
+                "synchronized": true,
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
@@ -3335,7 +3320,7 @@ Feature:
                 },
                 "preview_link": null,
                 "source": "vox",
-                "synchronized": false,
+                "synchronized": true,
                 "editable": true,
                 "author": {
                     "uuid": "@uuid@",
@@ -3837,7 +3822,7 @@ Feature:
             | referent@en-marche-dev.fr | president_departmental_assembly                | null                                                              |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | "http://test.renaissance.code/assets/images/profile/@string@.jpg" |
 
-    Scenario: National message with scopeTargets — filter, count and send flow
+    Scenario: National message with scopeTargets — filter and count flow
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "POST" request to "/api/v3/adherent_messages?scope=national_tech_division" with body:
             """
@@ -3853,7 +3838,7 @@ Feature:
         And the JSON nodes should match:
             | uuid            | @uuid@ |
             | status          | draft  |
-            | synchronized    | false  |
+            | synchronized    | true   |
             | recipient_count | 0      |
         When I save this response
         When I send a "PUT" request to "/api/v3/adherent_messages/:saved_response.uuid:/filter?scope=national_tech_division" with body:
@@ -3887,10 +3872,7 @@ Feature:
         When I send a "GET" request to "/api/v3/adherent_messages/:saved_response.uuid:?scope=national_tech_division"
         Then the response status code should be 200
         And the JSON nodes should match:
-            | synchronized | false |
-        When I send a "POST" request to "/api/v3/adherent_messages/:saved_response.uuid:/send?scope=national_tech_division"
-        Then the response status code should be 400
-        And the JSON node "detail" should be equal to "The message is not yet ready to send."
+            | synchronized | true |
 
     Scenario Outline: National message with scopeTargets — non-zone-based roles
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"

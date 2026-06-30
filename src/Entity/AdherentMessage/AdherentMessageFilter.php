@@ -131,12 +131,6 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     #[ORM\Column(type: 'date', nullable: true)]
     private $lastMembershipBefore;
 
-    /**
-     * @var bool
-     */
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $synchronized = false;
-
     #[Groups(['adherent_message_read_filter'])]
     #[ORM\JoinColumn(name: 'adherent_message_filter_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\JoinTable(name: 'adherent_message_filter_zone')]
@@ -565,16 +559,6 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
         $this->zones->clear();
     }
 
-    public function setSynchronized(bool $value): void
-    {
-        $this->synchronized = $value;
-    }
-
-    public function isSynchronized(): bool
-    {
-        return $this->synchronized;
-    }
-
     public function getExternalId(): ?string
     {
         return $this->message?->getExternalId();
@@ -614,7 +598,6 @@ class AdherentMessageFilter implements ZoneableEntityInterface, SegmentFilterInt
     {
         $this->id = null;
         $this->uuid = Uuid::v4();
-        $this->synchronized = false;
         $this->message = null;
         $this->createdAt = $this->updatedAt = new \DateTime();
         $this->zones = new ZoneCollection($this->zones->toArray());

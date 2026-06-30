@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\App\Ses\Campaign;
 
-use App\AdherentMessage\Command\AdherentMessageChangeCommand;
-use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
@@ -14,6 +12,7 @@ use App\Entity\AdherentMessage\AdherentMessageReach;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
+use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
@@ -133,14 +132,14 @@ class SendPublicationViaSesTest extends AbstractKernelTestCase
     }
 
     /**
-     * Closes the loop the other e2e leaves open (it builds the segment by hand): here the static
-     * segment is created by the REAL change command — locally, with zero Mailchimp — and the
+     * Closes the loop the other e2e leaves open (it builds the segment by hand): here the local static
+     * segment is created by AudienceMessagePreparer::prepare() — locally, with zero Mailchimp — and the
      * publication then goes out through SES end to end.
      */
-    public function testChangeCommandInitialisesSegmentLocallyThenSendsViaSesWithZeroMailchimp(): void
+    public function testPrepareInitialisesSegmentLocallyThenSendsViaSesWithZeroMailchimp(): void
     {
         $campaign = $this->createCampaignWithAudienceWithoutSegment(3);
-        $messageUuid = $campaign->getMessage()->getUuid();
+        $author = $campaign->getMessage()->getSender();
 
         // Local-only segment init: the Mailchimp segment service must never be touched.
         $mailchimpSegment = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
@@ -161,21 +160,16 @@ class SendPublicationViaSesTest extends AbstractKernelTestCase
         ;
         self::getContainer()->set(SesEmailClient::class, $sesClient);
 
-        // 1) The change command creates the local static segment — no Mailchimp call.
-        self::getContainer()->get(AdherentMessageChangeCommandHandler::class)(new AdherentMessageChangeCommand($messageUuid));
+        // prepare() creates the local static segment (no Mailchimp call), arms the auto-send and
+        // dispatches the audience pipeline — which cascades inline to SES under the test sync transport.
+        self::getContainer()->get(AudienceMessagePreparer::class)->prepare($campaign->getMessage(), $author);
 
         $prepared = $this->reloadCampaign($campaign);
         $segment = $prepared->getMailchimpStaticSegment();
-        self::assertNotNull($segment, 'The change command must initialise the local static segment.');
+        self::assertNotNull($segment, 'prepare() must initialise the local static segment.');
         self::assertNull($segment->mailchimpSegmentId, 'No Mailchimp segment id: the segment is local-only.');
         self::assertNull($prepared->getStaticSegmentId(), 'The vestigial Mailchimp static segment id stays null.');
         $segmentId = $segment->id;
-
-        // 2) Arm the auto-send and run the audience pipeline: the publication is delivered via SES.
-        $prepared->markAsPendingSend();
-        $this->manager->flush();
-
-        $this->runPipeline($prepared);
 
         $messageId = $prepared->getMessage()->getId();
 
@@ -241,8 +235,8 @@ class SendPublicationViaSesTest extends AbstractKernelTestCase
     }
 
     /**
-     * Like createCampaignWithAudience(), but WITHOUT a static segment: the change command under test
-     * is responsible for initialising it locally.
+     * Like createCampaignWithAudience(), but WITHOUT a static segment: AudienceMessagePreparer::prepare()
+     * is responsible for initialising it locally at send time.
      */
     private function createCampaignWithAudienceWithoutSegment(int $audienceSize): MailchimpCampaign
     {
