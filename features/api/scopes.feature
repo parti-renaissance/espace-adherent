@@ -337,7 +337,7 @@ Feature:
                         ]
                     },
                     "code": "agora_president",
-                    "features": ["agoras", "contacts", "events"],
+                    "features": ["contacts", "events"],
                     "name": "Présidente d'Agora",
                     "role_name": "Présidente",
                     "zones": []
