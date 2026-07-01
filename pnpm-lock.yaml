@@ -197,7 +197,7 @@ importers:
         version: 6.10.2(eslint@9.39.4(jiti@1.21.7))
       eslint-plugin-prettier:
         specifier: ^5.5.4
-        version: 5.5.6(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@1.21.7)))(eslint@9.39.4(jiti@1.21.7))(prettier@3.9.0)
+        version: 5.5.6(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@1.21.7)))(eslint@9.39.4(jiti@1.21.7))(prettier@3.9.1)
       eslint-plugin-react:
         specifier: ^7.37.5
         version: 7.37.5(eslint@9.39.4(jiti@1.21.7))
@@ -209,7 +209,7 @@ importers:
         version: 16.5.0
       prettier:
         specifier: ^3.3.3
-        version: 3.9.0
+        version: 3.9.1
       prettier-plugin-gherkin:
         specifier: ^3.1.0
         version: 3.1.4
@@ -2998,8 +2998,8 @@ packages:
   prettier-plugin-gherkin@3.1.4:
     resolution: {integrity: sha512-Mccs8tUhv7iCAhSkgvdupuJt5nj28UK6Ixsmui6TdVnvDRwy4wwEKv6du4mdMB2S7Oj0xQPTNO53Jo8alj+1bg==}
 
-  prettier@3.9.0:
-    resolution: {integrity: sha512-LjIqSIC5VYLzs9WedVmJ2ljNAGnU+DteIClbahu4L/DBeWjZ6iT/k1lAYyu9JUh+1xINxWadaPw/Pl63y/agAw==}
+  prettier@3.9.1:
+    resolution: {integrity: sha512-ppiDo2CSwexck1eyZUwJHg/N3nf1+6IRCv7W/VJ5vaLnVCmB7+3CdRfMwoCHBBX6xTrREDTksZ4OZl5SSf4zXA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5557,10 +5557,10 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@1.21.7)))(eslint@9.39.4(jiti@1.21.7))(prettier@3.9.0):
+  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@1.21.7)))(eslint@9.39.4(jiti@1.21.7))(prettier@3.9.1):
     dependencies:
       eslint: 9.39.4(jiti@1.21.7)
-      prettier: 3.9.0
+      prettier: 3.9.1
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.13
     optionalDependencies:
@@ -6602,9 +6602,9 @@ snapshots:
     dependencies:
       '@cucumber/gherkin': 32.2.0
       '@cucumber/messages': 27.2.0
-      prettier: 3.9.0
+      prettier: 3.9.1
 
-  prettier@3.9.0: {}
+  prettier@3.9.1: {}
 
   prop-types@15.8.1:
     dependencies:
