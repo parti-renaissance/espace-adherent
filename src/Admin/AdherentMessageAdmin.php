@@ -25,19 +25,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AdherentMessageAdmin extends AbstractAdmin implements ZoneableAdminInterface
 {
-    protected function getAccessMapping(): array
-    {
-        return [
-            'display' => 'DISPLAY',
-        ];
-    }
-
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection
-            ->clearExcept(['list'])
-            ->add('display', $this->getRouterIdParameter().'/display')
-        ;
+        $collection->clearExcept(['list']);
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void

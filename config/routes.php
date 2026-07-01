@@ -172,6 +172,11 @@ return static function (Symfony\Component\Routing\Loader\Configurator\RoutingCon
     $routingConfigurator->import('../src/Controller/Renaissance', 'attribute')
         ->host('%user_vox_host%');
 
+    $routingConfigurator->import('../src/Controller/Renaissance/AdherentMessage', 'attribute')
+        ->defaults(['app_domain' => '%user_vox_host%'])
+        ->requirements(['app_domain' => '%user_vox_host%|%admin_renaissance_host%'])
+        ->host('{app_domain}');
+
     $routingConfigurator->import('../src/Controller/Renaissance/Subscription', 'attribute')
         ->defaults(['app_domain' => '%user_vox_host%'])
         ->requirements(['app_domain' => '%user_vox_host%|%user_campaign_host%'])

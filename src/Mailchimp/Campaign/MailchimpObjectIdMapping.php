@@ -23,8 +23,6 @@ class MailchimpObjectIdMapping
         private readonly string $memberGroupInterestGroupId,
         private readonly string $memberInterestInterestGroupId,
         private readonly string $subscriptionTypeInterestGroupId,
-        private readonly string $mailchimpCampaignUrl,
-        private readonly string $mailchimpOrg,
     ) {
     }
 
@@ -114,15 +112,6 @@ class MailchimpObjectIdMapping
             default:
                 return $this->getMainListId();
         }
-    }
-
-    public function generateMailchimpPreviewLink(?string $campaignId): ?string
-    {
-        if (!$campaignId) {
-            return null;
-        }
-
-        return \sprintf('%s?u=%s&id=%s', $this->mailchimpCampaignUrl, $this->mailchimpOrg, $campaignId);
     }
 
     private function findTemplateId(string $key): ?int

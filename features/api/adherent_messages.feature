@@ -50,7 +50,7 @@ Feature:
                             "zone": null,
                             "theme": null
                         },
-                        "preview_link": null,
+                        "preview_link": "http://test.renaissance.code/publications/@string@",
                         "statistics": {
                             "contacts": 0,
                             "notifications": {
@@ -247,7 +247,7 @@ Feature:
                         "chunks_done": 0
                     }
                 },
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": true,
                 "editable": true,
@@ -346,7 +346,7 @@ Feature:
                         "chunks_done": 0
                     }
                 },
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": true,
                 "editable": true,
@@ -462,7 +462,7 @@ Feature:
                         "chunks_done": 0
                     }
                 },
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": true,
                 "editable": true,
@@ -557,7 +557,7 @@ Feature:
                 "subject": "Mon nouveau objet de l'email",
                 "status": "draft",
                 "recipient_count": 0,
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": false,
                 "editable": true,
@@ -679,7 +679,7 @@ Feature:
                         "chunks_done": 0
                     }
                 },
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": true,
                 "editable": true,
@@ -3318,7 +3318,7 @@ Feature:
                         "chunks_done": 0
                     }
                 },
-                "preview_link": null,
+                "preview_link": "http://test.renaissance.code/publications/@string@",
                 "source": "vox",
                 "synchronized": true,
                 "editable": true,

@@ -8,9 +8,9 @@ use App\AdherentMessage\Variable\Renderer;
 use App\Controller\Api\AdherentMessage\GetAvailableSendersController;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailchimp\Campaign\Audience\SendStatusFactory;
-use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Security\Voter\PublicationVoter;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -21,7 +21,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     use NormalizerAwareTrait;
 
     public function __construct(
-        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly Renderer $variableRenderer,
         private readonly Security $security,
@@ -66,7 +66,11 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
             if ($data['editable']) {
                 if (!$object->isStatutory()) {
-                    $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
+                    $data['preview_link'] = $object->isSent() ? null : $this->urlGenerator->generate(
+                        'app_renaissance_adherent_message_preview',
+                        ['uuid' => $object->getUuid()->toString()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    );
                 }
             } else {
                 foreach (array_keys($data) as $key) {

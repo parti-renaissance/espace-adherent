@@ -127,9 +127,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$interestIds', '%env(json:MAILCHIMP_INTEREST_IDS)%')
         ->arg('$memberGroupInterestGroupId', '%env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID)%')
         ->arg('$memberInterestInterestGroupId', '%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%')
-        ->arg('$subscriptionTypeInterestGroupId', '%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%')
-        ->arg('$mailchimpCampaignUrl', '%env(MAILCHIMP_CAMPAIGN_URL)%')
-        ->arg('$mailchimpOrg', '%env(MAILCHIMP_ORG_ID)%');
+        ->arg('$subscriptionTypeInterestGroupId', '%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%');
 
     $services->set('app.mailchimp.request_builders_locator', Symfony\Component\DependencyInjection\ServiceLocator::class)
         ->args([
