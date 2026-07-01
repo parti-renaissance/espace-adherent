@@ -41,53 +41,68 @@ class DispatchPronosticNotificationsCommand extends Command
     {
         $pronostic = $this->pronosticRepository->findDisplayed();
         if (!$pronostic) {
-            $this->io->note('Aucun pronostic affiché.');
-
             return self::SUCCESS;
         }
 
         $now = new \DateTimeImmutable();
+
+        $this->dispatchCreationReminder($pronostic, $now);
+        $this->dispatchPreMatchReminders($pronostic, $now);
+        $this->dispatchResultReminder($pronostic);
+
+        return self::SUCCESS;
+    }
+
+    private function dispatchCreationReminder(Pronostic $pronostic, \DateTimeImmutable $now): void
+    {
+        $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
+
+        if ($now < $pronostic->beginAt || $pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
+            return;
+        }
+
+        $jMinus1Skipped = $now >= $oneDayBefore;
+        if ($jMinus1Skipped) {
+            $pronostic->markReminderSent(PronosticReminderTypeEnum::J_MINUS_1);
+        }
+
+        $this->dispatch($pronostic, PronosticReminderTypeEnum::CREATION);
+    }
+
+    private function dispatchPreMatchReminders(Pronostic $pronostic, \DateTimeImmutable $now): void
+    {
+        if ($now < $pronostic->beginAt || $now >= $pronostic->matchAt) {
+            return;
+        }
+
         $oneDayBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 day');
         $oneHourBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-1 hour');
         $fiveMinutesBefore = \DateTimeImmutable::createFromInterface($pronostic->matchAt)->modify('-5 minutes');
 
-        if ($pronostic->beginAt < $oneDayBefore && $now >= $pronostic->beginAt && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION)) {
-            $jMinus1Skipped = $now >= $oneDayBefore;
-            if ($jMinus1Skipped) {
-                $pronostic->markReminderSent(PronosticReminderTypeEnum::J_MINUS_1);
-            }
+        if ($now >= $fiveMinutesBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_5_MIN)) {
+            $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_5_MIN);
 
-            $this->dispatch($pronostic, PronosticReminderTypeEnum::CREATION);
-            $this->io->success('Push de création programmé.');
-
-            if ($jMinus1Skipped) {
-                $this->io->note('Push J-1 ignoré : seuil J-1 déjà dépassé.');
-            }
+            return;
         }
 
-        if ($now >= $pronostic->beginAt && $now < $pronostic->matchAt) {
-            if ($pronostic->beginAt <= $oneDayBefore && $now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
-                $this->dispatch($pronostic, PronosticReminderTypeEnum::J_MINUS_1);
-                $this->io->success('Push J-1 programmé.');
-            }
+        if ($now >= $oneHourBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1)) {
+            $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_1);
 
-            if ($now >= $oneHourBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1)) {
-                $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_1);
-                $this->io->success('Push H-1 programmé.');
-            }
-
-            if ($now >= $fiveMinutesBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_5_MIN)) {
-                $this->dispatch($pronostic, PronosticReminderTypeEnum::H_MINUS_5_MIN);
-                $this->io->success('Push H-5min programmé.');
-            }
+            return;
         }
 
-        if ($pronostic->isResultPublished() && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::RESULTS)) {
-            $this->dispatch($pronostic, PronosticReminderTypeEnum::RESULTS);
-            $this->io->success('Push de résultats programmé.');
+        if ($pronostic->beginAt <= $oneDayBefore && $now >= $oneDayBefore && !$pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1)) {
+            $this->dispatch($pronostic, PronosticReminderTypeEnum::J_MINUS_1);
+        }
+    }
+
+    private function dispatchResultReminder(Pronostic $pronostic): void
+    {
+        if (!$pronostic->isResultPublished() || $pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::RESULTS)) {
+            return;
         }
 
-        return self::SUCCESS;
+        $this->dispatch($pronostic, PronosticReminderTypeEnum::RESULTS);
     }
 
     private function dispatch(Pronostic $pronostic, PronosticReminderTypeEnum $type): void

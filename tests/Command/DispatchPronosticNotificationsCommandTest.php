@@ -60,7 +60,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push de création programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
     }
 
     public function testOnlyDispatchesCreationWhenJMinus1ThresholdAlreadyPassed(): void
@@ -76,9 +76,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        $display = $this->tester->getDisplay();
-        self::assertStringContainsString('Push de création programmé', $display);
-        self::assertStringNotContainsString('Push J-1 programmé', $display);
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
         self::assertTrue($pronostic->jMinus1Notified);
     }
 
@@ -90,7 +88,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+        self::assertFalse($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
     }
 
     public function testSkipsRemindersBeforePronosticBeginAt(): void
@@ -101,19 +99,25 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push J-1 programmé', $this->tester->getDisplay());
+        self::assertFalse($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1));
     }
 
-    public function testSkipsCreationAndJMinus1WhenPronosticBeginsAfterJMinus1Threshold(): void
+    public function testDispatchesCreationAndSkipsJMinus1WhenPronosticBeginsAfterJMinus1Threshold(): void
     {
-        $pronostic = $this->makePronostic(beginAt: '-11 hours', matchAt: '+12 hours');
+        $pronostic = $this->makePronostic(matchAt: '+12 hours', beginAt: '-11 hours');
+
         $this->pronosticRepository->method('findDisplayed')->willReturn($pronostic);
-        $this->bus->expects(self::never())->method('dispatch');
+
+        $this->bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::callback($this->isPushOfType(PronosticReminderTypeEnum::CREATION)))
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
-        self::assertStringNotContainsString('Push J-1 programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1));
     }
 
     public function testSkipsCreationWhenReminderAlreadyExists(): void
@@ -125,7 +129,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push de création programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::CREATION));
     }
 
     public function testDispatchesJMinus1PushWithinOneDay(): void
@@ -142,7 +146,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push J-1 programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::J_MINUS_1));
     }
 
     public function testDispatchesHMinus1PushWithinOneHour(): void
@@ -160,7 +164,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push H-1 programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1));
     }
 
     public function testDispatchesHMinus1WhenPronosticBeginsAfterHMinus1Threshold(): void
@@ -178,7 +182,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push H-1 programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_1));
     }
 
     public function testDispatchesHMinus5MinPushWithinFiveMinutes(): void
@@ -197,7 +201,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push H-5min programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::H_MINUS_5_MIN));
     }
 
     public function testDispatchesResultsPushWhenResultPublished(): void
@@ -214,7 +218,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringContainsString('Push de résultats programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::RESULTS));
     }
 
     public function testSkipsResultsWhenReminderAlreadyExists(): void
@@ -227,7 +231,7 @@ class DispatchPronosticNotificationsCommandTest extends TestCase
 
         $this->tester->execute([]);
 
-        self::assertStringNotContainsString('Push de résultats programmé', $this->tester->getDisplay());
+        self::assertTrue($pronostic->hasReminderBeenSent(PronosticReminderTypeEnum::RESULTS));
     }
 
     private function isPushOfType(PronosticReminderTypeEnum $type): callable
