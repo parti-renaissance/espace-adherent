@@ -7,6 +7,7 @@ namespace Tests\App\Ses\Rendering;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Mailer\Template\Manager;
 use App\Ses\Rendering\EmailCssInliner;
+use App\Ses\Rendering\PreheaderExtractor;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipient;
 use App\Ses\Rendering\SesRecipientEmailFactory;
@@ -78,6 +79,44 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         self::assertStringNotContainsString('%7B', $email->html);
         self::assertStringContainsString('Jane', $email->html);
         self::assertStringNotContainsString('{{Prénom}}', $email->html);
+
+        // The hidden preheader block survives the per-recipient rendering pass.
+        self::assertStringContainsString('style="display:none', $email->html);
+    }
+
+    public function testAssembleInjectsHiddenPreheaderSkippingAuthorChrome(): void
+    {
+        $author = $this->createAdherent('campaign-author-3@test.dev');
+
+        $message = new AdherentMessage(null, $author);
+        $message->setSubject('Lettre de campagne');
+        // Prod-like content: an author card, then the <h1> title, then the message body.
+        $message->setContent(
+            '<div class="padding-responsive-top"><span>Pôle Territoires</span><p>Dimitri Gritsajuk</p><p>Chef de pôle</p></div>'
+            .'<h1>Actualités de la semaine</h1>'
+            .'<table><tbody><tr><td><p>Bonjour {{Prénom}}, voici les infos.</p></td></tr></tbody></table>'
+        );
+
+        $assembled = $this->assembler->assemble($message);
+
+        // A hidden preheader block is injected right after <body> with inline styles (a CSS class
+        // would be visible in Gmail, which strips <head><style>).
+        self::assertMatchesRegularExpression('/<body[^>]*>\s*<div style="display:none/i', $assembled->html);
+        self::assertStringContainsString('mso-hide:all', $assembled->html);
+
+        self::assertSame(1, preg_match('/<div style="display:none[^>]*>(.*?)<\/div>/i', $assembled->html, $matches));
+        $preheader = $matches[1];
+
+        // Preview starts at the heading; the author card that precedes it is skipped.
+        self::assertStringStartsWith('Actualités de la semaine', $preheader);
+        self::assertStringContainsString('voici les infos', $preheader);
+        self::assertStringNotContainsString('Pôle Territoires', $preheader);
+        self::assertStringNotContainsString('Dimitri Gritsajuk', $preheader);
+
+        // The Dictionary code is stripped from the preheader block, but still present in the body
+        // for the per-recipient pass.
+        self::assertStringNotContainsString('{{Prénom}}', $preheader);
+        self::assertStringContainsString('{{Prénom}}', $assembled->html);
     }
 
     protected function setUp(): void
@@ -89,6 +128,7 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         $this->assembler = new SesMessageAssembler(
             static::getContainer()->get(Manager::class),
             new EmailCssInliner(new NullLogger()),
+            new PreheaderExtractor(),
         );
     }
 

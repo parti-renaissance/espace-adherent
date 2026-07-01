@@ -23,6 +23,7 @@ class SesMessageAssembler
     public function __construct(
         private readonly Manager $templateManager,
         private readonly EmailCssInliner $cssInliner,
+        private readonly PreheaderExtractor $preheaderExtractor,
     ) {
     }
 
@@ -50,6 +51,12 @@ class SesMessageAssembler
         // Inline the margin reset (Gmail strips <head><style>; SES is a pure transport and does not inline).
         $html = $this->cssInliner->inline($html);
 
+        // Inject the hidden preview line (preheader) from the message content, once per publication.
+        $preheader = $this->preheaderExtractor->extract($adherentMessage->getContent());
+        if ('' !== $preheader) {
+            $html = $this->injectPreheader($html, $preheader);
+        }
+
         $sender = $template->getEffectiveSender();
 
         return new AssembledCampaignEmail(
@@ -60,6 +67,22 @@ class SesMessageAssembler
             $message->getReplyTo(),
             campaignUuid: $adherentMessage->getUuid()->toRfc4122(),
         );
+    }
+
+    private function injectPreheader(string $html, string $preheader): string
+    {
+        if (!preg_match('/<body[^>]*>/i', $html, $matches, \PREG_OFFSET_CAPTURE)) {
+            return $html;
+        }
+
+        $block = \sprintf(
+            '<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">%s</div>',
+            htmlspecialchars($preheader, \ENT_QUOTES)
+        );
+
+        $insertAt = $matches[0][1] + \strlen($matches[0][0]);
+
+        return substr_replace($html, $block, $insertAt, 0);
     }
 
     private function buildPlaceholderReplacements(array $vars): array
