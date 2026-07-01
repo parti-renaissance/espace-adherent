@@ -7,6 +7,7 @@ namespace App\JeMengage\Alert\Provider;
 use App\Entity\Adherent;
 use App\Entity\AppAlert;
 use App\JeMengage\Alert\Alert;
+use App\JeMengage\Alert\AlertTypeEnum;
 use App\Repository\AppAlertRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
@@ -24,10 +25,6 @@ class AppAlertProvider implements AlertProviderInterface
 
     public function getAlerts(?Adherent $adherent): array
     {
-        if (null === $adherent) {
-            return [];
-        }
-
         if (!$appAlerts = $this->repository->findAllActive()) {
             return [];
         }
@@ -35,9 +32,13 @@ class AppAlertProvider implements AlertProviderInterface
         $alerts = [];
 
         foreach ($appAlerts as $appAlert) {
+            if (null === $adherent && !$this->isPubliclyVisible($appAlert)) {
+                continue;
+            }
+
             $ctaUrl = null;
 
-            if ($appAlert->withMagicLink && $appAlert->ctaUrl) {
+            if ($adherent && $appAlert->withMagicLink && $appAlert->ctaUrl) {
                 $ctaUrl = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $appAlert->ctaUrl)->getUrl();
             }
             $alerts[] = $alert = Alert::createFromAppAlert($appAlert, $ctaUrl ?? null, $this->getImageUrl($appAlert));
@@ -45,6 +46,15 @@ class AppAlertProvider implements AlertProviderInterface
         }
 
         return $alerts;
+    }
+
+    private function isPubliclyVisible(AppAlert $appAlert): bool
+    {
+        return match ($appAlert->type) {
+            AlertTypeEnum::ALERT => $appAlert->isPublic,
+            AlertTypeEnum::LIVE, AlertTypeEnum::LIVE_ANNOUNCE, AlertTypeEnum::MEETING, AlertTypeEnum::PRONOSTIC => true,
+            AlertTypeEnum::ELECTION => false,
+        };
     }
 
     private function getImageUrl(AppAlert $appAlert): ?string

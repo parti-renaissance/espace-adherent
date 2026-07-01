@@ -21,10 +21,6 @@ class LiveAlertProvider implements AlertProviderInterface
 
     public function getAlerts(?Adherent $adherent): array
     {
-        if (null === $adherent) {
-            return [];
-        }
-
         if (!$events = $this->eventRepository->findWithLiveStream()) {
             return [];
         }
@@ -35,7 +31,7 @@ class LiveAlertProvider implements AlertProviderInterface
         foreach ($events as $event) {
             $url = '/evenements/'.$event->getSlug();
 
-            if ($adherent->getAuthAppVersion() < 5140101 && $event->getBeginAt() < $now) {
+            if ($adherent && $adherent->getAuthAppVersion() < 5140101 && $event->getBeginAt() < $now) {
                 $url = $this->loginLinkHandler->createLoginLink(
                     $adherent,
                     lifetime: 3600,

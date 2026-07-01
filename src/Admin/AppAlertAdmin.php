@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -30,6 +31,7 @@ class AppAlertAdmin extends AbstractAdmin
             ->add('type', null, ['label' => 'Type'])
             ->add('label', null, ['label' => 'Label'])
             ->add('title', null, ['label' => 'Titre'])
+            ->add('isPublic', null, ['label' => 'Public'])
             ->add('isActive', null, ['label' => 'Active'])
             ->add('beginAt', null, ['label' => 'Date de début'])
             ->add('endAt', null, ['label' => 'Date de fin'])
@@ -51,14 +53,33 @@ class AppAlertAdmin extends AbstractAdmin
                 ->add('shareUrl', UrlType::class, ['label' => 'URL de partage', 'required' => false])
                 ->add('ctaUrl', null, ['label' => 'URL du CTA', 'required' => false])
                 ->add('withMagicLink', null, ['label' => 'Avec lien magique', 'required' => false])
-                ->add('isActive', null, ['label' => 'Active', 'required' => false])
+            ->end()
+            ->with('Visibilité', ['class' => 'col-md-6'])
+                ->add('isPublic', ChoiceType::class, [
+                    'label' => 'Visibilité',
+                    'choices' => [
+                        'Privée' => false,
+                        'Publique' => true,
+                    ],
+                    'expanded' => true,
+                    'required' => true,
+                    'help' => 'Publique : visible par les non-inscrits uniquement pour le type Alerte.',
+                ])
+                ->add('isActive', null, ['label' => 'Afficher l\'alerte dans le caroussel', 'required' => false])
             ->end()
             ->with('Dates', ['class' => 'col-md-6'])
                 ->add('beginAt', DateTimePickerType::class, ['label' => 'Date de début'])
                 ->add('endAt', DateTimePickerType::class, ['label' => 'Date de fin'])
             ->end()
             ->with('Images', ['class' => 'col-md-6'])
-                ->add('image', UploadableFileType::class, ['label' => 'Image', 'required' => false])
+                ->add('image', UploadableFileType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'delete' => false,
+                    'btn_delete' => false,
+                ], [
+                    'allow_file_delete' => false,
+                ])
             ->end()
             ->with('Autres', ['class' => 'col-md-6'])
                 ->add('data', JsonType::class, [

@@ -17,7 +17,8 @@ class LoadAppAlertData extends Fixture
             'Alerte fin demain',
             'Une alerte de test se termine demain !',
             '+1 day',
-            '/consultations/fin-demain'
+            '/consultations/fin-demain',
+            isPublic: true,
         ));
         $manager->persist($this->createAlert(
             'Alerte fin dans trois jours',
@@ -60,6 +61,7 @@ class LoadAppAlertData extends Fixture
         string $description = 'Alerte temporaire pour vérifier le tri par date de fin.',
         string $ctaLabel = 'Tester',
         bool $isActive = true,
+        bool $isPublic = false,
     ): AppAlert {
         $alert = new AppAlert();
         $alert->label = $label;
@@ -72,6 +74,7 @@ class LoadAppAlertData extends Fixture
         $alert->ctaLabel = $ctaLabel;
         $alert->ctaUrl = $ctaUrl;
         $alert->withMagicLink = true;
+        $alert->isPublic = $isPublic;
 
         return $alert;
     }

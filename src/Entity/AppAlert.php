@@ -66,6 +66,9 @@ class AppAlert implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $withMagicLink = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isPublic = false;
+
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $isActive = true;
 
