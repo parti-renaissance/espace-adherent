@@ -58,6 +58,23 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         self::assertNull($this->repository->findDisplayed());
     }
 
+    public function testFindDisplayedIgnoresPronosticEndedForMoreThanTwentyFourHours(): void
+    {
+        $this->createPronostic('Expired', matchAt: '-25 hours', displayed: true);
+        $this->manager->flush();
+
+        self::assertNull($this->repository->findDisplayed());
+    }
+
+    public function testFindDisplayedReturnsFirstDisplayedPronosticByMatchAtAscending(): void
+    {
+        $this->createPronostic('Later', matchAt: '+2 days', displayed: true);
+        $first = $this->createPronostic('First', matchAt: '+1 day', displayed: true);
+        $this->manager->flush();
+
+        self::assertSame($first->getId(), $this->repository->findDisplayed()?->getId());
+    }
+
     public function testFindLatestReturnsMostRecentStartedByMatchAtRegardlessOfDisplayed(): void
     {
         $this->createPronostic('Old', matchAt: '-2 days', displayed: true);
