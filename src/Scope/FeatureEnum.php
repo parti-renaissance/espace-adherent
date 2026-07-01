@@ -41,7 +41,6 @@ class FeatureEnum extends Enum
     public const FEATUREBASE = 'featurebase';
     public const CIRCONSCRIPTIONS = 'circonscriptions';
     public const REFERRALS = 'referrals';
-    public const AGORAS = 'agoras';
     public const NATIONAL_EVENT = 'national_event';
     public const EAGGLE = 'eaggle';
 
@@ -106,6 +105,11 @@ class FeatureEnum extends Enum
             self::AI_ANTISECHE,
             self::PAP_USER,
         ];
+    }
+
+    public static function getAssignableFeatures(): array
+    {
+        return array_values(array_unique(array_merge(self::ALL, self::getMilitantFeatures())));
     }
 
     public static function getChatbotFeatures(): array

@@ -43,11 +43,11 @@ class Scope implements \Stringable
     /**
      * @var array
      */
-    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true)]
+    #[Assert\Choice(callback: [FeatureEnum::class, 'getAssignableFeatures'], multiple: true)]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $features;
 
-    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true)]
+    #[Assert\Choice(callback: [FeatureEnum::class, 'getAssignableFeatures'], multiple: true)]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     public ?array $canaryFeatures = null;
 

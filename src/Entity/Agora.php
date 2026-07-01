@@ -17,7 +17,6 @@ use App\Repository\AgoraRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,15 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
 #[ApiResource(
     operations: [
-        new Get(
-            uriTemplate: '/agoras/{uuid}',
-            requirements: ['uuid' => '%pattern_uuid%'],
-            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
-        ),
-        new GetCollection(
-            uriTemplate: '/agoras',
-            security: new Expression(expression: 'is_granted("REQUEST_SCOPE_GRANTED", "agoras") or is_granted("ROLE_USER")'),
-        ),
+        new Get(requirements: ['uuid' => '%pattern_uuid%']),
+        new GetCollection(),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/agoras/{uuid}/join',
@@ -47,7 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/agoras/{uuid}/leave',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: LeaveAgoraController::class,
-            security: "is_granted('ROLE_USER')",
             deserialize: false,
         ),
     ],
