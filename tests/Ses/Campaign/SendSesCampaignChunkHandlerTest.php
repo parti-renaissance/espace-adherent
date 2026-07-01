@@ -27,6 +27,7 @@ use App\Ses\Client\SesEmail;
 use App\Ses\Client\SesEmailClient;
 use App\Ses\Client\SesSendOutcome;
 use App\Ses\Rendering\EmailCssInliner;
+use App\Ses\Rendering\PreheaderExtractor;
 use App\Ses\Rendering\SesMessageAssembler;
 use App\Ses\Rendering\SesRecipientContextFactory;
 use App\Ses\Rendering\SesRecipientEmailFactory;
@@ -217,6 +218,7 @@ class SendSesCampaignChunkHandlerTest extends AbstractKernelTestCase
             new SesMessageAssembler(
                 self::getContainer()->get(Manager::class),
                 new EmailCssInliner(new NullLogger()),
+                new PreheaderExtractor(),
             ),
             new SesRecipientEmailFactory(new VariableParser(), new SesVariableRenderer(), new SesRecipientContextFactory(), self::getContainer()->get(UnsubscribeUrlGenerator::class)),
             $client,
