@@ -22,7 +22,7 @@ class PreviewControllerTest extends AbstractRenaissanceWebTestCase
         self::assertResponseIsSuccessful();
         $content = $this->client->getResponse()->getContent();
         // Stable campaign-chrome markers, independent of the faker-random body (cf. SesMessageAssemblerTest).
-        self::assertStringContainsString('Se désabonner', $content);
+        self::assertStringContainsString('Si vous ne souhaitez plus recevoir nos communications', $content);
         // Recipient-level Dictionary code left raw in the preview (no recipient at compose time).
         self::assertStringContainsString('{{unsubscribe_url}}', $content);
     }
@@ -70,7 +70,7 @@ class PreviewControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->request('GET', '/publications/'.LoadAdherentMessageData::MESSAGE_02_UUID);
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Se désabonner', (string) $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Si vous ne souhaitez plus recevoir nos communications', (string) $this->client->getResponse()->getContent());
     }
 
     public function testSentMessageNotPreviewableForAnonymousOnAdminHost(): void

@@ -34,6 +34,33 @@ class EmailCssInlinerTest extends TestCase
         self::assertMatchesRegularExpression('/<ul[^>]*style="[^"]*margin:\s*0/i', $out);
     }
 
+    public function testInlinesV10TypographyScopedToContentWrapper(): void
+    {
+        $html = <<<'HTML'
+            <!DOCTYPE html><html><head></head><body>
+            <div class="content"><h1>Titre</h1><p>Corps</p><ul><li>a</li></ul><a href="#">lien</a></div>
+            <div style="font-size:11px;color:#8b8d91"><p>pied de page</p></div>
+            </body></html>
+            HTML;
+
+        $out = $this->inline($html);
+
+        // Content elements pick up the v10 scale (h1 = 22px/#1d1d1f, p = 16px/#424245, link = #4291E1).
+        // Emogrifier single-quotes the style attr when a value contains " (font-family), so the checks
+        // stay quote-agnostic (bounded by the tag's closing >).
+        self::assertMatchesRegularExpression('/<h1\b[^>]*font-size:\s*22px/i', $out);
+        self::assertMatchesRegularExpression('/<h1\b[^>]*color:\s*#1d1d1f/i', $out);
+        self::assertMatchesRegularExpression('/<p\b[^>]*font-size:\s*16px/i', $out);
+        self::assertMatchesRegularExpression('/<p\b[^>]*color:\s*#424245/i', $out);
+        self::assertMatchesRegularExpression('/<a\b[^>]*color:\s*#4291E1/i', $out);
+
+        // The chrome footer paragraph, outside .content, only gets the global margin reset — the
+        // v10 body size/color must NOT leak onto it (it would clobber the 11px/#8b8d91 footer).
+        self::assertSame(1, preg_match('/<p([^>]*)>pied de page/i', $out, $footer));
+        self::assertStringNotContainsString('font-size', $footer[1]);
+        self::assertStringNotContainsString('#424245', $footer[1]);
+    }
+
     public function testPreservesMediaQueriesAndMsoConditionalComments(): void
     {
         $out = $this->inline(self::HTML);
