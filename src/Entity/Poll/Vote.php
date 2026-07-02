@@ -16,55 +16,27 @@ class Vote
 {
     use EntityTimestampableTrait;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     #[ORM\Id]
-    protected $id;
+    protected ?int $id = null;
 
-    /**
-     * @var Choice
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Choice::class, inversedBy: 'votes')]
-    private $choice;
+    private Choice $choice;
 
-    /**
-     * @var Adherent|null
-     */
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private $adherent;
+    private ?Adherent $adherent;
 
-    /**
-     * @var Device|null
-     */
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Device::class)]
-    private $device;
+    private ?Device $device = null;
 
-    public function __construct(Choice $choice, ?Adherent $adherent = null, ?Device $device = null)
+    public function __construct(Choice $choice, Adherent $adherent)
     {
         $this->choice = $choice;
         $this->adherent = $adherent;
-        $this->device = $device;
-    }
-
-    public static function createForAdherent(Choice $choice, Adherent $adherent): self
-    {
-        return new self($choice, $adherent);
-    }
-
-    public static function createForDevice(Choice $choice, Device $device): self
-    {
-        return new self($choice, null, $device);
-    }
-
-    public static function createForAnonymous(Choice $choice): self
-    {
-        return new self($choice);
     }
 
     public function getId(): ?int
@@ -80,10 +52,5 @@ class Vote
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
-    }
-
-    public function getDevice(): ?Device
-    {
-        return $this->device;
     }
 }
