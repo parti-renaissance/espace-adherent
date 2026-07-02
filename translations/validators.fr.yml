@@ -226,7 +226,10 @@ jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 poll.question.not_blank: La question est requise.
 poll.question.min_length: La question doit contenir au moins {{ limit }} caractères.
 poll.question.max_length: La question ne doit pas contenir plus de {{ limit }} caractères.
+poll.start_at.not_null: La date de début est requise.
 poll.finish_at.not_null: La date de fin est requise.
+poll.finish_at.greater_than_start_at: La date de fin doit être postérieure à la date de début.
+poll.result_display_end_at.greater_than_or_equal_finish_at: La date de fin d’affichage des résultats doit être postérieure ou égale à la date de fin.
 
 #
 # Election

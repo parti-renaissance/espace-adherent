@@ -4,61 +4,80 @@ declare(strict_types=1);
 
 namespace App\Entity\Poll;
 
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Poll\PollRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap([PollTypeEnum::LOCAL => LocalPoll::class, PollTypeEnum::NATIONAL => NationalPoll::class])]
-#[ORM\Entity]
-#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Entity(repositoryClass: PollRepository::class)]
 #[ORM\Table(name: 'poll')]
-abstract class Poll implements \Stringable
+class Poll implements \Stringable, EntityAdministratorBlameableInterface
 {
+    use EntityAdministratorBlameableTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @var string
-     */
     #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     #[Assert\NotBlank(message: 'poll.question.not_blank')]
-    #[Groups(['poll_read'])]
     #[ORM\Column]
-    private $question;
+    private ?string $question;
 
-    /**
-     * @var \DateTimeInterface
-     */
+    #[Assert\NotNull(message: 'poll.start_at.not_null')]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $startAt;
+
+    #[Assert\Expression('!value or !this.getStartAt() or value > this.getStartAt()', message: 'poll.finish_at.greater_than_start_at')]
     #[Assert\NotNull(message: 'poll.finish_at.not_null')]
-    #[Groups(['poll_read'])]
-    #[ORM\Column(type: 'datetime')]
-    private $finishAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $finishAt;
 
-    /**
-     * @var Choice[]|Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: Choice::class, cascade: ['all'])]
-    private $choices;
+    #[Assert\Expression('!value or !this.getFinishAt() or value >= this.getFinishAt()', message: 'poll.result_display_end_at.greater_than_or_equal_finish_at')]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $resultDisplayEndAt;
+
+    #[Assert\Length(max: 1000)]
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description;
+
+    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'])]
+    private Collection $choices;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $published;
+    private bool $published;
+
+    #[Assert\GreaterThanOrEqual(0)]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
+    private int $participantCountThreshold;
+
+    #[ORM\Column(length: 32, enumType: PollResultDisplayModeEnum::class, options: ['default' => 'after_vote'])]
+    private PollResultDisplayModeEnum $resultDisplayMode;
 
     public function __construct(
         ?Uuid $uuid = null,
         ?string $question = null,
-        ?\DateTimeInterface $finishAt = null,
+        ?\DateTimeImmutable $finishAt = null,
         bool $published = false,
+        ?\DateTimeImmutable $startAt = null,
+        ?\DateTimeImmutable $resultDisplayEndAt = null,
+        ?string $description = null,
+        int $participantCountThreshold = 0,
+        PollResultDisplayModeEnum $resultDisplayMode = PollResultDisplayModeEnum::AFTER_VOTE,
     ) {
         $this->uuid = $uuid ?: Uuid::v4();
         $this->question = $question;
+        $this->startAt = $startAt ?? new \DateTimeImmutable();
         $this->finishAt = $finishAt;
+        $this->resultDisplayEndAt = $resultDisplayEndAt;
+        $this->description = $description;
         $this->published = $published;
+        $this->participantCountThreshold = $participantCountThreshold;
+        $this->resultDisplayMode = $resultDisplayMode;
         $this->choices = new ArrayCollection();
     }
 
@@ -77,14 +96,44 @@ abstract class Poll implements \Stringable
         $this->question = $question;
     }
 
-    public function getFinishAt(): ?\DateTimeInterface
+    public function getStartAt(): ?\DateTimeImmutable
+    {
+        return $this->startAt;
+    }
+
+    public function setStartAt(?\DateTimeImmutable $startAt): void
+    {
+        $this->startAt = $startAt;
+    }
+
+    public function getFinishAt(): ?\DateTimeImmutable
     {
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTimeInterface $finishAt): void
+    public function setFinishAt(?\DateTimeImmutable $finishAt): void
     {
         $this->finishAt = $finishAt;
+    }
+
+    public function getResultDisplayEndAt(): ?\DateTimeImmutable
+    {
+        return $this->resultDisplayEndAt ?? $this->finishAt;
+    }
+
+    public function setResultDisplayEndAt(?\DateTimeImmutable $resultDisplayEndAt): void
+    {
+        $this->resultDisplayEndAt = $resultDisplayEndAt;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     public function isPublished(): bool
@@ -97,9 +146,31 @@ abstract class Poll implements \Stringable
         $this->published = $published;
     }
 
-    /**
-     * @return Choice[]|Collection
-     */
+    public function getParticipantCountThreshold(): int
+    {
+        return $this->participantCountThreshold;
+    }
+
+    public function setParticipantCountThreshold(int $participantCountThreshold): void
+    {
+        $this->participantCountThreshold = $participantCountThreshold;
+    }
+
+    public function getResultDisplayMode(): PollResultDisplayModeEnum
+    {
+        return $this->resultDisplayMode;
+    }
+
+    public function getResultDisplayModeLabel(): string
+    {
+        return $this->resultDisplayMode->getLabel();
+    }
+
+    public function setResultDisplayMode(PollResultDisplayModeEnum $resultDisplayMode): void
+    {
+        $this->resultDisplayMode = $resultDisplayMode;
+    }
+
     public function getChoices(): Collection
     {
         return $this->choices;
@@ -120,7 +191,7 @@ abstract class Poll implements \Stringable
 
     public function hasVote(): bool
     {
-        foreach ($this->getChoices() as $choice) {
+        foreach ($this->choices as $choice) {
             if ($choice->hasVote()) {
                 return true;
             }
@@ -129,7 +200,6 @@ abstract class Poll implements \Stringable
         return false;
     }
 
-    #[Groups(['poll_read'])]
     public function getResult(): array
     {
         $result = [
@@ -158,8 +228,69 @@ abstract class Poll implements \Stringable
         return $result;
     }
 
+    public function getState(?\DateTimeInterface $date = null): string
+    {
+        $date ??= new \DateTimeImmutable();
+
+        if (null !== $this->startAt && $date < $this->startAt) {
+            return PollStateEnum::UPCOMING;
+        }
+
+        if (null !== $this->finishAt && $date >= $this->finishAt) {
+            return PollStateEnum::FINISHED;
+        }
+
+        return PollStateEnum::IN_PROGRESS;
+    }
+
+    public function isVotePeriodActive(?\DateTimeInterface $date = null): bool
+    {
+        $date ??= new \DateTimeImmutable();
+
+        return $this->published
+            && null !== $this->startAt
+            && null !== $this->finishAt
+            && $this->startAt <= $date
+            && $date < $this->finishAt;
+    }
+
+    public function canDisplayResult(?\DateTimeInterface $date = null, bool $hasVoted = false): bool
+    {
+        if (PollResultDisplayModeEnum::NEVER === $this->resultDisplayMode) {
+            return false;
+        }
+
+        if ($this->participantCountThreshold > $this->getResult()['total']) {
+            return false;
+        }
+
+        if (PollResultDisplayModeEnum::AFTER_VOTE === $this->resultDisplayMode) {
+            return ($hasVoted && $this->isVisible($date)) || $this->isResultDisplayPeriodActive($date);
+        }
+
+        return $this->isResultDisplayPeriodActive($date);
+    }
+
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
+    }
+
+    private function isVisible(?\DateTimeInterface $date = null): bool
+    {
+        return $this->isVotePeriodActive($date) || $this->isResultDisplayPeriodActive($date);
+    }
+
+    private function isResultDisplayPeriodActive(?\DateTimeInterface $date = null): bool
+    {
+        $date ??= new \DateTimeImmutable();
+        $resultDisplayEndAt = $this->getResultDisplayEndAt();
+
+        return $this->published
+            && PollResultDisplayModeEnum::NEVER !== $this->resultDisplayMode
+            && null !== $this->finishAt
+            && null !== $resultDisplayEndAt
+            && $this->finishAt <= $date
+            && $date < $resultDisplayEndAt;
     }
 }
