@@ -11,7 +11,6 @@ use App\Normalizer\PollNormalizer;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\ChoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

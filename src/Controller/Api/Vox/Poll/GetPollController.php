@@ -7,7 +7,6 @@ namespace App\Controller\Api\Vox\Poll;
 use App\Entity\Adherent;
 use App\Entity\Poll\Poll;
 use App\Normalizer\PollNormalizer;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
