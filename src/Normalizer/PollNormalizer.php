@@ -36,7 +36,7 @@ class PollNormalizer implements NormalizerInterface
             'finish_at' => $this->formatDate($data->getFinishAt()),
             'result_display_end_at' => $this->formatDate($data->getResultDisplayEndAt()),
             'description' => $data->getDescription(),
-            'state' => $data->getState($now),
+            'state' => $data->getState($now)->value,
             'choices' => array_map(
                 fn (Choice $choice): array => $this->normalizeChoice($choice),
                 $data->getChoices()->toArray()

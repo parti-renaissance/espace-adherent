@@ -6,13 +6,7 @@ namespace App\Entity\Poll;
 
 enum PollStateEnum: string
 {
-    public const UPCOMING = 'upcoming';
-    public const IN_PROGRESS = 'in_progress';
-    public const FINISHED = 'finished';
-
-    public const ALL = [
-        self::UPCOMING,
-        self::IN_PROGRESS,
-        self::FINISHED,
-    ];
+    case UPCOMING = 'upcoming';
+    case IN_PROGRESS = 'in_progress';
+    case FINISHED = 'finished';
 }

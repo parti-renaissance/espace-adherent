@@ -228,7 +228,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         return $result;
     }
 
-    public function getState(?\DateTimeInterface $date = null): string
+    public function getState(?\DateTimeInterface $date = null): PollStateEnum
     {
         $date ??= new \DateTimeImmutable();
 
