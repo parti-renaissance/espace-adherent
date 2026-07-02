@@ -7,7 +7,7 @@ namespace App\Controller\Api\Vox\Poll;
 use App\Entity\Adherent;
 use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
-use App\Poll\PollDataBuilder;
+use App\Normalizer\PollNormalizer;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\ChoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +32,6 @@ class CreatePollVoteController extends AbstractController
         Adherent $user,
         EntityManagerInterface $entityManager,
         ChoiceRepository $choiceRepository,
-        PollDataBuilder $dataBuilder,
     ): JsonResponse {
         $choice = $choiceRepository->findOneByUuid($payload->choice);
 
@@ -48,6 +47,9 @@ class CreatePollVoteController extends AbstractController
         $entityManager->persist(new Vote($choice, $user));
         $entityManager->flush();
 
-        return $this->json($dataBuilder->build($poll, $now, $user), Response::HTTP_CREATED);
+        return $this->json($poll, Response::HTTP_CREATED, [], [
+            PollNormalizer::CONTEXT_NOW => $now,
+            PollNormalizer::CONTEXT_ADHERENT => $user,
+        ]);
     }
 }

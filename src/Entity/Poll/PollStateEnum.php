@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Poll;
 
-final class PollStateEnum
+enum PollStateEnum: string
 {
     public const UPCOMING = 'upcoming';
     public const IN_PROGRESS = 'in_progress';

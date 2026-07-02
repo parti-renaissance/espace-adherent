@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Vox\Poll;
 
 use App\Entity\Adherent;
-use App\Poll\PollDataBuilder;
+use App\Normalizer\PollNormalizer;
 use App\Repository\Poll\PollRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,6 @@ class GetCurrentPollController extends AbstractController
         #[CurrentUser]
         ?Adherent $user,
         PollRepository $pollRepository,
-        PollDataBuilder $dataBuilder,
     ): JsonResponse {
         $poll = $pollRepository->findLastActivePoll();
 
@@ -27,6 +26,6 @@ class GetCurrentPollController extends AbstractController
             return $this->json(null);
         }
 
-        return $this->json($dataBuilder->build($poll, new \DateTimeImmutable(), $user));
+        return $this->json($poll, context: [PollNormalizer::CONTEXT_ADHERENT => $user]);
     }
 }

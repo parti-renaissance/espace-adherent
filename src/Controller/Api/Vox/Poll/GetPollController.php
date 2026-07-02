@@ -6,7 +6,7 @@ namespace App\Controller\Api\Vox\Poll;
 
 use App\Entity\Adherent;
 use App\Entity\Poll\Poll;
-use App\Poll\PollDataBuilder;
+use App\Normalizer\PollNormalizer;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +21,7 @@ class GetPollController extends AbstractController
         Poll $poll,
         #[CurrentUser]
         ?Adherent $user,
-        PollDataBuilder $dataBuilder,
     ): JsonResponse {
-        return $this->json($dataBuilder->build($poll, new \DateTimeImmutable(), $user));
+        return $this->json($poll, context: [PollNormalizer::CONTEXT_ADHERENT => $user]);
     }
 }
