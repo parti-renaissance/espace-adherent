@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Pronostic;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\Pronostic\Pronostic;
 use App\Form\Admin\UploadableFileType;
 use App\Form\DateTimePickerType;
-use App\Repository\Pronostic\PronosticRepository;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,21 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class PronosticAdmin extends AbstractAdmin
 {
-    public function __construct(private readonly PronosticRepository $pronosticRepository)
-    {
-        parent::__construct();
-    }
-
-    protected function postPersist(object $object): void
-    {
-        $this->ensureSingleDisplayed($object);
-    }
-
-    protected function postUpdate(object $object): void
-    {
-        $this->ensureSingleDisplayed($object);
-    }
-
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         parent::configureDefaultSortValues($sortValues);
@@ -111,12 +94,5 @@ class PronosticAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-    }
-
-    private function ensureSingleDisplayed(object $object): void
-    {
-        if ($object instanceof Pronostic && $object->displayed) {
-            $this->pronosticRepository->unsetDisplayedExcept($object);
-        }
     }
 }
