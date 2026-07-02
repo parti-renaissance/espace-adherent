@@ -45,17 +45,4 @@ class PronosticRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-    public function unsetDisplayedExcept(Pronostic $pronostic): void
-    {
-        $this->createQueryBuilder('pronostic')
-            ->update()
-            ->set('pronostic.displayed', ':notDisplayed')
-            ->where('pronostic.id != :id')
-            ->setParameter('notDisplayed', false)
-            ->setParameter('id', $pronostic->getId())
-            ->getQuery()
-            ->execute()
-        ;
-    }
 }

@@ -26,21 +26,6 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         parent::tearDown();
     }
 
-    public function testUnsetDisplayedExceptKeepsOnlyTheGivenOne(): void
-    {
-        $kept = $this->createDisplayedPronostic('Kept');
-        $other1 = $this->createDisplayedPronostic('Other 1');
-        $other2 = $this->createDisplayedPronostic('Other 2');
-        $this->manager->flush();
-
-        $this->repository->unsetDisplayedExcept($kept);
-        $this->manager->clear();
-
-        self::assertTrue($this->reload($kept)->displayed);
-        self::assertFalse($this->reload($other1)->displayed);
-        self::assertFalse($this->reload($other2)->displayed);
-    }
-
     public function testFindDisplayedReturnsStartedPronostic(): void
     {
         $pronostic = $this->createDisplayedPronostic('Started');
@@ -114,10 +99,5 @@ class PronosticRepositoryTest extends AbstractKernelTestCase
         $this->manager->persist($pronostic);
 
         return $pronostic;
-    }
-
-    private function reload(Pronostic $pronostic): Pronostic
-    {
-        return $this->repository->find($pronostic->getId());
     }
 }
