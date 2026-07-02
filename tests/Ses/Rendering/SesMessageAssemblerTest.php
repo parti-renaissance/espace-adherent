@@ -31,10 +31,13 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         $assembled = $this->assembler->assemble($message);
 
         // Campaign chrome with the marketing unsubscribe footer (not the transactional one).
-        self::assertStringContainsString('Se désabonner', $assembled->html);
+        self::assertStringContainsString('Si vous ne souhaitez plus recevoir nos communications', $assembled->html);
         self::assertStringContainsString('{{unsubscribe_url}}', $assembled->html);
-        // Publication body injected into the template-email-block slot.
+        // Publication body injected into the content slot.
         self::assertStringContainsString('voici les actualités', $assembled->html);
+        // The v10 typographic scale is inlined onto the body paragraph (16px/#424245).
+        self::assertMatchesRegularExpression('/<p\b[^>]*font-size:\s*16px/i', $assembled->html);
+        self::assertMatchesRegularExpression('/<p\b[^>]*color:\s*#424245/i', $assembled->html);
         // The legacy in-body "Répondre" button is not rendered.
         self::assertStringNotContainsString('mailto:', $assembled->html);
         // Message-level placeholder fully substituted.
@@ -60,7 +63,10 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         $assembled = $this->assembler->assemble($message);
 
         // The reset is inlined onto the heading, and {{unsubscribe_url}} survives inlining (not %7B-encoded).
-        self::assertMatchesRegularExpression('/<h1[^>]*style="[^"]*margin:\s*0/i', $assembled->html);
+        self::assertMatchesRegularExpression('/<h1\b[^>]*margin:\s*0/i', $assembled->html);
+        // The v10 scale is inlined onto the content heading (h1 = 22px/#1d1d1f), not just the reset.
+        self::assertMatchesRegularExpression('/<h1\b[^>]*font-size:\s*22px/i', $assembled->html);
+        self::assertMatchesRegularExpression('/<h1\b[^>]*color:\s*#1d1d1f/i', $assembled->html);
         self::assertStringContainsString('{{unsubscribe_url}}', $assembled->html);
         self::assertStringNotContainsString('%7B', $assembled->html);
 
@@ -74,7 +80,7 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         ));
 
         // Final recipient HTML: heading reset kept, unsubscribe URL resolved, first name substituted.
-        self::assertMatchesRegularExpression('/<h1[^>]*style="[^"]*margin:\s*0/i', $email->html);
+        self::assertMatchesRegularExpression('/<h1\b[^>]*margin:\s*0/i', $email->html);
         self::assertStringNotContainsString('{{unsubscribe_url}}', $email->html);
         self::assertStringNotContainsString('%7B', $email->html);
         self::assertStringContainsString('Jane', $email->html);
