@@ -6,9 +6,7 @@ namespace App\Poll;
 
 use App\Entity\Adherent;
 use App\Entity\Poll\Choice;
-use App\Entity\Poll\Participant;
 use App\Entity\Poll\Poll;
-use App\Repository\Poll\ParticipantRepository;
 use App\Repository\Poll\VoteRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -16,7 +14,6 @@ readonly class PollDataBuilder
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        private ParticipantRepository $participantRepository,
         private VoteRepository $voteRepository,
     ) {
     }
@@ -42,7 +39,7 @@ readonly class PollDataBuilder
         $hasVoted = $adherent && $this->voteRepository->hasVoted($poll, $adherent);
 
         if ($poll->canDisplayResult($now, $hasVoted)) {
-            $data['participant_count'] = $this->participantRepository->countForPoll($poll);
+            $data['participant_count'] = $this->voteRepository->countParticipants($poll);
             $data['participants'] = $this->buildParticipants($poll);
             $data['result'] = $this->buildResult($poll);
         }
@@ -61,15 +58,15 @@ readonly class PollDataBuilder
     private function buildParticipants(Poll $poll): array
     {
         return array_map(
-            fn (Participant $participant): array => [
-                'first_name' => $participant->getAdherent()->getFirstName(),
+            fn (Adherent $adherent): array => [
+                'first_name' => $adherent->getFirstName(),
                 'image_url' => $this->urlGenerator->generate(
                     'asset_url',
-                    ['path' => $participant->getAdherent()->getImagePath()],
+                    ['path' => $adherent->getImagePath()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
             ],
-            $this->participantRepository->findLatestWithImage($poll)
+            $this->voteRepository->findLatestVotersWithImage($poll)
         );
     }
 

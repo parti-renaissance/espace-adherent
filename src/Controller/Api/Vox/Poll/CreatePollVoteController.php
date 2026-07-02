@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Vox\Poll;
 
 use App\Entity\Adherent;
-use App\Entity\Poll\Participant;
 use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
 use App\Poll\PollDataBuilder;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\ChoiceRepository;
-use App\Repository\Poll\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +32,6 @@ class CreatePollVoteController extends AbstractController
         Adherent $user,
         EntityManagerInterface $entityManager,
         ChoiceRepository $choiceRepository,
-        ParticipantRepository $participantRepository,
         PollDataBuilder $dataBuilder,
     ): JsonResponse {
         $choice = $choiceRepository->findOneByUuid($payload->choice);
@@ -46,10 +43,6 @@ class CreatePollVoteController extends AbstractController
         $now = new \DateTimeImmutable();
         if (!$poll->isVotePeriodActive($now)) {
             return $this->json(['message' => 'Poll is not open.'], Response::HTTP_CONFLICT);
-        }
-
-        if (!$participantRepository->existsForPollAndAdherent($poll, $user)) {
-            $entityManager->persist(new Participant($poll, $user));
         }
 
         $entityManager->persist(new Vote($choice, $user));

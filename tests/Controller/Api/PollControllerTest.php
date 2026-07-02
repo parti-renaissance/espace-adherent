@@ -83,7 +83,7 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame(5, $data['result']['total']);
     }
 
-    public function testVotingSeveralTimesRegistersParticipantOnce(): void
+    public function testVotingSeveralTimesCountsParticipantOnce(): void
     {
         $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_01_CHOICE_01_UUID]);
         $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_01_CHOICE_02_UUID]);
