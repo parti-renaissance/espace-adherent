@@ -21,7 +21,7 @@ class Vote
     #[ORM\Id]
     protected ?int $id = null;
 
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Choice::class, inversedBy: 'votes')]
     private Choice $choice;
 

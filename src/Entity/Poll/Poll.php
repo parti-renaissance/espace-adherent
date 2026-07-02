@@ -45,7 +45,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description;
 
-    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'])]
     private Collection $choices;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -226,6 +226,21 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         }
 
         return $result;
+    }
+
+    public function getState(?\DateTimeInterface $date = null): string
+    {
+        $date ??= new \DateTimeImmutable();
+
+        if (null !== $this->startAt && $date < $this->startAt) {
+            return PollStateEnum::UPCOMING;
+        }
+
+        if (null !== $this->finishAt && $date >= $this->finishAt) {
+            return PollStateEnum::FINISHED;
+        }
+
+        return PollStateEnum::IN_PROGRESS;
     }
 
     public function isVotePeriodActive(?\DateTimeInterface $date = null): bool
