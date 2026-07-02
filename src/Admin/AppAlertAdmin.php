@@ -31,7 +31,7 @@ class AppAlertAdmin extends AbstractAdmin
             ->add('type', null, ['label' => 'Type'])
             ->add('label', null, ['label' => 'Label'])
             ->add('title', null, ['label' => 'Titre'])
-            ->add('isPublic', null, ['label' => 'Public'])
+            ->add('isPublic', null, ['label' => 'Publique'])
             ->add('isActive', null, ['label' => 'Active'])
             ->add('beginAt', null, ['label' => 'Date de début'])
             ->add('endAt', null, ['label' => 'Date de fin'])
@@ -65,7 +65,7 @@ class AppAlertAdmin extends AbstractAdmin
                     'required' => true,
                     'help' => 'Publique : visible par les non-inscrits uniquement pour le type Alerte.',
                 ])
-                ->add('isActive', null, ['label' => 'Afficher l\'alerte dans le caroussel', 'required' => false])
+                ->add('isActive', null, ['label' => 'Afficher l\'alerte dans le carrousel', 'required' => false])
             ->end()
             ->with('Dates', ['class' => 'col-md-6'])
                 ->add('beginAt', DateTimePickerType::class, ['label' => 'Date de début'])

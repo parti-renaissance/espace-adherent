@@ -50,11 +50,7 @@ class AppAlertProvider implements AlertProviderInterface
 
     private function isPubliclyVisible(AppAlert $appAlert): bool
     {
-        return match ($appAlert->type) {
-            AlertTypeEnum::ALERT => $appAlert->isPublic,
-            AlertTypeEnum::LIVE, AlertTypeEnum::LIVE_ANNOUNCE, AlertTypeEnum::MEETING, AlertTypeEnum::PRONOSTIC => true,
-            AlertTypeEnum::ELECTION => false,
-        };
+        return AlertTypeEnum::ALERT === $appAlert->type && $appAlert->isPublic;
     }
 
     private function getImageUrl(AppAlert $appAlert): ?string

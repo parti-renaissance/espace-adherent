@@ -16,12 +16,12 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface;
 
 final class AppAlertProviderTest extends TestCase
 {
-    public function testPublicUserGetsPublicAlertsAndPublicTypesOnly(): void
+    public function testPublicUserGetsOnlyPublicAlertTypedAlerts(): void
     {
         $publicAlert = $this->alert('Alerte publique', AlertTypeEnum::ALERT, true);
         $privateAlert = $this->alert('Alerte privée', AlertTypeEnum::ALERT, false);
-        $meetingAlert = $this->alert('Meeting public', AlertTypeEnum::MEETING, false);
-        $electionAlert = $this->alert('Consultation privée', AlertTypeEnum::ELECTION, true);
+        $meetingAlert = $this->alert('Meeting', AlertTypeEnum::MEETING, true);
+        $electionAlert = $this->alert('Consultation', AlertTypeEnum::ELECTION, true);
 
         $repository = $this->createStub(AppAlertRepository::class);
         $repository->method('findAllActive')->willReturn([$publicAlert, $privateAlert, $meetingAlert, $electionAlert]);
@@ -31,7 +31,7 @@ final class AppAlertProviderTest extends TestCase
 
         $alerts = $this->createProvider($repository, $loginLinkHandler)->getAlerts(null);
 
-        self::assertSame(['Alerte publique', 'Meeting public'], array_map(static fn ($alert): string => $alert->title, $alerts));
+        self::assertSame(['Alerte publique'], array_map(static fn ($alert): string => $alert->title, $alerts));
         self::assertSame('/public', $alerts[0]->ctaUrl);
     }
 
