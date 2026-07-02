@@ -24,7 +24,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class CreatePollVoteController extends AbstractController
 {
     public function __invoke(
-        #[MapEntity(mapping: ['uuid' => 'uuid'])]
         Poll $poll,
         #[MapRequestPayload]
         CreatePollVoteRequest $payload,
