@@ -17,10 +17,9 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class GetPollController extends AbstractController
 {
     public function __invoke(
-        #[MapEntity(mapping: ['uuid' => 'uuid'])]
         Poll $poll,
         #[CurrentUser]
-        ?Adherent $user,
+        Adherent $user,
     ): JsonResponse {
         return $this->json($poll, context: [PollNormalizer::CONTEXT_ADHERENT => $user]);
     }

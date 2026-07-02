@@ -17,7 +17,7 @@ class GetCurrentPollController extends AbstractController
 {
     public function __invoke(
         #[CurrentUser]
-        ?Adherent $user,
+        Adherent $user,
         PollRepository $pollRepository,
     ): JsonResponse {
         $poll = $pollRepository->findLastActivePoll();
