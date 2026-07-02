@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreatePollVoteRequest
 {
     #[Assert\NotBlank]
-    public ?Uuid $uuid = null;
+    public ?Uuid $choice = null;
 }

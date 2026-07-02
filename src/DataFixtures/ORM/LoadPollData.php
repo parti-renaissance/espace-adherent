@@ -6,6 +6,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Poll\Choice;
+use App\Entity\Poll\Participant;
 use App\Entity\Poll\Poll;
 use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Entity\Poll\Vote;
@@ -53,6 +54,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
         $manager->persist($this->createVote($poll1Choice2, $jacques));
         $manager->persist($this->createVote($poll1Choice2, $lucie));
         $manager->persist($this->createVote($poll1Choice3, $francis));
+        $this->addParticipants($manager, $poll1, [$michelle, $jacques, $lucie, $francis]);
 
         $poll6 = $this->createPoll(
             self::POLL_06_UUID,
@@ -83,6 +85,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
         $manager->persist($this->createVote($poll6Choice1, $francis));
         $manager->persist($this->createVote($poll6Choice1, $bob));
         $manager->persist($this->createVote($poll6Choice2, $michelle));
+        $this->addParticipants($manager, $poll6, [$lucie, $francis, $bob, $michelle]);
         $manager->persist($poll7);
 
         $manager->flush();
@@ -122,5 +125,15 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
     private function createVote(Choice $choice, Adherent $adherent): Vote
     {
         return new Vote($choice, $adherent);
+    }
+
+    /**
+     * @param Adherent[] $adherents
+     */
+    private function addParticipants(ObjectManager $manager, Poll $poll, array $adherents): void
+    {
+        foreach ($adherents as $adherent) {
+            $manager->persist(new Participant($poll, $adherent));
+        }
     }
 }
