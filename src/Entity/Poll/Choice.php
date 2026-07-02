@@ -21,9 +21,6 @@ class Choice implements \Stringable
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    public const YES = 'Oui';
-    public const NO = 'Non';
-
     /**
      * @var string
      */

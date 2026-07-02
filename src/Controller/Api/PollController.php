@@ -5,74 +5,63 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Entity\Adherent;
-use App\Entity\Device;
 use App\Entity\Poll\Vote;
-use App\Poll\PollManager;
+use App\Poll\PollDataBuilder;
+use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\ChoiceRepository;
+use App\Repository\Poll\PollRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class PollController extends AbstractController
 {
-    #[Route(path: '/v3/polls/vote', name: 'api_polls_vote', requirements: ['uuid' => '%pattern_uuid%'], methods: ['POST'])]
+    #[Route(path: '/v3/polls/vote', name: 'api_polls_vote', methods: ['POST'])]
     public function vote(
-        Request $request,
+        #[MapRequestPayload]
+        CreatePollVoteRequest $payload,
+        #[CurrentUser]
+        Adherent $user,
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
         ChoiceRepository $choiceRepository,
+        PollDataBuilder $dataBuilder,
     ): JsonResponse {
-        $body = json_decode($request->getContent(), true);
-        $uuid = $body['uuid'] ?? null;
-
-        if (empty($uuid)) {
-            throw new BadRequestHttpException('Parameter "uuid" is missing or empty.');
-        }
-
-        /* @var Choice|null $user */
-        $choice = $choiceRepository->findOneByUuid($uuid);
+        $choice = $choiceRepository->findOneByUuid($payload->uuid);
 
         if (!$choice) {
-            throw new NotFoundHttpException("Choice with uuid '$uuid' does not exist.");
+            throw new NotFoundHttpException("Choice with uuid '{$payload->uuid}' does not exist.");
         }
 
-        /* @var Adherent|Device|null $user */
-        $user = $this->getUser();
-
-        if ($user instanceof Adherent) {
-            $vote = Vote::createForAdherent($choice, $user);
-        } elseif ($user instanceof Device) {
-            $vote = Vote::createForDevice($choice, $user);
-        } else {
-            $vote = Vote::createForAnonymous($choice);
+        $now = new \DateTimeImmutable();
+        $poll = $choice->getPoll();
+        if (!$poll->isVotePeriodActive($now)) {
+            return $this->json(['message' => 'Poll is not open.'], Response::HTTP_CONFLICT);
         }
 
-        $entityManager->persist($vote);
+        $entityManager->persist(new Vote($choice, $user));
         $entityManager->flush();
 
-        return new JsonResponse(
-            $serializer->serialize($choice->getPoll(), 'json', ['groups' => ['poll_read']]),
-            JsonResponse::HTTP_CREATED,
-            [],
-            true
-        );
+        return $this->json($dataBuilder->build($poll, $now, $user), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/v3/polls', name: 'api_poll', methods: ['GET'])]
-    #[Route(path: '/v3/polls/{postalCode}', name: 'api_poll_by_postal_code', methods: ['GET'])]
-    public function getPollByPostalCode(?string $postalCode, PollManager $pollManager): JsonResponse
-    {
-        return $this->json(
-            $pollManager->findActivePoll($postalCode),
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['poll_read']]
-        );
+    public function getCurrentPoll(
+        #[CurrentUser]
+        ?Adherent $user,
+        PollRepository $pollRepository,
+        PollDataBuilder $dataBuilder,
+    ): JsonResponse {
+        $poll = $pollRepository->findLastActivePoll();
+
+        if (null === $poll) {
+            return $this->json(null);
+        }
+
+        return $this->json($dataBuilder->build($poll, new \DateTimeImmutable(), $user));
     }
 }

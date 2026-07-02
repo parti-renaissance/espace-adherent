@@ -28,13 +28,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Créé par</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                            <a href="{{ path('admin_app_administrator_edit', {id: object.createdBy.id}) }}">
-                                                {{ object.createdBy }}
-                                            </a>
-                                        {% else %}
-                                            {{ object.createdBy }}
-                                        {% endif %}
+                                        {{ object.createdByAdministrator|default('') }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -44,9 +38,39 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date de début</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.startAt|format_datetime('medium', 'medium') }}
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th class="sonata-ba-list-field-header-text">Date de fin</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ object.finishAt|format_datetime('medium', 'medium') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Fin d’affichage des résultats</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.resultDisplayEndAt ? object.resultDisplayEndAt|format_datetime('medium', 'medium') : '' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Activé</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.published ? 'Oui' : 'Non' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Affichage des résultats</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.resultDisplayModeLabel }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Seuil participants</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.participantCountThreshold }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -66,6 +90,12 @@
                                     <th class="sonata-ba-list-field-header-text">Question</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ object.question }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Description</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.description|default('')|nl2br }}
                                     </td>
                                 </tr>
                                 <tr>

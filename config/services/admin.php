@@ -358,8 +358,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Jecoute\DataSurvey::class, 'show_in_dashboard' => false])
     ;
     $services
-        ->set('app.admin.poll.poll', App\Admin\Poll\NationalPollAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Poll\NationalPoll::class, 'label' => 'Sondages', 'group' => 'App mobile'])
+        ->set('app.admin.poll.poll', App\Admin\Poll\PollAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Poll\Poll::class, 'label' => 'Sondages', 'group' => 'App mobile'])
         ->call('setTemplate', ['show', 'admin/poll/show.html.twig'])
     ;
     $services
@@ -616,6 +616,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.private_message'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.tally_form'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.video'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.poll.poll'])
     ;
 
     $services
