@@ -193,7 +193,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     ;
     $services
         ->set('app.admin.adherent_message', App\Admin\AdherentMessageAdmin::class)
-        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AdherentMessage\AdherentMessage::class, 'controller' => App\Controller\Admin\AdminAdherentMessageCRUDController::class, 'label' => 'Publications locales', 'group' => 'Territoires'])
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\AdherentMessage\AdherentMessage::class, 'label' => 'Publications locales', 'group' => 'Territoires'])
     ;
     $services
         ->set('app.admin.agora_membership', App\Admin\AgoraMembershipAdmin::class)
