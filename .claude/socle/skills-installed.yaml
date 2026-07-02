@@ -1,0 +1,37 @@
+# Lock file socle — skills installées sur ce projet (PRD §16.3)
+# Régénéré par /socle-init ou /socle-migrate-existing.
+# Source de vérité = skills-lock.json (natif npx skills) + ce fichier (vue socle).
+
+external_skills:
+  - source: obra/superpowers
+    version: ""
+    commit: ""
+    skills:
+      - brainstorming
+      - dispatching-parallel-agents
+      - executing-plans
+      - finishing-a-development-branch
+      - receiving-code-review
+      - requesting-code-review
+      - subagent-driven-development
+      - systematic-debugging
+      - test-driven-development
+      - using-git-worktrees
+      - using-superpowers
+      - verification-before-completion
+      - writing-plans
+      - writing-skills
+
+  - source: openai/skills
+    version: ""
+    commit: ""
+    skills:
+      - gh-address-comments
+      - gh-fix-ci
+
+internal_renaissance_skills:
+  - source: socle (interne)
+    version: "0.3.0"
+    commit: "1fedbfb"
+    skills:
+      - renaissance-symfony-conventions

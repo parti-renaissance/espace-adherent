@@ -33,3 +33,14 @@ node_modules
 /.env.*.local
 *.DS_Store
 ai-work/
+.gitnexus
+
+# Claude Code — fichiers locaux (par dev, jamais commités)
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/socle/profile.local.yaml
+.claude/socle/install.log
+.claude/scheduled_tasks.lock
+
+# Backups socle-migration (à supprimer une fois la migration validée)
+*.pre-socle-backup

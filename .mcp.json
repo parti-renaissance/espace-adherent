@@ -1,0 +1,17 @@
+{
+  "_comment": "Serveurs MCP du projet plateforme (socle Renaissance v0.3). Auth GitHub déléguée à $GITHUB_TOKEN côté dev. GitNexus lit l'index local.",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "gitnexus": {
+      "command": "npx",
+      "args": ["-y", "gitnexus", "mcp"],
+      "env": {}
+    }
+  }
+}

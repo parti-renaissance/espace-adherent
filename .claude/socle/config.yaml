@@ -1,0 +1,36 @@
+socle_version: "0.3.0"
+socle_commit: "1fedbfb"
+
+mode: "mixed"
+scope: "structured"
+stacks:
+  - "php-symfony"
+flags:
+  gitnexus: true
+  frontend_qa: false
+  active_sprint: false
+
+safety_level: "paranoid"
+
+# garde_fous (§9.6.5) — préset paranoid, à enrichir au fil de l'usage
+garde_fous:
+  - "Push direct sur master sans PR + review"
+  - "Force-push sur master (interdit, deny rule settings.json)"
+  - "Merge sans CI verte"
+  - "gh release create sans bump version + entrée CHANGELOG narrative prêtes"
+  - "Création/suppression GCP coûteuse sans confirmation"
+  - "Notif OK / livré / déployé sans skill verification-before-completion"
+
+# risky_actions (§17.4 PRD) — préset paranoid
+risky_actions:
+  - command: "git push origin master"
+    requires: "no-direct-push-to-master-confirm"
+  - command: "gh release create"
+    requires: "version-bump-changelog-ready-confirm"
+  - command: "gcloud sql instances delete"
+    requires: "double-confirm-with-instance-name"
+
+git_workflow: "simple"
+
+created_at: "2026-05-10T08:24:43Z"
+last_updated_at: "2026-05-10T08:24:43Z"
