@@ -27,6 +27,13 @@ class EmailCssInliner
         .content strong,.content b{font-weight:600;color:#1d1d1f}
         .content em,.content i{font-style:italic}
         .content a{color:#4291E1;text-decoration:underline;font-weight:500}
+        .padding-responsive{padding-left:40px !important;padding-right:40px !important}
+        .padding-responsive-top{padding-top:40px !important}
+        .spacing-responsive{height:64px !important}
+        @media only screen and (max-width:600px){.content{font-size:16px !important}}
+        @media only screen and (max-width:600px){.padding-responsive{padding-left:24px !important;padding-right:24px !important}}
+        @media only screen and (max-width:600px){.padding-responsive-top{padding-top:24px !important}}
+        @media only screen and (max-width:600px){.spacing-responsive{height:40px !important}}
         CSS;
 
     public function __construct(private readonly LoggerInterface $logger)
