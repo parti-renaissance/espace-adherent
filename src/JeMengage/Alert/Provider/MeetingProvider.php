@@ -28,10 +28,6 @@ class MeetingProvider implements AlertProviderInterface
 
     public function getAlerts(?Adherent $adherent): array
     {
-        if (null === $adherent) {
-            return [];
-        }
-
         if (!$events = $this->eventRepository->findOneActiveForAlert()) {
             return [];
         }
@@ -52,7 +48,7 @@ class MeetingProvider implements AlertProviderInterface
                 $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->ogImage))]);
             }
 
-            if ($inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event)) {
+            if ($adherent && $inscriptions = $this->eventInscriptionRepository->findAllForAdherentAndEvent($adherent, $event)) {
                 if ($event->alertLogoImage) {
                     $imageUrl = $this->generateUrl('asset_url', ['path' => str_replace('/assets/', '', $this->uploaderHelper->asset($event->alertLogoImage))]);
                 }
@@ -86,14 +82,14 @@ class MeetingProvider implements AlertProviderInterface
                 }
             } else {
                 $ctaLabel = 'Je réserve ma place';
-                $ctaUrl = $this->loginLinkHandler->createLoginLink(
-                    $adherent,
-                    lifetime: 3600,
-                    targetPath: parse_url(
-                        $this->generateUrl('app_national_event_by_slug', array_merge(['slug' => $event->getSlug()], $utm)),
-                        \PHP_URL_PATH
-                    ),
-                )->getUrl();
+                $eventUrl = $this->generateUrl('app_national_event_by_slug', array_merge(['slug' => $event->getSlug()], $utm));
+                $ctaUrl = $adherent
+                    ? $this->loginLinkHandler->createLoginLink(
+                        $adherent,
+                        lifetime: 3600,
+                        targetPath: parse_url($eventUrl, \PHP_URL_PATH),
+                    )->getUrl()
+                    : $eventUrl;
             }
 
             $alerts[] = $alert = Alert::createMeeting($event, $ctaLabel, $ctaUrl, $imageUrl, $shareUrl, $data);
