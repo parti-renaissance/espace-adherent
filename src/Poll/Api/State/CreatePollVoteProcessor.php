@@ -8,7 +8,6 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Adherent;
 use App\Entity\Poll\Choice;
-use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
 use App\Repository\Poll\ChoiceRepository;
 use App\Repository\Poll\PollRepository;

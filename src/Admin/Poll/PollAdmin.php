@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Poll;
 
-use App\Entity\Poll\Poll;
 use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Form\Admin\Poll\PollChoiceType;
 use App\Form\DateTimePickerType;
@@ -88,15 +87,10 @@ class PollAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        /** @var Poll $poll */
-        $poll = $this->getSubject();
-        $hasVote = $poll->hasVote();
-
         $form
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('question', TextType::class, [
                     'label' => 'Question',
-                    'disabled' => $hasVote,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
@@ -104,11 +98,8 @@ class PollAdmin extends AbstractAdmin
                 ])
                 ->add('choices', CollectionType::class, [
                     'entry_type' => PollChoiceType::class,
-                    'disabled' => $hasVote,
                     'required' => true,
                     'label' => 'Choix',
-                    'allow_add' => !$hasVote,
-                    'allow_delete' => !$hasVote,
                     'by_reference' => false,
                 ])
             ->end()

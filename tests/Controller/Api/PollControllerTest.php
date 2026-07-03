@@ -37,6 +37,8 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertArrayNotHasKey('enabled', $data);
         self::assertArrayHasKey('choices', $data);
         self::assertArrayNotHasKey('result', $data);
+        self::assertFalse($data['has_voted']);
+        self::assertNull($data['voted_choice']);
     }
 
     public function testGetCurrentPollReturnsNotFoundWhenNoActivePoll(): void
@@ -94,6 +96,8 @@ class PollControllerTest extends AbstractApiTestCase
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID);
         self::assertSame(5, $data['participant_count']);
         self::assertSame(5, $data['result']['total']);
+        self::assertTrue($data['has_voted']);
+        self::assertSame(LoadPollData::POLL_01_CHOICE_01_UUID, $data['voted_choice']);
     }
 
     public function testVotingTwiceOnSamePollReturnsConflict(): void

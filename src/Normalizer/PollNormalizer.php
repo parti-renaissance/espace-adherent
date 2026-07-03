@@ -32,9 +32,14 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $now = new \DateTimeImmutable();
         $adherent = $this->security->getUser();
 
-        $hasVoted = $adherent instanceof Adherent && $this->voteRepository->hasVoted($data, $adherent);
+        $vote = $adherent instanceof Adherent
+            ? $this->voteRepository->findOneBy(['poll' => $data, 'adherent' => $adherent])
+            : null;
 
-        if ($data->canDisplayResult($now, $hasVoted)) {
+        $normalized['has_voted'] = null !== $vote;
+        $normalized['voted_choice'] = $vote?->getChoice()->getUuid()->toRfc4122();
+
+        if ($data->canDisplayResult($now, null !== $vote)) {
             $normalized['participants'] = $this->normalizeParticipants($data);
             $normalized['result'] = $this->normalizeResult($data);
         }
