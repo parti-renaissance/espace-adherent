@@ -7,6 +7,7 @@ namespace Tests\App\Controller\Api;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadPollData;
+use App\Entity\Poll\Poll;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
@@ -38,6 +39,18 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertArrayNotHasKey('result', $data);
     }
 
+    public function testGetCurrentPollReturnsNotFoundWhenNoActivePoll(): void
+    {
+        foreach ($this->manager->getRepository(Poll::class)->findAll() as $poll) {
+            $poll->setPublished(false);
+        }
+        $this->manager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/api/v3/polls/current', [], [], $this->authorizationHeader());
+
+        self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testGetFinishedPollExposesResultsAndParticipants(): void
     {
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_06_UUID);
@@ -62,7 +75,7 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame('upcoming', $data['state']);
         self::assertArrayNotHasKey('result', $data);
         self::assertArrayNotHasKey('participants', $data);
-        self::assertArrayNotHasKey('participant_count', $data);
+        self::assertSame(0, $data['participant_count']);
     }
 
     public function testGetUnknownPollReturnsNotFound(): void
@@ -72,38 +85,36 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testVoteOnActivePollIncrementsResult(): void
+    public function testVoteOnActivePollReturnsCreated(): void
     {
-        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_01_CHOICE_01_UUID]);
+        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID.'/reply', ['choice' => LoadPollData::POLL_01_CHOICE_01_UUID]);
 
-        $response = $this->client->getResponse();
-        self::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        self::assertSame(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
 
-        $data = json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+        $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID);
+        self::assertSame(5, $data['participant_count']);
         self::assertSame(5, $data['result']['total']);
     }
 
-    public function testVotingSeveralTimesCountsParticipantOnce(): void
+    public function testVotingTwiceOnSamePollReturnsConflict(): void
     {
-        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_01_CHOICE_01_UUID]);
-        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_01_CHOICE_02_UUID]);
+        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID.'/reply', ['choice' => LoadPollData::POLL_01_CHOICE_01_UUID]);
+        self::assertSame(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
 
-        $data = json_decode($this->client->getResponse()->getContent(), true, 512, \JSON_THROW_ON_ERROR);
-
-        self::assertSame(6, $data['result']['total']);
-        self::assertSame(5, $data['participant_count']);
+        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID.'/reply', ['choice' => LoadPollData::POLL_01_CHOICE_02_UUID]);
+        self::assertSame(Response::HTTP_CONFLICT, $this->client->getResponse()->getStatusCode());
     }
 
     public function testVoteOnFinishedPollReturnsConflict(): void
     {
-        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_06_UUID, ['choice' => LoadPollData::POLL_06_CHOICE_01_UUID]);
+        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_06_UUID.'/reply', ['choice' => LoadPollData::POLL_06_CHOICE_01_UUID]);
 
         self::assertSame(Response::HTTP_CONFLICT, $this->client->getResponse()->getStatusCode());
     }
 
     public function testVoteWithChoiceFromAnotherPollReturnsNotFound(): void
     {
-        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID, ['choice' => LoadPollData::POLL_06_CHOICE_01_UUID]);
+        $this->postJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID.'/reply', ['choice' => LoadPollData::POLL_06_CHOICE_01_UUID]);
 
         self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }

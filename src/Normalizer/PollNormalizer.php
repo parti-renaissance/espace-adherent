@@ -8,47 +8,33 @@ use App\Entity\Adherent;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\Poll;
 use App\Repository\Poll\VoteRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PollNormalizer implements NormalizerInterface
+class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
-    public const CONTEXT_NOW = 'poll_now';
-    public const CONTEXT_ADHERENT = 'poll_adherent';
+    use NormalizerAwareTrait;
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly VoteRepository $voteRepository,
+        private readonly Security $security,
     ) {
     }
 
     public function normalize(mixed $data, ?string $format = null, array $context = []): array
     {
-        \assert($data instanceof Poll);
+        $normalized = $this->normalizer->normalize($data, $format, $context + [__CLASS__ => true]);
 
-        $now = $context[self::CONTEXT_NOW] ?? new \DateTimeImmutable();
-        $adherent = $context[self::CONTEXT_ADHERENT] ?? null;
-
-        $normalized = [
-            'uuid' => $data->getUuid()->toRfc4122(),
-            'question' => $data->getQuestion(),
-            'start_at' => $this->formatDate($data->getStartAt()),
-            'finish_at' => $this->formatDate($data->getFinishAt()),
-            'result_display_end_at' => $this->formatDate($data->getResultDisplayEndAt()),
-            'description' => $data->getDescription(),
-            'state' => $data->getState($now)->value,
-            'choices' => array_map(
-                fn (Choice $choice): array => $this->normalizeChoice($choice),
-                $data->getChoices()->toArray()
-            ),
-            'participant_count_threshold' => $data->getParticipantCountThreshold(),
-            'result_display_mode' => $data->getResultDisplayMode()->value,
-        ];
+        $now = new \DateTimeImmutable();
+        $adherent = $this->security->getUser();
 
         $hasVoted = $adherent instanceof Adherent && $this->voteRepository->hasVoted($data, $adherent);
 
         if ($data->canDisplayResult($now, $hasVoted)) {
-            $normalized['participant_count'] = $this->voteRepository->countParticipants($data);
             $normalized['participants'] = $this->normalizeParticipants($data);
             $normalized['result'] = $this->normalizeResult($data);
         }
@@ -58,13 +44,13 @@ class PollNormalizer implements NormalizerInterface
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof Poll;
+        return empty($context[__CLASS__]) && $data instanceof Poll;
     }
 
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Poll::class => true,
+            Poll::class => false,
         ];
     }
 
@@ -106,10 +92,5 @@ class PollNormalizer implements NormalizerInterface
                 $result['choices']
             ),
         ];
-    }
-
-    private function formatDate(?\DateTimeInterface $date): ?string
-    {
-        return $date?->format(\DateTimeInterface::ATOM);
     }
 }

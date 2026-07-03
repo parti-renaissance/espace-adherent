@@ -10,6 +10,7 @@ use App\Repository\Poll\ChoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +23,7 @@ class Choice implements \Stringable
 
     #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
     #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
+    #[Groups(['poll_read'])]
     #[ORM\Column]
     private ?string $value;
 

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Entity\Poll;
 
 use App\Entity\Adherent;
-use App\Entity\Device;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\Poll\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VoteRepository::class)]
 #[ORM\Table(name: 'poll_vote')]
+#[ORM\UniqueConstraint(name: 'poll_vote_adherent_unique', columns: ['poll_id', 'adherent_id'])]
 class Vote
 {
     use EntityTimestampableTrait;
@@ -22,6 +22,10 @@ class Vote
     protected ?int $id = null;
 
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'votes')]
+    private Poll $poll;
+
+    #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Choice::class, inversedBy: 'votes')]
     private Choice $choice;
 
@@ -29,12 +33,9 @@ class Vote
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent;
 
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Device::class)]
-    private ?Device $device = null;
-
-    public function __construct(Choice $choice, Adherent $adherent)
+    public function __construct(Poll $poll, Choice $choice, Adherent $adherent)
     {
+        $this->poll = $poll;
         $this->choice = $choice;
         $this->adherent = $adherent;
     }
@@ -42,6 +43,11 @@ class Vote
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPoll(): Poll
+    {
+        return $this->poll;
     }
 
     public function getChoice(): Choice

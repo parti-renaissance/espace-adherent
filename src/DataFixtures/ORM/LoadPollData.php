@@ -121,6 +121,6 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
 
     private function createVote(Choice $choice, Adherent $adherent): Vote
     {
-        return new Vote($choice, $adherent);
+        return new Vote($choice->getPoll(), $choice, $adherent);
     }
 }

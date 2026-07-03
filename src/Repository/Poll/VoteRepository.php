@@ -22,23 +22,10 @@ class VoteRepository extends ServiceEntityRepository
     {
         return (bool) $this->createQueryBuilder('vote')
             ->select('COUNT(vote.id)')
-            ->innerJoin('vote.choice', 'choice')
-            ->where('choice.poll = :poll')
+            ->where('vote.poll = :poll')
             ->andWhere('vote.adherent = :adherent')
             ->setParameter('poll', $poll)
             ->setParameter('adherent', $adherent)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function countParticipants(Poll $poll): int
-    {
-        return (int) $this->createQueryBuilder('vote')
-            ->select('COUNT(DISTINCT vote.adherent)')
-            ->innerJoin('vote.choice', 'choice')
-            ->where('choice.poll = :poll')
-            ->setParameter('poll', $poll)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -51,14 +38,11 @@ class VoteRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->select('adherent')
-            ->addSelect('MAX(vote.createdAt) AS HIDDEN lastVotedAt')
             ->from(Adherent::class, 'adherent')
             ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.adherent = adherent')
-            ->innerJoin('vote.choice', 'choice')
-            ->where('choice.poll = :poll')
+            ->where('vote.poll = :poll')
             ->andWhere('adherent.imageName IS NOT NULL')
-            ->groupBy('adherent.id')
-            ->orderBy('lastVotedAt', 'DESC')
+            ->orderBy('vote.createdAt', 'DESC')
             ->setParameter('poll', $poll)
             ->setMaxResults($limit)
             ->getQuery()

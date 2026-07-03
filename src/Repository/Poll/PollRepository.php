@@ -26,7 +26,7 @@ class PollRepository extends ServiceEntityRepository
             ->andWhere('poll.startAt <= :now')
             ->andWhere('(poll.finishAt > :now OR (poll.resultDisplayMode != :never AND COALESCE(poll.resultDisplayEndAt, poll.finishAt) > :now))')
             ->orderBy('poll.finishAt', 'desc')
-            ->setParameter('never', PollResultDisplayModeEnum::NEVER->value)
+            ->setParameter('never', PollResultDisplayModeEnum::NEVER)
             ->setParameter('now', new \DateTimeImmutable())
             ->setMaxResults(1)
             ->getQuery()
