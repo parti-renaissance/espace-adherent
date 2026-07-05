@@ -405,4 +405,76 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function markDelivered(int $messageId, int $adherentId, \DateTimeImmutable $deliveredAt): int
+    {
+        return $this->applyMemberStatus($messageId, $adherentId, ['deliveredAt' => $deliveredAt], 'deliveredAt');
+    }
+
+    public function markDelayed(int $messageId, int $adherentId, \DateTimeImmutable $delayedAt, ?string $delayType): int
+    {
+        return $this->applyMemberStatus($messageId, $adherentId, ['delayedAt' => $delayedAt, 'delayType' => $delayType], null);
+    }
+
+    public function markRejected(int $messageId, int $adherentId, \DateTimeImmutable $rejectedAt, ?string $reason): int
+    {
+        return $this->applyMemberStatus($messageId, $adherentId, ['rejectedAt' => $rejectedAt, 'rejectReason' => $reason], 'rejectedAt');
+    }
+
+    public function markBounced(int $messageId, int $adherentId, \DateTimeImmutable $bouncedAt, ?string $bounceSubType): int
+    {
+        return $this->applyMemberStatus($messageId, $adherentId, ['bouncedAt' => $bouncedAt, 'bounceSubType' => $bounceSubType], 'bouncedAt');
+    }
+
+    public function markComplained(int $messageId, int $adherentId, \DateTimeImmutable $complainedAt): int
+    {
+        return $this->applyMemberStatus($messageId, $adherentId, ['complainedAt' => $complainedAt], 'complainedAt');
+    }
+
+    /**
+     * @param array<string, mixed> $fieldValues
+     *
+     * @return int number of rows updated
+     */
+    private function applyMemberStatus(int $messageId, int $adherentId, array $fieldValues, ?string $onlyIfNullField): int
+    {
+        $segmentIds = $this->resolveSegmentIdsForMessage($messageId);
+        if ([] === $segmentIds) {
+            return 0;
+        }
+
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->where('m.staticSegment IN (:segmentIds)')
+            ->andWhere('IDENTITY(m.adherent) = :adherentId')
+            ->setParameter('segmentIds', $segmentIds)
+            ->setParameter('adherentId', $adherentId)
+        ;
+
+        foreach ($fieldValues as $field => $value) {
+            $qb->set('m.'.$field, ':'.$field)->setParameter($field, $value);
+        }
+
+        if (null !== $onlyIfNullField) {
+            $qb->andWhere(\sprintf('m.%s IS NULL', $onlyIfNullField));
+        }
+
+        return (int) $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function resolveSegmentIdsForMessage(int $messageId): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('s.id')
+            ->from(MailchimpStaticSegment::class, 's')
+            ->innerJoin('s.campaign', 'c')
+            ->where('IDENTITY(c.message) = :messageId')
+            ->setParameter('messageId', $messageId)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
 }

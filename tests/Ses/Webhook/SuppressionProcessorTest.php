@@ -8,8 +8,7 @@ use App\Entity\Adherent;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentRepository;
-use App\Ses\Webhook\Command\ProcessSesNotificationCommand;
-use App\Ses\Webhook\Handler\ProcessSesNotificationCommandHandler;
+use App\Ses\Webhook\Processor\SuppressionProcessor;
 use App\Ses\Webhook\SesNotificationParser;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +19,7 @@ use Psr\Log\NullLogger;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
-class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
+class SuppressionProcessorTest extends AbstractKernelTestCase
 {
     private int $seq = 0;
 
@@ -30,7 +29,7 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         $this->manager->flush();
         $email = $adherent->getEmailAddress();
 
-        $this->handler()(new ProcessSesNotificationCommand($this->bounce($email)));
+        $this->processor()->process($this->bounce($email));
 
         $this->manager->clear();
         $reloaded = $this->getRepository(Adherent::class)->findOneByEmail($email);
@@ -47,7 +46,7 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         $this->manager->flush();
         $email = $adherent->getEmailAddress();
 
-        $this->handler()(new ProcessSesNotificationCommand($this->complaint($email)));
+        $this->processor()->process($this->complaint($email));
 
         $this->manager->clear();
         $reloaded = $this->getRepository(Adherent::class)->findOneByEmail($email);
@@ -61,7 +60,7 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
 
     public function testUnknownRecipientIsIgnored(): void
     {
-        $this->handler()(new ProcessSesNotificationCommand($this->bounce('nobody-here@example.org')));
+        $this->processor()->process($this->bounce('nobody-here@example.org'));
 
         $this->addToAssertionCount(1); // reaching this line without exception is the assertion
     }
@@ -72,12 +71,12 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         $this->manager->flush();
         $email = $adherent->getEmailAddress();
 
-        $handler = $this->handler();
-        $handler(new ProcessSesNotificationCommand($this->bounce($email)));
+        $processor = $this->processor();
+        $processor->process($this->bounce($email));
         $this->manager->clear();
         $first = $this->getRepository(Adherent::class)->findOneByEmail($email)->emailHardBouncedAt;
 
-        $handler(new ProcessSesNotificationCommand($this->bounce($email)));
+        $processor->process($this->bounce($email));
         $this->manager->clear();
         $second = $this->getRepository(Adherent::class)->findOneByEmail($email)->emailHardBouncedAt;
 
@@ -94,7 +93,7 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
             'bounce' => ['bounceType' => 'Permanent', 'bouncedRecipients' => []],
         ])];
 
-        $this->handler($logger)(new ProcessSesNotificationCommand($payload));
+        $this->processor($logger)->process($payload);
     }
 
     protected function tearDown(): void
@@ -104,9 +103,9 @@ class ProcessSesNotificationCommandHandlerTest extends AbstractKernelTestCase
         parent::tearDown();
     }
 
-    private function handler(?LoggerInterface $logger = null): ProcessSesNotificationCommandHandler
+    private function processor(?LoggerInterface $logger = null): SuppressionProcessor
     {
-        return new ProcessSesNotificationCommandHandler(
+        return new SuppressionProcessor(
             self::getContainer()->get(SesNotificationParser::class),
             self::getContainer()->get(AdherentRepository::class),
             self::getContainer()->get(SubscriptionHandler::class),

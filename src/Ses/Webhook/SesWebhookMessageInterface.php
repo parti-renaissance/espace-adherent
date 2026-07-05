@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace App\Ses\Webhook;
 
-interface SesEngagementMessageInterface
+interface SesWebhookMessageInterface
 {
 }

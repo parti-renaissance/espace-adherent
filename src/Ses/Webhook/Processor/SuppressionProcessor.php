@@ -2,36 +2,41 @@
 
 declare(strict_types=1);
 
-namespace App\Ses\Webhook\Handler;
+namespace App\Ses\Webhook\Processor;
 
 use App\Repository\AdherentRepository;
-use App\Ses\Webhook\Command\ProcessSesNotificationCommand;
+use App\Ses\Webhook\SesEventType;
 use App\Ses\Webhook\SesFeedbackType;
 use App\Ses\Webhook\SesNotificationParser;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AsMessageHandler]
-class ProcessSesNotificationCommandHandler
+#[AutoconfigureTag('app.ses_event_processor')]
+class SuppressionProcessor implements SesEventProcessorInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly SesNotificationParser $parser,
         private readonly AdherentRepository $adherentRepository,
         private readonly SubscriptionHandler $subscriptionHandler,
         private readonly EntityManagerInterface $entityManager,
-        LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->logger = $logger;
     }
 
-    public function __invoke(ProcessSesNotificationCommand $command): void
+    public function supports(SesEventType $type): bool
     {
-        $payload = $command->payload;
+        return SesEventType::Bounce === $type || SesEventType::Complaint === $type;
+    }
+
+    public function supportsDirectNotification(): bool
+    {
+        return true;
+    }
+
+    public function process(array $payload): void
+    {
         $event = $this->parser->parse($payload);
 
         if (null === $event) {

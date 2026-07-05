@@ -7,6 +7,7 @@ namespace Tests\App\Unit\Ses\Webhook;
 use App\Ses\Webhook\SesEngagementEvent;
 use App\Ses\Webhook\SesEngagementParser;
 use App\Ses\Webhook\SesEngagementType;
+use App\Ses\Webhook\SesPayloadReader;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -91,7 +92,7 @@ final class SesEngagementParserTest extends TestCase
 
     private function parse(array $payload): ?SesEngagementEvent
     {
-        return new SesEngagementParser()->parse($payload);
+        return new SesEngagementParser(new SesPayloadReader())->parse($payload);
     }
 
     /**

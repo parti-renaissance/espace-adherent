@@ -47,6 +47,54 @@ class SesNotificationControllerTest extends AbstractRenaissanceWebTestCase
         self::assertNotNull($adherent->unsubscribeRequestedAt);
     }
 
+    public function testDirectNotificationFormatSuppressesRecipient(): void
+    {
+        // Legacy direct identity notification: "notificationType" instead of "eventType", no campaign tags.
+        // Must still trigger the email-keyed suppression (regression guard for the type normalisation).
+        $email = 'adherent-male-a@en-marche-dev.fr';
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+
+        $this->postNotification(self::KEY, json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-direct-bounce',
+            'Message' => json_encode([
+                'notificationType' => 'Bounce',
+                'bounce' => ['bounceType' => 'Permanent', 'bouncedRecipients' => [['emailAddress' => $email]]],
+            ]),
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertTrue($adherent->isEmailHardBounced());
+    }
+
+    public function testComplaintProcessingIsIdempotentEndToEnd(): void
+    {
+        $email = 'adherent-female-f@en-marche-dev.fr';
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+
+        $complaint = static fn (string $messageId): string => json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => $messageId,
+            'Message' => json_encode([
+                'eventType' => 'Complaint',
+                'complaint' => ['complainedRecipients' => [['emailAddress' => $email]]],
+            ]),
+        ]);
+
+        $this->postNotification(self::KEY, $complaint('sns-complaint-a'));
+        $complainedAt = $adherent->emailComplainedAt;
+        $historiesAfterFirst = $this->countSubscriptionHistories();
+
+        // Same complaint, distinct SNS MessageId => a second genuine business processing (not raw dedup).
+        $this->postNotification(self::KEY, $complaint('sns-complaint-b'));
+
+        self::assertNotNull($complainedAt);
+        self::assertSame($complainedAt, $adherent->emailComplainedAt, 'complaint timestamp must not be overwritten on reprocessing');
+        self::assertSame($historiesAfterFirst, $this->countSubscriptionHistories(), 'reprocessing must not create a new subscription history');
+    }
+
     public function testInvalidKeyIsForbidden(): void
     {
         $this->postNotification('wrong-key', $this->notification('Bounce', [
@@ -165,6 +213,92 @@ class SesNotificationControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame($before, (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM app_hit'));
     }
 
+    public function testNotificationIsCapturedInRawStore(): void
+    {
+        $body = json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-raw-1',
+            'Message' => json_encode([
+                'eventType' => 'Delivery',
+                'mail' => [
+                    'messageId' => 'ses-msg-raw',
+                    'destination' => ['raw-recipient@example.org'],
+                    'tags' => ['campaign_uuid' => [LoadAdherentMessageData::MESSAGE_02_UUID]],
+                ],
+                'delivery' => ['timestamp' => '2024-05-01T08:00:00.000Z'],
+            ]),
+        ]);
+
+        $this->postNotification(self::KEY, $body);
+
+        self::assertResponseIsSuccessful();
+
+        $row = $this->manager->getConnection()->fetchAssociative('SELECT * FROM ses_event WHERE sns_message_id = ?', ['sns-raw-1']);
+        self::assertIsArray($row);
+        self::assertSame('Delivery', $row['event_type']);
+        self::assertSame('ses-msg-raw', $row['ses_message_id']);
+        self::assertSame(LoadAdherentMessageData::MESSAGE_02_UUID, $row['campaign_uuid']);
+        self::assertSame('raw-recipient@example.org', $row['recipient']);
+        self::assertNotNull($row['payload']);
+    }
+
+    public function testRawCaptureIsIdempotentOnSnsMessageId(): void
+    {
+        $body = json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-raw-idem',
+            'Message' => json_encode(['eventType' => 'Send', 'mail' => ['timestamp' => '2024-05-01T08:00:00.000Z']]),
+        ]);
+
+        $this->postNotification(self::KEY, $body);
+        $this->postNotification(self::KEY, $body);
+
+        // SNS at-least-once: the same MessageId resolves to a single row via the UPSERT.
+        self::assertSame(1, (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM ses_event WHERE sns_message_id = ?', ['sns-raw-idem']));
+    }
+
+    public function testForbiddenNotificationStoresNothingInRawStore(): void
+    {
+        $before = (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM ses_event');
+
+        $this->postNotification('wrong-key', json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-raw-forbidden',
+            'Message' => json_encode(['eventType' => 'Delivery']),
+        ]));
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        self::assertSame($before, (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM ses_event'));
+    }
+
+    public function testBounceRunsBothBusinessAndRawCapture(): void
+    {
+        $email = 'adherent-male-a@en-marche-dev.fr';
+        $adherent = $this->getAdherentRepository()->findOneByEmail($email);
+
+        $this->postNotification(self::KEY, json_encode([
+            'Type' => 'Notification',
+            'TopicArn' => self::TOPIC_ARN,
+            'MessageId' => 'sns-raw-bounce',
+            'Message' => json_encode([
+                'eventType' => 'Bounce',
+                'bounce' => ['bounceType' => 'Permanent', 'bouncedRecipients' => [['emailAddress' => $email]]],
+            ]),
+        ]));
+
+        self::assertResponseIsSuccessful();
+        // Business path ran (suppression)…
+        self::assertTrue($adherent->isEmailHardBounced());
+        // …and the audit path captured the same event, with the bounce-specific recipient.
+        $row = $this->manager->getConnection()->fetchAssociative('SELECT event_type, recipient FROM ses_event WHERE sns_message_id = ?', ['sns-raw-bounce']);
+        self::assertIsArray($row);
+        self::assertSame('Bounce', $row['event_type']);
+        self::assertSame($email, $row['recipient']);
+    }
+
     private function engagementNotification(string $type, string $campaignUuid, string $adherentUuid, array $eventBody): string
     {
         return json_encode([
@@ -179,6 +313,11 @@ class SesNotificationControllerTest extends AbstractRenaissanceWebTestCase
                 ]],
             ], $eventBody)),
         ]);
+    }
+
+    private function countSubscriptionHistories(): int
+    {
+        return (int) $this->manager->getConnection()->fetchOne('SELECT COUNT(*) FROM adherent_email_subscription_histories');
     }
 
     private function countEmailHits(string $objectId, int $adherentId, string $eventType): int

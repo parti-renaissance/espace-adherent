@@ -6,12 +6,13 @@ namespace App\Ses\Webhook;
 
 class SesNotificationParser
 {
+    public function __construct(private readonly SesPayloadReader $reader)
+    {
+    }
+
     public function parse(array $snsPayload): ?SesFeedbackEvent
     {
-        $event = $this->decodeSesEvent($snsPayload);
-        if (null === $event) {
-            return null;
-        }
+        $event = $this->reader->decode($snsPayload);
 
         $type = $this->feedbackType($event);
         if (null === $type) {
@@ -29,21 +30,7 @@ class SesNotificationParser
 
     public function describesFeedback(array $snsPayload): bool
     {
-        $event = $this->decodeSesEvent($snsPayload);
-
-        return null !== $event && null !== $this->feedbackType($event);
-    }
-
-    private function decodeSesEvent(array $snsPayload): ?array
-    {
-        $message = $snsPayload['Message'] ?? null;
-        if (!\is_string($message)) {
-            return null;
-        }
-
-        $decoded = json_decode($message, true);
-
-        return \is_array($decoded) ? $decoded : null;
+        return null !== $this->feedbackType($this->reader->decode($snsPayload));
     }
 
     private function feedbackType(array $event): ?SesFeedbackType

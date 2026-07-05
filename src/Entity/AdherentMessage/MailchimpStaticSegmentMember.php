@@ -38,6 +38,30 @@ class MailchimpStaticSegmentMember
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $processedAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $deliveredAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $delayedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $delayType = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $rejectedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $rejectReason = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $bouncedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $bounceSubType = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $complainedAt = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $errorMessage = null;
 

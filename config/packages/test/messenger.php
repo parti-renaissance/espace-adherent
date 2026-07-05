@@ -30,8 +30,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 App\NationalEvent\Command\PaymentStatusUpdateCommand::class => 'sync',
                 App\JeMengage\Hit\Command\SaveAppHitCommand::class => 'sync',
                 App\Ses\Campaign\Message\SesCampaignMessageInterface::class => 'sync',
-                App\Ses\Webhook\Command\ProcessSesNotificationCommand::class => 'sync',
-                App\Ses\Webhook\Command\RecordSesEngagementCommand::class => 'sync',
+                App\Ses\Webhook\SesWebhookMessageInterface::class => 'sync',
             ],
         ],
     ]);
