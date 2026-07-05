@@ -6,6 +6,7 @@ namespace Tests\App\Unit\Ses\Webhook;
 
 use App\Ses\Webhook\SesFeedbackType;
 use App\Ses\Webhook\SesNotificationParser;
+use App\Ses\Webhook\SesPayloadReader;
 use PHPUnit\Framework\TestCase;
 
 class SesNotificationParserTest extends TestCase
@@ -14,7 +15,7 @@ class SesNotificationParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->parser = new SesNotificationParser();
+        $this->parser = new SesNotificationParser(new SesPayloadReader());
     }
 
     public function testParsesPermanentBounceEventPublishingFormat(): void
