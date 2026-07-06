@@ -43,6 +43,17 @@ class SesEngagementParser implements AttributableSesEventParser
             }
         }
 
-        return new SesEngagementEvent($type, $attribution->campaignUuid, $attribution->adherentUuid, $occurredAt, $url);
+        $ipAddress = $this->reader->clip($event[$section]['ipAddress'] ?? null, 45); // IPv6 textual max
+        $userAgent = $this->reader->clip($event[$section]['userAgent'] ?? null, 255); // defensive UA bound
+
+        return new SesEngagementEvent(
+            $type,
+            $attribution->campaignUuid,
+            $attribution->adherentUuid,
+            $occurredAt,
+            $url,
+            $ipAddress,
+            $userAgent,
+        );
     }
 }

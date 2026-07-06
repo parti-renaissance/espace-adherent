@@ -47,6 +47,9 @@ class RefreshSesPublicationStatsHandlerTest extends AbstractKernelTestCase
         self::assertNotNull($stats);
         self::assertSame(1, $stats->uniqueOpensEmail);
         self::assertSame(1, $stats->uniqueClicksEmail);
+        // Shadow reliability counters populate through the same refresh mapping (open + click both non-suspicious).
+        self::assertSame(1, $stats->uniqueOpensEmailReliable);
+        self::assertSame(1, $stats->uniqueOpensEmailEffective);
     }
 
     public function testMarksAndExcludesSuspiciousClickBurst(): void

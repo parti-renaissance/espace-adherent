@@ -66,6 +66,48 @@ class AppHitRepositoryTest extends AbstractKernelTestCase
         self::assertSame(0, $stats['unique_clicks__email'], 'All suspicious clicks should be excluded');
     }
 
+    public function testReliableOpensExcludeSuspiciousMachineOpens(): void
+    {
+        $objectUuid = Uuid::v4();
+
+        $human = $this->getAdherentRepository()->findOneByEmail('luciole1989@spambox.fr');
+        $machine = $this->getAdherentRepository()->findOneByEmail('gisele-berthoux@caramail.com');
+
+        // One reliable open and one machine-probable open (suspicious=true).
+        $this->createAppHit($human, EventTypeEnum::Open, 'email', $objectUuid->toRfc4122(), false);
+        $this->createAppHit($machine, EventTypeEnum::Open, 'email', $objectUuid->toRfc4122(), true);
+
+        $this->manager->flush();
+
+        $stats = $this->repository->countImpressionAndOpenStats(TargetTypeEnum::Publication, $objectUuid);
+
+        self::assertSame(2, $stats['unique_opens__email'], 'The raw email opens metric still counts the machine-probable open (unchanged).');
+        self::assertSame(1, $stats['unique_opens__email_reliable'], 'Reliable opens exclude the suspicious machine open.');
+    }
+
+    public function testEffectiveOpenersUnionReliableOpensAndNonSuspiciousClickers(): void
+    {
+        $objectUuid = Uuid::v4();
+
+        $opener = $this->getAdherentRepository()->findOneByEmail('luciole1989@spambox.fr');
+        $clicker = $this->getAdherentRepository()->findOneByEmail('gisele-berthoux@caramail.com');
+        $botClicker = $this->getAdherentRepository()->findOneByEmail('lolodie.dutemps@hotnix.tld');
+
+        // Opener: a reliable open, no click.
+        $this->createAppHit($opener, EventTypeEnum::Open, 'email', $objectUuid->toRfc4122(), false);
+        // Clicker: a non-suspicious click, no open -> recovered as an effective opener.
+        $this->createAppHit($clicker, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), false);
+        // Bot clicker: a suspicious click only -> excluded from effective openers.
+        $this->createAppHit($botClicker, EventTypeEnum::Click, 'email', $objectUuid->toRfc4122(), true);
+
+        $this->manager->flush();
+
+        $stats = $this->repository->countImpressionAndOpenStats(TargetTypeEnum::Publication, $objectUuid);
+
+        self::assertSame(2, $stats['unique_opens__email_effective'], 'Effective openers = reliable opens union non-suspicious email clickers.');
+        self::assertSame(1, $stats['unique_opens__email_reliable'], 'A click-only adherent is not counted as a reliable opener.');
+    }
+
     public function testMarkSuspiciousEmailClicksFlagsOnlySameSecondBurstsPerAdherent(): void
     {
         $objectId = Uuid::v4()->toRfc4122();

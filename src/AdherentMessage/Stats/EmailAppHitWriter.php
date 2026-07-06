@@ -16,15 +16,21 @@ class EmailAppHitWriter
     {
     }
 
-    public function buildOpenRow(int $adherentId, string $objectId, \DateTimeImmutable $occurredAtUtc): array
+    /**
+     * @param array<string, mixed>|null $raw derived, PII-free reliability provenance (never the raw IP/UA)
+     */
+    public function buildOpenRow(int $adherentId, string $objectId, \DateTimeImmutable $occurredAtUtc, bool $suspicious = false, ?array $raw = null): array
     {
         return [
             'adherent_id' => $adherentId,
             'event_type' => EventTypeEnum::Open->value,
             'source' => 'email',
+            'target_url' => null,
             'object_type' => TargetTypeEnum::Publication->value,
             'object_id' => $objectId,
             'app_date' => $occurredAtUtc->format('Y-m-d H:i:s'),
+            'suspicious' => $suspicious ? 1 : 0,
+            'raw' => null === $raw ? null : json_encode($raw),
             'fingerprint' => $this->buildFingerprint([$adherentId, 'email', 'open', $objectId, $occurredAtUtc->format('c')]),
         ];
     }
@@ -39,6 +45,8 @@ class EmailAppHitWriter
             'object_type' => TargetTypeEnum::Publication->value,
             'object_id' => $objectId,
             'app_date' => $occurredAtUtc->format('Y-m-d H:i:s'),
+            'suspicious' => 0,
+            'raw' => null,
             'fingerprint' => $this->buildFingerprint([$adherentId, 'email', 'click', $url, $objectId, $occurredAtUtc->format('c')]),
         ];
     }

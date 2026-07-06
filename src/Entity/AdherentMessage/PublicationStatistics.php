@@ -69,6 +69,12 @@ class PublicationStatistics
     public float $uniqueOpensEmailRate = 0;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
+    public int $uniqueOpensEmailReliable = 0;
+
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
+    public int $uniqueOpensEmailEffective = 0;
+
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $uniqueOpensNotification = 0;
 
     #[ORM\Column(type: 'float', options: ['default' => '0'])]
@@ -156,6 +162,8 @@ class PublicationStatistics
             'direct_link' => $this->uniqueOpensDirectLink,
             'email' => $this->uniqueOpensEmail,
             'email_rate' => $this->uniqueOpensEmailRate,
+            'email_reliable' => $this->uniqueOpensEmailReliable,
+            'email_effective' => $this->uniqueOpensEmailEffective,
             'list' => $this->uniqueOpensList,
             'notification' => $this->uniqueOpensNotification,
             'notification_rate' => $this->uniqueOpensNotificationRate,
@@ -209,6 +217,8 @@ class PublicationStatistics
             'unique_opens__app_rate' => 'uniqueOpensAppRate',
             'unique_opens__email' => 'uniqueOpensEmail',
             'unique_opens__email_rate' => 'uniqueOpensEmailRate',
+            'unique_opens__email_reliable' => 'uniqueOpensEmailReliable',
+            'unique_opens__email_effective' => 'uniqueOpensEmailEffective',
             'unique_opens__notification' => 'uniqueOpensNotification',
             'unique_opens__notification_rate' => 'uniqueOpensNotificationRate',
             'unique_opens__direct_link' => 'uniqueOpensDirectLink',

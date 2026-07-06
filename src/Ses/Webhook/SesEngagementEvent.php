@@ -14,6 +14,8 @@ class SesEngagementEvent implements AttributableSesEvent
         public readonly Uuid $adherentUuid,
         public readonly \DateTimeImmutable $occurredAt,
         public readonly ?string $url = null,
+        public readonly ?string $ipAddress = null,
+        public readonly ?string $userAgent = null,
     ) {
     }
 }

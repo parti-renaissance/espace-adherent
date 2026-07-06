@@ -59,6 +59,8 @@ class AppHitRepository extends ServiceEntityRepository
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_direct_link, h.adherent, null)) as unique_opens__direct_link')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_list, h.adherent, null)) as unique_opens__list')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_email, h.adherent, null)) as unique_opens__email')
+            ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.source = :source_email AND h.suspicious = false, h.adherent, null)) as unique_opens__email_reliable')
+            ->addSelect('COUNT(DISTINCT IF((h.eventType = :event_type_open OR h.eventType = :event_type_click) AND h.source = :source_email AND h.suspicious = false, h.adherent, null)) as unique_opens__email_effective')
             ->addSelect('COUNT(DISTINCT IF(h.eventType = :event_type_open AND h.sourceGroup = :source_group_app, h.adherent, null)) as unique_opens__app')
 
             // Clicks
@@ -99,6 +101,8 @@ class AppHitRepository extends ServiceEntityRepository
             'unique_opens__direct_link',
             'unique_opens__list',
             'unique_opens__email',
+            'unique_opens__email_reliable',
+            'unique_opens__email_effective',
             'unique_opens__app',
             'unique_clicks',
             'unique_clicks__total_rate',
