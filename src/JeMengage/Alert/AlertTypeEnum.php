@@ -15,6 +15,7 @@ enum AlertTypeEnum: string implements TranslatableInterface
     case LIVE_ANNOUNCE = 'live_announce';
     case MEETING = 'meeting';
     case PRONOSTIC = 'pronostic';
+    case POLL = 'poll';
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {

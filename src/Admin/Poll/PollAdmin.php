@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -22,6 +23,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PollAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->remove('delete');
+    }
+
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         parent::configureDefaultSortValues($sortValues);
@@ -101,6 +107,7 @@ class PollAdmin extends AbstractAdmin
                     'required' => true,
                     'label' => 'Choix',
                     'by_reference' => false,
+                    'allow_add' => true,
                 ])
             ->end()
             ->with('Configuration', ['class' => 'col-md-6'])
@@ -121,6 +128,11 @@ class PollAdmin extends AbstractAdmin
                 ->add('published', null, [
                     'label' => 'Activé',
                     'required' => false,
+                ])
+                ->add('alertDisabled', null, [
+                    'label' => 'Désactiver l’alerte',
+                    'required' => false,
+                    'help' => 'Masque l’alerte du sondage dans l’application pendant la période de vote.',
                 ])
                 ->add('participantCountThreshold', IntegerType::class, [
                     'label' => 'Seuil d’affichage des participants',

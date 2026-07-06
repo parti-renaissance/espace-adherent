@@ -1345,6 +1345,7 @@ alert.type.live: Live
 alert.type.live_announce: Annonce de live
 alert.type.meeting: Meeting
 alert.type.pronostic: Pronostic
+alert.type.poll: Sondage
 
 #
 # Administrators

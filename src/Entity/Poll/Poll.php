@@ -15,6 +15,7 @@ use App\Poll\Api\State\CreatePollVoteProcessor;
 use App\Poll\Api\State\CurrentPollProvider;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
+use App\Validator\Poll\PollDatesDoNotOverlap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,6 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['poll_read']],
 )]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
+#[PollDatesDoNotOverlap]
 class Poll implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityAdministratorBlameableTrait;
@@ -86,6 +88,9 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $published;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $alertDisabled;
+
     #[Assert\GreaterThanOrEqual(0)]
     #[Groups(['poll_read'])]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
@@ -108,6 +113,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         ?string $description = null,
         int $participantCountThreshold = 0,
         PollResultDisplayModeEnum $resultDisplayMode = PollResultDisplayModeEnum::AFTER_VOTE,
+        bool $alertDisabled = false,
     ) {
         $this->uuid = $uuid ?: Uuid::v4();
         $this->question = $question;
@@ -116,6 +122,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         $this->resultDisplayEndAt = $resultDisplayEndAt;
         $this->description = $description;
         $this->published = $published;
+        $this->alertDisabled = $alertDisabled;
         $this->participantCountThreshold = $participantCountThreshold;
         $this->resultDisplayMode = $resultDisplayMode;
         $this->choices = new ArrayCollection();
@@ -185,6 +192,16 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
     public function setPublished(bool $published): void
     {
         $this->published = $published;
+    }
+
+    public function isAlertDisabled(): bool
+    {
+        return $this->alertDisabled;
+    }
+
+    public function setAlertDisabled(bool $alertDisabled): void
+    {
+        $this->alertDisabled = $alertDisabled;
     }
 
     public function getParticipantCountThreshold(): int
