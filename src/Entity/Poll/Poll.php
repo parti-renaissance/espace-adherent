@@ -4,19 +4,48 @@ declare(strict_types=1);
 
 namespace App\Entity\Poll;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Poll\Api\State\CreatePollVoteProcessor;
+use App\Poll\Api\State\CurrentPollProvider;
+use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/polls/current',
+            provider: CurrentPollProvider::class,
+        ),
+        new Get(
+            uriTemplate: '/polls/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+        ),
+        new Post(
+            uriTemplate: '/polls/{uuid}/reply',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            status: Response::HTTP_CREATED,
+            input: CreatePollVoteRequest::class,
+            output: false,
+            processor: CreatePollVoteProcessor::class,
+        ),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['poll_read']],
+)]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
-#[ORM\Table(name: 'poll')]
 class Poll implements \Stringable, EntityAdministratorBlameableInterface
 {
     use EntityAdministratorBlameableTrait;
@@ -25,38 +54,49 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
 
     #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     #[Assert\NotBlank(message: 'poll.question.not_blank')]
+    #[Groups(['poll_read'])]
     #[ORM\Column]
     private ?string $question;
 
     #[Assert\NotNull(message: 'poll.start_at.not_null')]
+    #[Groups(['poll_read'])]
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $startAt;
 
     #[Assert\Expression('!value or !this.getStartAt() or value > this.getStartAt()', message: 'poll.finish_at.greater_than_start_at')]
     #[Assert\NotNull(message: 'poll.finish_at.not_null')]
+    #[Groups(['poll_read'])]
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $finishAt;
 
     #[Assert\Expression('!value or !this.getFinishAt() or value >= this.getFinishAt()', message: 'poll.result_display_end_at.greater_than_or_equal_finish_at')]
+    #[Groups(['poll_read'])]
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $resultDisplayEndAt;
 
     #[Assert\Length(max: 1000)]
+    #[Groups(['poll_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description;
 
-    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['all'])]
+    #[Groups(['poll_read'])]
+    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'])]
     private Collection $choices;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $published;
 
     #[Assert\GreaterThanOrEqual(0)]
+    #[Groups(['poll_read'])]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $participantCountThreshold;
 
+    #[Groups(['poll_read'])]
     #[ORM\Column(length: 32, enumType: PollResultDisplayModeEnum::class, options: ['default' => 'after_vote'])]
     private PollResultDisplayModeEnum $resultDisplayMode;
+
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'poll', fetch: 'EXTRA_LAZY')]
+    private Collection $votes;
 
     public function __construct(
         ?Uuid $uuid = null,
@@ -79,6 +119,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         $this->participantCountThreshold = $participantCountThreshold;
         $this->resultDisplayMode = $resultDisplayMode;
         $this->choices = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -228,6 +269,22 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         return $result;
     }
 
+    #[Groups(['poll_read'])]
+    public function getState(): PollStateEnum
+    {
+        $date = new \DateTimeImmutable();
+
+        if (null !== $this->startAt && $date < $this->startAt) {
+            return PollStateEnum::UPCOMING;
+        }
+
+        if (null !== $this->finishAt && $date >= $this->finishAt) {
+            return PollStateEnum::FINISHED;
+        }
+
+        return PollStateEnum::IN_PROGRESS;
+    }
+
     public function isVotePeriodActive(?\DateTimeInterface $date = null): bool
     {
         $date ??= new \DateTimeImmutable();
@@ -277,5 +334,11 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
             && null !== $resultDisplayEndAt
             && $this->finishAt <= $date
             && $date < $resultDisplayEndAt;
+    }
+
+    #[Groups(['poll_read'])]
+    public function getParticipantCount(): int
+    {
+        return $this->votes->count();
     }
 }

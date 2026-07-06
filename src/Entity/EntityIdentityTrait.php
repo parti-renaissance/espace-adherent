@@ -149,6 +149,7 @@ trait EntityIdentityTrait
         'chatbot:message_read',
         'national_event_list',
         'video_read',
+        'poll_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

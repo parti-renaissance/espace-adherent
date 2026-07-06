@@ -97,7 +97,7 @@ class PollTest extends TestCase
         $choice = $poll->getChoices()->first();
 
         for ($i = 0; $i < $count; ++$i) {
-            $choice->addVote(new Vote($choice, new Adherent()));
+            $choice->addVote(new Vote($poll, $choice, new Adherent()));
         }
     }
 }

@@ -21,27 +21,18 @@ class Choice implements \Stringable
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @var string
-     */
     #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
     #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
     #[Groups(['poll_read'])]
     #[ORM\Column]
-    private $value;
+    private ?string $value;
 
-    /**
-     * @var Poll
-     */
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'choices')]
-    private $poll;
+    private ?Poll $poll = null;
 
-    /**
-     * @var Vote[]|Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'choice', targetEntity: Vote::class, cascade: ['all'])]
-    private $votes;
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'choice', cascade: ['persist'])]
+    private Collection $votes;
 
     public function __construct(?string $value = null, ?Uuid $uuid = null)
     {
@@ -75,9 +66,6 @@ class Choice implements \Stringable
         $this->poll = $poll;
     }
 
-    /**
-     * @return Vote[]|Collection
-     */
     public function getVotes(): Collection
     {
         return $this->votes;
