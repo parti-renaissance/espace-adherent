@@ -22,6 +22,23 @@ Feature:
                     "share_url": null
                 },
                 {
+                    "type": "poll",
+                    "label": "Sondage",
+                    "title": "Plutôt thé ou café ?",
+                    "description": "",
+                    "cta_label": "Je donne mon avis",
+                    "cta_url": "/sondage/8adca369-938c-450b-92e9-9c2b1f206fa3",
+                    "image_url": null,
+                    "data": {
+                        "uuid": "8adca369-938c-450b-92e9-9c2b1f206fa3",
+                        "question": "Plutôt thé ou café ?",
+                        "start_at": "@string@.isDateTime()",
+                        "finish_at": "@string@.isDateTime()",
+                        "participated": false
+                    },
+                    "share_url": null
+                },
+                {
                     "type": "alert",
                     "label": "Alerte fin dans trois jours",
                     "title": "Une alerte de test se termine dans trois jours !",

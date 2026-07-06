@@ -19,6 +19,42 @@ class PollRepository extends ServiceEntityRepository
         parent::__construct($registry, Poll::class);
     }
 
+    public function findActivePollForAlert(): ?Poll
+    {
+        return $this->createQueryBuilder('poll')
+            ->where('poll.published = true')
+            ->andWhere('poll.alertEnabled = true')
+            ->andWhere('poll.startAt <= :now')
+            ->andWhere('poll.finishAt > :now')
+            ->orderBy('poll.finishAt', 'ASC')
+            ->addOrderBy('poll.id', 'ASC')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function countConflictingPolls(\DateTimeInterface $lowerBound, \DateTimeInterface $upperBound, ?int $excludedId = null): int
+    {
+        $queryBuilder = $this->createQueryBuilder('poll')
+            ->select('COUNT(poll.id)')
+            ->where('poll.finishAt > :lowerBound')
+            ->andWhere('poll.startAt < :upperBound')
+            ->setParameter('lowerBound', $lowerBound)
+            ->setParameter('upperBound', $upperBound)
+        ;
+
+        if (null !== $excludedId) {
+            $queryBuilder
+                ->andWhere('poll.id != :excludedId')
+                ->setParameter('excludedId', $excludedId)
+            ;
+        }
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
     public function findLastActivePoll(): ?Poll
     {
         return $this->createQueryBuilder('poll')

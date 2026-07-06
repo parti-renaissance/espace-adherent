@@ -72,6 +72,26 @@ class PollTest extends TestCase
         self::assertFalse($poll->isVotePeriodActive(new \DateTimeImmutable('2026-06-30 12:00:00')));
     }
 
+    public function testAlertIsEnabledByDefault(): void
+    {
+        $poll = $this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE);
+
+        self::assertTrue($poll->isAlertEnabled());
+    }
+
+    public function testSetAlertEnabledUpdatesDisabledFlag(): void
+    {
+        $poll = $this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE);
+
+        $poll->setAlertEnabled(false);
+
+        self::assertFalse($poll->isAlertEnabled());
+
+        $poll->setAlertEnabled(true);
+
+        self::assertTrue($poll->isAlertEnabled());
+    }
+
     private function createPoll(
         PollResultDisplayModeEnum $resultDisplayMode,
         int $participantCountThreshold = 0,
