@@ -28,8 +28,22 @@ final class EmailAppHitWriterTest extends TestCase
             hash('sha256', implode('|', [42, 'email', 'open', self::OBJECT_ID, $ts->format('c')])),
             $row['fingerprint']
         );
-        self::assertArrayNotHasKey('target_url', $row);
-        self::assertArrayNotHasKey('suspicious', $row);
+        // Homogeneous row shape: target_url is present but null on an open (a click carries the URL).
+        self::assertNull($row['target_url']);
+        // Unclassified open (default): not suspicious, no provenance — same as the pre-detector behaviour.
+        self::assertSame(0, $row['suspicious']);
+        self::assertNull($row['raw']);
+    }
+
+    public function testBuildOpenRowCarriesSuspiciousFlagAndEncodedProvenance(): void
+    {
+        $ts = new \DateTimeImmutable('2024-01-15 10:30:00', new \DateTimeZone('UTC'));
+
+        $row = $this->writer()->buildOpenRow(42, self::OBJECT_ID, $ts, true, ['reliability' => 'unreliable']);
+
+        self::assertSame(1, $row['suspicious']);
+        // The JSON column must receive a scalar: provenance is encoded here, not left as an array.
+        self::assertSame('{"reliability":"unreliable"}', $row['raw']);
     }
 
     public function testBuildClickRowShapeAndUrlInFingerprint(): void
@@ -45,9 +59,25 @@ final class EmailAppHitWriterTest extends TestCase
             hash('sha256', implode('|', [42, 'email', 'click', $url, self::OBJECT_ID, $ts->format('c')])),
             $row['fingerprint']
         );
-        // Suspicious is not set at build time; clicks are flagged after insert by
-        // AppHitRepository::markSuspiciousEmailClicks().
-        self::assertArrayNotHasKey('suspicious', $row);
+        // A click inserts as non-suspicious (0); a same-second burst is flagged after insert by
+        // AppHitRepository::markSuspiciousEmailClicks(). raw stays null (no reliability provenance on a click).
+        self::assertSame(0, $row['suspicious']);
+        self::assertNull($row['raw']);
+    }
+
+    public function testOpenAndClickRowsShareTheSameColumnSet(): void
+    {
+        $ts = new \DateTimeImmutable('2024-01-15 10:30:00', new \DateTimeZone('UTC'));
+        $writer = $this->writer();
+
+        $openKeys = array_keys($writer->buildOpenRow(42, self::OBJECT_ID, $ts));
+        $clickKeys = array_keys($writer->buildClickRow(42, self::OBJECT_ID, 'https://a.fr', $ts));
+
+        sort($openKeys);
+        sort($clickKeys);
+        // insertHits derives its columns from the first row only: identical key sets keep mixed
+        // open+click batches from silently dropping a column or binding NULL into a NOT NULL one.
+        self::assertSame($openKeys, $clickKeys);
     }
 
     public function testOpenAndClickFingerprintsDifferForSameContext(): void

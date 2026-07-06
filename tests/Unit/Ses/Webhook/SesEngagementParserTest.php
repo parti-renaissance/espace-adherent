@@ -24,8 +24,12 @@ final class SesEngagementParserTest extends TestCase
     {
         $event = $this->parse($this->snsPayload([
             'eventType' => 'Open',
-            'mail' => ['tags' => $this->tags()],
-            'open' => ['timestamp' => '2024-01-15T10:30:00.000Z'],
+            'mail' => ['tags' => $this->tags(), 'timestamp' => '2024-01-15T10:00:00.000Z'],
+            'open' => [
+                'timestamp' => '2024-01-15T10:30:00.000Z',
+                'ipAddress' => '17.58.63.100',
+                'userAgent' => 'Mozilla/5.0',
+            ],
         ]));
 
         self::assertNotNull($event);
@@ -35,6 +39,8 @@ final class SesEngagementParserTest extends TestCase
         self::assertSame('2024-01-15 10:30:00', $event->occurredAt->format('Y-m-d H:i:s'));
         self::assertSame('UTC', $event->occurredAt->getTimezone()->getName());
         self::assertNull($event->url);
+        self::assertSame('17.58.63.100', $event->ipAddress);
+        self::assertSame('Mozilla/5.0', $event->userAgent);
     }
 
     public function testParsesClickEventWithLink(): void
@@ -42,12 +48,32 @@ final class SesEngagementParserTest extends TestCase
         $event = $this->parse($this->snsPayload([
             'eventType' => 'Click',
             'mail' => ['tags' => $this->tags()],
-            'click' => ['timestamp' => '2024-01-15T10:30:00.000Z', 'link' => 'https://parti-renaissance.fr/x'],
+            'click' => [
+                'timestamp' => '2024-01-15T10:30:00.000Z',
+                'link' => 'https://parti-renaissance.fr/x',
+                'ipAddress' => '203.0.113.5',
+                'userAgent' => 'Mozilla/5.0 (iPhone)',
+            ],
         ]));
 
         self::assertNotNull($event);
         self::assertSame(SesEngagementType::CLICK, $event->type);
         self::assertSame('https://parti-renaissance.fr/x', $event->url);
+        self::assertSame('203.0.113.5', $event->ipAddress);
+        self::assertSame('Mozilla/5.0 (iPhone)', $event->userAgent);
+    }
+
+    public function testOpenWithoutClientSignalsYieldsNulls(): void
+    {
+        $event = $this->parse($this->snsPayload([
+            'eventType' => 'Open',
+            'mail' => ['tags' => $this->tags()],
+            'open' => ['timestamp' => '2024-01-15T10:30:00.000Z'],
+        ]));
+
+        self::assertNotNull($event);
+        self::assertNull($event->ipAddress);
+        self::assertNull($event->userAgent);
     }
 
     public function testNonUtcTimestampIsNormalisedToUtc(): void

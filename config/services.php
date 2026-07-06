@@ -210,6 +210,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$symfonyAssetExtension', service('twig.extension.assets'))
         ->arg('$mimeTypes', service('mime_types'));
 
+    $services->set(App\Ses\Webhook\AppleEgressCidrProvider::class)
+        ->arg('$path', '%env(SES_APPLE_EGRESS_CIDRS_PATH)%');
+
     $services->load('App\Controller\\', __DIR__.'/../src/Controller/')
         ->tag('controller.service_arguments');
 
