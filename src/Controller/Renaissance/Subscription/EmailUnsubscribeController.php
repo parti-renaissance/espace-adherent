@@ -24,9 +24,9 @@ class EmailUnsubscribeController extends AbstractController
 
     public function __invoke(Request $request, string $token): Response
     {
-        $adherent = $this->unsubscribeManager->resolveAdherent($token);
+        $context = $this->unsubscribeManager->resolve($token);
 
-        if (null === $adherent) {
+        if (null === $context) {
             if ($request->isMethod('POST')) {
                 return new Response('', Response::HTTP_BAD_REQUEST);
             }
@@ -39,7 +39,7 @@ class EmailUnsubscribeController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            $this->unsubscribeManager->unsubscribe($adherent);
+            $this->unsubscribeManager->unsubscribe($context->adherent, $context->memberId, $context->messageUuid);
 
             return $this->render('renaissance/subscription/unsubscribe_done.html.twig');
         }

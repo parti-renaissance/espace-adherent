@@ -7,6 +7,7 @@ namespace App\JeMengage\Hit\Stats\Provider;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\JeMengage\Hit\Stats\DTO\StatsOutput;
 use App\JeMengage\Hit\TargetTypeEnum;
+use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
 use Symfony\Component\Uid\Uuid;
@@ -18,6 +19,7 @@ class PublicationProvider extends AbstractProvider
     public function __construct(
         private readonly AdherentMessageRepository $adherentMessageRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
     ) {
     }
 
@@ -52,7 +54,7 @@ class PublicationProvider extends AbstractProvider
             'unique_opens__notification_rate' => $totalReachByPush > 0 ? ($output->get('unique_opens__notification') * 100.0 / $totalReachByPush) : 0.0,
             'unique_opens__app_rate' => $uniqueImpressions > 0 ? ($output->get('unique_opens__app') * 100.0 / $uniqueImpressions) : 0.0,
             'unique_opens__email_rate' => $totalReachByEmail > 0 ? ($output->get('unique_opens__email') * 100.0 / $totalReachByEmail) : 0.0,
-            'unsubscribed' => $unsubscribed = $message->getUnsubscribedCount(),
+            'unsubscribed' => $unsubscribed = $message->getUnsubscribedCount() + $this->memberRepository->countUnsubscribedByMessage((int) $message->getId()),
             'unsubscribed__total_rate' => $totalReachByEmail > 0 ? ($unsubscribed * 100.0 / $totalReachByEmail) : 0.0,
             'notifications' => [
                 'web' => $allReach['push_web'],

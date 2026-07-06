@@ -17,6 +17,7 @@ class SesRecipient
         public readonly string $lastName,
         public readonly ?string $gender = null,
         public readonly ?string $publicId = null,
+        public readonly ?int $memberRowId = null,
     ) {
     }
 }

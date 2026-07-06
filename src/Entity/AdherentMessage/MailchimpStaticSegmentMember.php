@@ -62,6 +62,9 @@ class MailchimpStaticSegmentMember
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $complainedAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $unsubscribedAt = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $errorMessage = null;
 

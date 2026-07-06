@@ -360,6 +360,34 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
         ;
     }
 
+    public function markUnsubscribedById(int $rowId, \DateTimeImmutable $unsubscribedAt): int
+    {
+        return (int) $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.unsubscribedAt', ':unsubscribedAt')
+            ->where('m.id = :id')
+            ->andWhere('m.unsubscribedAt IS NULL')
+            ->setParameter('unsubscribedAt', $unsubscribedAt)
+            ->setParameter('id', $rowId)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    public function countUnsubscribedByMessage(int $messageId): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('COUNT(DISTINCT IDENTITY(m.adherent))')
+            ->innerJoin('m.staticSegment', 's')
+            ->innerJoin('s.campaign', 'c')
+            ->where('IDENTITY(c.message) = :messageId')
+            ->andWhere('m.unsubscribedAt IS NOT NULL')
+            ->setParameter('messageId', $messageId)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Adherent ids of the rows actually sent for this segment. Source of the campaign reach
      * (red-team #4): no provider report is polled, the reach is derived from what was really sent.
