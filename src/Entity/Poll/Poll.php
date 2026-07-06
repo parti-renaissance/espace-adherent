@@ -88,8 +88,8 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $published;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $alertDisabled;
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    private bool $alertEnabled;
 
     #[Assert\GreaterThanOrEqual(0)]
     #[Groups(['poll_read'])]
@@ -113,7 +113,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         ?string $description = null,
         int $participantCountThreshold = 0,
         PollResultDisplayModeEnum $resultDisplayMode = PollResultDisplayModeEnum::AFTER_VOTE,
-        bool $alertDisabled = false,
+        bool $alertEnabled = true,
     ) {
         $this->uuid = $uuid ?: Uuid::v4();
         $this->question = $question;
@@ -122,7 +122,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         $this->resultDisplayEndAt = $resultDisplayEndAt;
         $this->description = $description;
         $this->published = $published;
-        $this->alertDisabled = $alertDisabled;
+        $this->alertEnabled = $alertEnabled;
         $this->participantCountThreshold = $participantCountThreshold;
         $this->resultDisplayMode = $resultDisplayMode;
         $this->choices = new ArrayCollection();
@@ -194,14 +194,14 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         $this->published = $published;
     }
 
-    public function isAlertDisabled(): bool
+    public function isAlertEnabled(): bool
     {
-        return $this->alertDisabled;
+        return $this->alertEnabled;
     }
 
-    public function setAlertDisabled(bool $alertDisabled): void
+    public function setAlertEnabled(bool $alertEnabled): void
     {
-        $this->alertDisabled = $alertDisabled;
+        $this->alertEnabled = $alertEnabled;
     }
 
     public function getParticipantCountThreshold(): int

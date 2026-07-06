@@ -23,7 +23,7 @@ class PollRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('poll')
             ->where('poll.published = true')
-            ->andWhere('poll.alertDisabled = false')
+            ->andWhere('poll.alertEnabled = true')
             ->andWhere('poll.startAt <= :now')
             ->andWhere('poll.finishAt > :now')
             ->orderBy('poll.finishAt', 'ASC')

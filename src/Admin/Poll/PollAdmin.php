@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -129,8 +130,8 @@ class PollAdmin extends AbstractAdmin
                     'label' => 'Activé',
                     'required' => false,
                 ])
-                ->add('alertDisabled', null, [
-                    'label' => 'Désactiver l’alerte',
+                ->add('alertEnabled', CheckboxType::class, [
+                    'label' => 'Afficher l’alerte',
                     'required' => false,
                     'help' => 'Masque l’alerte du sondage dans l’application pendant la période de vote.',
                 ])
