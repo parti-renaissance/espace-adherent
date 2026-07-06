@@ -41,7 +41,13 @@ class DateTimeNormalizer implements DenormalizerInterface, NormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         if (\is_string($data)) {
-            return DateUtils::createValidDate($data);
+            $date = DateUtils::createValidDate($data);
+
+            if (\DateTimeImmutable::class === $class) {
+                return \DateTimeImmutable::createFromInterface($date);
+            }
+
+            return $date;
         }
 
         try {
