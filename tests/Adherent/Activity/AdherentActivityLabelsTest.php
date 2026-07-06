@@ -20,6 +20,7 @@ class AdherentActivityLabelsTest extends TestCase
         UserActionHistoryTypeEnum::IMPERSONATION_START,
         UserActionHistoryTypeEnum::IMPERSONATION_END,
         UserActionHistoryTypeEnum::SENSITIVE_DATA_ACCESS,
+        UserActionHistoryTypeEnum::EMAIL_UNSUBSCRIBE,
     ];
 
     /**

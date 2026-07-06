@@ -15,9 +15,17 @@ class UnsubscribeUrlGenerator
     ) {
     }
 
-    public function generate(string $uuid): string
+    public function generate(string $uuid, ?int $memberId = null, ?string $messageUuid = null): string
     {
-        $token = JWT::encode(['uuid' => $uuid], $this->secret, 'HS256');
+        $payload = ['uuid' => $uuid];
+        if (null !== $memberId) {
+            $payload['member_id'] = $memberId;
+        }
+        if (null !== $messageUuid) {
+            $payload['message_uuid'] = $messageUuid;
+        }
+
+        $token = JWT::encode($payload, $this->secret, 'HS256');
 
         return $this->urlGenerator->generate(
             'app_renaissance_email_unsubscribe',

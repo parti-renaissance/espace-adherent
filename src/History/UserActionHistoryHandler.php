@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\History;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\Administrator;
 use App\Entity\Agora;
 use App\Entity\Committee;
@@ -56,6 +57,21 @@ class UserActionHistoryHandler
         $this->dispatch(
             $adherent,
             UserActionHistoryTypeEnum::LOGIN_FAILURE
+        );
+    }
+
+    public function createEmailUnsubscribe(Adherent $adherent, AdherentMessage $message): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::EMAIL_UNSUBSCRIBE,
+            [
+                'message_uuid' => $message->getUuid()->toRfc4122(),
+                'subject' => $message->getSubject(),
+                'sender_name' => $message->getFromName(false),
+                'sender_email' => $message->senderEmail,
+                'instance' => $message->getInstanceScope(),
+            ]
         );
     }
 

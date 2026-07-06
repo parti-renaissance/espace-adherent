@@ -1406,6 +1406,7 @@ user_action_history.type.membership_anniversary_reminded: Anniversaire adhérent
 user_action_history.type.committee_create: Création d'un comité
 user_action_history.type.committee_update: Modification d'un comité
 user_action_history.type.committee_delete: Suppression d'un comité
+user_action_history.type.email_unsubscribe: Désabonnement email
 
 #
 # AdministratorActionHistory
@@ -1435,6 +1436,11 @@ action_history.data.key.delegator_uuid: Délégateur
 action_history.data.key.author_uuid: Auteur
 action_history.data.key.event: Événement
 action_history.data.key.agora: Agora
+action_history.data.key.message_uuid: Envoi
+action_history.data.key.subject: Objet
+action_history.data.key.sender_name: Expéditeur
+action_history.data.key.sender_email: Email expéditeur
+action_history.data.key.instance: Instance
 
 #
 # GeneralConvention

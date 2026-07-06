@@ -92,6 +92,7 @@ class SendSesCampaignChunkHandler
                     (string) $row['lastName'],
                     $row['gender'],
                     $row['publicId'],
+                    $rowId,
                 ));
 
                 try {

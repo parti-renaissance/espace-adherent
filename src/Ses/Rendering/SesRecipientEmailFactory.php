@@ -33,7 +33,11 @@ class SesRecipientEmailFactory
 
         // {{unsubscribe_url}} is a system placeholder, not a Dictionary code (the Parser does not extract
         // it): resolve it directly per recipient and feed the same URL to the List-Unsubscribe header.
-        $unsubscribeUrl = $this->unsubscribeUrlGenerator->generate($recipient->uuid);
+        $unsubscribeUrl = $this->unsubscribeUrlGenerator->generate(
+            $recipient->uuid,
+            $recipient->memberRowId,
+            $assembled->campaignUuid,
+        );
         $html = strtr($html, ['{{unsubscribe_url}}' => $unsubscribeUrl]);
 
         return new SesEmail(

@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UnsubscribeUrlGeneratorTest extends KernelTestCase
 {
     private const UUID = '11111111-1111-4111-8111-111111111111';
+    private const MESSAGE_UUID = '22222222-2222-4222-8222-222222222222';
+    private const TOKEN_SECRET = 'generator-test-secret-0123456789abcd';
 
     /**
      * Campaign emails are built in a Messenger worker with no HTTP request: the generator must still
@@ -32,18 +34,55 @@ class UnsubscribeUrlGeneratorTest extends KernelTestCase
 
     public function testGeneratedTokenDecodesToUuid(): void
     {
-        $secret = 'generator-test-secret-0123456789abcd';
+        $decoded = $this->decodeToken($this->generate(self::UUID));
 
+        self::assertSame(self::UUID, $decoded->uuid);
+    }
+
+    public function testGeneratedTokenEncodesMemberIdWhenProvided(): void
+    {
+        $decoded = $this->decodeToken($this->generate(self::UUID, 42));
+
+        self::assertSame(self::UUID, $decoded->uuid);
+        self::assertSame(42, $decoded->member_id);
+    }
+
+    public function testGeneratedTokenOmitsMemberIdWhenAbsent(): void
+    {
+        // A plain link (no send context) must stay backward-compatible: no member_id claim at all.
+        $decoded = $this->decodeToken($this->generate(self::UUID));
+
+        self::assertObjectNotHasProperty('member_id', $decoded);
+    }
+
+    public function testGeneratedTokenEncodesMessageUuidWhenProvided(): void
+    {
+        $decoded = $this->decodeToken($this->generate(self::UUID, 42, self::MESSAGE_UUID));
+
+        self::assertSame(self::MESSAGE_UUID, $decoded->message_uuid);
+    }
+
+    public function testGeneratedTokenOmitsMessageUuidWhenAbsent(): void
+    {
+        $decoded = $this->decodeToken($this->generate(self::UUID, 42));
+
+        self::assertObjectNotHasProperty('message_uuid', $decoded);
+    }
+
+    private function generate(string $uuid, ?int $memberId = null, ?string $messageUuid = null): string
+    {
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $urlGenerator
             ->method('generate')
             ->willReturnCallback(static fn (string $name, array $params): string => 'https://vox.test/desabonnement/'.$params['token']);
 
-        $url = new UnsubscribeUrlGenerator($urlGenerator, $secret)->generate(self::UUID);
+        return new UnsubscribeUrlGenerator($urlGenerator, self::TOKEN_SECRET)->generate($uuid, $memberId, $messageUuid);
+    }
 
+    private function decodeToken(string $url): object
+    {
         $token = substr($url, (int) strrpos($url, '/') + 1);
-        $decoded = JWT::decode($token, new Key($secret, 'HS256'));
 
-        self::assertSame(self::UUID, $decoded->uuid);
+        return JWT::decode($token, new Key(self::TOKEN_SECRET, 'HS256'));
     }
 }
