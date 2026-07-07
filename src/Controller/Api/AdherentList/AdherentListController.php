@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\AdherentList;
 
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Api\Serializer\ManagedUserContextBuilder;
 use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
@@ -22,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -65,11 +67,15 @@ class AdherentListController extends AbstractController
             throw new BadRequestHttpException('The provided scope does not have any perimeter, unable to search adherents.');
         }
 
-        $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
-            AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
-            AbstractNormalizer::GROUPS => ['filter_write'],
-            AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
-        ]);
+        try {
+            $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
+                AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
+                AbstractNormalizer::GROUPS => ['filter_write'],
+                AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
+            ]);
+        } catch (SerializerExceptionInterface|ItemNotFoundException $e) {
+            throw new BadRequestHttpException('Invalid filter parameters.', $e);
+        }
 
         if ('json' !== $format) {
             try {
