@@ -41,6 +41,7 @@ class AdherentRoles
             ScopeEnum::NATIONAL_TECH_DIVISION,
             ScopeEnum::PAP_NATIONAL_MANAGER,
             ScopeEnum::PHONING_NATIONAL_MANAGER,
+            ScopeEnum::JEM,
         ],
         self::GROUP_OTHER => [
             ScopeEnum::REGIONAL_COORDINATOR,

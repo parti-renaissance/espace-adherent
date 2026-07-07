@@ -15,6 +15,7 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\UnregistrationRepository;
+use App\Scope\ScopeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -314,6 +315,44 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $myTeams = $this->manager->getRepository(MyTeam::class)->findBy(['owner' => $adherent]));
         $this->assertCount(current($myTeams)->getMembers()->count(), $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $adherent]));
+    }
+
+    public function testAssigningJemRoleForcesEmptyZones(): void
+    {
+        $this->authenticateAsAdmin($this->client);
+
+        $adherent = $this->adherentRepository->findOneByEmail('je-mengage-user-1@en-marche-dev.fr');
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $adherentId = $adherent->getId();
+
+        $crawler = $this->client->request(Request::METHOD_GET, \sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherentId));
+
+        $csrfInput = $crawler->filter('form input[id$=__token]')->first();
+        $formName = str_replace('__token', '', $csrfInput->attr('id'));
+
+        $form = $crawler->selectButton('Mettre à jour')->form();
+
+        $values = $form->getPhpValues()[$formName];
+        // JEM submitted WITH a zone: the form must force it back to empty (instance-scoped, zoneless).
+        $values['zoneBasedRoles'] = [[
+            'type' => ScopeEnum::JEM,
+            'zones' => [291],
+        ]];
+
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
+
+        $this->assertClientIsRedirectedTo(\sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherentId), $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(0, $crawler->filter('.sonata-ba-field-error-messages > li')->count());
+        $this->assertSame(0, $crawler->filter('.alert-danger')->count());
+
+        $this->manager->clear();
+        $adherent = $this->adherentRepository->findOneByEmail('je-mengage-user-1@en-marche-dev.fr');
+        $jemRole = $adherent->findZoneBasedRole(ScopeEnum::JEM);
+
+        $this->assertNotNull($jemRole, 'The JEM role should have been persisted.');
+        $this->assertCount(0, $jemRole->getZones(), 'JEM must stay zoneless so its instanceKey stays "jem".');
     }
 
     #[DataProvider('provideCreateRenaissanceAdherent')]

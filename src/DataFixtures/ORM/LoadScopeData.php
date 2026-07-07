@@ -82,6 +82,7 @@ class LoadScopeData extends Fixture
             ScopeEnum::PROCURATIONS_MANAGER => [FeatureEnum::PROCURATIONS],
             ScopeEnum::AGORA_PRESIDENT => [FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
             ScopeEnum::AGORA_GENERAL_SECRETARY => [FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
+            ScopeEnum::JEM => [FeatureEnum::EVENTS],
             default => FeatureEnum::ALL,
         };
     }

@@ -202,6 +202,8 @@ role.national_tech_division: >-
       other {Pôle Tech : Chef de pôle}
     }
 
+role.jem: 'Jeunes en marche : Responsable'
+
 role.candidate_regional_headed: Tête de liste aux régionales
 
 role.candidate_regional_leader: >-
@@ -1534,6 +1536,8 @@ scope.role.national_tech_division: >-
       female {Cheffe de pôle}
       other {Chef de pôle}
     }
+
+scope.role.jem: Responsable
 
 scope.role.phoning_national_manager: Responsable phoning
 

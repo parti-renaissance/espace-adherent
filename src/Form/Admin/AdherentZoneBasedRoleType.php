@@ -47,7 +47,7 @@ class AdherentZoneBasedRoleType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
-            if (isset($data['type']) && ScopeEnum::isNational($data['type'])) {
+            if (isset($data['type']) && (ScopeEnum::isNational($data['type']) || ScopeEnum::JEM === $data['type'])) {
                 $data['zones'] = [];
             }
 

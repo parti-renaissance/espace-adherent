@@ -168,6 +168,13 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['data_corner'],
             ],
             [
+                'code' => 'jem',
+                'zones' => [],
+                'apps' => ['data_corner'],
+                'features' => ['events'],
+                'is_national' => false,
+            ],
+            [
                 'code' => 'meeting_scanner',
                 'zones' => [],
                 'apps' => ['jemarche'],
@@ -221,6 +228,9 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         $this->assertSame($expectedScope['apps'], $scope->getApps());
         if (isset($expectedScope['features'])) {
             $this->assertSame($expectedScope['features'], $scope->getFeatures());
+        }
+        if (isset($expectedScope['is_national'])) {
+            $this->assertSame($expectedScope['is_national'], $scope->isNational());
         }
     }
 

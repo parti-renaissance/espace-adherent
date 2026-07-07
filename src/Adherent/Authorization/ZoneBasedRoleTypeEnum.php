@@ -30,6 +30,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::NATIONAL_IDEAS_DIVISION,
         ScopeEnum::NATIONAL_ELECTED_REPRESENTATIVES_DIVISION,
         ScopeEnum::NATIONAL_TECH_DIVISION,
+        ScopeEnum::JEM,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
