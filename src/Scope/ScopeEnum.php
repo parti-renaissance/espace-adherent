@@ -37,6 +37,8 @@ class ScopeEnum extends Enum
     public const AGORA_GENERAL_SECRETARY = 'agora_general_secretary';
     public const MILITANT = 'militant';
 
+    public const JEM = 'jem';
+
     // Ordered by display priority (used for sorting roles in UI)
     public const ALL = [
         // Priority roles (main cadre positions)
@@ -68,6 +70,8 @@ class ScopeEnum extends Enum
         self::NATIONAL_TECH_DIVISION,
         self::PHONING_NATIONAL_MANAGER,
         self::PAP_NATIONAL_MANAGER,
+
+        self::JEM,
 
         // Operational roles
         self::PHONING,
@@ -137,6 +141,7 @@ class ScopeEnum extends Enum
         self::LEGISLATIVE_CANDIDATE => 'Circonscription',
         self::AGORA_PRESIDENT => 'Agora',
         self::AGORA_GENERAL_SECRETARY => 'Agora',
+        self::JEM => 'Jeunes en marche',
     ];
 
     public static function isNational(?string $instanceScope): bool

@@ -70,9 +70,41 @@ class CanManageEventVoterTest extends TestCase
         );
     }
 
+    public function testJemResponsableCanManageOwnInstanceEvent(): void
+    {
+        $adherent = $this->createStub(Adherent::class);
+
+        $event = $this->createStub(Event::class);
+        $event->method('getInstanceKey')->willReturn('jem');
+
+        self::assertSame(
+            VoterInterface::ACCESS_GRANTED,
+            $this->voteOnEvent($adherent, $event, $this->jemScope($adherent)),
+        );
+    }
+
+    public function testJemResponsableCannotManageOtherInstanceEvent(): void
+    {
+        $adherent = $this->createStub(Adherent::class);
+
+        $event = $this->createStub(Event::class);
+        $event->method('getInstanceKey')->willReturn('national_tech_division');
+
+        self::assertSame(
+            VoterInterface::ACCESS_DENIED,
+            $this->voteOnEvent($adherent, $event, $this->jemScope($adherent)),
+        );
+    }
+
     private function militantScope(Adherent $adherent): Scope
     {
         return new Scope('militant', 'Militant', 'Militant', [], [], [FeatureEnum::EVENTS], $adherent);
+    }
+
+    private function jemScope(Adherent $adherent): Scope
+    {
+        // No zones/committees/agoras => Scope::getInstanceKey() returns the bare code 'jem' (instance-scoped).
+        return new Scope('jem', 'Jeunes en marche : Responsable', 'Responsable', [], ['data_corner'], [FeatureEnum::EVENTS], $adherent);
     }
 
     private function voteOnEvent(Adherent $adherent, Event $event, Scope $scope): int
