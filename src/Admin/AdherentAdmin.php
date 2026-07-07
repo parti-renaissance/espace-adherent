@@ -10,6 +10,7 @@ use App\AppSession\SystemEnum;
 use App\Entity\Agora;
 use App\Entity\AppSession;
 use App\Entity\OAuth\Client;
+use App\Entity\Poll\Vote;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Join;
@@ -313,5 +314,13 @@ class AdherentAdmin extends AbstractAdherentAdmin
         $alias = $qb->getRootAliases()[0];
 
         $qb->innerJoin("$alias.presidentOfAgoras", 'p_agora');
+    }
+
+    public function autocompleteCallbackFilterPollVoters(ProxyQueryInterface $query): void
+    {
+        $qb = $query->getQueryBuilder();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->andWhere(\sprintf('EXISTS (SELECT 1 FROM %s poll_vote WHERE poll_vote.adherent = %s)', Vote::class, $alias));
     }
 }

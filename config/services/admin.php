@@ -363,6 +363,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->call('setTemplate', ['show', 'admin/poll/show.html.twig'])
     ;
     $services
+        ->set('app.admin.poll.vote', App\Admin\Poll\PollVoteAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Poll\Vote::class, 'label' => 'Réponses aux sondages', 'group' => 'App mobile'])
+    ;
+    $services
         ->set('app.admin.jecoute.riposte', App\Admin\Jecoute\RiposteAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Jecoute\Riposte::class, 'label' => 'Ripostes', 'group' => 'App mobile'])
     ;
