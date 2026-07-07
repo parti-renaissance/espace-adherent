@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Poll;
 
 use App\Admin\AbstractAdmin;
-use App\Admin\Filter\AdherentSearchFilter;
+use App\Admin\AdherentAdmin;
+use App\Entity\Adherent;
+use App\Form\Admin\AdherentAutocompleteType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -30,8 +32,17 @@ class PollVoteAdmin extends AbstractAdmin
                 'label' => 'Sondage',
                 'show_filter' => true,
             ])
-            ->add('adherent', AdherentSearchFilter::class, [
-                'label' => 'Recherche',
+            ->add('adherent', ModelFilter::class, [
+                'label' => 'Militant',
+                'show_filter' => true,
+                'field_type' => AdherentAutocompleteType::class,
+                'field_options' => [
+                    'class' => Adherent::class,
+                    'model_manager' => $this->getModelManager(),
+                    'req_params' => [
+                        AdherentAdmin::ADHERENT_AUTOCOMPLETE_FILTER_METHOD_PARAM_NAME => 'autocompleteCallbackFilterPollVoters',
+                    ],
+                ],
             ])
         ;
     }
