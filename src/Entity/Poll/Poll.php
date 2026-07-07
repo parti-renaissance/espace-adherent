@@ -11,6 +11,8 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
+use App\EntityListener\AlgoliaIndexListener;
 use App\Poll\Api\State\CreatePollVoteProcessor;
 use App\Poll\Api\State\CurrentPollProvider;
 use App\Poll\Request\CreatePollVoteRequest;
@@ -47,8 +49,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['poll_read']],
 )]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[PollDatesDoNotOverlap]
-class Poll implements \Stringable, EntityAdministratorBlameableInterface
+class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface
 {
     use EntityAdministratorBlameableTrait;
     use EntityIdentityTrait;
@@ -185,6 +188,11 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
     }
 
     public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function isIndexable(): bool
     {
         return $this->published;
     }
