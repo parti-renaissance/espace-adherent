@@ -34,9 +34,10 @@ class UserManager
         }
 
         $email = $adherent->getEmailAddress();
+        $syncedFields = $this->getSyncedFields($adherent);
 
         if (!$moodleUser = $this->moodleUserRepository->findOneBy(['adherent' => $adherent])) {
-            if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email)['id'] ?? null)) {
+            if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email, $syncedFields)['id'] ?? null)) {
                 $this->logger->error('Moodle user data is missing ID', ['adherentId' => $adherent->getId()]);
 
                 return;
@@ -52,7 +53,7 @@ class UserManager
 
             if (empty($userData)) {
                 // Account no longer exists on Moodle: re-provision and repoint the local link.
-                if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email)['id'] ?? null)) {
+                if (empty($moodleId = $this->findOrCreateMoodleUser($adherent, $email, $syncedFields)['id'] ?? null)) {
                     $this->logger->error('Moodle user data is missing ID', ['adherentId' => $adherent->getId()]);
 
                     return;
@@ -60,11 +61,23 @@ class UserManager
 
                 $moodleUser->moodleId = $moodleId;
                 $this->entityManager->flush();
-            } elseif (($userData['email'] ?? null) !== $email) {
-                $this->driver->updateUser($moodleUser->moodleId, [
-                    'email' => $email,
-                    'username' => $email,
-                ]);
+            } else {
+                $update = [];
+
+                if (($userData['email'] ?? null) !== $email) {
+                    $update['email'] = $email;
+                    $update['username'] = $email;
+                }
+
+                foreach ($syncedFields as $key => $value) {
+                    if (($userData[$key] ?? null) !== $value) {
+                        $update[$key] = $value;
+                    }
+                }
+
+                if ($update) {
+                    $this->driver->updateUser($moodleUser->moodleId, $update);
+                }
             }
         }
 
@@ -104,7 +117,7 @@ class UserManager
         }
     }
 
-    private function findOrCreateMoodleUser(Adherent $adherent, string $email): array
+    private function findOrCreateMoodleUser(Adherent $adherent, string $email, array $syncedFields): array
     {
         if (!empty($userData = $this->driver->findUserByEmail($email))) {
             return $userData;
@@ -113,10 +126,25 @@ class UserManager
         return $this->driver->createUser([
             'email' => $email,
             'username' => $email,
+            'auth' => 'oauth2',
+            ...$syncedFields,
+        ]);
+    }
+
+    /**
+     * Adherent-derived Moodle user fields kept in sync on both create and update.
+     *
+     * @return array<string, string>
+     */
+    public function getSyncedFields(Adherent $adherent): array
+    {
+        return array_filter([
             'firstname' => $adherent->getFirstName(),
             'lastname' => $adherent->getLastName(),
-            'auth' => 'oauth2',
-        ]);
+            'country' => ($country = $adherent->getCountry()) ? strtoupper($country) : null,
+            'city' => $adherent->getCityName(),
+            'department' => ($zone = $adherent->getAssemblyZone()) ? \sprintf('%s (%s)', $zone->getName(), $zone->getCode()) : null,
+        ], static fn (?string $value) => null !== $value && '' !== $value);
     }
 
     private function prepareAdherentJobs(Adherent $adherent): array

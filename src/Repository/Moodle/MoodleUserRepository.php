@@ -14,4 +14,19 @@ class MoodleUserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    /**
+     * @param int[] $adherentIds
+     *
+     * @return User[]
+     */
+    public function findByAdherentIds(array $adherentIds): array
+    {
+        return $this->createQueryBuilder('mu')
+            ->innerJoin('mu.adherent', 'a')
+            ->andWhere('a.id IN (:ids)')
+            ->setParameter('ids', $adherentIds)
+            ->getQuery()
+            ->getResult();
+    }
 }
