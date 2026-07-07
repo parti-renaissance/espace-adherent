@@ -20,18 +20,22 @@ readonly class PollAlertProvider implements AlertProviderInterface
 
     public function getAlerts(?Adherent $adherent): array
     {
+        if (null === $adherent) {
+            return [];
+        }
+
         if (!$poll = $this->pollRepository->findActivePollForAlert()) {
             return [];
         }
 
-        $participated = $adherent ? $this->voteRepository->hasVoted($poll, $adherent) : null;
+        $participated = $this->voteRepository->hasVoted($poll, $adherent);
 
         $alert = new Alert(
             AlertTypeEnum::POLL,
             'Sondage',
             $poll->getQuestion(),
             (string) $poll->getDescription(),
-            true === $participated ? 'Voir' : 'Je donne mon avis',
+            $participated ? 'Voir' : 'Je donne mon avis',
             '/sondage/'.$poll->getUuid()->toRfc4122(),
             data: [
                 'uuid' => $poll->getUuid()->toRfc4122(),

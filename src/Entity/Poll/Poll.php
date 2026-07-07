@@ -204,6 +204,16 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface
         $this->alertEnabled = $alertEnabled;
     }
 
+    public function isAlertDisabled(): bool
+    {
+        return !$this->alertEnabled;
+    }
+
+    public function setAlertDisabled(bool $alertDisabled): void
+    {
+        $this->alertEnabled = !$alertDisabled;
+    }
+
     public function getParticipantCountThreshold(): int
     {
         return $this->participantCountThreshold;
