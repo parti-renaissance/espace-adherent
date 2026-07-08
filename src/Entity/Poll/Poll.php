@@ -18,6 +18,7 @@ use App\Poll\Api\State\CurrentPollProvider;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
 use App\Validator\Poll\PollDatesDoNotOverlap;
+use App\Validator\Poll\PollVotedChoiceCannotBeRemoved;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,6 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PollRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[PollDatesDoNotOverlap]
+#[PollVotedChoiceCannotBeRemoved]
 class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface
 {
     use EntityAdministratorBlameableTrait;
@@ -85,7 +87,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     private ?string $description;
 
     #[Groups(['poll_read'])]
-    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'], orphanRemoval: true)]
     private Collection $choices;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

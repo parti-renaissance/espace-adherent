@@ -41,7 +41,7 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertNull($data['voted_choice']);
     }
 
-    public function testGetCurrentPollReturnsNotFoundWhenNoActivePoll(): void
+    public function testGetCurrentPollReturnsNoContentWhenNoActivePoll(): void
     {
         foreach ($this->manager->getRepository(Poll::class)->findAll() as $poll) {
             $poll->setPublished(false);
@@ -49,6 +49,18 @@ class PollControllerTest extends AbstractApiTestCase
         $this->manager->flush();
 
         $this->client->request(Request::METHOD_GET, '/api/v3/polls/current', [], [], $this->authorizationHeader());
+
+        self::assertSame(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
+        self::assertSame('', $this->client->getResponse()->getContent());
+    }
+
+    public function testGetUnpublishedPollByUuidReturnsNotFound(): void
+    {
+        $poll = $this->manager->getRepository(Poll::class)->findOneByUuid(LoadPollData::POLL_01_UUID);
+        $poll->setPublished(false);
+        $this->manager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/api/v3/polls/'.LoadPollData::POLL_01_UUID, [], [], $this->authorizationHeader());
 
         self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }

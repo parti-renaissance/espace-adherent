@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Entity\Poll\Poll;
 use App\Repository\Poll\PollRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 readonly class CurrentPollProvider implements ProviderInterface
 {
@@ -15,8 +16,14 @@ readonly class CurrentPollProvider implements ProviderInterface
     {
     }
 
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?Poll
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): Poll|Response
     {
-        return $this->pollRepository->findLastActivePoll();
+        $poll = $this->pollRepository->findLastActivePoll();
+
+        if (null === $poll) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        return $poll;
     }
 }
