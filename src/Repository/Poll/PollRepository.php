@@ -35,24 +35,25 @@ class PollRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countConflictingPolls(\DateTimeInterface $lowerBound, \DateTimeInterface $upperBound, ?int $excludedId = null): int
+    public function findConflictingPublishedPoll(Poll $poll): ?Poll
     {
         $queryBuilder = $this->createQueryBuilder('poll')
-            ->select('COUNT(poll.id)')
-            ->where('poll.finishAt > :lowerBound')
-            ->andWhere('poll.startAt < :upperBound')
-            ->setParameter('lowerBound', $lowerBound)
-            ->setParameter('upperBound', $upperBound)
+            ->where('poll.published = true')
+            ->andWhere('poll.startAt < :finishAt')
+            ->andWhere('poll.finishAt > :startAt')
+            ->setParameter('startAt', $poll->getStartAt())
+            ->setParameter('finishAt', $poll->getFinishAt())
+            ->setMaxResults(1)
         ;
 
-        if (null !== $excludedId) {
+        if (null !== $poll->getId()) {
             $queryBuilder
                 ->andWhere('poll.id != :excludedId')
-                ->setParameter('excludedId', $excludedId)
+                ->setParameter('excludedId', $poll->getId())
             ;
         }
 
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     public function findLastActivePoll(): ?Poll
