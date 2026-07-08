@@ -14,7 +14,6 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Poll\Api\State\CreatePollVoteProcessor;
-use App\Poll\Api\State\CurrentPollProvider;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
 use App\Validator\Poll\PollDatesDoNotOverlap;
@@ -28,10 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new Get(
-            uriTemplate: '/polls/current',
-            provider: CurrentPollProvider::class,
-        ),
         new Get(
             uriTemplate: '/polls/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
