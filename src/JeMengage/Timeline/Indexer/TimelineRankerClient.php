@@ -13,8 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * ($timelineRankerClient). TIMELINE_RANKER_URL must be an origin (scheme + host): /get_items is an
  * absolute-path reference, so any path in the base URL would be replaced (RFC 3986).
  *
- * A transport error, a non-2xx status or an invalid payload surfaces as a RuntimeException; for a canary
- * GetTimelineFeedsController catches it and falls back to the regular Algolia feed. An empty/malformed
+ * A transport error, a non-2xx status or an invalid payload surfaces as a RuntimeException that
+ * GetTimelineFeedsController catches, falling back to the regular Algolia feed. An empty/malformed
  * TIMELINE_RANKER_URL is instead a configuration error: the scoped client fails to build (a 500) before the
  * request is even made, so it is not caught by that fallback.
  */

@@ -48,4 +48,19 @@ class TimelineFeedTypeEnum extends Enum
         SocialNetworkFeed::class => self::SOCIAL_NETWORK_POST,
         Poll::class => self::POLL,
     ];
+
+    public const ALGOLIA_INDEXED_CLASSES = [
+        News::class,
+        PapCampaign::class,
+        PhoningCampaign::class,
+        Riposte::class,
+        Survey::class,
+        LocalSurvey::class,
+        NationalSurvey::class,
+        Event::class,
+        Action::class,
+        AdherentMessage::class,
+        TimelineItemPrivateMessage::class,
+        SocialNetworkFeed::class,
+    ];
 }

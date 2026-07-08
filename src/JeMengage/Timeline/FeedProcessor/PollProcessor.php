@@ -4,33 +4,27 @@ declare(strict_types=1);
 
 namespace App\JeMengage\Timeline\FeedProcessor;
 
-use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
-use App\Repository\Poll\PollRepository;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use App\Repository\Poll\VoteRepository;
 use Symfony\Component\Uid\Uuid;
 
 class PollProcessor extends AbstractFeedProcessor
 {
-    public function __construct(
-        private readonly PollRepository $pollRepository,
-        private readonly NormalizerInterface $normalizer,
-    ) {
+    public function __construct(private readonly VoteRepository $voteRepository)
+    {
     }
 
     public function process(array $item, Adherent $user): array
     {
-        $identifier = $item['identifier'] ?? null;
+        $vote = $this->voteRepository->findAdherentVote(Uuid::fromString($item['objectID']), $user);
 
-        if (!\is_string($identifier) || !Uuid::isValid($identifier) || !$poll = $this->pollRepository->findOneByUuid($identifier)) {
-            return $item;
-        }
+        $item['user_registered_at'] = $vote?->getCreatedAt();
 
-        $item['poll'] = $this->normalizer->normalize($poll, 'json', [
-            'groups' => ['poll_read'],
-            PrivatePublicContextBuilder::CONTEXT_KEY => PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER,
-        ]);
+        $item['poll'] = [
+            'question' => $item['title'] ?? null,
+            'has_voted' => null !== $vote,
+        ];
 
         return $item;
     }

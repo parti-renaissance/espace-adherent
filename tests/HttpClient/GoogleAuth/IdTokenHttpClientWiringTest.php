@@ -15,7 +15,7 @@ final class IdTokenHttpClientWiringTest extends KernelTestCase
     protected function setUp(): void
     {
         // Getting the scoped clients instantiates them, and ScopingHttpClient rejects an empty base_uri.
-        // The test env leaves TIMELINE_*_URL empty (and the canary test resets the ranker one to ''), so
+        // The test env leaves TIMELINE_*_URL empty (and GetTimelineFeedsIndexerControllerTest resets the ranker one to ''), so
         // set non-empty https origins here; the values only need to be valid URLs.
         $this->originalIndexerUrl = $_SERVER['TIMELINE_INDEXER_URL'] ?? null;
         $this->originalRankerUrl = $_SERVER['TIMELINE_RANKER_URL'] ?? null;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\JeMengage\Timeline\Mirror;
 
 use App\Entity\Geo\Zone;
-use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 
 /**
  * Derives the canonical timeline_feed model from the flat record produced by the timeline
@@ -41,7 +40,7 @@ class TimelineFeedTransformer
             'type' => $document['type'],
             // publication_date is required downstream but getDate() is nullable: fall back to now.
             'publicationDate' => $this->parseDate($document['date'] ?? null) ?? new \DateTimeImmutable(),
-            'eventDate' => $this->parseDate($document[TimelineFeedTypeEnum::POLL === $document['type'] ? 'finish_at' : 'begin_at'] ?? null),
+            'eventDate' => $this->parseDate($document['begin_at'] ?? null),
             'audience' => $this->buildAudience($document),
             'display' => $document,
             'visibility' => $document['visibility'] ?? null,

@@ -17,14 +17,14 @@ use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 
 /**
- * Canary read path of GET /api/v3/je-mengage/timeline_feeds. The current user (president-ad) is the only
- * canaryTester fixture, so the request forks to the ranker: get_items is mocked through the global
- * MockHttpClientCallback (host fixture indexer.timeline.test.json) and the timeline_feed rows are inserted
- * here. Non-canary regression is covered by features/api/timeline_feeds.feature.
+ * Default read path of GET /api/v3/je-mengage/timeline_feeds: with TIMELINE_RANKER_URL set the controller
+ * delegates to the external indexer/ranker. get_items is mocked through the global MockHttpClientCallback
+ * (host fixture indexer.timeline.test.json) and the timeline_feed rows are inserted here. The Algolia
+ * fallback (ranker failure) is exercised too; its full feed is covered by features/api/timeline_feeds.feature.
  */
 #[Group('functional')]
 #[Group('api')]
-class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
+class GetTimelineFeedsIndexerControllerTest extends AbstractApiTestCase
 {
     use ApiControllerTestTrait;
 
@@ -38,6 +38,7 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
     private const string UUID_A = 'aaaa1111-1111-4111-8111-aaaaaaaaaaaa';
     private const string UUID_MISSING = 'cccc3333-3333-4333-8333-cccccccccccc';
     private const string UUID_B = 'bbbb2222-2222-4222-8222-bbbbbbbbbbbb';
+    private const string UUID_POLL = 'dddd4444-4444-4444-8444-dddddddddddd';
 
     protected function setUp(): void
     {
@@ -56,9 +57,9 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         parent::tearDown();
     }
 
-    public function testCanaryReturnsHydratedFeedInIndexerOrderSkippingOrphans(): void
+    public function testReturnsHydratedFeedInIndexerOrderSkippingOrphans(): void
     {
-        $token = $this->canaryToken();
+        $token = $this->accessToken();
         $this->insertFeed(self::UUID_A, 'Indexer item A');
         $this->insertFeed(self::UUID_B, 'Indexer item B');
         $this->manager->flush();
@@ -78,9 +79,9 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(10, $payload['hitsPerPage']);
     }
 
-    public function testCanaryWithoutSessionUsesServerFallbackCursorAndPaginates(): void
+    public function testWithoutSessionUsesServerFallbackCursorAndPaginates(): void
     {
-        $token = $this->canaryToken();
+        $token = $this->accessToken();
         $this->insertFeed(self::UUID_A, 'Indexer item A');
         $this->insertFeed(self::UUID_B, 'Indexer item B');
         $this->manager->flush();
@@ -96,9 +97,9 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(2, $payload['nbPages']);
     }
 
-    public function testCanaryWithSessionRelaysSubsequentPagesInsteadOfEmpty(): void
+    public function testWithSessionRelaysSubsequentPagesInsteadOfEmpty(): void
     {
-        $token = $this->canaryToken();
+        $token = $this->accessToken();
         $this->insertFeed(self::UUID_A, 'Indexer item A');
         $this->insertFeed(self::UUID_B, 'Indexer item B');
         $this->manager->flush();
@@ -115,12 +116,12 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(3, $payload['nbPages']);
     }
 
-    public function testCanaryFallsBackToAlgoliaWhenRankerFails(): void
+    public function testFallsBackToAlgoliaWhenRankerFails(): void
     {
-        $token = $this->canaryToken();
+        $token = $this->accessToken();
         // The ranker is configured but answers with a payload missing "items": getItems throws a
-        // RuntimeException. A canary must never break the feed, so the controller silently falls back to
-        // the regular Algolia path instead of returning a 503. (An empty TIMELINE_RANKER_URL is a config
+        // RuntimeException. The read path must never break the feed, so the controller silently falls back
+        // to the regular Algolia path instead of returning a 503. (An empty TIMELINE_RANKER_URL is a config
         // error handled upstream — the scoped client fails to build, a 500 — so it is not exercised here.)
         $_SERVER['TIMELINE_RANKER_URL'] = $_ENV['TIMELINE_RANKER_URL'] = self::RANKER_INVALID_URL;
 
@@ -141,7 +142,30 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         self::assertSame(20, $payload['hitsPerPage']);
     }
 
-    private function canaryToken(): string
+    public function testIndexerReadPathHydratesPollWithUserVoteState(): void
+    {
+        $token = $this->accessToken();
+        // Only the poll row exists in the mirror for this test; the event/publication/action ids the
+        // indexer returns are orphans here and get skipped, leaving a single hydrated hit.
+        $this->insertFeed(self::UUID_POLL, 'Plutôt thé ou café ?', 'poll', ['cta_label' => 'Je participe']);
+        $this->manager->flush();
+        $this->enableRanker();
+
+        $payload = $this->requestTimeline($token, 0, 'sess-poll');
+
+        self::assertCount(1, $payload['hits']);
+
+        $poll = $payload['hits'][0];
+        self::assertSame('poll', $poll['type']);
+        self::assertSame('Plutôt thé ou café ?', $poll['title']);
+        // The PollProcessor ran end-to-end: per-user vote date is null (president-ad has not voted on this
+        // poll), and the hand-built item.poll block the mobile app consumes carries the matching has_voted.
+        self::assertArrayHasKey('user_registered_at', $poll);
+        self::assertNull($poll['user_registered_at']);
+        self::assertSame(['question' => 'Plutôt thé ou café ?', 'has_voted' => false], $poll['poll']);
+    }
+
+    private function accessToken(): string
     {
         return $this->getAccessToken(
             LoadClientData::CLIENT_10_UUID,
@@ -149,18 +173,6 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
             GrantTypeEnum::PASSWORD,
             Scope::JEMARCHE_APP,
             'president-ad@renaissance-dev.fr',
-            LoadAdherentData::DEFAULT_PASSWORD,
-        );
-    }
-
-    private function nonCanaryToken(): string
-    {
-        return $this->getAccessToken(
-            LoadClientData::CLIENT_10_UUID,
-            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            GrantTypeEnum::PASSWORD,
-            Scope::JEMARCHE_APP,
-            'jacques.picard@en-marche.fr',
             LoadAdherentData::DEFAULT_PASSWORD,
         );
     }
@@ -187,13 +199,13 @@ class GetTimelineFeedsCanaryControllerTest extends AbstractApiTestCase
         $_SERVER['TIMELINE_RANKER_URL'] = $_ENV['TIMELINE_RANKER_URL'] = self::RANKER_URL;
     }
 
-    private function insertFeed(string $uuid, string $title): void
+    private function insertFeed(string $uuid, string $title, string $type = 'news', array $extraDisplay = []): void
     {
         $feed = new TimelineFeed();
         new \ReflectionProperty(TimelineFeed::class, 'uuid')->setValue($feed, Uuid::fromString($uuid));
-        $feed->type = 'news';
+        $feed->type = $type;
         $feed->publicationDate = new \DateTimeImmutable('2026-05-20 10:00:00');
-        $feed->display = ['objectID' => $uuid, 'type' => 'news', 'title' => $title];
+        $feed->display = ['objectID' => $uuid, 'type' => $type, 'title' => $title] + $extraDisplay;
         $feed->updatedAt = new \DateTimeImmutable('2026-05-20 10:00:00');
 
         $this->manager->persist($feed);

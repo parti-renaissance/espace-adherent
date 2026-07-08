@@ -12,10 +12,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
 
 /**
- * Canary read path: delegates selection and ordering to the external indexer (POST /get_items), hydrates
+ * Default read path: delegates selection and ordering to the external indexer (POST /get_items), hydrates
  * the documents from the local timeline_feed mirror, applies the existing FeedProcessor chain and returns
  * an Algolia-shaped envelope. Any indexer failure propagates as a RuntimeException; the controller catches
- * it and falls back to the regular Algolia feed, so a canary defect never breaks the timeline.
+ * it and falls back to the regular Algolia feed, so an indexer defect never breaks the timeline.
  */
 class IndexerTimelineProvider
 {
@@ -58,7 +58,7 @@ class IndexerTimelineProvider
             if (isset($rowsByUuid[$externalId])) {
                 $displays[] = $rowsByUuid[$externalId]->display;
             } else {
-                $this->logger->debug('Canary timeline: indexer item without local row, skipped.', ['external_id' => $externalId]);
+                $this->logger->debug('Timeline: indexer item without local row, skipped.', ['external_id' => $externalId]);
             }
         }
 
