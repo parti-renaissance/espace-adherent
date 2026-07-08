@@ -13,8 +13,11 @@ use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Handler\PrepareCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
+use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -249,6 +252,182 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         self::assertInstanceOf(FinalizeCampaignAudienceMessage::class, $dispatched[0]);
     }
 
+    public function testMailchimpFallbackWipesSegmentStagesPendingAndFansOutChunks(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+
+        // 1500 ids, Mailchimp grain 500 → ceil(1500/500) = 3 push chunks.
+        $adherentIds = range(1, 1500);
+        $adherentRepository = $this->createStub(AdherentRepository::class);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn($adherentIds);
+
+        $capturedRows = [];
+        $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $memberRepository->expects(self::once())->method('deleteBySegmentId');
+
+        $bulkInsertHelper = $this->createMock(BulkInsertHelper::class);
+        $bulkInsertHelper->expects(self::once())
+            ->method('insertIgnore')
+            ->with(
+                'mailchimp_static_segment_member',
+                self::callback(function (array $rows) use (&$capturedRows): bool {
+                    $capturedRows = $rows;
+
+                    return true;
+                }),
+            )
+        ;
+
+        $mailchimpObjectIdMapping = $this->createMock(MailchimpObjectIdMapping::class);
+        $mailchimpObjectIdMapping->expects(self::once())->method('getMainListId')->willReturn('main-list');
+
+        // Segment wiped on the remote list (555) before the refill; same list as the chunk push.
+        $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $staticSegmentService->expects(self::once())->method('update')->with(555, [], 'main-list')->willReturn(true);
+
+        $em = $this->createStub(EntityManagerInterface::class);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
+
+        $dispatched = [];
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::exactly(4)) // 3 chunk pushes + 1 finalize
+            ->method('dispatch')
+            ->willReturnCallback(function (object $msg) use (&$dispatched): Envelope {
+                $dispatched[] = $msg;
+
+                return new Envelope($msg);
+            })
+        ;
+
+        $handler = $this->buildHandler(
+            $em,
+            adherentRepository: $adherentRepository,
+            memberRepository: $memberRepository,
+            bulkInsertHelper: $bulkInsertHelper,
+            bus: $bus,
+            sendViaMailchimp: true,
+            staticSegmentService: $staticSegmentService,
+            mailchimpObjectIdMapping: $mailchimpObjectIdMapping,
+        );
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
+
+        $chunkMessages = array_filter($dispatched, static fn (object $m): bool => $m instanceof ProcessAudienceChunkMessage);
+        self::assertCount(3, $chunkMessages);
+        self::assertInstanceOf(FinalizeCampaignAudienceMessage::class, $dispatched[3]);
+
+        // Rows staged Pending (awaiting the remote push), chunk numbering uses the 500 grain.
+        self::assertCount(1500, $capturedRows);
+        $statuses = array_unique(array_column($capturedRows, 'processing_status'));
+        self::assertSame([SegmentMemberStatusEnum::Pending->value], $statuses);
+        self::assertSame(1, $capturedRows[0]['chunk_number']);
+        self::assertSame(3, $capturedRows[1499]['chunk_number']);
+
+        $segment = $campaign->getMailchimpStaticSegment();
+        self::assertSame(3, $segment->chunksTotal);
+        self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
+    }
+
+    public function testMailchimpFallbackRetryRedispatchesPendingChunksOnly(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->chunksTotal = 10;
+        $segment->chunksDone = 4;
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->method('find')->willReturn($campaign);
+        $em->expects(self::never())->method('flush');
+
+        $memberRepository = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $memberRepository->expects(self::once())->method('findChunksWithPending')->with(4242)->willReturn([5, 7]);
+        $memberRepository->expects(self::never())->method('deleteBySegmentId');
+
+        $dispatched = [];
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::exactly(3)) // 2 pending chunks + finalize
+            ->method('dispatch')
+            ->willReturnCallback(function (object $msg) use (&$dispatched): Envelope {
+                $dispatched[] = $msg;
+
+                return new Envelope($msg);
+            })
+        ;
+
+        $handler = $this->buildHandler($em, memberRepository: $memberRepository, bus: $bus, sendViaMailchimp: true);
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
+
+        $chunkMessages = array_filter($dispatched, static fn (object $m): bool => $m instanceof ProcessAudienceChunkMessage);
+        self::assertCount(2, $chunkMessages);
+        self::assertInstanceOf(FinalizeCampaignAudienceMessage::class, $dispatched[2]);
+    }
+
+    public function testMailchimpFallbackFailsWhenRemoteSegmentIdMissing(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        // Segment entity present but no remote staticSegmentId: the fallback cannot push to Mailchimp.
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $message->addMailchimpCampaign($campaign);
+        $segment = new MailchimpStaticSegment($campaign);
+        $this->setEntityId($segment, 4242);
+        $campaign->setMailchimpStaticSegment($segment);
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->method('find')->willReturn($campaign);
+        $em->expects(self::once())->method('flush');
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = $this->buildHandler($em, bus: $bus, sendViaMailchimp: true);
+        $handler(new PrepareCampaignAudienceMessage(7, 1));
+
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::MailchimpUnavailable, $campaign->getBlockReason());
+    }
+
+    public function testMailchimpFallbackThrowsWhenRemoteSegmentWipeFails(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+
+        $adherentRepository = $this->createStub(AdherentRepository::class);
+        $adherentRepository->method('findAdherentIdsForMessage')->willReturn(range(1, 10));
+
+        $mailchimpObjectIdMapping = $this->createStub(MailchimpObjectIdMapping::class);
+        $mailchimpObjectIdMapping->method('getMainListId')->willReturn('main-list');
+
+        // The remote wipe fails → the whole preparation must fail (blocks the send) and rethrow.
+        $staticSegmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $staticSegmentService->expects(self::once())->method('update')->willReturn(false);
+
+        $em = $this->createStub(EntityManagerInterface::class);
+        $em->method('find')->willReturnCallback($this->buildFindCallback($campaign));
+
+        $handler = $this->buildHandler(
+            $em,
+            adherentRepository: $adherentRepository,
+            sendViaMailchimp: true,
+            staticSegmentService: $staticSegmentService,
+            mailchimpObjectIdMapping: $mailchimpObjectIdMapping,
+        );
+
+        $this->expectException(\RuntimeException::class);
+
+        try {
+            $handler(new PrepareCampaignAudienceMessage(7, 1));
+        } finally {
+            self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        }
+    }
+
     private function buildHandler(
         EntityManagerInterface $em,
         ?AdherentRepository $adherentRepository = null,
@@ -256,6 +435,9 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
         ?BulkInsertHelper $bulkInsertHelper = null,
         ?MessageBusInterface $bus = null,
         ?LoggerInterface $logger = null,
+        bool $sendViaMailchimp = false,
+        ?MailchimpStaticSegmentServiceInterface $staticSegmentService = null,
+        ?MailchimpObjectIdMapping $mailchimpObjectIdMapping = null,
     ): PrepareCampaignAudienceHandler {
         return new PrepareCampaignAudienceHandler(
             $em,
@@ -264,6 +446,9 @@ class PrepareCampaignAudienceHandlerTest extends TestCase
             $bulkInsertHelper ?? $this->createStub(BulkInsertHelper::class),
             $bus ?? $this->createStub(MessageBusInterface::class),
             $this->createStub(NormalizerInterface::class),
+            $staticSegmentService ?? $this->createStub(MailchimpStaticSegmentServiceInterface::class),
+            $mailchimpObjectIdMapping ?? $this->createStub(MailchimpObjectIdMapping::class),
+            $sendViaMailchimp,
             $logger,
         );
     }

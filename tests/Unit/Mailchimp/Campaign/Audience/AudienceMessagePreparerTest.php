@@ -12,6 +12,7 @@ use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\PrepareResult;
 use App\Mailchimp\Campaign\Audience\SendStatusFactory;
+use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +38,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::never())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
 
         $result = $preparer->prepare($message, $bob);
 
@@ -65,7 +66,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
 
         $result = $preparer->prepare($message, $alice);
 
@@ -96,7 +97,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
 
         $result = $preparer->prepare($message, $alice);
 
@@ -132,7 +133,39 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $initializer);
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $initializer, $this->createStub(MailchimpChannelInitializer::class), false);
+
+        $result = $preparer->prepare($message, $alice);
+
+        self::assertTrue($result->isPreparing());
+    }
+
+    public function testPrepareUsesMailchimpChannelWhenFallbackFlagIsOn(): void
+    {
+        $alice = $this->createUser(1, 'alice@example.com');
+
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $message->addMailchimpCampaign($campaign);
+
+        // Fallback ON: the remote Mailchimp channel is provisioned, the local-only SES path is skipped.
+        $localInitializer = $this->createMock(StaticSegmentInitializer::class);
+        $localInitializer->expects(self::never())->method('ensureLocalSegment');
+
+        $mailchimpInitializer = $this->createMock(MailchimpChannelInitializer::class);
+        $mailchimpInitializer->expects(self::once())->method('ensureRemoteChannel')->with(self::identicalTo($campaign));
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PrepareCampaignAudienceMessage::class))
+            ->willReturn(new Envelope(new \stdClass()));
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('flush');
+
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $localInitializer, $mailchimpInitializer, true);
 
         $result = $preparer->prepare($message, $alice);
 
@@ -169,7 +202,7 @@ class AudienceMessagePreparerTest extends TestCase
                 }),
             );
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $logger);
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false, $logger);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('broker down');
@@ -184,7 +217,7 @@ class AudienceMessagePreparerTest extends TestCase
         $bus = $this->createStub(MessageBusInterface::class);
         $em = $this->createStub(EntityManagerInterface::class);
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class));
+        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
 
         $this->expectException(\LogicException::class);
         $preparer->prepare($message, $this->createUser(1, 'alice@example.com'));

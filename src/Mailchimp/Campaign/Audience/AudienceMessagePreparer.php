@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
+use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -23,6 +24,8 @@ class AudienceMessagePreparer
         private readonly MessageBusInterface $bus,
         private readonly SendStatusFactory $sendStatusFactory,
         private readonly StaticSegmentInitializer $staticSegmentInitializer,
+        private readonly MailchimpChannelInitializer $mailchimpChannelInitializer,
+        private readonly bool $sendViaMailchimp,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -36,7 +39,12 @@ class AudienceMessagePreparer
             return PrepareResult::conflict($this->sendStatusFactory->build($campaign));
         }
 
-        $this->staticSegmentInitializer->ensureLocalSegment($campaign);
+        if ($this->sendViaMailchimp) {
+            $this->logger->warning('[Publication] Mailchimp send channel ACTIVE (SES bypass)', ['campaign_id' => $campaign->getId()]);
+            $this->mailchimpChannelInitializer->ensureRemoteChannel($campaign);
+        } else {
+            $this->staticSegmentInitializer->ensureLocalSegment($campaign);
+        }
 
         $campaign->markAsPreparing($currentUser);
         $campaign->markAsPendingSend();

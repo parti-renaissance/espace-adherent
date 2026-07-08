@@ -58,9 +58,10 @@ class AdherentMessageManager
 
     /**
      * Publication-only send path: dispatches the side-channel senders (push, etc.) and persists
-     * the SENT status immediately. The Mailchimp campaign send is NOT performed here — it is
-     * scheduled asynchronously by the audience preparation pipeline (see
-     * FinalizeCampaignAudienceHandler → SendMailchimpCampaignCommand).
+     * the SENT status immediately. The campaign email send is NOT performed here — it is scheduled
+     * asynchronously by the audience preparation pipeline (FinalizeCampaignAudienceHandler
+     * dispatches TriggerSesCampaignMessage by default, or SendMailchimpCampaignCommand when the
+     * PUBLICATION_SEND_VIA_MAILCHIMP fallback flag is on).
      *
      * The flush triggers the Algolia postUpdate listener, which indexes the message into the
      * Timeline synchronously.
