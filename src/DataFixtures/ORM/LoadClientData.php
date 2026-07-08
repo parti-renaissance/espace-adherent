@@ -30,6 +30,7 @@ class LoadClientData extends Fixture
     public const CLIENT_13_UUID = '8128979a-cfdb-45d1-a386-f14f22bb19ae';
     public const CLIENT_14_UUID = '189456f3-7e43-413a-9d83-ad8b6045db50';
     public const CLIENT_15_UUID = 'd4f1f7ea-9c8e-4b1f-9a2c-7f2b3c4d5e6f';
+    public const CLIENT_16_UUID = 'b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e';
 
     public function __construct(
         private readonly string $voxHost,
@@ -243,6 +244,21 @@ class LoadClientData extends Fixture
         $client15->addSupportedScope(Scope::OFFLINE_ACCESS);
 
         $manager->persist($client15);
+
+        $client16 = new Client(
+            Uuid::fromString(self::CLIENT_16_UUID),
+            'Formation',
+            'Plateforme de formation Moodle',
+            'formation-dev-secret-to-be-rotated-in-prod',
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://client-oauth.docker:8000/client/receive_authcode']
+        );
+        $client16->setCode(AppCodeEnum::FORMATION);
+        $client16->setAskUserForAuthorization(false);
+        $client16->setRequestedRoles(['ROLE_ADHERENT']);
+        $client16->addSupportedScope(Scope::FORMATION);
+
+        $manager->persist($client16);
 
         $manager->flush();
     }

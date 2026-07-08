@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\OAuth;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Form\ConfirmActionType;
 use App\OAuth\OAuthAuthorizationManager;
@@ -24,6 +25,7 @@ use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -48,7 +50,16 @@ class OAuthServerController extends AbstractController
 
             $client = $repository->findOneByUuid($authRequest->getClient()->getIdentifier());
 
-            $this->denyAccessUnlessGranted(OAuthClientVoter::PERMISSION, $client);
+            if (!$this->isGranted(OAuthClientVoter::PERMISSION, $client)) {
+                $template = AppCodeEnum::FORMATION === $client->getCode()
+                    ? 'oauth/access_denied/formation.html.twig'
+                    : 'oauth/access_denied.html.twig';
+
+                return $this
+                    ->render($template)
+                    ->setStatusCode(SymfonyResponse::HTTP_FORBIDDEN)
+                ;
+            }
 
             $form = $this
                 ->createForm(ConfirmActionType::class)

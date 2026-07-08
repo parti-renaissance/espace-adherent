@@ -1,0 +1,37 @@
+{% extends 'oauth/access_denied.html.twig' %}
+
+{% block security_content %}
+    <div class="flex flex-col gap-8 w-full">
+        <div class="bg-vox-blue-50 rounded-lg p-4 flex items-start gap-3">
+            <p class="flex-1 text-[14px] leading-5 text-vox-gray-900">
+                Nos formations sont un avantage exclusif de nos adhérents. Débloquez l’intégralité de notre catalogue de formations en nous rejoignant en quelques clics.
+            </p>
+            <svg class="shrink-0 w-6 h-6 text-vox-blue-600" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M0,8c0,-4.418 3.581,-8 8,-8c2.122,0 4.157,0.843 5.657,2.343c1.5,1.501 2.343,3.535 2.343,5.657c0,4.418 -3.581,8 -8,8c-4.419,0 -8,-3.582 -8,-8Zm8,-6.858c-3.787,0 -6.857,3.07 -6.857,6.858c0,3.788 3.07,6.858 6.857,6.858c3.787,-0 6.857,-3.07 6.857,-6.858c-0,-1.819 -0.723,-3.563 -2.009,-4.849c-1.285,-1.286 -3.03,-2.009 -4.848,-2.009Zm0.134,2.116c0.421,-0 0.763,0.361 0.763,0.806c-0,0.445 -0.342,0.805 -0.763,0.805c-0.421,0 -0.762,-0.36 -0.762,-0.805c-0,-0.445 0.341,-0.806 0.762,-0.806Zm2.046,9.193l-4.067,-0l-0,-1.204l1.464,0l-0,-3.631l-0.956,0l-0,-1.203l2.1,-0l-0,4.834l1.459,0l-0,1.204Z" />
+            </svg>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <twig:ReButton
+                tag="a"
+                href="{{ path('app_adhesion_index') }}"
+                color="blue"
+                class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-vox-blue-600 text-white transition-colors hover:bg-vox-blue-700"
+            >
+                Je débloque mon accès
+                <svg class="inline-block w-4 h-4 ml-1 align-middle" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3.333 8h9.334M9 4.333 12.667 8 9 11.667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </twig:ReButton>
+
+            <twig:ReButton
+                tag="a"
+                href="{{ path('campaign_app') }}"
+                color="blue"
+                class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-white border border-vox-blue-600 text-vox-blue-600 transition-colors hover:bg-vox-blue-50"
+            >
+                Retour à l’application
+            </twig:ReButton>
+        </div>
+    </div>
+{% endblock %}

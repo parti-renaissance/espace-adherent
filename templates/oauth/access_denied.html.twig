@@ -1,0 +1,29 @@
+{% extends 'security/campaign/layout.html.twig' %}
+
+{% block title 'Accès non autorisé' %}
+
+{% block security_block_title %}
+    <span class="inline-flex flex-wrap items-center justify-center gap-x-2">
+        <span id="oauth-access-denied-notice">Accès</span>
+        <span class="bg-vox-yellow-200 px-2 py-1 whitespace-nowrap">non autorisé</span>
+    </span>
+{% endblock %}
+
+{% block security_content %}
+    <div class="flex flex-col gap-6 w-full">
+        <div class="bg-vox-gray-100 rounded-2xl p-4">
+            <p class="text-[14px] leading-5 text-vox-gray-600">
+                Votre compte ne dispose pas des autorisations nécessaires pour accéder à cet espace.
+            </p>
+        </div>
+
+        <twig:ReButton
+            tag="a"
+            href="{{ path('campaign_app') }}"
+            color="blue"
+            class="w-full rounded-full py-3.5 text-[16px] font-semibold bg-vox-blue-600 text-white transition-colors hover:bg-vox-blue-700"
+        >
+            Retour à l'application
+        </twig:ReButton>
+    </div>
+{% endblock %}
