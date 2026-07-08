@@ -340,6 +340,11 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->followRedirect();
         static::assertStatusCode(403, $this->client);
+
+        // A client without a dedicated code falls back to the generic access denied page (no formation upsell).
+        $content = $this->client->getResponse()->getContent();
+        static::assertStringContainsString('oauth-access-denied-notice', $content);
+        static::assertStringNotContainsString('Je débloque mon accès', $content);
     }
 
     public function testOAuthAuthenticationIsSuccessfulForClientWithRequestedRoles(): void
@@ -358,6 +363,41 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->followRedirect();
         static::assertTrue($this->client->getResponse()->isRedirect());
+    }
+
+    public function testFormationAuthorizationIsDeniedForNonAdherent(): void
+    {
+        // carl999 is a "sympathisant" (ROLE_MEMBRE), not an adherent: the formation client requires ROLE_ADHERENT.
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->createAuthorizeUrl(['formation'], LoadClientData::CLIENT_16_UUID, null)
+        );
+
+        static::assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+        static::assertCount(1, $crawler->filter('#oauth-access-denied-notice'));
+
+        $content = $this->client->getResponse()->getContent();
+        static::assertStringContainsString('Je débloque mon accès', $content);
+        static::assertStringContainsString('avantage exclusif de nos adhérents', $content);
+        static::assertStringContainsString('href="/adhesion"', $content);
+    }
+
+    public function testFormationAuthorizationIsGrantedForAdherent(): void
+    {
+        // adherent-female-32 holds the "adherent:a_jour" tag (ROLE_ADHERENT_A_JOUR) and must pass the gate.
+        $this->authenticateAsAdherent($this->client, 'adherent-female-32@en-marche-dev.fr');
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->createAuthorizeUrl(['formation'], LoadClientData::CLIENT_16_UUID, null)
+        );
+
+        $response = $this->client->getResponse();
+
+        static::assertTrue($response->isRedirect());
+        static::assertStringContainsString('/client/receive_authcode?code=', $response->headers->get('Location'));
     }
 
     private function findAuthorizationCode(string $identifier): ?AuthorizationCode
