@@ -563,12 +563,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
                 'security' => false,
             ],
-            // Public assets served by AssetsController (Glide). Stateless so no session is
-            // read/written and no security context is built on image requests, keeping the
-            // HTTP cache (smaxage) intact instead of being polluted by Set-Cookie.
             'assets' => [
-                'pattern' => '^/assets/',
-                'stateless' => true,
+                'pattern' => '^/(assets|video)/',
+                'security' => false,
             ],
             'api_oauth' => [
                 'pattern' => '^/api/(me$|webhooks|statistics/|jecoute/|crm-paris/|v3/)',
@@ -652,12 +649,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
         ],
         'access_control' => [
-            [
-                'path' => '^/assets/',
-                'roles' => [
-                    'PUBLIC_ACCESS',
-                ],
-            ],
             [
                 'path' => '^/api/v3/',
                 'roles' => [

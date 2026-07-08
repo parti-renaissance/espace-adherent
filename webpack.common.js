@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
@@ -66,11 +65,6 @@ module.exports = {
         new WebpackManifestPlugin({}),
         new MiniCssExtractPlugin({
             filename: '[name].[fullhash].css',
-        }),
-        new CopyWebpackPlugin({
-            patterns: [
-                { from: path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.min.css'), to: './../css/' },
-            ],
         }),
     ],
 };
