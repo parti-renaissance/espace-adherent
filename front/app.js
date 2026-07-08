@@ -112,16 +112,6 @@ class App {
             });
     }
 
-    runImageCropper(inputFileElement, inputCroppedImageElement, inputsContainerElement, options = { ratio: 1, width: 500, height: 500 }) {
-        import('services/utils/imageCropper')
-            .catch((error) => {
-                throw error;
-            })
-            .then((module) => {
-                module.default(inputFileElement, inputCroppedImageElement, inputsContainerElement, options);
-            });
-    }
-
     runCommitteeCandidacy(slug, submitButtonSelector, wrapperSelector) {
         import('pages/committee_candidacy')
             .catch((error) => {
