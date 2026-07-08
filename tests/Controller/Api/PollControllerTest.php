@@ -53,6 +53,17 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testGetUnpublishedPollByUuidReturnsNotFound(): void
+    {
+        $poll = $this->manager->getRepository(Poll::class)->findOneByUuid(LoadPollData::POLL_01_UUID);
+        $poll->setPublished(false);
+        $this->manager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/api/v3/polls/'.LoadPollData::POLL_01_UUID, [], [], $this->authorizationHeader());
+
+        self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testGetFinishedPollExposesResultsAndParticipants(): void
     {
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_06_UUID);
