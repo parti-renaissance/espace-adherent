@@ -166,3 +166,17 @@ Feature:
         Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
         When I send a "GET" request to "/api/v3/je-mengage/timeline_feeds"
         Then the response status code should be 403
+
+    Scenario: A poll from the indexer read path is enriched with my vote state
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+        And the timeline ranker returns the current poll
+        When I send a "GET" request to "/api/v3/je-mengage/timeline_feeds"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON nodes should match:
+            | hits[0].type               | poll                 |
+            | hits[0].title              | Plutôt thé ou café ? |
+            | hits[0].cta_label          | Je participe         |
+            | hits[0].user_registered_at | @datetime@           |
+            | hits[0].poll.question      | Plutôt thé ou café ? |
+            | hits[0].poll.has_voted     | true                 |

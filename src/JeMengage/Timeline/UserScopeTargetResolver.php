@@ -9,7 +9,7 @@ use App\Scope\ScopeEnum;
 
 /**
  * Resolves the scope_targets vocabulary of a user: the roles the user holds. Extracted verbatim from
- * GetTimelineFeedsController so both the legacy Algolia clause builder and the canary UserProfile read
+ * GetTimelineFeedsController so both the legacy Algolia clause builder and the indexer UserProfile read
  * from one source (DRY). Asymmetric with the push side: here the keys are the user's roles, matched by
  * the indexer against the roles an item targets.
  */

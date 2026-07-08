@@ -130,8 +130,8 @@ class PollAdmin extends AbstractAdmin
                     'label' => 'Activé',
                     'required' => false,
                 ])
-                ->add('alertEnabled', CheckboxType::class, [
-                    'label' => 'Afficher l’alerte',
+                ->add('alertDisabled', CheckboxType::class, [
+                    'label' => 'Désactiver l’alerte',
                     'required' => false,
                     'help' => 'Masque l’alerte du sondage dans l’application pendant la période de vote.',
                 ])

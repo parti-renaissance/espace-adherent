@@ -14,6 +14,7 @@ use App\Entity\Jecoute\Riposte;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
+use App\Entity\Poll\Poll;
 use App\Entity\SocialNetwork\SocialNetworkFeed;
 use App\Entity\TimelineItemPrivateMessage;
 use MyCLabs\Enum\Enum;
@@ -30,6 +31,7 @@ class TimelineFeedTypeEnum extends Enum
     public const PUBLICATION = 'publication';
     public const TRANSACTIONAL_MESSAGE = 'transactional_message';
     public const SOCIAL_NETWORK_POST = 'social_network_post';
+    public const POLL = 'poll';
 
     public const CLASS_MAPPING = [
         News::class => self::NEWS,
@@ -44,5 +46,21 @@ class TimelineFeedTypeEnum extends Enum
         AdherentMessage::class => self::PUBLICATION,
         TimelineItemPrivateMessage::class => self::TRANSACTIONAL_MESSAGE,
         SocialNetworkFeed::class => self::SOCIAL_NETWORK_POST,
+        Poll::class => self::POLL,
+    ];
+
+    public const ALGOLIA_INDEXED_CLASSES = [
+        News::class,
+        PapCampaign::class,
+        PhoningCampaign::class,
+        Riposte::class,
+        Survey::class,
+        LocalSurvey::class,
+        NationalSurvey::class,
+        Event::class,
+        Action::class,
+        AdherentMessage::class,
+        TimelineItemPrivateMessage::class,
+        SocialNetworkFeed::class,
     ];
 }

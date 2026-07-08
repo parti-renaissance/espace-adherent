@@ -22,17 +22,28 @@ final class PollAlertProviderTest extends TestCase
         $voteRepository = $this->createMock(VoteRepository::class);
         $voteRepository->expects($this->never())->method('hasVoted');
 
-        self::assertSame([], new PollAlertProvider($pollRepository, $voteRepository)->getAlerts(null));
+        self::assertSame([], new PollAlertProvider($pollRepository, $voteRepository)->getAlerts($this->createStub(Adherent::class)));
     }
 
-    public function testAnonymousUserGetsAlertWithoutParticipationState(): void
+    public function testAnonymousUserGetsNoAlert(): void
     {
-        $poll = $this->poll();
+        $pollRepository = $this->createMock(PollRepository::class);
+        $pollRepository->expects($this->never())->method('findActivePollForAlert');
 
         $voteRepository = $this->createMock(VoteRepository::class);
         $voteRepository->expects($this->never())->method('hasVoted');
 
-        $alerts = new PollAlertProvider($this->pollRepository($poll), $voteRepository)->getAlerts(null);
+        self::assertSame([], new PollAlertProvider($pollRepository, $voteRepository)->getAlerts(null));
+    }
+
+    public function testAdherentGetsAlertWithFullPayload(): void
+    {
+        $poll = $this->poll();
+
+        $voteRepository = $this->createStub(VoteRepository::class);
+        $voteRepository->method('hasVoted')->willReturn(false);
+
+        $alerts = new PollAlertProvider($this->pollRepository($poll), $voteRepository)->getAlerts($this->createStub(Adherent::class));
 
         self::assertCount(1, $alerts);
         $alert = $alerts[0];
@@ -45,7 +56,7 @@ final class PollAlertProviderTest extends TestCase
         self::assertSame('Plutôt thé ou café ?', $alert->data['question']);
         self::assertSame($poll->getStartAt()->format(\DateTimeInterface::ATOM), $alert->data['start_at']);
         self::assertSame($poll->getFinishAt()->format(\DateTimeInterface::ATOM), $alert->data['finish_at']);
-        self::assertNull($alert->data['participated']);
+        self::assertFalse($alert->data['participated']);
         self::assertEquals($poll->getFinishAt(), $alert->date);
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Normalizer;
 
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\Poll;
@@ -49,7 +50,7 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return empty($context[__CLASS__]) && $data instanceof Poll;
+        return empty($context[__CLASS__]) && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY]) && $data instanceof Poll;
     }
 
     public function getSupportedTypes(?string $format): array

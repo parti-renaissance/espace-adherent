@@ -37,6 +37,7 @@ class GetTimelineFeedsController extends AbstractController
         TimelineFeedTypeEnum::PUBLICATION,
         TimelineFeedTypeEnum::TRANSACTIONAL_MESSAGE,
         TimelineFeedTypeEnum::SOCIAL_NETWORK_POST,
+        TimelineFeedTypeEnum::POLL,
     ];
 
     public function __construct(

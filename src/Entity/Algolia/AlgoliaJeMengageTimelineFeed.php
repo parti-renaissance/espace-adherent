@@ -35,7 +35,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
 
     public static function getEntities(): array
     {
-        return array_keys(TimelineFeedTypeEnum::CLASS_MAPPING);
+        return TimelineFeedTypeEnum::ALGOLIA_INDEXED_CLASSES;
     }
 
     public function isIndexable(): bool

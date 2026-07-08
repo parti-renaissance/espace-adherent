@@ -9,7 +9,7 @@ use App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface;
 
 /**
  * Applies the tagged FeedProcessor chain to a list of timeline hits. Extracted from DataProvider so the
- * same post-processing runs for both the Algolia read (DataProvider) and the canary read
+ * same post-processing runs for both the Algolia read (DataProvider) and the indexer read
  * (IndexerTimelineProvider) — one chain, one behaviour (DRY).
  */
 class FeedProcessorPipeline

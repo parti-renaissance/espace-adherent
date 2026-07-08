@@ -7,7 +7,7 @@ namespace App\JeMengage\Timeline\Indexer;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 
 /**
- * The five kinds the external indexer accepts (call-indexer.txt). Single source of truth for the
+ * The kinds the external indexer accepts (call-indexer.txt). Single source of truth for the
  * internal-type -> indexer-kind mapping and, by extension, the push gate: a type with no mapping
  * (transactional_message, riposte, survey, pap/phoning campaigns) is not pushable.
  *
@@ -20,6 +20,7 @@ enum IndexerKind: string
     case ACTION = 'action';
     case PUBLICATION = 'publication';
     case NOTIFICATION = 'notification';
+    case POLL = 'poll';
 
     public static function fromInternalType(string $internalType): ?self
     {
@@ -29,6 +30,7 @@ enum IndexerKind: string
             TimelineFeedTypeEnum::SOCIAL_NETWORK_POST => self::SOCIAL_POST,
             TimelineFeedTypeEnum::PUBLICATION => self::PUBLICATION,
             TimelineFeedTypeEnum::NEWS => self::NOTIFICATION,
+            TimelineFeedTypeEnum::POLL => self::POLL,
             default => null,
         };
     }

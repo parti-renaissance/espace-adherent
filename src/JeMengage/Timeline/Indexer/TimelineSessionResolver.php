@@ -11,7 +11,7 @@ use Symfony\Component\Uid\Uuid;
 
 class TimelineSessionResolver
 {
-    private const string CACHE_KEY_PREFIX = 'timeline_canary_session.';
+    private const string CACHE_KEY_PREFIX = 'timeline_session.';
     private const int TTL = 900; // 15 minutes
 
     public function __construct(
@@ -37,7 +37,7 @@ class TimelineSessionResolver
             return null;
         }
 
-        $this->logger->info('Canary timeline: app did not send session_id, using fallback cursor.', [
+        $this->logger->info('Timeline: app did not send session_id, using fallback cursor.', [
             'user_id' => $user->getId(),
             'app_version' => $user->currentAppSession?->appVersion,
         ]);
