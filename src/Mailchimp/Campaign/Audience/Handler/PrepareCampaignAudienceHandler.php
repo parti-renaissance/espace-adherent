@@ -11,8 +11,11 @@ use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
+use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +28,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 #[AsMessageHandler]
 class PrepareCampaignAudienceHandler
 {
-    private const int PUSH_CHUNK_SIZE = 50;
+    private const int SES_PUSH_CHUNK_SIZE = 50;
+    private const int MC_PUSH_CHUNK_SIZE = 500;
     private const int MEMBER_INSERT_BATCH = 5_000;
 
     private LoggerInterface $logger;
@@ -37,6 +41,9 @@ class PrepareCampaignAudienceHandler
         private readonly BulkInsertHelper $bulkInsertHelper,
         private readonly MessageBusInterface $bus,
         private readonly NormalizerInterface $normalizer,
+        private readonly MailchimpStaticSegmentServiceInterface $staticSegmentService,
+        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        private readonly bool $sendViaMailchimp,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -61,7 +68,10 @@ class PrepareCampaignAudienceHandler
         }
 
         $staticSegment = $campaign->getMailchimpStaticSegment();
-        if (null === $staticSegment) {
+        $segmentId = $campaign->getStaticSegmentId();
+        // Mailchimp fallback needs the remote segment id (provisioned at prepare-time); SES only
+        // needs the local segment entity.
+        if (null === $staticSegment || ($this->sendViaMailchimp && null === $segmentId)) {
             $this->logger->error('Static segment not initialised before /prepare', ['campaign_id' => $campaign->getId()]);
             $this->failPreparation($campaign, BlockReasonEnum::MailchimpUnavailable);
             $this->entityManager->flush();
@@ -73,7 +83,11 @@ class PrepareCampaignAudienceHandler
             && null !== $staticSegment->chunksTotal
             && $staticSegment->chunksTotal > 0
         ) {
-            $this->redispatchFinalize($campaign);
+            if ($this->sendViaMailchimp) {
+                $this->redispatchPendingChunks($campaign);
+            } else {
+                $this->redispatchFinalize($campaign);
+            }
 
             return;
         }
@@ -94,7 +108,7 @@ class PrepareCampaignAudienceHandler
         $this->entityManager->flush();
 
         try {
-            // Wipe any residual rows from a previous (legacy) preparation before bulk-inserting.
+            // Wipe any residual rows from a previous preparation before bulk-inserting.
             $this->memberRepository->deleteBySegmentId($staticSegment->id);
 
             $expected = $this->loadAndInsertMembers($campaign);
@@ -109,12 +123,24 @@ class PrepareCampaignAudienceHandler
                 return;
             }
 
-            $chunksTotal = (int) ceil($expected / self::PUSH_CHUNK_SIZE);
+            $chunksTotal = (int) ceil($expected / $this->pushChunkSize());
             $staticSegment->chunksTotal = $chunksTotal;
 
             $this->entityManager->flush();
 
-            $this->bus->dispatch(new FinalizeCampaignAudienceMessage($campaign->getId()));
+            $campaignId = $campaign->getId();
+
+            if ($this->sendViaMailchimp) {
+                if (!$this->staticSegmentService->update((int) $segmentId, [], $this->mailchimpObjectIdMapping->getMainListId())) {
+                    throw new \RuntimeException(\sprintf('Failed to wipe Mailchimp static segment %d before refill (campaign %d).', $segmentId, $campaignId));
+                }
+
+                for ($n = 1; $n <= $chunksTotal; ++$n) {
+                    $this->bus->dispatch(new ProcessAudienceChunkMessage($campaignId, $n));
+                }
+            }
+
+            $this->bus->dispatch(new FinalizeCampaignAudienceMessage($campaignId));
         } catch (\Throwable $e) {
             $this->logger->error('Audience preparation failed', [
                 'campaign_id' => $message->mailchimpCampaignId,
@@ -137,6 +163,19 @@ class PrepareCampaignAudienceHandler
         }
 
         $campaign->markAsFailed($reason);
+    }
+
+    private function redispatchPendingChunks(MailchimpCampaign $campaign): void
+    {
+        $staticSegmentId = $campaign->getMailchimpStaticSegment()->id;
+        $pendingChunks = $this->memberRepository->findChunksWithPending($staticSegmentId);
+        $campaignId = $campaign->getId();
+
+        foreach ($pendingChunks as $chunkNumber) {
+            $this->bus->dispatch(new ProcessAudienceChunkMessage($campaignId, $chunkNumber));
+        }
+
+        $this->bus->dispatch(new FinalizeCampaignAudienceMessage($campaignId));
     }
 
     private function redispatchFinalize(MailchimpCampaign $campaign): void
@@ -176,18 +215,26 @@ class PrepareCampaignAudienceHandler
      */
     private function insertMemberBatch(int $staticSegmentId, array $batch, string $now): void
     {
+        $status = $this->sendViaMailchimp ? SegmentMemberStatusEnum::Pending : SegmentMemberStatusEnum::Added;
+        $chunkSize = $this->pushChunkSize();
+
         $rows = [];
         foreach ($batch as $index => $adherentId) {
             $rows[] = [
                 'static_segment_id' => $staticSegmentId,
                 'adherent_id' => $adherentId,
-                'chunk_number' => intdiv($index, self::PUSH_CHUNK_SIZE) + 1,
-                'processing_status' => SegmentMemberStatusEnum::Added->value,
+                'chunk_number' => intdiv($index, $chunkSize) + 1,
+                'processing_status' => $status->value,
                 'created_at' => $now,
             ];
         }
 
         $this->bulkInsertHelper->insertIgnore('mailchimp_static_segment_member', $rows);
+    }
+
+    private function pushChunkSize(): int
+    {
+        return $this->sendViaMailchimp ? self::MC_PUSH_CHUNK_SIZE : self::SES_PUSH_CHUNK_SIZE;
     }
 
     private function captureFilterSnapshot(MailchimpStaticSegment $segment, MailchimpCampaign $campaign): void

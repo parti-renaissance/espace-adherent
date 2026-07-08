@@ -13,6 +13,7 @@ use App\Mailchimp\Campaign\Audience\Handler\FinalizeCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class FinalizeCampaignAudienceHandlerTest extends TestCase
 {
@@ -355,13 +357,57 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         }
     }
 
+    public function testMailchimpFallbackDispatchesSendCommandWithSixtySecondDelay(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $campaign->markAsPendingSend();
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->expectedCount = 1;
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
+        $em->expects(self::exactly(2))->method('flush');
+
+        $repo = $this->createStub(MailchimpStaticSegmentMemberRepository::class);
+        $repo->method('existsPending')->willReturn(false);
+        $repo->method('aggregateStatusCounts')->willReturn([
+            SegmentMemberStatusEnum::Added->value => 1,
+        ]);
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(
+                self::callback(function (object $cmd): bool {
+                    return $cmd instanceof SendMailchimpCampaignCommand && 7 === $cmd->campaignId;
+                }),
+                // 60s DelayStamp: gives the remote static segment time to propagate before send.
+                self::callback(function (array $stamps): bool {
+                    return 1 === \count($stamps) && $stamps[0] instanceof DelayStamp && 60_000 === $stamps[0]->getDelay();
+                }),
+            )
+            ->willReturn(new Envelope(new \stdClass()))
+        ;
+
+        $handler = $this->buildHandler($em, $repo, $bus, sendViaMailchimp: true);
+        $handler(new FinalizeCampaignAudienceMessage(7));
+
+        self::assertFalse($campaign->isPendingSend());
+        self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
+    }
+
     private function buildHandler(
         EntityManagerInterface $em,
         MailchimpStaticSegmentMemberRepository $repo,
         MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
+        bool $sendViaMailchimp = false,
     ): FinalizeCampaignAudienceHandler {
-        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $logger);
+        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $sendViaMailchimp, $logger);
     }
 
     private function buildCampaign(AdherentMessage $message, int $segmentId): MailchimpCampaign

@@ -9,6 +9,7 @@ use App\Mailchimp\Campaign\Audience\BlockReasonEnum;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 #[AsMessageHandler]
 class FinalizeCampaignAudienceHandler
@@ -26,6 +28,7 @@ class FinalizeCampaignAudienceHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly MessageBusInterface $bus,
+        private readonly bool $sendViaMailchimp,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -112,11 +115,13 @@ class FinalizeCampaignAudienceHandler
     }
 
     /**
-     * Dispatches the deferred TriggerSesCampaignMessage if the campaign asked for it.
+     * Dispatches the deferred auto-send if the campaign asked for it.
      *
-     * No DelayStamp: unlike the legacy Mailchimp send (which waited 60s for static-segment
-     * propagation), the SES audience is already complete in the DB at finalize time, so the
-     * fan-out can start immediately.
+     * SES (default): TriggerSesCampaignMessage, no DelayStamp — the audience is already complete
+     * in the DB at finalize time, so the fan-out can start immediately.
+     *
+     * Mailchimp fallback: SendMailchimpCampaignCommand with a 60s DelayStamp, giving the remote
+     * static segment time to propagate the members pushed during preparation before the send.
      *
      * Order is intentional: dispatch first, then clearPendingSend. If the dispatch raises
      * (broker down, transport error), pendingSend stays true so the Messenger retry of
@@ -140,7 +145,11 @@ class FinalizeCampaignAudienceHandler
         }
 
         try {
-            $this->bus->dispatch(new TriggerSesCampaignMessage((int) $campaign->getId()));
+            if ($this->sendViaMailchimp) {
+                $this->bus->dispatch(new SendMailchimpCampaignCommand((int) $campaign->getId()), [new DelayStamp(60_000)]);
+            } else {
+                $this->bus->dispatch(new TriggerSesCampaignMessage((int) $campaign->getId()));
+            }
             $campaign->clearPendingSend();
         } catch (\Throwable $e) {
             $this->logger->error('[AudienceFinalize] Auto-send dispatch failed', [
