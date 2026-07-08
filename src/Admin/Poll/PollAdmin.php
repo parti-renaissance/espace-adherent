@@ -109,6 +109,7 @@ class PollAdmin extends AbstractAdmin
                     'label' => 'Choix',
                     'by_reference' => false,
                     'allow_add' => true,
+                    'allow_delete' => true,
                 ])
             ->end()
             ->with('Configuration', ['class' => 'col-md-6'])
