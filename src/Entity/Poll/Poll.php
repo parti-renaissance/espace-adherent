@@ -17,6 +17,7 @@ use App\Poll\Api\State\CreatePollVoteProcessor;
 use App\Poll\Api\State\CurrentPollProvider;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
+use App\Validator\Poll\PollDatesDoNotOverlap;
 use App\Validator\Poll\PollVotedChoiceCannotBeRemoved;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -50,6 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
+#[PollDatesDoNotOverlap(payload: ['trusted_html' => true])]
 #[PollVotedChoiceCannotBeRemoved]
 class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface
 {

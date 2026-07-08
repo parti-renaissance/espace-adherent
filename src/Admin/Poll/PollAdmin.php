@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Poll;
 
-use App\Entity\Poll\Poll;
 use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Form\Admin\Poll\PollChoiceType;
 use App\Form\DateTimePickerType;
-use App\Repository\Poll\PollRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -23,19 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PollAdmin extends AbstractAdmin
 {
-    public function __construct(private readonly PollRepository $pollRepository)
-    {
-        parent::__construct();
-    }
-
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
@@ -155,45 +143,11 @@ class PollAdmin extends AbstractAdmin
                     'choice_label' => static fn (PollResultDisplayModeEnum $mode): string => $mode->getLabel(),
                 ])
                 ->add('published', null, [
-                    'label' => 'Publié le sondage',
+                    'label' => 'Publier le sondage',
                     'required' => false,
                     'help' => 'Décoché, le sondage est masqué partout dans l’application. Cochez pour le rendre visible selon ses dates.',
                 ])
             ->end()
         ;
-
-        $form->getFormBuilder()->addEventListener(FormEvents::POST_SUBMIT, [$this, 'preventPublishedPollDatesConflict']);
-    }
-
-    public function preventPublishedPollDatesConflict(FormEvent $event): void
-    {
-        $poll = $event->getData();
-
-        if (!$poll instanceof Poll) {
-            return;
-        }
-
-        $startAt = $poll->getStartAt();
-        $finishAt = $poll->getFinishAt();
-
-        if (null === $startAt || null === $finishAt || $finishAt <= $startAt) {
-            return;
-        }
-
-        $conflictingPoll = $this->pollRepository->findConflictingPublishedPoll($poll);
-
-        if (null === $conflictingPoll) {
-            return;
-        }
-
-        $event->getForm()->get('startAt')->addError(new FormError('Ces dates chevauchent un sondage déjà publié.'));
-
-        $session = $this->getRequest()->getSession();
-        \assert($session instanceof FlashBagAwareSessionInterface);
-        $session->getFlashBag()->add('sonata_flash_error', \sprintf(
-            'Les dates de ce sondage chevauchent le sondage publié « %s ». <a href="%s" target="_blank" rel="noopener">Ouvrir ce sondage</a>.',
-            htmlspecialchars((string) $conflictingPoll->getQuestion(), \ENT_QUOTES),
-            htmlspecialchars($this->generateObjectUrl('edit', $conflictingPoll, [], UrlGeneratorInterface::ABSOLUTE_URL), \ENT_QUOTES),
-        ));
     }
 }
