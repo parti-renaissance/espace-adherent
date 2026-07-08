@@ -6,6 +6,7 @@ namespace App\Validator\Poll;
 
 use App\Entity\Poll\Poll;
 use App\Repository\Poll\PollRepository;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,8 +14,10 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class PollDatesDoNotOverlapValidator extends ConstraintValidator
 {
-    public function __construct(private readonly PollRepository $pollRepository)
-    {
+    public function __construct(
+        private readonly PollRepository $pollRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -34,17 +37,18 @@ class PollDatesDoNotOverlapValidator extends ConstraintValidator
             return;
         }
 
-        $lowerBound = $startAt->modify(\sprintf('-%d hours', PollDatesDoNotOverlap::MIN_GAP_HOURS));
-        $upperBound = $finishAt->modify(\sprintf('+%d hours', PollDatesDoNotOverlap::MIN_GAP_HOURS));
+        $conflictingPoll = $this->pollRepository->findConflictingPublishedPoll($value);
 
-        if ($this->pollRepository->countConflictingPolls($lowerBound, $upperBound, $value->getId()) > 0) {
-            $this
-                ->context
-                ->buildViolation($constraint->message)
-                ->atPath('startAt')
-                ->setParameter('{{ hours }}', (string) PollDatesDoNotOverlap::MIN_GAP_HOURS)
-                ->addViolation()
-            ;
+        if (null === $conflictingPoll) {
+            return;
         }
+
+        $this
+            ->context
+            ->buildViolation($constraint->message)
+            ->setParameter('{{ poll }}', htmlspecialchars((string) $conflictingPoll->getQuestion(), \ENT_QUOTES))
+            ->setParameter('{{ url }}', $this->urlGenerator->generate('admin_app_poll_poll_edit', ['id' => $conflictingPoll->getId()]))
+            ->addViolation()
+        ;
     }
 }

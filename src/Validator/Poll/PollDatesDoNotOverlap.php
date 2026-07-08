@@ -9,8 +9,6 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class PollDatesDoNotOverlap extends Constraint
 {
-    public const int MIN_GAP_HOURS = 6;
-
     public string $message = 'poll.dates.overlap';
 
     public function getTargets(): string|array

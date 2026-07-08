@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
-#[PollDatesDoNotOverlap]
+#[PollDatesDoNotOverlap(payload: ['trusted_html' => true])]
 #[PollVotedChoiceCannotBeRemoved]
 class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface
 {
