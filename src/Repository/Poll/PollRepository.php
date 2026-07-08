@@ -9,6 +9,7 @@ use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 class PollRepository extends ServiceEntityRepository
 {
@@ -17,6 +18,11 @@ class PollRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Poll::class);
+    }
+
+    public function findOnePublishedByUuid(Uuid|string $uuid): ?Poll
+    {
+        return $this->findOneBy(['uuid' => $uuid, 'published' => true]);
     }
 
     public function findActivePollForAlert(): ?Poll

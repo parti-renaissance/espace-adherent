@@ -32,7 +32,7 @@ final class PollProcessorTest extends TestCase
         $pollRepository = $this->createMock(PollRepository::class);
         $pollRepository
             ->expects($this->once())
-            ->method('findOneByUuid')
+            ->method('findOnePublishedByUuid')
             ->with('8adca369-938c-450b-92e9-9c2b1f206fa3')
             ->willReturn($poll)
         ;
@@ -59,7 +59,7 @@ final class PollProcessorTest extends TestCase
     public function testProcessLeavesItemUntouchedWhenIdentifierIsInvalid(): void
     {
         $pollRepository = $this->createMock(PollRepository::class);
-        $pollRepository->expects($this->never())->method('findOneByUuid');
+        $pollRepository->expects($this->never())->method('findOnePublishedByUuid');
 
         $normalizer = $this->createMock(NormalizerInterface::class);
         $normalizer->expects($this->never())->method('normalize');
@@ -72,7 +72,7 @@ final class PollProcessorTest extends TestCase
     public function testProcessLeavesItemUntouchedWhenPollIsNotFound(): void
     {
         $pollRepository = $this->createStub(PollRepository::class);
-        $pollRepository->method('findOneByUuid')->willReturn(null);
+        $pollRepository->method('findOnePublishedByUuid')->willReturn(null);
 
         $normalizer = $this->createMock(NormalizerInterface::class);
         $normalizer->expects($this->never())->method('normalize');

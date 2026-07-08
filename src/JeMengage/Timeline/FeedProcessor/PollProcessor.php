@@ -23,7 +23,7 @@ class PollProcessor extends AbstractFeedProcessor
     {
         $identifier = $item['identifier'] ?? null;
 
-        if (!\is_string($identifier) || !Uuid::isValid($identifier) || !$poll = $this->pollRepository->findOneByUuid($identifier)) {
+        if (!\is_string($identifier) || !Uuid::isValid($identifier) || !$poll = $this->pollRepository->findOnePublishedByUuid($identifier)) {
             return $item;
         }
 
