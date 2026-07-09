@@ -39,9 +39,15 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $normalized['has_voted'] = null !== $vote;
         $normalized['voted_choice'] = $vote?->getChoice()->getUuid()->toRfc4122();
+        $normalized['voted_at'] = $vote?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
 
-        if ($data->canDisplayResult($now, null !== $vote)) {
+        $canDisplayResult = $data->canDisplayResult($now, null !== $vote);
+
+        if ($data->isVotePeriodActive($now) || $canDisplayResult) {
             $normalized['participants'] = $this->normalizeParticipants($data);
+        }
+
+        if ($canDisplayResult) {
             $normalized['result'] = $this->normalizeResult($data);
         }
 

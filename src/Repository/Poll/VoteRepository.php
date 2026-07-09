@@ -40,7 +40,7 @@ class VoteRepository extends ServiceEntityRepository
     /**
      * @return Adherent[]
      */
-    public function findLatestVotersWithImage(Poll $poll, int $limit = 5): array
+    public function findLatestVotersWithImage(Poll $poll, int $limit = 3): array
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->select('adherent')
