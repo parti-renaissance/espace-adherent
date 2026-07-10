@@ -70,7 +70,7 @@ jobs:
                       public/built/
                       public/css/
                       public/select2/
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js', 'postcss.config.js', 'tailwind.config*.js', 'templates/**', 'src/Twig/Components/**') }}
 
             - name: Setup pnpm
               if: steps.static-cache.outputs.cache-hit != 'true'
@@ -304,7 +304,7 @@ jobs:
                       public/built/
                       public/css/
                       public/select2/
-                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}
+                  key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js', 'postcss.config.js', 'tailwind.config*.js', 'templates/**', 'src/Twig/Components/**') }}
 
             - uses: ./.github/actions/docker-login
 
