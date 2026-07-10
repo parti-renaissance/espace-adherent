@@ -28,7 +28,6 @@ class FinalizeCampaignAudienceHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly MessageBusInterface $bus,
-        private readonly bool $sendViaMailchimp,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -145,7 +144,7 @@ class FinalizeCampaignAudienceHandler
         }
 
         try {
-            if ($this->sendViaMailchimp) {
+            if ($campaign->sendViaMailchimp) {
                 $this->bus->dispatch(new SendMailchimpCampaignCommand((int) $campaign->getId()), [new DelayStamp(60_000)]);
             } else {
                 $this->bus->dispatch(new TriggerSesCampaignMessage((int) $campaign->getId()));

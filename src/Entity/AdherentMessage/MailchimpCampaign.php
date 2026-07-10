@@ -118,6 +118,9 @@ class MailchimpCampaign implements Timestampable
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $pendingSend = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $sendViaMailchimp = false;
+
     #[ORM\OneToOne(mappedBy: 'campaign', targetEntity: MailchimpStaticSegment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ?MailchimpStaticSegment $mailchimpStaticSegment = null;
 

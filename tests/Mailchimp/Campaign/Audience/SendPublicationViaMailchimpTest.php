@@ -11,13 +11,17 @@ use App\Entity\AdherentMessage\AdherentMessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
+use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
 use App\Mailchimp\Campaign\Audience\Handler\PrepareCampaignAudienceHandler;
 use App\Mailchimp\Campaign\Audience\Message\FinalizeCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\Message\ProcessAudienceChunkMessage;
 use App\Mailchimp\Campaign\Audience\SegmentMemberStatusEnum;
+use App\Mailchimp\Campaign\Audience\SendStatusFactory;
+use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
+use App\Mailchimp\Campaign\StaticSegmentInitializer;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
@@ -31,14 +35,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Tests\App\AbstractKernelTestCase;
 
 /**
- * Functional proof of the Mailchimp fallback branch (PUBLICATION_SEND_VIA_MAILCHIMP=1): the real
- * PrepareCampaignAudienceHandler stages the audience in the real DB as Pending (awaiting the remote
- * push), wipes the remote segment and fans out one push per chunk — never through SES.
+ * Functional proof of the publication send routing (SES vs Mailchimp). The channel is decided from the
+ * recipient count vs PUBLICATION_SEND_VIA_MAILCHIMP_THRESHOLD and pinned on MailchimpCampaign::$sendViaMailchimp:
  *
- * The handler is built with the fallback flag ON (the container default is off) and a spy bus, so
- * the downstream Mailchimp handlers (which would hit the real Mailchimp HTTP API) are not executed;
- * their dispatch is asserted instead. The Mailchimp segment service is doubled — zero real HTTP.
- * Finalize's channel choice (SendMailchimpCampaignCommand + 60s delay) is covered by the unit test.
+ * - testFallbackStages...: campaign pinned to Mailchimp → the real PrepareCampaignAudienceHandler stages the
+ *   audience in the real DB as Pending, wipes the remote segment and fans out one push per chunk — never SES.
+ *   Downstream Mailchimp handlers (real HTTP) are not run: their dispatch is asserted on a spy bus and the
+ *   segment service is doubled — zero real HTTP.
+ * - testPrepareRoutesTo{Ses,Mailchimp}...: AudienceMessagePreparer::prepare() runs the real audience COUNT
+ *   and pins the channel per the threshold (strict >), with the channel initializers doubled to stay HTTP-free.
  */
 #[Group('functional')]
 class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
@@ -46,18 +51,12 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
     private const string AUDIENCE_FIRST_NAME = 'McFallbackAudience';
     private const int REMOTE_SEGMENT_ID = 555;
 
-    private int $seq = 0;
-
-    protected function tearDown(): void
-    {
-        $this->seq = 0;
-
-        parent::tearDown();
-    }
-
     public function testFallbackStagesAudiencePendingWipesSegmentAndFansOutViaMailchimp(): void
     {
         $campaign = $this->createCampaignWithRemoteSegment(3);
+        // Channel pinned to Mailchimp on the campaign (Phase 3 sets this from the recipient count at prepare-time).
+        $campaign->sendViaMailchimp = true;
+        $this->manager->flush();
 
         // The remote segment is wiped once before the refill; zero real Mailchimp HTTP.
         $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
@@ -71,7 +70,7 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
             return new Envelope($message);
         });
 
-        $handler = $this->buildPrepareHandler($bus, $segmentService, sendViaMailchimp: true);
+        $handler = $this->buildPrepareHandler($bus, $segmentService);
         $handler(new PrepareCampaignAudienceMessage($campaign->getId(), $campaign->getMessage()->getSender()->getId()));
 
         $segmentId = $campaign->getMailchimpStaticSegment()->id;
@@ -86,10 +85,60 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         self::assertEmpty(array_filter($dispatched, static fn (object $m): bool => $m instanceof TriggerSesCampaignMessage));
     }
 
+    public function testPrepareRoutesToSesWhenAudienceUnderThreshold(): void
+    {
+        // Real audience of 2 (firstName filter), threshold 10 → count 2 ≤ 10 → SES.
+        $campaign = $this->createCampaignWithRemoteSegment(2);
+
+        $local = $this->createMock(StaticSegmentInitializer::class);
+        $local->expects(self::once())->method('ensureLocalSegment')->with(self::identicalTo($campaign));
+        $remote = $this->createMock(MailchimpChannelInitializer::class);
+        $remote->expects(self::never())->method('ensureRemoteChannel');
+
+        $preparer = $this->buildPreparer($local, $remote, threshold: 10);
+        $preparer->prepare($campaign->getMessage(), $campaign->getMessage()->getSender());
+
+        self::assertFalse($campaign->sendViaMailchimp, 'audience under threshold must route via SES');
+    }
+
+    public function testPrepareRoutesToMailchimpWhenAudienceOverThreshold(): void
+    {
+        // Real audience of 2 (firstName filter), threshold 1 → count 2 > 1 → Mailchimp.
+        $campaign = $this->createCampaignWithRemoteSegment(2);
+
+        $local = $this->createMock(StaticSegmentInitializer::class);
+        $local->expects(self::never())->method('ensureLocalSegment');
+        $remote = $this->createMock(MailchimpChannelInitializer::class);
+        $remote->expects(self::once())->method('ensureRemoteChannel')->with(self::identicalTo($campaign));
+
+        $preparer = $this->buildPreparer($local, $remote, threshold: 1);
+        $preparer->prepare($campaign->getMessage(), $campaign->getMessage()->getSender());
+
+        self::assertTrue($campaign->sendViaMailchimp, 'audience over threshold must route via Mailchimp');
+    }
+
+    private function buildPreparer(
+        StaticSegmentInitializer $staticSegmentInitializer,
+        MailchimpChannelInitializer $mailchimpChannelInitializer,
+        int $threshold,
+    ): AudienceMessagePreparer {
+        $bus = $this->createStub(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturnCallback(static fn (object $m): Envelope => new Envelope($m));
+
+        return new AudienceMessagePreparer(
+            $this->manager,
+            $bus,
+            new SendStatusFactory(),
+            $staticSegmentInitializer,
+            $mailchimpChannelInitializer,
+            self::getContainer()->get(AdherentRepository::class),
+            $threshold,
+        );
+    }
+
     private function buildPrepareHandler(
         MessageBusInterface $bus,
         MailchimpStaticSegmentServiceInterface $segmentService,
-        bool $sendViaMailchimp,
     ): PrepareCampaignAudienceHandler {
         $container = self::getContainer();
 
@@ -102,13 +151,14 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
             $container->get(NormalizerInterface::class),
             $segmentService,
             $container->get(MailchimpObjectIdMapping::class),
-            $sendViaMailchimp,
         );
     }
 
     private function createCampaignWithRemoteSegment(int $audienceSize): MailchimpCampaign
     {
-        $author = $this->makeSubscribedAdherent('Author', 'author');
+        // Unique first name per campaign so the audience COUNT is isolated from other tests' recipients.
+        $audienceFirstName = self::AUDIENCE_FIRST_NAME.'-'.bin2hex(random_bytes(6));
+        $author = $this->makeSubscribedAdherent('Author');
 
         $message = new AdherentMessage(null, $author);
         $message->setSubject('Lettre de campagne');
@@ -116,10 +166,11 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         $message->setInstanceScope(ScopeEnum::NATIONAL);
 
         $filter = new AdherentMessageFilter();
-        $filter->setFirstName(self::AUDIENCE_FIRST_NAME);
+        $filter->setFirstName($audienceFirstName);
         $message->setFilter($filter);
 
         $campaign = new MailchimpCampaign($message);
+        $message->addMailchimpCampaign($campaign);
         // Fallback mode: the remote Mailchimp segment id is provisioned at prepare-time (Phase 1).
         // Here it is pre-set to isolate the Prepare push branch from the remote provisioning.
         $campaign->setStaticSegmentId(self::REMOTE_SEGMENT_ID);
@@ -133,7 +184,7 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         $this->manager->persist($segment);
 
         for ($i = 0; $i < $audienceSize; ++$i) {
-            $this->manager->persist($this->makeSubscribedAdherent(self::AUDIENCE_FIRST_NAME, 'recipient'));
+            $this->manager->persist($this->makeSubscribedAdherent($audienceFirstName));
         }
 
         $this->manager->flush();
@@ -141,10 +192,11 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         return $campaign;
     }
 
-    private function makeSubscribedAdherent(string $firstName, string $emailPrefix): Adherent
+    private function makeSubscribedAdherent(string $firstName): Adherent
     {
-        $seq = ++$this->seq;
-        $email = \sprintf('mc-fallback-%s-%d@test.dev', $emailPrefix, $seq);
+        // Random token keeps test data unique across methods and runs (shared DB, no rollback isolation).
+        $token = bin2hex(random_bytes(8));
+        $email = \sprintf('mc-fallback-%s@test.dev', $token);
 
         $phone = new PhoneNumber();
         $phone->setCountryCode(33);
@@ -153,7 +205,7 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         // status ENABLED + subscribed default: the audience SQL only targets enabled, consenting adherents.
         return Adherent::create(
             Adherent::createUuid($email),
-            \sprintf('MC-%d', $seq),
+            substr($token, 0, 7), // public_id is varchar(7) UNIQUE — 7 hex chars from the random token
             $email,
             'super-password',
             'female',
