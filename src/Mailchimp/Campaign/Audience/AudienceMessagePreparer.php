@@ -10,6 +10,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\StaticSegmentInitializer;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -25,7 +26,8 @@ class AudienceMessagePreparer
         private readonly SendStatusFactory $sendStatusFactory,
         private readonly StaticSegmentInitializer $staticSegmentInitializer,
         private readonly MailchimpChannelInitializer $mailchimpChannelInitializer,
-        private readonly bool $sendViaMailchimp,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly int $sendViaMailchimpThreshold,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -39,8 +41,15 @@ class AudienceMessagePreparer
             return PrepareResult::conflict($this->sendStatusFactory->build($campaign));
         }
 
-        if ($this->sendViaMailchimp) {
-            $this->logger->warning('[Publication] Mailchimp send channel ACTIVE (SES bypass)', ['campaign_id' => $campaign->getId()]);
+        $recipientCount = $this->adherentRepository->countAdherentsForMessage($message, byEmail: true);
+        $campaign->sendViaMailchimp = $recipientCount > $this->sendViaMailchimpThreshold;
+
+        if ($campaign->sendViaMailchimp) {
+            $this->logger->warning('[Publication] Mailchimp send channel selected (recipients over threshold)', [
+                'campaign_id' => $campaign->getId(),
+                'recipient_count' => $recipientCount,
+                'threshold' => $this->sendViaMailchimpThreshold,
+            ]);
             $this->mailchimpChannelInitializer->ensureRemoteChannel($campaign);
         } else {
             $this->staticSegmentInitializer->ensureLocalSegment($campaign);

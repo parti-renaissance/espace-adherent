@@ -393,7 +393,8 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
             ->willReturn(new Envelope(new \stdClass()))
         ;
 
-        $handler = $this->buildHandler($em, $repo, $bus, sendViaMailchimp: true);
+        $campaign->sendViaMailchimp = true;
+        $handler = $this->buildHandler($em, $repo, $bus);
         $handler(new FinalizeCampaignAudienceMessage(7));
 
         self::assertFalse($campaign->isPendingSend());
@@ -405,9 +406,8 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         MailchimpStaticSegmentMemberRepository $repo,
         MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
-        bool $sendViaMailchimp = false,
     ): FinalizeCampaignAudienceHandler {
-        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $sendViaMailchimp, $logger);
+        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $logger);
     }
 
     private function buildCampaign(AdherentMessage $message, int $segmentId): MailchimpCampaign

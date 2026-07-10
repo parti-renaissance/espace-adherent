@@ -14,6 +14,7 @@ use App\Mailchimp\Campaign\Audience\PrepareResult;
 use App\Mailchimp\Campaign\Audience\SendStatusFactory;
 use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\StaticSegmentInitializer;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -38,9 +39,11 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::never())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
+        // Conflict is decided before the audience is counted: the repository must not be queried.
+        $repository = $this->createMock(AdherentRepository::class);
+        $repository->expects(self::never())->method('countAdherentsForMessage');
 
-        $result = $preparer->prepare($message, $bob);
+        $result = $this->buildPreparer($em, $bus, adherentRepository: $repository)->prepare($message, $bob);
 
         self::assertSame(PrepareResult::STATUS_CONFLICT, $result->status);
         self::assertTrue($result->isConflict());
@@ -66,9 +69,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
-
-        $result = $preparer->prepare($message, $alice);
+        $result = $this->buildPreparer($em, $bus, adherentRepository: $this->repositoryReturningCount($message, 10))->prepare($message, $alice);
 
         self::assertSame(PrepareResult::STATUS_PREPARING, $result->status);
         self::assertTrue($result->isPreparing());
@@ -97,9 +98,7 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
-
-        $result = $preparer->prepare($message, $alice);
+        $result = $this->buildPreparer($em, $bus, adherentRepository: $this->repositoryReturningCount($message, 10))->prepare($message, $alice);
 
         self::assertTrue($result->isPreparing());
         self::assertSame(PreparationStatusEnum::Preparing, $campaign->getPreparationStatus());
@@ -109,7 +108,7 @@ class AudienceMessagePreparerTest extends TestCase
         self::assertSame(1, $dispatched->lockedById);
     }
 
-    public function testPrepareEnsuresLocalSegmentForResolvedCampaign(): void
+    public function testPrepareUsesSesLocalSegmentWhenRecipientsUnderThreshold(): void
     {
         $alice = $this->createUser(1, 'alice@example.com');
 
@@ -118,11 +117,11 @@ class AudienceMessagePreparerTest extends TestCase
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
 
-        $initializer = $this->createMock(StaticSegmentInitializer::class);
-        $initializer
-            ->expects(self::once())
-            ->method('ensureLocalSegment')
-            ->with(self::identicalTo($campaign));
+        $localInitializer = $this->createMock(StaticSegmentInitializer::class);
+        $localInitializer->expects(self::once())->method('ensureLocalSegment')->with(self::identicalTo($campaign));
+
+        $mailchimpInitializer = $this->createMock(MailchimpChannelInitializer::class);
+        $mailchimpInitializer->expects(self::never())->method('ensureRemoteChannel');
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
@@ -133,14 +132,20 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $initializer, $this->createStub(MailchimpChannelInitializer::class), false);
-
-        $result = $preparer->prepare($message, $alice);
+        $result = $this->buildPreparer(
+            $em,
+            $bus,
+            staticSegmentInitializer: $localInitializer,
+            mailchimpChannelInitializer: $mailchimpInitializer,
+            adherentRepository: $this->repositoryReturningCount($message, 15_000),
+            threshold: 20_000,
+        )->prepare($message, $alice);
 
         self::assertTrue($result->isPreparing());
+        self::assertFalse($campaign->sendViaMailchimp);
     }
 
-    public function testPrepareUsesMailchimpChannelWhenFallbackFlagIsOn(): void
+    public function testPrepareUsesSesAtThresholdBoundary(): void
     {
         $alice = $this->createUser(1, 'alice@example.com');
 
@@ -149,7 +154,44 @@ class AudienceMessagePreparerTest extends TestCase
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
 
-        // Fallback ON: the remote Mailchimp channel is provisioned, the local-only SES path is skipped.
+        $localInitializer = $this->createMock(StaticSegmentInitializer::class);
+        $localInitializer->expects(self::once())->method('ensureLocalSegment')->with(self::identicalTo($campaign));
+
+        $mailchimpInitializer = $this->createMock(MailchimpChannelInitializer::class);
+        $mailchimpInitializer->expects(self::never())->method('ensureRemoteChannel');
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PrepareCampaignAudienceMessage::class))
+            ->willReturn(new Envelope(new \stdClass()));
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('flush');
+
+        // Strict comparison: a count exactly equal to the threshold stays on SES.
+        $result = $this->buildPreparer(
+            $em,
+            $bus,
+            staticSegmentInitializer: $localInitializer,
+            mailchimpChannelInitializer: $mailchimpInitializer,
+            adherentRepository: $this->repositoryReturningCount($message, 20_000),
+            threshold: 20_000,
+        )->prepare($message, $alice);
+
+        self::assertTrue($result->isPreparing());
+        self::assertFalse($campaign->sendViaMailchimp);
+    }
+
+    public function testPrepareUsesMailchimpRemoteChannelWhenRecipientsOverThreshold(): void
+    {
+        $alice = $this->createUser(1, 'alice@example.com');
+
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $message->addMailchimpCampaign($campaign);
+
         $localInitializer = $this->createMock(StaticSegmentInitializer::class);
         $localInitializer->expects(self::never())->method('ensureLocalSegment');
 
@@ -165,11 +207,31 @@ class AudienceMessagePreparerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())->method('flush');
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $localInitializer, $mailchimpInitializer, true);
+        // The channel decision is auditable: an over-threshold send logs a warning with count and threshold.
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('warning')
+            ->with(
+                '[Publication] Mailchimp send channel selected (recipients over threshold)',
+                self::callback(function (array $context): bool {
+                    return 7 === $context['campaign_id']
+                        && 25_000 === $context['recipient_count']
+                        && 20_000 === $context['threshold'];
+                }),
+            );
 
-        $result = $preparer->prepare($message, $alice);
+        $result = $this->buildPreparer(
+            $em,
+            $bus,
+            staticSegmentInitializer: $localInitializer,
+            mailchimpChannelInitializer: $mailchimpInitializer,
+            adherentRepository: $this->repositoryReturningCount($message, 25_000),
+            threshold: 20_000,
+            logger: $logger,
+        )->prepare($message, $alice);
 
         self::assertTrue($result->isPreparing());
+        self::assertTrue($campaign->sendViaMailchimp);
     }
 
     public function testPrepareDispatchFailureLogsErrorAndRethrows(): void
@@ -202,7 +264,12 @@ class AudienceMessagePreparerTest extends TestCase
                 }),
             );
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false, $logger);
+        $preparer = $this->buildPreparer(
+            $em,
+            $bus,
+            adherentRepository: $this->repositoryReturningCount($message, 10),
+            logger: $logger,
+        );
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('broker down');
@@ -217,10 +284,40 @@ class AudienceMessagePreparerTest extends TestCase
         $bus = $this->createStub(MessageBusInterface::class);
         $em = $this->createStub(EntityManagerInterface::class);
 
-        $preparer = new AudienceMessagePreparer($em, $bus, new SendStatusFactory(), $this->createStub(StaticSegmentInitializer::class), $this->createStub(MailchimpChannelInitializer::class), false);
-
         $this->expectException(\LogicException::class);
-        $preparer->prepare($message, $this->createUser(1, 'alice@example.com'));
+        $this->buildPreparer($em, $bus)->prepare($message, $this->createUser(1, 'alice@example.com'));
+    }
+
+    private function buildPreparer(
+        EntityManagerInterface $em,
+        MessageBusInterface $bus,
+        ?StaticSegmentInitializer $staticSegmentInitializer = null,
+        ?MailchimpChannelInitializer $mailchimpChannelInitializer = null,
+        ?AdherentRepository $adherentRepository = null,
+        int $threshold = 20_000,
+        ?LoggerInterface $logger = null,
+    ): AudienceMessagePreparer {
+        return new AudienceMessagePreparer(
+            $em,
+            $bus,
+            new SendStatusFactory(),
+            $staticSegmentInitializer ?? $this->createStub(StaticSegmentInitializer::class),
+            $mailchimpChannelInitializer ?? $this->createStub(MailchimpChannelInitializer::class),
+            $adherentRepository ?? $this->createStub(AdherentRepository::class),
+            $threshold,
+            $logger,
+        );
+    }
+
+    private function repositoryReturningCount(AdherentMessage $message, int $count): AdherentRepository
+    {
+        $repository = $this->createMock(AdherentRepository::class);
+        $repository->expects(self::once())
+            ->method('countAdherentsForMessage')
+            ->with(self::identicalTo($message), true)
+            ->willReturn($count);
+
+        return $repository;
     }
 
     private function createUser(int $id, string $email): Adherent
