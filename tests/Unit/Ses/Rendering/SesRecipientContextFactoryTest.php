@@ -42,6 +42,41 @@ class SesRecipientContextFactoryTest extends TestCase
         self::assertSame('Chère &lt;script&gt;alert(1)&lt;/script&gt;', $context[$this->code(Dictionary::SALUTATION)]);
     }
 
+    public function testBodyEscapesAmpersandOnceWithoutDoubleEncoding(): void
+    {
+        // Locks the StringCleaner contract (double_encode=false): a value already carrying an entity
+        // must NOT be re-encoded. Guards the buildRaw() refactor.
+        $context = new SesRecipientContextFactory()->create(
+            new SesRecipient('a@b.fr', 'uuid-1', 'Tom & Jerry', 'D &amp; Co', Genders::MALE, '5')
+        );
+
+        self::assertSame('Tom &amp; Jerry', $context[$this->code(Dictionary::FIRST_NAME)]);
+        self::assertSame('D &amp; Co', $context[$this->code(Dictionary::LAST_NAME)]);
+        self::assertSame('Cher Tom &amp; Jerry', $context[$this->code(Dictionary::SALUTATION)]);
+    }
+
+    public function testCreateForSubjectReturnsRawUnescapedValues(): void
+    {
+        // A subject is a header, not HTML: values must stay raw (no &amp;/&lt;).
+        $context = new SesRecipientContextFactory()->createForSubject(
+            new SesRecipient('a@b.fr', 'uuid-1', 'Tom & Jerry', '<b>D</b>', Genders::FEMALE, '9&9')
+        );
+
+        self::assertSame('Tom & Jerry', $context[$this->code(Dictionary::FIRST_NAME)]);
+        self::assertSame('<b>D</b>', $context[$this->code(Dictionary::LAST_NAME)]);
+        self::assertSame('9&9', $context[$this->code(Dictionary::PUBLIC_ID)]);
+        self::assertSame('Chère Tom & Jerry', $context[$this->code(Dictionary::SALUTATION)]);
+    }
+
+    public function testCreateForSubjectKeepsSalutationEmptyWhenGenderAbsent(): void
+    {
+        $context = new SesRecipientContextFactory()->createForSubject(
+            new SesRecipient('a@b.fr', 'uuid-1', 'Jean', 'Dupont', null, '12345')
+        );
+
+        self::assertSame('', $context[$this->code(Dictionary::SALUTATION)]);
+    }
+
     private function code(string $name): string
     {
         return \sprintf('{{%s}}', $name);

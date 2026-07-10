@@ -110,6 +110,41 @@ class SesRecipientEmailFactoryTest extends TestCase
         self::assertSame(self::UUID, $email->adherentUuid);
     }
 
+    public function testCreateResolvesSubjectVariablesPerRecipientWithRawValues(): void
+    {
+        $assembled = new AssembledCampaignEmail(
+            \sprintf('<p>%s</p>', $this->code(Dictionary::FIRST_NAME)),
+            \sprintf('Bonjour %s %s', $this->code(Dictionary::FIRST_NAME), $this->code(Dictionary::LAST_NAME)),
+            'contact@renaissance.code',
+        );
+
+        $email = $this->factory()->create(
+            $assembled,
+            new SesRecipient('a@b.fr', self::UUID, 'Tom & Jerry', 'Cie', Genders::MALE, 'A1')
+        );
+
+        // Subject: raw values (a header is not HTML) — the '&' must stay '&', not '&amp;'.
+        self::assertSame('Bonjour Tom & Jerry Cie', $email->subject);
+        // Same code in the body, but HTML-escaped there.
+        self::assertStringContainsString('Tom &amp; Jerry', $email->html);
+    }
+
+    public function testCreateStripsCrlfFromRenderedSubject(): void
+    {
+        $assembled = new AssembledCampaignEmail(
+            '<p>x</p>',
+            \sprintf('Sujet %s', $this->code(Dictionary::LAST_NAME)),
+            'contact@renaissance.code',
+        );
+
+        $email = $this->factory()->create(
+            $assembled,
+            new SesRecipient('a@b.fr', self::UUID, 'Ann', "Line1\r\nLine2", Genders::FEMALE, 'A1')
+        );
+
+        self::assertSame('Sujet Line1Line2', $email->subject);
+    }
+
     private function factory(): SesRecipientEmailFactory
     {
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
