@@ -84,6 +84,21 @@ class PollControllerTest extends AbstractApiTestCase
         }
     }
 
+    public function testGetPollsListReturnsPublishedPastAndCurrentSortedByFinishDesc(): void
+    {
+        $data = $this->getJson('/api/v3/polls');
+
+        $uuids = array_column($data['items'], 'uuid');
+
+        self::assertContains(LoadPollData::POLL_01_UUID, $uuids);
+        self::assertContains(LoadPollData::POLL_06_UUID, $uuids);
+        self::assertNotContains(LoadPollData::POLL_07_UUID, $uuids);
+        self::assertLessThan(
+            array_search(LoadPollData::POLL_06_UUID, $uuids, true),
+            array_search(LoadPollData::POLL_01_UUID, $uuids, true),
+        );
+    }
+
     public function testGetUpcomingPollHidesResultsAndParticipants(): void
     {
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_07_UUID);

@@ -8,6 +8,7 @@ use App\Admin\AbstractAdmin;
 use App\Admin\AdherentAdmin;
 use App\Entity\Adherent;
 use App\Form\Admin\AdherentAutocompleteType;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -18,6 +19,14 @@ class PollVoteAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept('list');
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'startAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
     protected function configureBatchActions(array $actions): array

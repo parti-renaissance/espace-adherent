@@ -6,6 +6,7 @@ namespace App\Entity\Poll;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
@@ -29,6 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
+        new GetCollection(
+            uriTemplate: '/polls',
+            paginationItemsPerPage: 20,
+        ),
         new Get(
             uriTemplate: '/polls/current',
             provider: CurrentPollProvider::class,
