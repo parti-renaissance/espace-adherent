@@ -546,6 +546,23 @@ Feature:
             }
             """
 
+    Scenario: As a delegated referent the subject variables are resolved for the connected user in the message_read payload
+        Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
+            """
+            {
+                "sender": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                "label": "Message avec variable dans le sujet",
+                "subject": "Bonjour {{Prénom}}",
+                "content": "<table>...</table>",
+                "json_content": "{\"foo\": \"bar\"}"
+            }
+            """
+        Then the response status code should be 201
+        And the response should be in JSON
+        # {{Prénom}} is resolved to the connected user's (Bob) first name in the message_read output.
+        And the JSON node "subject" should be equal to "Bonjour Bob"
+
     Scenario Outline: As a (delegated) referent I can update a draft message
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
         When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=<scope>" with body:

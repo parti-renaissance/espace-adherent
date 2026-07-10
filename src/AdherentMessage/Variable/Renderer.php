@@ -31,6 +31,20 @@ class Renderer
         return $this->render($content, $currentUser, TipTapVariableRenderer::getFormat());
     }
 
+    /**
+     * Resolves the Dictionary codes of a plain-text string (e.g. a subject) to the current user's
+     * concrete values. Kept in the facade (Parser + ContextBuilder + strtr) rather than dispatching
+     * to a transport-format renderer, to avoid coupling a preview to the SES/Mailchimp formats.
+     */
+    public function renderPlain(string $content, Adherent $currentUser): string
+    {
+        if (!$variables = $this->parser->extract($content)) {
+            return $content;
+        }
+
+        return strtr($content, $this->contextBuilder->build($variables, $currentUser));
+    }
+
     private function render(string $content, ?Adherent $currentUser, string $format): string
     {
         if (!$variables = $this->parser->extract($content)) {

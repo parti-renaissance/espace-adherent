@@ -38,6 +38,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         if (\in_array('message_read', $groups, true) && $user = $this->security->getUser()) {
             $data['json_content'] = $this->variableRenderer->renderTipTap($data['json_content'] ?? '', $user);
+            $data['subject'] = $this->variableRenderer->renderPlain($data['subject'] ?? '', $user);
         }
 
         if (\in_array('message_read', $groups, true) && $campaign = ($object->getMailchimpCampaigns()[0] ?? null)) {

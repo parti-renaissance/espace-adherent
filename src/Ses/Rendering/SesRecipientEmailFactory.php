@@ -42,7 +42,7 @@ class SesRecipientEmailFactory
 
         return new SesEmail(
             $recipient->email,
-            $assembled->subject,
+            $this->renderSubject($assembled->subject, $recipient),
             $html,
             $assembled->fromEmail,
             $assembled->fromName,
@@ -51,5 +51,16 @@ class SesRecipientEmailFactory
             campaignUuid: $assembled->campaignUuid,
             adherentUuid: $recipient->uuid,
         );
+    }
+
+    private function renderSubject(string $subject, SesRecipient $recipient): string
+    {
+        if (!$variables = $this->parser->extract($subject)) {
+            return $subject;
+        }
+
+        $rendered = $this->variableRenderer->render($subject, $variables, $this->contextFactory->createForSubject($recipient));
+
+        return str_replace(["\r", "\n"], '', $rendered);
     }
 }
