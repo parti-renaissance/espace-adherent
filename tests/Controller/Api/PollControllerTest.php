@@ -37,8 +37,10 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertArrayNotHasKey('enabled', $data);
         self::assertArrayHasKey('choices', $data);
         self::assertArrayNotHasKey('result', $data);
+        self::assertArrayHasKey('participants', $data);
         self::assertFalse($data['has_voted']);
         self::assertNull($data['voted_choice']);
+        self::assertNull($data['voted_at']);
     }
 
     public function testGetCurrentPollReturnsNoContentWhenNoActivePoll(): void
@@ -110,6 +112,8 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame(5, $data['result']['total']);
         self::assertTrue($data['has_voted']);
         self::assertSame(LoadPollData::POLL_01_CHOICE_01_UUID, $data['voted_choice']);
+        self::assertNotNull($data['voted_at']);
+        self::assertNotFalse(\DateTimeImmutable::createFromFormat(\DateTimeInterface::RFC3339, $data['voted_at']));
     }
 
     public function testVotingTwiceOnSamePollReturnsConflict(): void
