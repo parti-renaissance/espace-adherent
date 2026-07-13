@@ -1,5 +1,5 @@
-name: Dependencies cache
-description: Restore dependencies from cache
+name: Dependencies
+description: Restore the composer dependencies from cache and the static assets built by the "build-static" job
 
 outputs:
     composer-cache-hit:
@@ -11,16 +11,13 @@ runs:
     steps:
         - name: Cache composer
           id: composer-cache
-          uses: actions/cache@v5
+          uses: actions/cache@v6
           with:
               path: vendor/
               key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
-        - name: Cache static assets
-          uses: actions/cache@v5
+        - name: Download static assets
+          uses: actions/download-artifact@v8
           with:
-              path: |
-                  public/built/
-                  public/css/
-                  public/select2/
-              key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'assets/**', 'webpack.*.js') }}
+              name: ${{ env.STATIC_ASSETS_ARTIFACT }}
+              path: public/built/
