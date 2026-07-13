@@ -44,3 +44,6 @@ CLAUDE.local.md
 
 # Backups socle-migration (à supprimer une fois la migration validée)
 *.pre-socle-backup
+
+# Backups socle-update (auto-générés avant régénération du snippet/runbooks)
+*.pre-update

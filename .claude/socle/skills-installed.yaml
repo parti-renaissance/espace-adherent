@@ -1,27 +1,18 @@
 # Lock file socle — skills installées sur ce projet (PRD §16.3)
-# Régénéré par /socle-init ou /socle-migrate-existing.
-# Source de vérité = skills-lock.json (natif npx skills) + ce fichier (vue socle).
+# Régénéré par /socle-init, /socle-migrate-existing ou /socle-update.
+# Source de vérité par canal :
+# - plugin_marketplace: source native Claude Code (.claude/settings.json enabledPlugins + extraKnownMarketplaces)
+# - npx_skills: skills-lock.json (natif npx skills)
+# - internal: socle interne (repo dogfood)
 
-external_skills:
+plugin_marketplace:
   - source: obra/superpowers
-    version: ""
-    commit: ""
-    skills:
-      - brainstorming
-      - dispatching-parallel-agents
-      - executing-plans
-      - finishing-a-development-branch
-      - receiving-code-review
-      - requesting-code-review
-      - subagent-driven-development
-      - systematic-debugging
-      - test-driven-development
-      - using-git-worktrees
-      - using-superpowers
-      - verification-before-completion
-      - writing-plans
-      - writing-skills
+    marketplace: superpowers-dev
+    plugin: superpowers
+    version: "6.1.1"
+    installed_via: claude_code_plugin
 
+npx_skills:
   - source: openai/skills
     version: ""
     commit: ""
@@ -31,7 +22,8 @@ external_skills:
 
 internal_renaissance_skills:
   - source: socle (interne)
-    version: "0.3.0"
-    commit: "1fedbfb"
+    version: "0.5.1"
+    commit: "e111688"
     skills:
       - renaissance-symfony-conventions
+      - caveman-po

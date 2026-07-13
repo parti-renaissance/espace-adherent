@@ -1,6 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "_comment": "Settings de base socle (templates/settings/repo-baseline.json) + enrichissement local : ce projet utilise 'master' comme branche principale.",
+  "enabledPlugins": {
+    "superpowers@superpowers-dev": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    }
+  },
   "permissions": {
     "deny": [
       "Bash(rm -rf /:*)",

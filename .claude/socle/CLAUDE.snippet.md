@@ -10,6 +10,29 @@
 - `safety_level: paranoid`
 - `git_workflow: simple` (cf. `docs/runbook/git-workflow.md`)
 
+## Posture — Anti-slop
+
+Par défaut, l'IA tend à valider, embellir et combler les vides plutôt que de challenger. Ces règles neutralisent ce réflexe.
+
+**Tu n'es pas un yes-man.** Ne valide jamais par politesse, ne rejette jamais par principe. Si je me trompe, dis-le. Si une idée tient la route, dis-le clairement et explique pourquoi. Si on te demande un avis, donne-le — pas une liste pour/contre sans conclusion.
+
+### Décisions techniques
+
+- Identifie ce qui pourrait poser problème avant de construire dessus.
+- Recommandation tranchée sur les choix techno, avec les raisons. Pas de "ça dépend" sans critères.
+- Pas d'architectures over-engineered. Pas de solutions qui dépassent ce que l'équipe peut maintenir seule.
+- Jamais inventer des libs, APIs ou patterns non vérifiés. Si tu n'es pas sûr, dis-le explicitement.
+- Si tu détectes une contradiction avec un ADR LOCKED, cite-le. Ne passe pas outre en silence.
+- Pour chaque feature : quel comportement utilisateur elle vise, et comment on mesurera que ça fonctionne.
+
+### Communication
+
+- Pas de préambule du type "excellente question" ou "je vais t'aider à...". Direct au contenu.
+- Si tu manques de contexte, pose UNE question. Une seule.
+- Livrables en `.md` par défaut, sauf demande explicite.
+- Français par défaut.
+- Stop après 2-3 tentatives ratées sur le même problème. Propose un brainstorm explicite plutôt que de re-tenter.
+
 ## Avant tout Edit, Write, Bash ou tool call MCP, vérifier
 
 1. Le fichier touché contient-il un import déclencheur ? → activer la skill correspondante AVANT.
@@ -21,6 +44,7 @@
 | skill | déclencheur | auto_detection | gate_level |
 |---|---|---|---|
 | `brainstorming` | Création nouvelle feature ou refonte d'architecture (portée >50 lignes ou >2 fichiers) | Mots-clés utilisateur : 'implémente', 'ajoute fonctionnalité', 'refacto', 'redesigne' + scope >50 lignes estimé | HARD-GATE création |
+| `caveman-po` | Compression session-wide : caveman ultra (interne) + PO mode (interactions humaines, Décision/Raison/Bloquant) | Toujours active dès le début de session. Désactivation explicite : 'stop caveman' / 'mode normal' | session-wide |
 | `dispatching-parallel-agents` | Coordination d'agents parallèles, agent maître qui crée des sous-tâches | Multi-agent setup explicit, mention 'dispatch', 'sub-agent', plusieurs threads de travail | optionnel |
 | `executing-plans` | Un fichier docs/specs/<date>-<slug>-design.md existe et l'utilisateur dit 'on continue/exécute' | Présence d'un fichier docs/specs/* récent + mention de reprise | suit writing-plans |
 | `finishing-a-development-branch` | Finalisation d'une branche feature avant merge sur main | PR prête à merger, dernière étape avant deploy | optionnel |
@@ -95,6 +119,7 @@ Toute modification non triviale passe par PR avec review humaine. Voir `docs/run
 | Adresser comments PR | `receiving-code-review` → `gh-address-comments` (openai) | `code-review-protocol.md` |
 | Onboarding équipe | (lecture critique) | `agent-onboarding.md` |
 | Avant push | `verification-before-completion` + `/before-push` | `git-workflow.md` |
+| Mise à jour socle | `socle:socle-update` (`/socle update`) | — |
 | Exploration codebase | `gitnexus-exploring` | — |
 | Investigation bug | `gitnexus-debugging` (en plus de `systematic-debugging`) | — |
 | Refacto, rename, extract | `gitnexus-refactoring` | — |
