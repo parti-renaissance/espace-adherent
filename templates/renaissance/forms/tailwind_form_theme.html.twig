@@ -238,7 +238,7 @@
             status: valid ? 'default' : 'error',
             'x-numberonly': '',
             ...attr,
-            class: 'w-full re-phone' ~ (attr and attr.class ? ' ' ~ attr.class : ''),
+            class: 'w-full re-phone' ~ (attr.class is defined and attr.class ? ' ' ~ attr.class : ''),
         }}) }}
     </div>
 {% endblock %}

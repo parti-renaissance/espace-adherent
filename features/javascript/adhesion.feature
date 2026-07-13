@@ -245,7 +245,17 @@ Feature:
             | membership_request[address][cityName]   | Paris                 |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
-        And I press "Suivant"
+
+        # Phone is mandatory: while it is empty the step stays locked
+        Then the element "#step_2 .re-button" should be disabled
+        And I should see a "#step_3.re-step--disabled" element
+
+        When I fill in the following:
+            | membership_request[phone][number] | 0611223344 |
+        And I click the "membership_request_phone_country_select_widget" element
+        And I click the "#membership_request_phone_country_select_widget .re-input-option--selected" selector
+        Then the element "#step_2 .re-button" should be enabled
+        When I press "Suivant"
         And I wait 1 second
         And I click the "membership_request_exclusiveMembership_1" element
         Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
@@ -342,11 +352,8 @@ Feature:
         # Step 4 : communications
         Then I should be on "/adhesion/rappel-communication" wait otherwise
         And I should see "Attention, vous ne recevrez jamais aucune communication par téléphone de notre part"
+        # Phone is now mandatory at signup: the member already has one (field hidden), so no missing-phone warning here
         When I click the "input[name='adhesion_communication[acceptSms]']" selector
-        And I press "Continuer"
-        Then I should see "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone."
-        When I fill in the following:
-            | adhesion_communication[phone][number] | 0123456789 |
         And I press "Continuer"
 
         # Finish step

@@ -48,7 +48,7 @@ class MembershipRequestType extends AbstractType
                 'expanded' => true,
             ])
             ->add('phone', TelNumberType::class, [
-                'required' => false,
+                'required' => true,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('acceptSmsNotification', CheckboxType::class, ['required' => false, 'mapped' => false])

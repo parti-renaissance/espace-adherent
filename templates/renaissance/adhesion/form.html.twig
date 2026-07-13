@@ -113,7 +113,10 @@
                                         </div>
 
                                         <fieldset>
-                                            {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}
+                                            {{ form_row(form.phone, {
+                                                label: 'Numéro de téléphone',
+                                                attr: {validate: "['required']", onCheck: "setFieldValid('phone')"},
+                                            }) }}
                                         </fieldset>
 
                                         {{ form_row(form.nationality, {
