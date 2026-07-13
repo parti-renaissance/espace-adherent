@@ -289,9 +289,11 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
         $affected = (int) $this->getEntityManager()->createQueryBuilder()
             ->update(MailchimpStaticSegmentMember::class, 'm')
             ->set('m.processingStatus', ':sending')
+            ->set('m.claimedAt', ':now')
             ->where('m.id = :id')
             ->andWhere('m.processingStatus = :added')
             ->setParameter('sending', SegmentMemberStatusEnum::Sending)
+            ->setParameter('now', new \DateTimeImmutable())
             ->setParameter('id', $rowId)
             ->setParameter('added', SegmentMemberStatusEnum::Added)
             ->getQuery()
@@ -358,6 +360,153 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+
+    public function markRowErrored(int $rowId, ?string $reason): void
+    {
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':sendErrored')
+            ->set('m.processedAt', ':now')
+            ->set('m.errorMessage', ':reason')
+            ->where('m.id = :id')
+            ->andWhere('m.processingStatus = :sending')
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setParameter('reason', $reason)
+            ->setParameter('id', $rowId)
+            ->setParameter('sending', SegmentMemberStatusEnum::Sending)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    /**
+     * @return int 1 when promoted, 0 when the row left SendErrored already or still carries no proof
+     */
+    public function promoteSendErroredRowToSent(int $rowId): int
+    {
+        return (int) $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':sent')
+            ->where('m.id = :id')
+            ->andWhere('m.processingStatus = :sendErrored')
+            ->andWhere('m.deliveredAt IS NOT NULL OR m.delayedAt IS NOT NULL OR m.bouncedAt IS NOT NULL OR m.complainedAt IS NOT NULL OR m.rejectedAt IS NOT NULL')
+            ->setParameter('sent', SegmentMemberStatusEnum::Sent)
+            ->setParameter('id', $rowId)
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function findStaleSendingRowIds(int $staticSegmentId, \DateTimeImmutable $claimedBefore): array
+    {
+        $rows = $this->createQueryBuilder('m')
+            ->select('m.id')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.processingStatus = :sending')
+            ->andWhere('m.claimedAt IS NOT NULL AND m.claimedAt < :claimedBefore')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->setParameter('sending', SegmentMemberStatusEnum::Sending)
+            ->setParameter('claimedBefore', $claimedBefore)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map(static function (array $row): int {
+            return (int) $row['id'];
+        }, $rows);
+    }
+
+    public function quarantineStaleSendingRow(int $rowId, \DateTimeImmutable $claimedBefore, string $reason): bool
+    {
+        $affected = (int) $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':sendErrored')
+            ->set('m.processedAt', ':now')
+            ->set('m.errorMessage', ':reason')
+            ->where('m.id = :id')
+            ->andWhere('m.processingStatus = :sending')
+            ->andWhere('m.claimedAt IS NOT NULL AND m.claimedAt < :claimedBefore')
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setParameter('reason', $reason)
+            ->setParameter('id', $rowId)
+            ->setParameter('sending', SegmentMemberStatusEnum::Sending)
+            ->setParameter('claimedBefore', $claimedBefore)
+            ->getQuery()
+            ->execute()
+        ;
+
+        return 1 === $affected;
+    }
+
+    public function findSendErroredRowIdForMember(int $messageId, int $adherentId): ?int
+    {
+        $segmentIds = $this->resolveSegmentIdsForMessage($messageId);
+        if ([] === $segmentIds) {
+            return null;
+        }
+
+        $rowId = $this->createQueryBuilder('m')
+            ->select('m.id')
+            ->where('m.staticSegment IN (:segmentIds)')
+            ->andWhere('IDENTITY(m.adherent) = :adherentId')
+            ->andWhere('m.processingStatus = :sendErrored')
+            ->setParameter('segmentIds', $segmentIds)
+            ->setParameter('adherentId', $adherentId)
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        return null !== $rowId ? (int) $rowId['id'] : null;
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function findUnconfirmedQuarantinedRowIds(int $staticSegmentId): array
+    {
+        $rows = $this->createQueryBuilder('m')
+            ->select('m.id')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.processingStatus = :sendErrored')
+            ->andWhere('m.deliveredAt IS NULL AND m.delayedAt IS NULL AND m.bouncedAt IS NULL AND m.complainedAt IS NULL AND m.rejectedAt IS NULL')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map(static function (array $row): int {
+            return (int) $row['id'];
+        }, $rows);
+    }
+
+    public function reopenQuarantinedRow(int $rowId): bool
+    {
+        $affected = (int) $this->getEntityManager()->createQueryBuilder()
+            ->update(MailchimpStaticSegmentMember::class, 'm')
+            ->set('m.processingStatus', ':added')
+            ->set('m.claimedAt', ':null')
+            ->where('m.id = :id')
+            ->andWhere('m.processingStatus = :sendErrored')
+            ->andWhere('m.deliveredAt IS NULL AND m.delayedAt IS NULL AND m.bouncedAt IS NULL AND m.complainedAt IS NULL AND m.rejectedAt IS NULL')
+            ->setParameter('added', SegmentMemberStatusEnum::Added)
+            ->setParameter('null', null)
+            ->setParameter('id', $rowId)
+            ->setParameter('sendErrored', SegmentMemberStatusEnum::SendErrored)
+            ->getQuery()
+            ->execute()
+        ;
+
+        return 1 === $affected;
     }
 
     public function markUnsubscribedById(int $rowId, \DateTimeImmutable $unsubscribedAt): int

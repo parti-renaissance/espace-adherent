@@ -50,6 +50,16 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'limit' => 2000,
                 'interval' => '1 day',
             ],
+            'ses_send' => [
+                'policy' => 'token_bucket',
+                'limit' => '%env(int:SES_SEND_RATE_PER_SECOND)%',
+                'rate' => [
+                    'interval' => '1 second',
+                    'amount' => '%env(int:SES_SEND_RATE_PER_SECOND)%',
+                ],
+                'cache_pool' => 'cache.app',
+                'lock_factory' => 'lock.factory',
+            ],
         ],
     ]);
 };

@@ -6,6 +6,7 @@ namespace Tests\App\Ses\Webhook;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageReach;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Entity\AdherentMessage\MailchimpStaticSegmentMember;
@@ -95,6 +96,46 @@ class DeliveryProcessorTest extends AbstractKernelTestCase
         self::assertSame('MailboxFull', $member->delayType);
     }
 
+    public function testDeliveryPromotesAQuarantinedRowAndRecordsItsReach(): void
+    {
+        // The send failed ambiguously (5xx/network): the row was quarantined because SES may or may not have
+        // accepted it. This delivery event is the proof that it did — and it must promote the row on the spot,
+        // not wait for the timed reconciliation, whose delayed message can be lost with the broker.
+        [$message, $recipient, $segmentId] = $this->createSentCampaignWithRecipient(SegmentMemberStatusEnum::SendErrored);
+
+        $this->handle($message->getUuid(), $recipient->getUuid(), '2026-07-02T14:35:10.000Z');
+
+        $member = $this->reloadMember($segmentId, $recipient->getUuid());
+        self::assertSame(SegmentMemberStatusEnum::Sent, $member->processingStatus, 'the event proves the ambiguous send did happen');
+        self::assertNotNull($member->deliveredAt);
+        self::assertSame(1, $this->countReach($message->getId()), 'the promoted recipient joins the campaign reach');
+    }
+
+    public function testDeliveryLeavesANonQuarantinedRowStatusAlone(): void
+    {
+        // Only a quarantined row is ever promoted: an event on a row already closed must not rewrite its status
+        // (a Refused row stays Refused — SES never accepted it in the first place).
+        [$message, $recipient, $segmentId] = $this->createSentCampaignWithRecipient(SegmentMemberStatusEnum::Refused);
+
+        $this->handle($message->getUuid(), $recipient->getUuid(), '2026-07-02T14:35:10.000Z');
+
+        $member = $this->reloadMember($segmentId, $recipient->getUuid());
+        self::assertSame(SegmentMemberStatusEnum::Refused, $member->processingStatus);
+        self::assertSame(0, $this->countReach($message->getId()));
+    }
+
+    private function countReach(int $messageId): int
+    {
+        return (int) $this->getRepository(AdherentMessageReach::class)
+            ->createQueryBuilder('r')
+            ->select('COUNT(r.id)')
+            ->where('IDENTITY(r.message) = :mid')
+            ->setParameter('mid', $messageId)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     private function handle(Uuid $messageUuid, Uuid $adherentUuid, string $timestamp): void
     {
         $payload = ['Message' => json_encode([
@@ -128,7 +169,7 @@ class DeliveryProcessorTest extends AbstractKernelTestCase
     /**
      * @return array{AdherentMessage, Adherent, int}
      */
-    private function createSentCampaignWithRecipient(): array
+    private function createSentCampaignWithRecipient(SegmentMemberStatusEnum $status = SegmentMemberStatusEnum::Sent): array
     {
         $author = $this->persistAdherent();
         $recipient = $this->persistAdherent();
@@ -145,7 +186,7 @@ class DeliveryProcessorTest extends AbstractKernelTestCase
         $campaign->setMailchimpStaticSegment($segment);
 
         $member = new MailchimpStaticSegmentMember($segment, $recipient, 1);
-        $member->processingStatus = SegmentMemberStatusEnum::Sent;
+        $member->processingStatus = $status;
         $member->processedAt = new \DateTimeImmutable('2026-07-02 14:33:30');
 
         $this->manager->persist($message);

@@ -14,9 +14,11 @@ use AsyncAws\Ses\SesClient;
  *
  * Error policy (see SesSendOutcome): a permanent 4xx rejection becomes a returned outcome; throttling
  * (429), a 200 with no MessageId (the send was not really accepted, e.g. an unsigned request when no
- * credentials resolve) and any other failure (5xx, network) propagate as exceptions so the caller reopens
- * the row and lets Messenger retry — never a silent "sent". Client-side rate limiting is intentionally NOT
- * done here: at the target volume (a few thousand per send) the 429-as-retryable path is sufficient.
+ * credentials resolve) and any other failure (5xx, network) propagate as exceptions — never a silent
+ * "sent". The caller splits them: a 429 (provably rejected) reopens the row and re-dispatches; an ambiguous
+ * failure (5xx / network / empty MessageId, where SES may already have sent) quarantines the row terminally
+ * (SendErrored, never re-sent) and rethrows. Client-side rate limiting is intentionally NOT done here: at
+ * the target volume (a few thousand per send) the 429-as-retryable path is sufficient.
  */
 class SesEmailClient
 {

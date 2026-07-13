@@ -7,6 +7,7 @@ namespace App\Ses\Campaign\Handler;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\MailchimpCampaignRepository;
+use App\Ses\Campaign\Message\ReapStaleSendingRowsMessage;
 use App\Ses\Campaign\Message\SendSesCampaignChunkMessage;
 use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,6 +71,8 @@ class TriggerSesCampaignHandler
         foreach ($chunkNumbers as $chunkNumber) {
             $this->bus->dispatch(new SendSesCampaignChunkMessage($message->campaignId, $chunkNumber));
         }
+
+        $this->bus->dispatch(new ReapStaleSendingRowsMessage($message->campaignId));
 
         $this->logger->info('[SES][Campaign] Fan-out dispatched', [
             'campaign_id' => $message->campaignId,

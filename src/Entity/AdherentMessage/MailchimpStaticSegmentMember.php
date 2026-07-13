@@ -36,6 +36,9 @@ class MailchimpStaticSegmentMember
     public SegmentMemberStatusEnum $processingStatus = SegmentMemberStatusEnum::Pending;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeImmutable $claimedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     public ?\DateTimeImmutable $processedAt = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]

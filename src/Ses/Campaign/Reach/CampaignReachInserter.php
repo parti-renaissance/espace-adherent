@@ -48,4 +48,14 @@ class CampaignReachInserter
             $this->bulkInsertHelper->insertIgnore('adherent_message_reach', $rows);
         }
     }
+
+    public function insertOne(int $messageId, int $adherentId): void
+    {
+        $this->bulkInsertHelper->insertIgnore('adherent_message_reach', [[
+            'message_id' => $messageId,
+            'adherent_id' => $adherentId,
+            'source' => self::SOURCE,
+            'date' => new \DateTime()->format('Y-m-d H:i:s'),
+        ]]);
+    }
 }
