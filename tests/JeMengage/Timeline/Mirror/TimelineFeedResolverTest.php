@@ -60,8 +60,8 @@ class TimelineFeedResolverTest extends AbstractKernelTestCase
         self::assertTrue($poll->getUuid()->equals($document->objectId));
         self::assertSame(TimelineFeedTypeEnum::POLL, $document->type);
         self::assertInstanceOf(\DateTimeImmutable::class, $document->publicationDate);
-        // A poll's start (exposed as begin_at) drives the mirror event_date (see TimelineFeedTransformer).
-        self::assertInstanceOf(\DateTimeImmutable::class, $document->eventDate);
+        self::assertEquals($poll->getFinishAt(), $document->eventDate);
+        self::assertSame($poll->getStartAt()->format('c'), $document->display['begin_at']);
         self::assertSame($document->objectId->toRfc4122(), $document->display['objectID']);
         self::assertSame('Plutôt thé ou café ?', $document->display['title']);
     }

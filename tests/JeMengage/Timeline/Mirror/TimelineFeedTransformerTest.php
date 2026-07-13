@@ -45,6 +45,20 @@ class TimelineFeedTransformerTest extends TestCase
         self::assertArrayNotHasKey('exclude', $result['audience']);
     }
 
+    public function testPollEventDateIsItsClosingDateNotItsOpeningDate(): void
+    {
+        $result = $this->transformer->transform([
+            'type' => 'poll',
+            'date' => '2026-07-10T14:00:00+02:00',
+            'begin_at' => '2026-07-10T14:00:00+02:00',
+            'finish_at' => '2026-07-12T18:00:00+02:00',
+            'audience' => $this->defaultFacets(),
+        ]);
+
+        self::assertEquals(new \DateTimeImmutable('2026-07-12T18:00:00+02:00'), $result['eventDate']);
+        self::assertEquals(new \DateTimeImmutable('2026-07-10T14:00:00+02:00'), $result['publicationDate']);
+    }
+
     public function testNationalNewsBucketsNationalAndZonesWithoutAdherentIds(): void
     {
         $result = $this->transformer->transform([
