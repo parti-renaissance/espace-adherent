@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Ses\Webhook\Processor;
 
 use App\AdherentMessage\Stats\EmailAppHitWriter;
+use App\Ses\Campaign\Reconciliation\SendErroredRowReconciler;
 use App\Ses\Webhook\AttributableSesEvent;
 use App\Ses\Webhook\OpenReliability;
 use App\Ses\Webhook\SesEngagementEvent;
@@ -22,10 +23,11 @@ class EngagementProcessor extends AbstractAttributableSesEventProcessor
     public function __construct(
         SesEngagementParser $parser,
         SesEventTargetResolver $resolver,
+        SendErroredRowReconciler $reconciler,
         private readonly EmailAppHitWriter $appHitWriter,
         private readonly SesOpenReliabilityClassifier $classifier,
     ) {
-        parent::__construct($parser, $resolver);
+        parent::__construct($parser, $resolver, $reconciler);
     }
 
     public function supports(SesEventType $type): bool

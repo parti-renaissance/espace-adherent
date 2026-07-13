@@ -9,8 +9,9 @@ namespace App\Ses\Client;
  *
  * Two terminal outcomes are represented here: a successful send (carrying the SES MessageId) and a
  * permanent rejection (a 4xx that will never succeed on retry, e.g. an unverified/invalid address).
- * Retryable transport failures (network, 5xx, 429 throttling) are NOT outcomes — they propagate as
- * exceptions so the caller can reopen the row and let Messenger retry.
+ * Transport failures (network, 5xx, 429 throttling) are NOT outcomes — they propagate as exceptions: a 429
+ * (provably rejected) lets the caller reopen the row and retry, while an ambiguous failure (network / 5xx /
+ * empty MessageId, where SES may already have sent) makes the caller quarantine the row (SendErrored).
  */
 class SesSendOutcome
 {

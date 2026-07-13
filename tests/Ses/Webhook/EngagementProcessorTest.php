@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Membership\ActivityPositionsEnum;
 use App\Scope\ScopeEnum;
+use App\Ses\Campaign\Reconciliation\SendErroredRowReconciler;
 use App\Ses\Webhook\AppleEgressCidrProvider;
 use App\Ses\Webhook\Processor\EngagementProcessor;
 use App\Ses\Webhook\SesEngagementParser;
@@ -139,6 +140,7 @@ class EngagementProcessorTest extends AbstractKernelTestCase
         $processor = new EngagementProcessor(
             self::getContainer()->get(SesEngagementParser::class),
             self::getContainer()->get(SesEventTargetResolver::class),
+            self::getContainer()->get(SendErroredRowReconciler::class),
             self::getContainer()->get(EmailAppHitWriter::class),
             new SesOpenReliabilityClassifier(new AppleEgressCidrProvider($this->egressFile)),
         );

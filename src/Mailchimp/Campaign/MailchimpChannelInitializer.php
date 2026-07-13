@@ -9,10 +9,11 @@ use App\Mailchimp\Manager;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Send-time provisioning of the real Mailchimp channel, used only when the
- * PUBLICATION_SEND_VIA_MAILCHIMP fallback flag is on (while the AWS SES account is sandboxed).
- * Reactivates the dormant Mailchimp operations (remote segment + campaign + content) without
- * restoring the removed edit-time synchronisation machinery.
+ * Send-time provisioning of the real Mailchimp channel, used only for the campaigns routed to Mailchimp
+ * (MailchimpCampaign::$sendViaMailchimp, set at audience preparation when the recipient count exceeds
+ * PUBLICATION_SEND_VIA_MAILCHIMP_THRESHOLD — while the AWS SES account is capped). Reactivates the dormant
+ * Mailchimp operations (remote segment + campaign + content) without restoring the removed edit-time
+ * synchronisation machinery.
  */
 class MailchimpChannelInitializer
 {

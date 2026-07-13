@@ -16,6 +16,23 @@ class MailchimpCampaignRepository extends ServiceEntityRepository
         parent::__construct($registry, MailchimpCampaign::class);
     }
 
+    public function reopenForSending(int $campaignId): bool
+    {
+        $affected = (int) $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.status', ':sending')
+            ->where('c.id = :id')
+            ->andWhere('c.status = :sent')
+            ->setParameter('sending', MailchimpStatusEnum::Sending)
+            ->setParameter('sent', MailchimpStatusEnum::Sent)
+            ->setParameter('id', $campaignId)
+            ->getQuery()
+            ->execute()
+        ;
+
+        return 1 === $affected;
+    }
+
     /**
      * Atomically moves a campaign into Sending so the SES orchestrator can fan out exactly once.
      * Returns true only for the caller that wins the transition; a redelivered TriggerSesCampaignMessage

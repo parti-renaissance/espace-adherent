@@ -15,6 +15,7 @@ use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\MailchimpCampaignRepository;
 use App\Ses\Campaign\Handler\TriggerSesCampaignHandler;
+use App\Ses\Campaign\Message\ReapStaleSendingRowsMessage;
 use App\Ses\Campaign\Message\SendSesCampaignChunkMessage;
 use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use libphonenumber\PhoneNumber;
@@ -38,7 +39,9 @@ class TriggerSesCampaignHandlerTest extends AbstractKernelTestCase
         $dispatched = [];
         $bus = $this->createMock(MessageBusInterface::class);
         $bus
-            ->expects(self::exactly(2))
+            // One message per chunk with work, plus the watchdog that recovers the rows a killed worker would
+            // otherwise strand in Sending (see ReapStaleSendingRowsHandler).
+            ->expects(self::exactly(3))
             ->method('dispatch')
             ->willReturnCallback(static function (object $msg) use (&$dispatched): Envelope {
                 $dispatched[] = $msg;
@@ -51,6 +54,10 @@ class TriggerSesCampaignHandlerTest extends AbstractKernelTestCase
 
         self::assertSame(MailchimpStatusEnum::Sending, $this->reloadStatus($campaign));
         self::assertSame([1, 3], $this->dispatchedChunkNumbers($dispatched, $campaign->getId()));
+
+        $watchdogs = array_filter($dispatched, static fn (object $msg): bool => $msg instanceof ReapStaleSendingRowsMessage);
+        self::assertCount(1, $watchdogs, 'the send is watched from the moment it starts');
+        self::assertSame($campaign->getId(), reset($watchdogs)->campaignId);
     }
 
     public function testNoSendableRecipientMarksErrorAndDoesNotFanOut(): void
@@ -110,7 +117,10 @@ class TriggerSesCampaignHandlerTest extends AbstractKernelTestCase
     {
         $chunkNumbers = [];
         foreach ($dispatched as $message) {
-            self::assertInstanceOf(SendSesCampaignChunkMessage::class, $message);
+            if (!$message instanceof SendSesCampaignChunkMessage) {
+                continue;
+            }
+
             self::assertSame($campaignId, $message->campaignId);
             $chunkNumbers[] = $message->chunkNumber;
         }
