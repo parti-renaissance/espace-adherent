@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Flat local mirror of a JeMengage timeline feed item, kept in sync asynchronously.
  *
  * One row = one timeline item, identified by the source entity UUID (unique). The canonical model
- * separates three responsibilities: the app display contract (`display`, the unchanged normalizer
- * record), the targeting audience (`audience`, a {include, exclude} model), and operator-tunable
- * indexer signals (`authorImportance`). `authorImportance` is operator-owned: it has a DB default
+ * separates three responsibilities: the app display contract (`display`, the normalizer record
+ * projected on the exposed keys — TimelineFeedTransformer::DISPLAY_KEYS), the targeting audience
+ * (`audience`, a {include, exclude} model), and operator-tunable indexer signals (`authorImportance`). `authorImportance` is operator-owned: it has a DB default
  * and is never written by the sync (excluded from TimelineFeedWriter), so a re-upsert preserves it.
  *
  * Rows are written via raw DBAL (TimelineFeedWriter) and only ever hydrated by Doctrine on read.

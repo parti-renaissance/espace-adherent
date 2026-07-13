@@ -180,20 +180,47 @@ class TimelineFeedTransformerTest extends TestCase
         self::assertNull($result['agoraUuid']);
     }
 
-    public function testDisplayIsTheUnchangedRecord(): void
+    public function testDisplayIsProjectedOnTheAppContract(): void
     {
         $record = [
             'type' => 'news',
             'objectID' => 'news-1',
             'title' => 'Hello',
+            'media' => ['type' => 'photo_carousel', 'network' => 'instagram'],
             'access' => ['author_id' => 7, 'team_owner_id' => null],
             'date' => '2026-05-20T10:00:00+00:00',
+            // Targeting the normalizer carries alongside the display fields: it is what the audience
+            // column is derived from, and it must not survive in the display contract.
+            '_tags' => ['news'],
+            'adherent_ids' => [7, 42],
             'audience' => $this->defaultFacets(),
         ];
 
         $result = $this->transformer->transform($record);
 
-        self::assertSame($record, $result['display']);
+        self::assertSame([
+            'type' => 'news',
+            'objectID' => 'news-1',
+            'title' => 'Hello',
+            'media' => ['type' => 'photo_carousel', 'network' => 'instagram'],
+            'access' => ['author_id' => 7, 'team_owner_id' => null],
+            'date' => '2026-05-20T10:00:00+00:00',
+        ], $result['display']);
+    }
+
+    public function testDisplayProjectionDoesNotLoseTheTargeting(): void
+    {
+        $result = $this->transformer->transform([
+            'type' => 'news',
+            'objectID' => 'news-1',
+            'title' => 'Hello',
+            'date' => '2026-05-20T10:00:00+00:00',
+            'adherent_ids' => [7, 42],
+            'audience' => $this->defaultFacets(),
+        ]);
+
+        // Dropped from the display, still resolved into the audience column the indexer matches on.
+        self::assertSame([7, 42], $result['audience']['include']['adherent_ids']);
     }
 
     /**

@@ -23,6 +23,7 @@
         "image",
         "is_national",
         "live_url",
+        "media",
         "media_type",
         "mode",
         "participants_count",

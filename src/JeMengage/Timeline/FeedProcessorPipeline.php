@@ -28,6 +28,7 @@ class FeedProcessorPipeline
                 }
             }
         }
+        unset($item);
 
         return $items;
     }

@@ -64,8 +64,9 @@ class TimelineFeedResolver
             return null;
         }
 
-        // The display payload is exactly what Engine::index() stores: objectID (as string) merged
-        // with the normalizer output. The transformer derives type/dates/audience from it.
+        // The record is exactly what Engine::index() stores: objectID (as string) merged with the
+        // normalizer output. The transformer derives type/dates/audience from it, and projects the
+        // display payload on the app contract.
         $record = array_merge(['objectID' => $objectId->toRfc4122()], $document);
         $canonical = $this->transformer->transform($record);
 
