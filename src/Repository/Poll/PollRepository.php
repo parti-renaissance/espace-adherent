@@ -8,6 +8,7 @@ use App\Entity\Poll\Poll;
 use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PollRepository extends ServiceEntityRepository
@@ -69,5 +70,11 @@ class PollRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function createSortedByFinishAtQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('poll')
+            ->orderBy('poll.finishAt', 'DESC');
     }
 }

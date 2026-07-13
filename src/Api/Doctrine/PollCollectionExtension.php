@@ -23,13 +23,13 @@ class PollCollectionExtension implements QueryCollectionExtensionInterface
             return;
         }
 
-        $rootAlias = $queryBuilder->getRootAliases()[0];
+        $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
-            ->andWhere(\sprintf('%s.published = true', $rootAlias))
-            ->andWhere(\sprintf('%s.startAt <= :now', $rootAlias))
+            ->andWhere("$alias.published = true")
+            ->andWhere("$alias.startAt <= :now")
             ->setParameter('now', new \DateTimeImmutable())
-            ->orderBy(\sprintf('%s.finishAt', $rootAlias), 'DESC')
+            ->orderBy("$alias.finishAt", 'DESC')
         ;
     }
 }

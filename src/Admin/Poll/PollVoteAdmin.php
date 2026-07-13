@@ -8,7 +8,8 @@ use App\Admin\AbstractAdmin;
 use App\Admin\AdherentAdmin;
 use App\Entity\Adherent;
 use App\Form\Admin\AdherentAutocompleteType;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use App\Repository\Poll\PollRepository;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -21,25 +22,15 @@ class PollVoteAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'startAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
-    protected function configureBatchActions(array $actions): array
-    {
-        return [];
-    }
-
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('poll', ModelFilter::class, [
                 'label' => 'Sondage',
                 'show_filter' => true,
+                'field_options' => [
+                    'query_builder' => static fn (PollRepository $repository): QueryBuilder => $repository->createSortedByFinishAtQueryBuilder(),
+                ],
             ])
             ->add('adherent', ModelFilter::class, [
                 'label' => 'Militant',
