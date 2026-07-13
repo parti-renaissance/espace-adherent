@@ -64,6 +64,9 @@ Feature:
             | membership_request[address][address]    | 44 rue des courcelles |
             | membership_request[address][postalCode] | 75008                 |
             | membership_request[address][cityName]   | Paris                 |
+            | membership_request[phone][number]       | 0611223344            |
+        And I click the "membership_request_phone_country_select_widget" element
+        And I click the "#membership_request_phone_country_select_widget .re-input-option--selected" selector
         When I press "Suivant"
         And I wait 3 seconds
         Then User "renaissance-user-4@en-marche-dev.fr" should have 7 subscription types

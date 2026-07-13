@@ -22,6 +22,7 @@ const SecondForm = () => ({
         address: false,
         postalCode: false,
         cityName: false,
+        phone: false,
     },
 
     init() {

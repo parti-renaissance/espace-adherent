@@ -49,6 +49,7 @@ class MembershipRequest implements DonationRequestInterface
     public ?string $nationality = null;
 
     #[AssertPhoneNumber]
+    #[Assert\NotBlank(message: 'common.phone_number.required', groups: ['adhesion'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Range(
@@ -94,6 +95,7 @@ class MembershipRequest implements DonationRequestInterface
         $request->lastName = $adherent->getLastName();
         $request->email = $adherent->getEmailAddress();
         $request->nationality = $adherent->getNationality();
+        $request->phone = $adherent->getPhone();
         $request->address = Address::createFromAddress($adherent->getPostAddress());
         $request->exclusiveMembership = $adherent->isExclusiveMembership();
         $request->partyMembership = $adherent->isTerritoireProgresMembership() ? 1 : ($adherent->isAgirMembership() ? 2 : ($adherent->isOtherPartyMembership() ? 3 : null));
