@@ -3,8 +3,7 @@
         "items": [
             { "external_id": "aaaa1111-1111-4111-8111-aaaaaaaaaaaa", "kind": "event", "hot_score": 1.74 },
             { "external_id": "cccc3333-3333-4333-8333-cccccccccccc", "kind": "publication", "hot_score": 1.2 },
-            { "external_id": "bbbb2222-2222-4222-8222-bbbbbbbbbbbb", "kind": "action", "hot_score": 0.92 },
-            { "external_id": "dddd4444-4444-4444-8444-dddddddddddd", "kind": "poll", "hot_score": 0.5 }
+            { "external_id": "bbbb2222-2222-4222-8222-bbbbbbbbbbbb", "kind": "action", "hot_score": 0.92 }
         ]
     }
 }
