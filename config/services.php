@@ -628,6 +628,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(App\Api\Doctrine\PollPublishedExtension::class)
         ->tag('api_platform.doctrine.orm.query_extension.item', ['priority' => 9]);
 
+    $services->set(App\Api\Doctrine\PollCollectionExtension::class)
+        ->tag('api_platform.doctrine.orm.query_extension.collection', ['priority' => 9]);
+
     $services->set(App\Api\Doctrine\EventOrderExtension::class)
         ->tag('api_platform.doctrine.orm.query_extension.collection', [
             'priority' => -35,
