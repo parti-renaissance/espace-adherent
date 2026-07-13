@@ -14,10 +14,41 @@ use App\JeMengage\Timeline\TimelineFeedTypeEnum;
  * Pure (no I/O): it only reshapes the normalizer output, which stays the single source of targeting
  * truth. It re-buckets the reach fields (events/news/actions/social posts) and the publication
  * audience facets into a typed {include, exclude} model, extracts the publication/event dates, and
- * keeps the full record as the display payload (app contract unchanged).
+ * projects the record onto the app display contract.
  */
 class TimelineFeedTransformer
 {
+    private const DISPLAY_KEYS = [
+        'access',
+        'address',
+        'agora_uuid',
+        'author',
+        'begin_at',
+        'category',
+        'committee_uuid',
+        'cta_label',
+        'cta_link',
+        'date',
+        'description',
+        'finish_at',
+        'identifier',
+        'image',
+        'is_national',
+        'live_url',
+        'media',
+        'media_type',
+        'mode',
+        'objectID',
+        'participants_count',
+        'post_address',
+        'time_zone',
+        'title',
+        'type',
+        'url',
+        'visibility',
+        'zone_codes',
+    ];
+
     /**
      * Membership/registration date facets, carried as Unix timestamps in the publication audience.
      */
@@ -43,7 +74,7 @@ class TimelineFeedTransformer
             'publicationDate' => $this->parseDate($document['date'] ?? null) ?? new \DateTimeImmutable(),
             'eventDate' => $this->parseDate($this->eventDate($document)),
             'audience' => $this->buildAudience($document),
-            'display' => $document,
+            'display' => array_intersect_key($document, array_flip(self::DISPLAY_KEYS)),
             'visibility' => $document['visibility'] ?? null,
             'committeeUuid' => $document['committee_uuid'] ?? null,
             'agoraUuid' => $document['agora_uuid'] ?? null,

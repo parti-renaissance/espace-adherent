@@ -56,6 +56,31 @@ class TimelineFeedLiveSyncTest extends AbstractKernelTestCase
         self::assertSame($uuid, json_decode((string) $display, true)['objectID']);
     }
 
+    public function testMirroredDisplayCarriesOnlyTheAppContract(): void
+    {
+        /** @var News $news */
+        $news = $this->getRepository(News::class)->findOneBy([]);
+        $news->setPublished(true);
+        $news->setTitle('Contract-checked title');
+        $this->manager->flush();
+
+        $row = $this->connection->fetchAssociative(
+            'SELECT display, audience FROM timeline_feed WHERE uuid = :uuid',
+            ['uuid' => $news->getUuid()->toRfc4122()],
+        );
+
+        $display = json_decode((string) $row['display'], true, 512, \JSON_THROW_ON_ERROR);
+
+        // The normalizer record also carries the targeting; it belongs to the audience column, which the
+        // indexer reads, and must never reach the app through the display contract.
+        self::assertArrayNotHasKey('audience', $display);
+        self::assertArrayNotHasKey('adherent_ids', $display);
+        self::assertArrayNotHasKey('_tags', $display);
+        self::assertSame('Contract-checked title', $display['title']);
+        // The targeting itself is not lost: it lives in its own column.
+        self::assertNotNull($row['audience']);
+    }
+
     public function testFlushRemovesMirrorRowWhenEntityBecomesNonIndexable(): void
     {
         /** @var News $news */
