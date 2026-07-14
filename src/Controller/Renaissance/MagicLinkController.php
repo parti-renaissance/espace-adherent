@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
@@ -19,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MagicLinkController extends AbstractController
@@ -27,6 +30,14 @@ class MagicLinkController extends AbstractController
     use SecurityThemeTrait;
 
     public const ROUTE_NAME = 'app_user_connect_with_magic_link';
+
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
 
     public function getMagicLinkAction(
         Request $request,
@@ -60,6 +71,12 @@ class MagicLinkController extends AbstractController
 
                 $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
             }
+
+            $this->postHog->captureServerSide(
+                PostHogEventName::MAGIC_LINK_REQUESTED,
+                [],
+                $adherent ?? null,
+            );
 
             $this->addFlash('info', $translator->trans('adherent.get_magic_link.email_sent', ['%email%' => $email]));
 

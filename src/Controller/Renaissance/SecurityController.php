@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
@@ -27,11 +29,20 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class SecurityController extends AbstractController
 {
     use AppDomainParamsTrait;
     use SecurityThemeTrait;
+
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
 
     public function loginAction(Request $request, AuthenticationUtils $securityUtils, AuthAppUrlManager $appUrlManager): Response
     {
@@ -81,6 +92,12 @@ class SecurityController extends AbstractController
                 $handler->handle($adherent, $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
             }
 
+            $this->postHog->captureServerSide(
+                PostHogEventName::PASSWORD_RESET_REQUESTED,
+                [],
+                $adherent ?? null,
+            );
+
             $this->addFlash('reset_password_sent', $email);
 
             return $this->redirectToRoute('app_forgot_password', $this->appDomainParams($request));
@@ -124,6 +141,12 @@ class SecurityController extends AbstractController
                     $request->query->has('is_creation')
                 );
                 $this->addFlash('info', 'adherent.reset_password.success');
+
+                $this->postHog->captureServerSide(
+                    PostHogEventName::PASSWORD_RESET_COMPLETED,
+                    [],
+                    $adherent,
+                );
 
                 $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
 
