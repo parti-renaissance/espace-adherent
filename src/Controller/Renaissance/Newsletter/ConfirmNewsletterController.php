@@ -7,6 +7,7 @@ namespace App\Controller\Renaissance\Newsletter;
 use App\Analytics\PostHog\Events\PostHogEventName;
 use App\Analytics\PostHog\HashEmailService;
 use App\Analytics\PostHog\PostHogService;
+use App\Analytics\PostHog\SiteContext;
 use App\Newsletter\Events;
 use App\Newsletter\NewsletterEvent;
 use App\Repository\Renaissance\NewsletterSourceRepository;
@@ -22,6 +23,7 @@ class ConfirmNewsletterController extends AbstractController
 {
     private PostHogService $postHog;
     private HashEmailService $hashEmail;
+    private SiteContext $siteContext;
 
     #[Required]
     public function setPostHogService(PostHogService $postHog): void
@@ -33,6 +35,12 @@ class ConfirmNewsletterController extends AbstractController
     public function setHashEmailService(HashEmailService $hashEmail): void
     {
         $this->hashEmail = $hashEmail;
+    }
+
+    #[Required]
+    public function setSiteContext(SiteContext $siteContext): void
+    {
+        $this->siteContext = $siteContext;
     }
 
     public function __invoke(
@@ -63,12 +71,14 @@ class ConfirmNewsletterController extends AbstractController
 
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
 
-            $this->postHog->captureServerSideWithSet(
-                PostHogEventName::NEWSLETTER_CONFIRMED_SERVER,
-                [],
-                ['email' => $subscription->getEmail()],
-                $this->hashEmail->hash($subscription->getEmail()),
-            );
+            if ($this->siteContext->isInitialized()) {
+                $this->postHog->captureServerSideWithSet(
+                    PostHogEventName::NEWSLETTER_CONFIRMED_SERVER,
+                    [],
+                    ['email' => $subscription->getEmail()],
+                    $this->hashEmail->hash($subscription->getEmail()),
+                );
+            }
         }
 
         if ($subscription->source) {

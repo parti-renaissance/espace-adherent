@@ -7,6 +7,7 @@ namespace App\Controller\Renaissance\Newsletter;
 use App\Analytics\PostHog\Events\PostHogEventName;
 use App\Analytics\PostHog\HashEmailService;
 use App\Analytics\PostHog\PostHogService;
+use App\Analytics\PostHog\SiteContext;
 use App\Recaptcha\FriendlyCaptchaV2ApiClient;
 use App\Renaissance\Newsletter\NewsletterManager;
 use App\Renaissance\Newsletter\SubscriptionRequest;
@@ -26,6 +27,7 @@ class SaveNewsletterController extends AbstractController
 {
     private PostHogService $postHog;
     private HashEmailService $hashEmail;
+    private SiteContext $siteContext;
 
     public function __construct(
         private readonly SerializerInterface $serializer,
@@ -46,6 +48,12 @@ class SaveNewsletterController extends AbstractController
     public function setHashEmailService(HashEmailService $hashEmail): void
     {
         $this->hashEmail = $hashEmail;
+    }
+
+    #[Required]
+    public function setSiteContext(SiteContext $siteContext): void
+    {
+        $this->siteContext = $siteContext;
     }
 
     public function __invoke(Request $request): Response
@@ -81,15 +89,17 @@ class SaveNewsletterController extends AbstractController
 
         $this->newsletterManager->saveSubscription($subscription);
 
-        $this->postHog->captureServerSideWithSet(
-            PostHogEventName::NEWSLETTER_SUBMITTED_SERVER,
-            [
-                'postal_code_prefix' => substr($subscription->postalCode ?? '', 0, 2),
-                'source_page' => $request->headers->get('Referer', ''),
-            ],
-            ['email' => $subscription->email],
-            $this->hashEmail->hash($subscription->email),
-        );
+        if ($this->siteContext->isInitialized()) {
+            $this->postHog->captureServerSideWithSet(
+                PostHogEventName::NEWSLETTER_SUBMITTED_SERVER,
+                [
+                    'postal_code_prefix' => substr($subscription->postalCode ?? '', 0, 2),
+                    'source_page' => $request->headers->get('Referer', ''),
+                ],
+                ['email' => $subscription->email],
+                $this->hashEmail->hash($subscription->email),
+            );
+        }
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

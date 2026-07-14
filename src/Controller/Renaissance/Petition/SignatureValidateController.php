@@ -7,6 +7,7 @@ namespace App\Controller\Renaissance\Petition;
 use App\Analytics\PostHog\Events\PostHogEventName;
 use App\Analytics\PostHog\HashEmailService;
 use App\Analytics\PostHog\PostHogService;
+use App\Analytics\PostHog\SiteContext;
 use App\Entity\PetitionSignature;
 use App\Renaissance\Petition\SignatureManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,7 @@ class SignatureValidateController extends AbstractController
 {
     private PostHogService $postHog;
     private HashEmailService $hashEmail;
+    private SiteContext $siteContext;
 
     public function __construct(private readonly SignatureManager $signatureManager)
     {
@@ -34,6 +36,12 @@ class SignatureValidateController extends AbstractController
     public function setHashEmailService(HashEmailService $hashEmail): void
     {
         $this->hashEmail = $hashEmail;
+    }
+
+    #[Required]
+    public function setSiteContext(SiteContext $siteContext): void
+    {
+        $this->siteContext = $siteContext;
     }
 
     public function __invoke(PetitionSignature $signature, string $token): Response
@@ -56,12 +64,14 @@ class SignatureValidateController extends AbstractController
             return $this->render('renaissance/petition/confirmation_error.html.twig');
         }
 
-        $this->postHog->captureServerSideWithSet(
-            PostHogEventName::PETITION_SIGNED_SERVER,
-            ['petition_slug' => $signature->petitionSlug],
-            ['email' => $signature->emailAddress],
-            $this->hashEmail->hash($signature->emailAddress),
-        );
+        if ($this->siteContext->isInitialized()) {
+            $this->postHog->captureServerSideWithSet(
+                PostHogEventName::PETITION_SIGNED_SERVER,
+                ['petition_slug' => $signature->petitionSlug],
+                ['email' => $signature->emailAddress],
+                $this->hashEmail->hash($signature->emailAddress),
+            );
+        }
 
         return $this->redirect($thanksUrl);
     }

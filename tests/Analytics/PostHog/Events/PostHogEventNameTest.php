@@ -11,7 +11,7 @@ class PostHogEventNameTest extends TestCase
 {
     public function testCountEventsMatchesSpec(): void
     {
-        $this->assertCount(30, PostHogEventName::cases());
+        $this->assertCount(31, PostHogEventName::cases());
     }
 
     public function testValueUsesSnakeCase(): void
