@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -14,7 +16,8 @@ final class SiteContextListener
     public function __construct(
         private readonly SiteDetector $detector,
         private readonly SiteContext $context,
-    ) {}
+    ) {
+    }
 
     public function onKernelRequest(RequestEvent $event): void
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -40,19 +42,20 @@ class PostHogService
         #[Autowire('%posthog.deploy_version%')]
         private readonly ?string $deployVersion,
         private readonly LoggerInterface $logger,
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     public function buildSuperProperties(): array
     {
         return [
-            'site'           => $this->context->getSite(),
-            'platform'       => 'web',
-            'environment'    => $this->environment,
-            'deploy_sha'     => substr($this->deploySha ?: 'local', 0, 7),
+            'site' => $this->context->getSite(),
+            'platform' => 'web',
+            'environment' => $this->environment,
+            'deploy_sha' => substr($this->deploySha ?: 'local', 0, 7),
             'deploy_version' => $this->deployVersion ?: 'unknown',
-            'locale'         => 'fr-FR',
-            'is_bot'         => false,
+            'locale' => 'fr-FR',
+            'is_bot' => false,
         ];
     }
 
@@ -62,7 +65,7 @@ class PostHogService
         array $properties,
         ?Adherent $user = null,
     ): void {
-        if (!$this->enabled) {
+        if (!$this->enabled || !$this->context->isInitialized()) {
             return;
         }
 
@@ -78,7 +81,7 @@ class PostHogService
      * Whitelist stricte : uniquement pour les events NEWSLETTER_*_SERVER et PETITION_SIGNED_SERVER.
      *
      * @param array<string, mixed> $properties
-     * @param array<string, mixed> $set  Payload $set (peut contenir 'email' pour Cas 2)
+     * @param array<string, mixed> $set        Payload $set (peut contenir 'email' pour Cas 2)
      */
     public function captureServerSideWithSet(
         PostHogEventName $event,
@@ -86,7 +89,7 @@ class PostHogService
         array $set,
         string $distinctId,
     ): void {
-        if (!$this->enabled) {
+        if (!$this->enabled || !$this->context->isInitialized()) {
             return;
         }
         $properties['$set'] = $set;
@@ -97,19 +100,19 @@ class PostHogService
     private function postCapture(string $eventName, string $distinctId, array $properties): void
     {
         $payload = [
-            'api_key'     => $this->apiKey,
-            'event'       => $eventName,
+            'api_key' => $this->apiKey,
+            'event' => $eventName,
             'distinct_id' => $distinctId,
-            'timestamp'   => (new \DateTimeImmutable())->format(DATE_ATOM),
-            'properties'  => array_merge($this->buildSuperProperties(), $properties),
+            'timestamp' => (new \DateTimeImmutable())->format(\DATE_ATOM),
+            'properties' => array_merge($this->buildSuperProperties(), $properties),
         ];
 
         try {
             $this->httpClient->request(
                 'POST',
-                sprintf('%s/capture/', $this->apiHost),
+                \sprintf('%s/capture/', $this->apiHost),
                 [
-                    'body'    => json_encode($payload, JSON_THROW_ON_ERROR),
+                    'body' => json_encode($payload, \JSON_THROW_ON_ERROR),
                     'headers' => ['Content-Type' => 'application/json'],
                     'timeout' => 3.0,
                 ],

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -20,7 +22,8 @@ final class ConsentSettingsController extends AbstractController
     public function __construct(
         private readonly ConsentCookieHelper $cookieHelper,
         private readonly PostHogService $service,
-    ) {}
+    ) {
+    }
 
     #[Route(
         '/parametres/confidentialite',
@@ -58,6 +61,7 @@ final class ConsentSettingsController extends AbstractController
 
         $response = new Response('', 204);
         $response->headers->setCookie($cookie);
+
         return $response;
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog\EventSubscriber;
 
@@ -11,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
@@ -24,7 +28,7 @@ class AuthEventSubscriberTest extends TestCase
             ->method('captureServerSide')
             ->with(
                 PostHogEventName::LOGIN_SUCCEEDED,
-                $this->callback(fn($props) => isset($props['method'])),
+                $this->callback(fn ($props) => isset($props['method'])),
                 $this->isInstanceOf(Adherent::class),
             );
 
@@ -33,7 +37,8 @@ class AuthEventSubscriberTest extends TestCase
         $token = new UsernamePasswordToken($user, 'main');
         $request = new Request();
         $authenticator = $this->createMock(AuthenticatorInterface::class);
-        $event = new LoginSuccessEvent($authenticator, null, $token, $request, null, 'main');
+        $passport = new SelfValidatingPassport(new UserBadge('user@example.com', fn () => $user));
+        $event = new LoginSuccessEvent($authenticator, $passport, $token, $request, null, 'main');
 
         $subscriber->onLoginSuccess($event);
     }
@@ -45,7 +50,7 @@ class AuthEventSubscriberTest extends TestCase
             ->method('captureServerSide')
             ->with(
                 PostHogEventName::LOGIN_FAILED,
-                $this->callback(fn($props) => 'bad_credentials' === $props['reason']),
+                $this->callback(fn ($props) => 'bad_credentials' === $props['reason']),
             );
 
         $subscriber = new AuthEventSubscriber($service);

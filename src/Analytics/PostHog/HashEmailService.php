@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -16,13 +18,14 @@ namespace App\Analytics\PostHog;
  * adhérent — réconciliation via view BQ `posthog_identity_bridge` mart
  * Renaissance (crm-integrations PR #175).
  */
-final class HashEmailService
+class HashEmailService
 {
     /** @param array<string, string> $saltsBySite Map site → salt marque-specific */
     public function __construct(
         private readonly SiteContext $context,
         private readonly array $saltsBySite,
-    ) {}
+    ) {
+    }
 
     public function hash(string $email): string
     {
@@ -33,6 +36,7 @@ final class HashEmailService
         $site = $this->context->getSite();
         $salt = $this->saltsBySite[$site]
             ?? throw new \RuntimeException("HashEmailService: no salt configured for site '$site'");
-        return hash('sha256', $salt . ':' . $normalized);
+
+        return hash('sha256', $salt.':'.$normalized);
     }
 }

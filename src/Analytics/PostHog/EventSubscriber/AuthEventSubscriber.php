@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog\EventSubscriber;
 
@@ -24,14 +26,16 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
  */
 final class AuthEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly PostHogService $service) {}
+    public function __construct(private readonly PostHogService $service)
+    {
+    }
 
     public static function getSubscribedEvents(): array
     {
         return [
             LoginSuccessEvent::class => 'onLoginSuccess',
             LoginFailureEvent::class => 'onLoginFailure',
-            LogoutEvent::class       => 'onLogout',
+            LogoutEvent::class => 'onLogout',
         ];
     }
 
@@ -71,10 +75,11 @@ final class AuthEventSubscriber implements EventSubscriberInterface
     private function detectAuthMethod(LoginSuccessEvent $event): string
     {
         $authenticatorClass = $event->getAuthenticator()::class;
+
         return match (true) {
             str_contains($authenticatorClass, 'MagicLink') => 'magic-link',
-            str_contains($authenticatorClass, 'OAuth')     => 'oauth',
-            default                                        => 'form',
+            str_contains($authenticatorClass, 'OAuth') => 'oauth',
+            default => 'form',
         };
     }
 
@@ -82,7 +87,7 @@ final class AuthEventSubscriber implements EventSubscriberInterface
     {
         return match (true) {
             $e instanceof BadCredentialsException => 'bad_credentials',
-            default                               => 'unknown',
+            default => 'unknown',
         };
     }
 }

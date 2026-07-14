@@ -701,9 +701,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->set(App\Analytics\PostHog\HashEmailService::class)
         ->arg('$saltsBySite', [
-            'attalpresident'      => '%posthog.salt.attalpresident%',
-            'parti-renaissance'   => '%posthog.salt.parti_renaissance%',
-            'avecgabrielattal'    => '%posthog.salt.avecgabrielattal%',
-            'nouvellerepublique'  => '%posthog.salt.nouvellerepublique%',
+            'attalpresident' => '%posthog.salt.attalpresident%',
+            'parti-renaissance' => '%posthog.salt.parti_renaissance%',
+            'avecgabrielattal' => '%posthog.salt.avecgabrielattal%',
+            'nouvellerepublique' => '%posthog.salt.nouvellerepublique%',
         ]);
 };

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog\Twig;
 
@@ -39,7 +41,8 @@ final class PostHogTwigExtension extends AbstractExtension implements GlobalsInt
         private readonly bool $enabled,
         #[Autowire('%posthog.api_key%')]
         private readonly string $apiKey,
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     public function getGlobals(): array
@@ -47,24 +50,24 @@ final class PostHogTwigExtension extends AbstractExtension implements GlobalsInt
         if (!$this->context->isInitialized()) {
             // Hors périmètre PostHog Renaissance (admin/api/webhooks/health)
             return [
-                'posthog_config_enabled'        => false,
-                'posthog_config_api_key'        => '',
-                'posthog_consent_state'         => null,
-                'posthog_site'                  => null,
-                'posthog_consent_cookie_name'   => null,
+                'posthog_config_enabled' => false,
+                'posthog_config_api_key' => '',
+                'posthog_consent_state' => null,
+                'posthog_site' => null,
+                'posthog_consent_cookie_name' => null,
                 'posthog_consent_cookie_domain' => null,
             ];
         }
         $config = $this->context->getCookieConfig();
         $request = $this->requestStack->getCurrentRequest();
-        $consentState = $request !== null ? $this->cookieHelper->read($request) : null;
+        $consentState = null !== $request ? $this->cookieHelper->read($request) : null;
 
         return [
-            'posthog_config_enabled'        => $this->enabled,
-            'posthog_config_api_key'        => $this->apiKey,
-            'posthog_consent_state'         => $consentState,
-            'posthog_site'                  => $this->context->getSite(),
-            'posthog_consent_cookie_name'   => $config['name'],
+            'posthog_config_enabled' => $this->enabled,
+            'posthog_config_api_key' => $this->apiKey,
+            'posthog_consent_state' => $consentState,
+            'posthog_site' => $this->context->getSite(),
+            'posthog_consent_cookie_name' => $config['name'],
             'posthog_consent_cookie_domain' => $config['domain'],
         ];
     }
@@ -92,12 +95,12 @@ final class PostHogTwigExtension extends AbstractExtension implements GlobalsInt
 
         return [
             'distinct_id' => $this->hashEmail->hash($user->getEmailAddress()),
-            '$set'        => [
+            '$set' => [
                 'public_id' => $user->getPublicId(),
             ],
-            '$set_once'   => [
+            '$set_once' => [
                 'identified_from_site' => $this->context->getSite(),
-                'identified_at'        => (new \DateTimeImmutable())->format(DATE_ATOM),
+                'identified_at' => (new \DateTimeImmutable())->format(\DATE_ATOM),
             ],
         ];
     }

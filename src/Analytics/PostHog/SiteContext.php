@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -11,7 +13,7 @@ namespace App\Analytics\PostHog;
  * (admin, api, webhooks, health) — les consumers doivent gérer ce cas
  * gracefully.
  */
-final class SiteContext
+class SiteContext
 {
     private ?string $site = null;
 
@@ -22,10 +24,7 @@ final class SiteContext
 
     public function getSite(): string
     {
-        return $this->site ?? throw new \LogicException(
-            'SiteContext::getSite() called before init. Vérifiez SiteContextListener'
-            . ' registration + check isInitialized() côté consumer.',
-        );
+        return $this->site ?? throw new \LogicException('SiteContext::getSite() called before init. Vérifiez SiteContextListener registration + check isInitialized() côté consumer.');
     }
 
     public function isInitialized(): bool

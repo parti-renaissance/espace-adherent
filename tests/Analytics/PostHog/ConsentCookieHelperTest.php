@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog;
 
@@ -12,14 +14,16 @@ class ConsentCookieHelperTest extends TestCase
 {
     public function testReadReturnsNullWhenCookieAbsent(): void
     {
-        $ctx = new SiteContext(); $ctx->setSite('attalpresident');
+        $ctx = new SiteContext();
+        $ctx->setSite('attalpresident');
         $helper = new ConsentCookieHelper($ctx);
         $this->assertNull($helper->read(Request::create('/')));
     }
 
     public function testReadReturnsTrueForCookieValue1(): void
     {
-        $ctx = new SiteContext(); $ctx->setSite('attalpresident');
+        $ctx = new SiteContext();
+        $ctx->setSite('attalpresident');
         $helper = new ConsentCookieHelper($ctx);
         $request = Request::create('/', 'GET', cookies: ['ap_consent' => '1']);
         $this->assertTrue($helper->read($request));
@@ -27,7 +31,8 @@ class ConsentCookieHelperTest extends TestCase
 
     public function testReadReturnsFalseForCookieValue0(): void
     {
-        $ctx = new SiteContext(); $ctx->setSite('parti-renaissance');
+        $ctx = new SiteContext();
+        $ctx->setSite('parti-renaissance');
         $helper = new ConsentCookieHelper($ctx);
         $request = Request::create('/', 'GET', cookies: ['pr_consent' => '0']);
         $this->assertFalse($helper->read($request));
@@ -35,7 +40,8 @@ class ConsentCookieHelperTest extends TestCase
 
     public function testWriteProducesCookieWithScopedDomain(): void
     {
-        $ctx = new SiteContext(); $ctx->setSite('attalpresident');
+        $ctx = new SiteContext();
+        $ctx->setSite('attalpresident');
         $helper = new ConsentCookieHelper($ctx);
         $cookie = $helper->write(true);
 
@@ -51,7 +57,8 @@ class ConsentCookieHelperTest extends TestCase
 
     public function testWriteFalseSetsValue0(): void
     {
-        $ctx = new SiteContext(); $ctx->setSite('avecgabrielattal');
+        $ctx = new SiteContext();
+        $ctx->setSite('avecgabrielattal');
         $helper = new ConsentCookieHelper($ctx);
         $cookie = $helper->write(false);
 

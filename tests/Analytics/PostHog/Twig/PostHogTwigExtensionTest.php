@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog\Twig;
 
@@ -27,7 +29,7 @@ class PostHogTwigExtensionTest extends TestCase
         $hash->method('hash')->willReturn('hashed-distinct-id');
 
         $stack = new RequestStack();
-        if ($request !== null) {
+        if (null !== $request) {
             $stack->push($request);
         }
         $cookieHelper ??= $this->createStub(ConsentCookieHelper::class);

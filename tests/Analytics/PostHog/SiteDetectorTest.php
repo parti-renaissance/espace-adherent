@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog;
 
@@ -15,9 +17,9 @@ class SiteDetectorTest extends TestCase
         $detector = new SiteDetector($logger);
 
         $cases = [
-            'utilisateur.parti-renaissance.fr'  => 'parti-renaissance',
-            'utilisateur.attalpresident.fr'     => 'attalpresident',
-            'utilisateur.avecgabrielattal.fr'   => 'avecgabrielattal',
+            'utilisateur.parti-renaissance.fr' => 'parti-renaissance',
+            'utilisateur.attalpresident.fr' => 'attalpresident',
+            'utilisateur.avecgabrielattal.fr' => 'avecgabrielattal',
             'utilisateur.nouvellerepublique.fr' => 'nouvellerepublique',
         ];
         foreach ($cases as $host => $expected) {

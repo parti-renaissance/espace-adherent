@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog;
 
@@ -6,7 +8,6 @@ use App\Analytics\PostHog\Events\PostHogEventName;
 use App\Analytics\PostHog\HashEmailService;
 use App\Analytics\PostHog\PostHogService;
 use App\Analytics\PostHog\SiteContext;
-use App\Entity\Adherent;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -94,6 +95,7 @@ class PostHogServiceTest extends TestCase
         $mockClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$capturedUrl, &$capturedBody) {
             $capturedUrl = $url;
             $capturedBody = $options['body'] ?? '';
+
             return new MockResponse('', ['http_code' => 200]);
         });
         $service = $this->makeService($mockClient);

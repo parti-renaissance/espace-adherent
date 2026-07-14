@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog;
 
@@ -23,6 +25,7 @@ class IngestProxyControllerTest extends TestCase
         $rateLimit->method('isAccepted')->willReturn(true);
         $limiter->method('consume')->willReturn($rateLimit);
         $factory->method('create')->willReturn($limiter);
+
         return $factory;
     }
 
@@ -34,6 +37,7 @@ class IngestProxyControllerTest extends TestCase
         $rateLimit->method('isAccepted')->willReturn(false);
         $limiter->method('consume')->willReturn($rateLimit);
         $factory->method('create')->willReturn($limiter);
+
         return $factory;
     }
 

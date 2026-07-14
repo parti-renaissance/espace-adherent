@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -20,19 +22,22 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * Cf. spec §5.
  */
-final class ConsentCookieHelper
+class ConsentCookieHelper
 {
     private const MAX_AGE_SECONDS = 34_128_000; // ~13 mois (CNIL max)
 
-    public function __construct(private readonly SiteContext $context) {}
+    public function __construct(private readonly SiteContext $context)
+    {
+    }
 
     public function read(Request $request): ?bool
     {
         $config = $this->context->getCookieConfig();
         $raw = $request->cookies->get($config['name']);
+
         return match ($raw) {
-            '1'     => true,
-            '0'     => false,
+            '1' => true,
+            '0' => false,
             default => null,
         };
     }
@@ -40,6 +45,7 @@ final class ConsentCookieHelper
     public function write(bool $granted): Cookie
     {
         $config = $this->context->getCookieConfig();
+
         return Cookie::create(
             name: $config['name'],
             value: $granted ? '1' : '0',

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Analytics\PostHog;
 
@@ -34,7 +36,8 @@ final class IngestProxyController
         private readonly LoggerInterface $logger,
         #[Autowire(service: 'limiter.posthog_ingest')]
         private readonly RateLimiterFactoryInterface $rateLimiter,
-    ) {}
+    ) {
+    }
 
     public function __invoke(string $path, Request $request): Response
     {
@@ -44,28 +47,29 @@ final class IngestProxyController
             return new Response('', 429, ['Retry-After' => '60']);
         }
 
-        $target = sprintf('%s/%s', $this->apiHost, $path);
+        $target = \sprintf('%s/%s', $this->apiHost, $path);
 
         try {
             $upstream = $this->httpClient->request(
                 $request->getMethod(),
                 $target,
                 [
-                    'query'   => $request->query->all(),
-                    'body'    => $request->getContent(),
+                    'query' => $request->query->all(),
+                    'body' => $request->getContent(),
                     'headers' => $this->forwardableHeaders($request),
                     'timeout' => 5.0,
                     'max_redirects' => 0,
                 ],
             );
             $content = $upstream->getContent(throw: false);
-            $status  = $upstream->getStatusCode();
+            $status = $upstream->getStatusCode();
             $headers = $this->sanitizeResponseHeaders($upstream->getHeaders(throw: false));
         } catch (TransportException $e) {
             $this->logger->warning('PostHog proxy transport error', [
                 'exception' => $e->getMessage(),
                 'path' => $path,
             ]);
+
             return new Response('', 504);
         }
 
@@ -76,15 +80,16 @@ final class IngestProxyController
     private function forwardableHeaders(Request $request): array
     {
         return [
-            'User-Agent'      => $request->headers->get('User-Agent', ''),
-            'Content-Type'    => $request->headers->get('Content-Type', 'application/json'),
-            'Accept'          => $request->headers->get('Accept', '*/*'),
+            'User-Agent' => $request->headers->get('User-Agent', ''),
+            'Content-Type' => $request->headers->get('Content-Type', 'application/json'),
+            'Accept' => $request->headers->get('Accept', '*/*'),
             'Accept-Encoding' => $request->headers->get('Accept-Encoding', 'gzip'),
         ];
     }
 
     /**
      * @param array<string, list<string>> $headers
+     *
      * @return array<string, list<string>>
      */
     private function sanitizeResponseHeaders(array $headers): array
@@ -99,6 +104,7 @@ final class IngestProxyController
             $headers['posthog-session-cookie'],
             $headers['transfer-encoding'],
         );
+
         return $headers;
     }
 }
