@@ -4,17 +4,36 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Petition;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\HashEmailService;
+use App\Analytics\PostHog\PostHogService;
 use App\Entity\PetitionSignature;
 use App\Renaissance\Petition\SignatureManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route(path: '/petition/validate/{uuid}/{token}', name: 'app_petition_validate', methods: ['GET'])]
 class SignatureValidateController extends AbstractController
 {
+    private PostHogService $postHog;
+    private HashEmailService $hashEmail;
+
     public function __construct(private readonly SignatureManager $signatureManager)
     {
+    }
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
+
+    #[Required]
+    public function setHashEmailService(HashEmailService $hashEmail): void
+    {
+        $this->hashEmail = $hashEmail;
     }
 
     public function __invoke(PetitionSignature $signature, string $token): Response
@@ -36,6 +55,13 @@ class SignatureValidateController extends AbstractController
 
             return $this->render('renaissance/petition/confirmation_error.html.twig');
         }
+
+        $this->postHog->captureServerSideWithSet(
+            PostHogEventName::PETITION_SIGNED_SERVER,
+            ['petition_slug' => $signature->petitionSlug],
+            ['email' => $signature->emailAddress],
+            $this->hashEmail->hash($signature->emailAddress),
+        );
 
         return $this->redirect($thanksUrl);
     }
