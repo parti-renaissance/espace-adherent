@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\NationalEvent;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
@@ -18,10 +20,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route('/{slug}/{uuid}/modifier-mes-informations', name: 'app_national_event_edit_inscription', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
 class EditInscriptionController extends AbstractController
 {
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
+
     public function __construct(
         private readonly EventInscriptionManager $eventInscriptionManager,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
@@ -64,6 +75,16 @@ class EditInscriptionController extends AbstractController
             $inscription->status = InscriptionStatusEnum::PENDING;
 
             $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest, $inscription);
+
+            // Cas 1 forcé (spec §8.4) — pas de $set.email PostHog.
+            $this->postHog->captureServerSide(
+                PostHogEventName::NATIONAL_EVENT_INSCRIPTION_EDITED,
+                [
+                    'event_uuid' => $event->getUuid()->toRfc4122(),
+                    'inscription_uuid' => $inscription->getUuid()->toRfc4122(),
+                ],
+                $user,
+            );
 
             $this->addFlash('success', 'Votre inscription a bien été mise à jour.');
 
