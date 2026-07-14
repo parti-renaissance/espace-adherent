@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Analytics\PostHog\EventSubscriber;
 
-use App\Analytics\PostHog\EventSubscriber\AuthEventSubscriber;
 use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\EventSubscriber\AuthEventSubscriber;
 use App\Analytics\PostHog\PostHogService;
 use App\Entity\Adherent;
 use PHPUnit\Framework\TestCase;
@@ -33,10 +33,10 @@ class AuthEventSubscriberTest extends TestCase
             );
 
         $subscriber = new AuthEventSubscriber($service);
-        $user = $this->createMock(Adherent::class);
+        $user = $this->createStub(Adherent::class);
         $token = new UsernamePasswordToken($user, 'main');
         $request = new Request();
-        $authenticator = $this->createMock(AuthenticatorInterface::class);
+        $authenticator = $this->createStub(AuthenticatorInterface::class);
         $passport = new SelfValidatingPassport(new UserBadge('user@example.com', fn () => $user));
         $event = new LoginSuccessEvent($authenticator, $passport, $token, $request, null, 'main');
 
@@ -54,7 +54,7 @@ class AuthEventSubscriberTest extends TestCase
             );
 
         $subscriber = new AuthEventSubscriber($service);
-        $authenticator = $this->createMock(AuthenticatorInterface::class);
+        $authenticator = $this->createStub(AuthenticatorInterface::class);
         $event = new LoginFailureEvent(
             new BadCredentialsException(),
             $authenticator,

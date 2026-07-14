@@ -19,8 +19,8 @@ class IngestProxyControllerTest extends TestCase
 {
     private function makeFactoryAlwaysAllow(): RateLimiterFactoryInterface
     {
-        $factory = $this->createMock(RateLimiterFactoryInterface::class);
-        $limiter = $this->createMock(LimiterInterface::class);
+        $factory = $this->createStub(RateLimiterFactoryInterface::class);
+        $limiter = $this->createStub(LimiterInterface::class);
         $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('isAccepted')->willReturn(true);
         $limiter->method('consume')->willReturn($rateLimit);
@@ -31,8 +31,8 @@ class IngestProxyControllerTest extends TestCase
 
     private function makeFactoryAlwaysDeny(): RateLimiterFactoryInterface
     {
-        $factory = $this->createMock(RateLimiterFactoryInterface::class);
-        $limiter = $this->createMock(LimiterInterface::class);
+        $factory = $this->createStub(RateLimiterFactoryInterface::class);
+        $limiter = $this->createStub(LimiterInterface::class);
         $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('isAccepted')->willReturn(false);
         $limiter->method('consume')->willReturn($rateLimit);
@@ -49,7 +49,7 @@ class IngestProxyControllerTest extends TestCase
                 'response_headers' => ['content-type' => 'application/json'],
             ]),
         ]);
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
         $controller = new IngestProxyController(
             $mockClient,
             'https://eu.i.posthog.com',
@@ -94,7 +94,7 @@ class IngestProxyControllerTest extends TestCase
                 ],
             ]),
         ]);
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
         $controller = new IngestProxyController(
             $mockClient,
             'https://eu.i.posthog.com',
@@ -119,7 +119,7 @@ class IngestProxyControllerTest extends TestCase
                 ],
             ]),
         ]);
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
         $controller = new IngestProxyController(
             $mockClient,
             'https://eu.i.posthog.com',
@@ -137,7 +137,7 @@ class IngestProxyControllerTest extends TestCase
         $mockClient = new MockHttpClient(function () {
             $this->fail('HTTP client should not be called when rate limit denied');
         });
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
         $controller = new IngestProxyController(
             $mockClient,
             'https://eu.i.posthog.com',

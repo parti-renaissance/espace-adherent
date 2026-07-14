@@ -103,7 +103,7 @@ class PostHogService
             'api_key' => $this->apiKey,
             'event' => $eventName,
             'distinct_id' => $distinctId,
-            'timestamp' => (new \DateTimeImmutable)->format(\DATE_ATOM),
+            'timestamp' => (new \DateTimeImmutable())->format(\DATE_ATOM),
             'properties' => array_merge($this->buildSuperProperties(), $properties),
         ];
 
