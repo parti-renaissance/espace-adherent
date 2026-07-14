@@ -1,0 +1,22 @@
+{# templates/analytics/posthog/_snippet.html.twig
+   Snippet inline injecté dans le <head> par base_renaissance.html.twig
+   (Task 22). Rendu server-side avec les super-properties + identify
+   payload si app.user. Consommé par assets/analytics/posthog/posthog-init.js.
+
+   Ne pas render si posthog_config_enabled === false (feature flag OFF)
+   ou si le site n'est pas initialisé (hors périmètre Renaissance).
+#}
+{% if posthog_config_enabled and posthog_site is not null %}
+<script>
+  window.__POSTHOG_CONFIG__ = {
+    enabled:         {{ posthog_config_enabled|json_encode|raw }},
+    apiKey:          {{ posthog_config_api_key|json_encode|raw }},
+    superProperties: {{ posthog_super_properties()|json_encode|raw }},
+    consent:         {{ posthog_consent_state|json_encode|raw }}
+  };
+  {% set identify = posthog_identify_payload(app.user|default(null)) %}
+  {% if identify %}
+    window.__POSTHOG_IDENTIFY__ = {{ identify|json_encode|raw }};
+  {% endif %}
+</script>
+{% endif %}

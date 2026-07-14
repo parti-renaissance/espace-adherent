@@ -1,0 +1,17 @@
+{# templates/analytics/posthog/_consent_settings_row.html.twig
+   Ligne à insérer dans l'écran Réglages > Confidentialité.
+   Toggle granted↔refused via POST /parametres/confidentialite/toggle.
+#}
+<div class="flex items-center justify-between p-4 bg-white rounded border">
+  <div class="flex-1 mr-4">
+    <h4 class="font-medium">Analyse d'usage anonymisée</h4>
+    <p class="text-sm text-gray-600 mt-1">PostHog EU, aucune donnée personnelle sensible.</p>
+  </div>
+  <form method="post" action="{{ path('app_analytics_privacy_settings_toggle') }}">
+    <input type="hidden" name="granted" value="{{ posthog_consent_state == false ? '1' : '0' }}">
+    <input type="hidden" name="source" value="settings">
+    <button type="submit" class="px-4 py-2 {{ posthog_consent_state ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' }} rounded">
+      {{ posthog_consent_state ? 'Désactiver' : 'Activer' }}
+    </button>
+  </form>
+</div>
