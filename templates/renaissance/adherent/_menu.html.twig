@@ -4,6 +4,7 @@
     'app_user_change_password',
     'app_adherent_pin_interests',
     'app_user_set_email_notifications',
+    'app_analytics_privacy_settings',
 ]) %}
 
 <div>
@@ -96,6 +97,11 @@
         <li>
             <a href="{{ path('app_certification_request_home', {app_domain: app_renaissance_host}) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Certification
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_analytics_privacy_settings') }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_analytics_privacy_settings') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+                Confidentialité
             </a>
         </li>
     </ul>
