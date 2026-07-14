@@ -1,0 +1,13 @@
+# config/routes/analytics.yaml
+# Route reverse proxy /ingest/{path} vers PostHog EU.
+# host pattern : route param {marque} + requirements regex (approche natif Symfony,
+# review Opus I1). Match uniquement les 4 marques Renaissance.
+
+app_posthog_ingest_proxy:
+    path: /ingest/{path}
+    controller: App\Analytics\PostHog\IngestProxyController
+    requirements:
+        path: '^(e|decide|s|static|batch|array|flags|surveys|warehouse)(/.*)?$'
+        marque: 'parti-renaissance|attalpresident|avecgabrielattal|nouvellerepublique'
+    methods: [GET, POST, OPTIONS]
+    host: 'utilisateur.{marque}.fr'
