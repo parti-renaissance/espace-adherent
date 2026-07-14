@@ -6,6 +6,8 @@ namespace App\Controller\Renaissance\Adhesion;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\Controller\Renaissance\Adhesion\Api\PersistEmailController;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Paybox\PayboxPaymentSubscription;
@@ -22,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 #[Route('/adhesion/{pid}', name: 'app_adhesion_with_pid', requirements: ['pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
@@ -31,6 +34,14 @@ class AdhesionController extends AbstractController
     public const ROUTE_NAME = 'app_adhesion_index';
 
     private int $step = 0;
+
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
 
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
@@ -75,9 +86,28 @@ class AdhesionController extends AbstractController
 
             $donation = $this->donationRequestHandler->handle($donationRequest, $currentUser, (bool) $currentUser?->isRenaissanceAdherent());
 
+            $this->postHog->captureServerSide(
+                PostHogEventName::ADHESION_FORM_SUBMITTED,
+                ['step' => 'info_personnelle'],
+                $currentUser,
+            );
+            $this->postHog->captureServerSide(
+                PostHogEventName::ADHESION_PAYMENT_INITIATED,
+                ['payment_provider' => 'paybox'],
+                $currentUser,
+            );
+
             return $this->redirectToRoute(
                 'app_payment',
                 UtmParams::mergeParams(['uuid' => $donation->getUuid()], $donation->utmSource, $donation->utmCampaign)
+            );
+        }
+
+        if ($request->isMethod('GET')) {
+            $this->postHog->captureServerSide(
+                PostHogEventName::ADHESION_STARTED,
+                ['has_referrer_pid' => null !== $pid || null !== $referral],
+                $currentUser,
             );
         }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Adhesion;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\Controller\Renaissance\Payment\StatusController;
 use App\Entity\Adherent;
 use App\Repository\DonationRepository;
@@ -12,10 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route(path: '/adhesion/felicitations', name: 'app_adhesion_finish', methods: ['GET'])]
 class FinishController extends AbstractController
 {
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
+
     public function __invoke(Request $request, DonationRepository $donationRepository): Response
     {
         $user = $this->getUser();
@@ -33,6 +44,12 @@ class FinishController extends AbstractController
         ) {
             $type = $donation->isReAdhesion() ? 'readhesion' : 'adhesion';
         }
+
+        $this->postHog->captureServerSide(
+            PostHogEventName::ADHESION_FINISH_PAGE_VIEWED,
+            ['type' => $type],
+            $user,
+        );
 
         $callbackPath = $request->getSession()->remove(AnonymousFollowerSession::SESSION_KEY);
 
