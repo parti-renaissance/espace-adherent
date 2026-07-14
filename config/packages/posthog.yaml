@@ -1,0 +1,21 @@
+# config/packages/prod/posthog.yaml
+# Configuration PostHog (Cloud EU). Params injectés en DI depuis env vars.
+# Feature flag POSTHOG_ENABLED protège l'activation en prod jusqu'à validation manuelle.
+
+parameters:
+    posthog.enabled:                 '%env(bool:POSTHOG_ENABLED)%'
+    posthog.api_key:                 '%env(POSTHOG_API_KEY)%'
+    posthog.api_host:                '%env(POSTHOG_HOST)%'
+    posthog.salt.attalpresident:     '%env(HASH_EMAIL_SALT_ATTAL)%'
+    posthog.salt.parti_renaissance:  '%env(HASH_EMAIL_SALT_PR)%'
+    posthog.salt.avecgabrielattal:   '%env(HASH_EMAIL_SALT_AGA)%'
+    posthog.salt.nouvellerepublique: '%env(HASH_EMAIL_SALT_NR)%'
+    posthog.deploy_sha:              '%env(default::DEPLOY_SHA)%'
+    posthog.deploy_version:          '%env(default::APP_VERSION)%'
+
+framework:
+    rate_limiter:
+        posthog_ingest:
+            policy: token_bucket
+            limit: 600
+            rate: { interval: '1 minute', amount: 60 }

@@ -36,6 +36,9 @@
     {% block stylesheets '' %}
 
     {% block analytics %}
+        {{ include('analytics/posthog/_snippet.html.twig') }}
+
+        {# Matomo existant (dual-run 4 sem, PR ultérieure supprime) #}
         {% if app_environment == 'production' %}
             <!-- Matomo -->
             <script>
@@ -111,5 +114,7 @@
             window.Alpine.start();
         });
     </script>
+
+    {{ include('analytics/posthog/_consent_banner.html.twig') }}
 </body>
 </html>

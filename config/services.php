@@ -689,4 +689,21 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ]);
 
     $services->alias(Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface::class, Vich\UploaderBundle\Templating\Helper\UploaderHelper::class);
+
+    $services->set(App\Analytics\PostHog\SiteDetector::class);
+    $services->set(App\Analytics\PostHog\SiteContext::class);
+    $services->set(App\Analytics\PostHog\SiteContextListener::class)
+        ->tag('kernel.event_listener', [
+            'event' => 'kernel.request',
+            'method' => 'onKernelRequest',
+            'priority' => 250,
+        ]);
+
+    $services->set(App\Analytics\PostHog\HashEmailService::class)
+        ->arg('$saltsBySite', [
+            'attalpresident' => '%posthog.salt.attalpresident%',
+            'parti-renaissance' => '%posthog.salt.parti_renaissance%',
+            'avecgabrielattal' => '%posthog.salt.avecgabrielattal%',
+            'nouvellerepublique' => '%posthog.salt.nouvellerepublique%',
+        ]);
 };

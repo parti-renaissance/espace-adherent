@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\NationalEvent;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Form\NationalEvent\InscriptionFormType;
@@ -23,12 +25,21 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route('/{slug}', name: 'app_national_event_by_slug', requirements: ['slug' => '[^/]+'], methods: ['GET', 'POST'])]
 #[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
 class InscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
+
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
 
     public function __construct(
         private readonly NationalEventRepository $nationalEventRepository,
@@ -103,6 +114,19 @@ class InscriptionController extends AbstractController
         if ($isOpen && $form->isSubmitted() && $form->isValid()) {
             $inscription = $this->eventInscriptionManager->saveInscription($event, $inscriptionRequest);
 
+            // Cas 1 forcé (spec §8.4) — jointure DWH server-only via
+            // national_event_inscriptions.email, JAMAIS $set.email PostHog.
+            $this->postHog->captureServerSide(
+                PostHogEventName::NATIONAL_EVENT_INSCRIPTION_SUBMITTED,
+                [
+                    'event_uuid' => $event->getUuid()->toRfc4122(),
+                    'event_slug' => $event->getSlug(),
+                    'is_paid' => $inscription->isPaymentRequired(),
+                    'inscription_uuid' => $inscription->getUuid()->toRfc4122(),
+                ],
+                $user,
+            );
+
             if (PaymentStatusEnum::PENDING === $inscription->paymentStatus && $inscription->isPaymentRequired()) {
                 return $this->redirectToRoute('app_national_event_new_payment', ['slug' => $event->getSlug(), 'uuid' => $inscription->getUuid(), 'app_domain' => $app_domain]);
             }
@@ -112,6 +136,18 @@ class InscriptionController extends AbstractController
             }
 
             return $this->redirectToRoute('app_national_event_inscription_confirmation', ['slug' => $event->getSlug(), 'app_domain' => $app_domain]);
+        }
+
+        if ($request->isMethod('GET')) {
+            $this->postHog->captureServerSide(
+                PostHogEventName::NATIONAL_EVENT_PAGE_VIEWED,
+                [
+                    'event_uuid' => $event->getUuid()->toRfc4122(),
+                    'event_slug' => $event->getSlug(),
+                    'has_referrer_pid' => null !== $pid,
+                ],
+                $user,
+            );
         }
 
         return $this->render('renaissance/national_event/inscription/layout.html.twig', [

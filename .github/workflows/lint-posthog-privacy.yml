@@ -1,0 +1,24 @@
+name: Lint PostHog Privacy
+
+on:
+    pull_request:
+
+jobs:
+    privacy-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Check bypass label
+              id: bypass
+              run: |
+                  if echo '${{ toJson(github.event.pull_request.labels) }}' | grep -q 'posthog-privacy-ok'; then
+                    echo "bypass=true" >> $GITHUB_OUTPUT
+                  fi
+            - name: Run privacy lint
+              if: steps.bypass.outputs.bypass != 'true'
+              run: bash scripts/lint-posthog-privacy.sh
+            - name: Skip if bypassed
+              if: steps.bypass.outputs.bypass == 'true'
+              run: echo "⚠️ Bypass label 'posthog-privacy-ok' actif, lint skippé"

@@ -43,6 +43,7 @@
     "mini-css-extract-plugin": "^2.9.0",
     "postcss": "^8.4.38",
     "postcss-loader": "^8.1.1",
+    "posthog-js": "^1.399.2",
     "prop-types": "^15.8.1",
     "qs": "^6.12.1",
     "react": "^19.2.1",

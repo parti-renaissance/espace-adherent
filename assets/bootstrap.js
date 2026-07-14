@@ -3,6 +3,7 @@ import 'utils/sharer';
 import 'utils/css';
 
 import * as Sentry from '@sentry/browser';
+import { initPostHog } from './analytics/posthog/posthog-init';
 
 import './style/main.scss';
 
@@ -28,6 +29,8 @@ window.Bootstrap = class {
                         Sentry.setUser({ email: user });
                     }
                 }
+
+                initPostHog();
 
                 listeners.forEach((listener) => Main.addListener(listener));
 

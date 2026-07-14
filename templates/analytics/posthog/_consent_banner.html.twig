@@ -1,0 +1,38 @@
+{# templates/analytics/posthog/_consent_banner.html.twig
+   Bannière consent affichée aux déconnectés au 1er boot
+   (server-side detection: cookie absent + pas de user).
+   Alpine.js pilote le POST vers /parametres/confidentialite/toggle.
+#}
+{% if posthog_config_enabled and posthog_site is not null and posthog_consent_state is null and app.user is null %}
+<div id="posthog-consent-banner"
+     x-data="{ open: true }"
+     x-show="open"
+     role="alert"
+     class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg p-4">
+  <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-4">
+    <div class="flex-1">
+      <h3 class="font-semibold text-lg mb-1">Analyse d'usage anonymisée</h3>
+      <p class="text-sm text-gray-700">
+        Nous mesurons l'usage du site pour l'améliorer. Aucune donnée personnelle sensible n'est collectée.
+        Vous pouvez changer d'avis à tout moment dans
+        <a href="{{ path('app_analytics_privacy_settings', {marque: posthog_site}) }}" class="text-blue-600 underline">Réglages &gt; Confidentialité</a>.
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle', {marque: posthog_site}) }}"
+            @submit.prevent="fetch($el.action, { method: 'POST', body: new FormData($el) }).then(() => { open = false; window.__POSTHOG_APPLY_CONSENT__?.(true); })">
+        <input type="hidden" name="granted" value="1">
+        <input type="hidden" name="source" value="banner">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded font-semibold">Accepter</button>
+      </form>
+      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle', {marque: posthog_site}) }}"
+            @submit.prevent="fetch($el.action, { method: 'POST', body: new FormData($el) }).then(() => { open = false; window.__POSTHOG_APPLY_CONSENT__?.(false); })">
+        <input type="hidden" name="granted" value="0">
+        <input type="hidden" name="source" value="banner">
+        <button type="submit" class="px-4 py-2 bg-gray-200 text-gray-800 rounded font-semibold">Refuser</button>
+      </form>
+      <a href="{{ path('app_analytics_privacy_settings', {marque: posthog_site}) }}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded font-semibold">Gérer</a>
+    </div>
+  </div>
+</div>
+{% endif %}
