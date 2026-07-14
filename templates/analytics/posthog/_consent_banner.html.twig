@@ -15,23 +15,23 @@
       <p class="text-sm text-gray-700">
         Nous mesurons l'usage du site pour l'améliorer. Aucune donnée personnelle sensible n'est collectée.
         Vous pouvez changer d'avis à tout moment dans
-        <a href="{{ path('app_analytics_privacy_settings') }}" class="text-blue-600 underline">Réglages &gt; Confidentialité</a>.
+        <a href="{{ path('app_analytics_privacy_settings', {marque: posthog_site}) }}" class="text-blue-600 underline">Réglages &gt; Confidentialité</a>.
       </p>
     </div>
     <div class="flex gap-2">
-      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle') }}"
+      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle', {marque: posthog_site}) }}"
             @submit.prevent="fetch($el.action, { method: 'POST', body: new FormData($el) }).then(() => { open = false; window.__POSTHOG_APPLY_CONSENT__?.(true); })">
         <input type="hidden" name="granted" value="1">
         <input type="hidden" name="source" value="banner">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded font-semibold">Accepter</button>
       </form>
-      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle') }}"
+      <form method="post" action="{{ path('app_analytics_privacy_settings_toggle', {marque: posthog_site}) }}"
             @submit.prevent="fetch($el.action, { method: 'POST', body: new FormData($el) }).then(() => { open = false; window.__POSTHOG_APPLY_CONSENT__?.(false); })">
         <input type="hidden" name="granted" value="0">
         <input type="hidden" name="source" value="banner">
         <button type="submit" class="px-4 py-2 bg-gray-200 text-gray-800 rounded font-semibold">Refuser</button>
       </form>
-      <a href="{{ path('app_analytics_privacy_settings') }}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded font-semibold">Gérer</a>
+      <a href="{{ path('app_analytics_privacy_settings', {marque: posthog_site}) }}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded font-semibold">Gérer</a>
     </div>
   </div>
 </div>
