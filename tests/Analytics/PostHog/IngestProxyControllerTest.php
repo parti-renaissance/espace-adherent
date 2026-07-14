@@ -11,13 +11,13 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimit;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 class IngestProxyControllerTest extends TestCase
 {
-    private function makeFactoryAlwaysAllow(): RateLimiterFactory
+    private function makeFactoryAlwaysAllow(): RateLimiterFactoryInterface
     {
-        $factory = $this->createMock(RateLimiterFactory::class);
+        $factory = $this->createMock(RateLimiterFactoryInterface::class);
         $limiter = $this->createMock(LimiterInterface::class);
         $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('isAccepted')->willReturn(true);
@@ -26,9 +26,9 @@ class IngestProxyControllerTest extends TestCase
         return $factory;
     }
 
-    private function makeFactoryAlwaysDeny(): RateLimiterFactory
+    private function makeFactoryAlwaysDeny(): RateLimiterFactoryInterface
     {
-        $factory = $this->createMock(RateLimiterFactory::class);
+        $factory = $this->createMock(RateLimiterFactoryInterface::class);
         $limiter = $this->createMock(LimiterInterface::class);
         $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('isAccepted')->willReturn(false);

@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -33,7 +33,7 @@ final class IngestProxyController
         private readonly string $apiHost,
         private readonly LoggerInterface $logger,
         #[Autowire(service: 'limiter.posthog_ingest')]
-        private readonly RateLimiterFactory $rateLimiter,
+        private readonly RateLimiterFactoryInterface $rateLimiter,
     ) {}
 
     public function __invoke(string $path, Request $request): Response

@@ -21,7 +21,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  *
  * Cf. spec §7 + §10.
  */
-final class PostHogService
+class PostHogService
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
@@ -36,9 +36,9 @@ final class PostHogService
         #[Autowire('%env(APP_ENVIRONMENT)%')]
         private readonly string $environment,
         #[Autowire('%posthog.deploy_sha%')]
-        private readonly string $deploySha,
+        private readonly ?string $deploySha,
         #[Autowire('%posthog.deploy_version%')]
-        private readonly string $deployVersion,
+        private readonly ?string $deployVersion,
         private readonly LoggerInterface $logger,
     ) {}
 
