@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Renaissance\Donation;
 
+use App\Analytics\PostHog\Events\PostHogEventName;
+use App\Analytics\PostHog\PostHogService;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
@@ -15,12 +17,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[Route('/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
 #[Route('/grands-donateurs', name: 'app_major_donator_donation_index', defaults: ['majorDonator' => true], methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
     private const DEFAULT_STEP = 0;
+
+    private PostHogService $postHog;
+
+    #[Required]
+    public function setPostHogService(PostHogService $postHog): void
+    {
+        $this->postHog = $postHog;
+    }
 
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
@@ -47,7 +58,32 @@ class DonationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $donation = $this->donationRequestHandler->handle($donationRequest, $adherent);
 
+            // Cas 1 forcé — donor_type en propriété, JAMAIS $set.email
+            $donorType = null !== $adherent ? 'user' : 'anonymous';
+
+            $this->postHog->captureServerSide(
+                PostHogEventName::DONATION_FORM_SUBMITTED,
+                ['donor_type' => $donorType, 'major_donator' => $majorDonator],
+                $adherent,
+            );
+            $this->postHog->captureServerSide(
+                PostHogEventName::DONATION_PAYMENT_INITIATED,
+                ['payment_provider' => 'paybox', 'donor_type' => $donorType],
+                $adherent,
+            );
+
             return $this->redirectToRoute('app_payment', ['uuid' => $donation->getUuid()]);
+        }
+
+        if ($request->isMethod('GET')) {
+            $this->postHog->captureServerSide(
+                PostHogEventName::DONATION_STARTED,
+                [
+                    'donor_type' => null !== $adherent ? 'user' : 'anonymous',
+                    'major_donator' => $majorDonator,
+                ],
+                $adherent,
+            );
         }
 
         return $this->render($majorDonator ? 'renaissance/donation/form_major_donator.html.twig' : 'renaissance/donation/form.html.twig', [

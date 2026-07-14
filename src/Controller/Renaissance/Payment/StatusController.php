@@ -74,6 +74,26 @@ class StatusController extends AbstractController
                             $user,
                         );
                     }
+                } else {
+                    // Cas 1 forcé — donor_type en propriété, JAMAIS $set.email
+                    $donorType = null !== $user ? 'user' : 'anonymous';
+                    if (Transaction::PAYBOX_SUCCESS === $resultCode) {
+                        $this->postHog->captureServerSide(
+                            PostHogEventName::DONATION_COMPLETED,
+                            [
+                                'amount_eur' => $donation->getAmountInEuros(),
+                                'payment_method' => 'card',
+                                'donor_type' => $donorType,
+                            ],
+                            $user,
+                        );
+                    } else {
+                        $this->postHog->captureServerSide(
+                            PostHogEventName::DONATION_PAYMENT_FAILED,
+                            ['reason' => $resultCode ?: 'unknown', 'donor_type' => $donorType],
+                            $user,
+                        );
+                    }
                 }
             }
         }
