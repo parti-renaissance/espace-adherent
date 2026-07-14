@@ -100,7 +100,7 @@ final class PostHogTwigExtension extends AbstractExtension implements GlobalsInt
             ],
             '$set_once' => [
                 'identified_from_site' => $this->context->getSite(),
-                'identified_at' => (new \DateTimeImmutable())->format(\DATE_ATOM),
+                'identified_at' => new \DateTimeImmutable()->format(\DATE_ATOM),
             ],
         ];
     }

@@ -13,7 +13,7 @@ class SiteDetectorTest extends TestCase
 {
     public function testMappingKnownHostnames(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
         $detector = new SiteDetector($logger);
 
         $cases = [

@@ -50,7 +50,7 @@ class PostHogTwigExtensionTest extends TestCase
         $ctx = new SiteContext();
         $ctx->setSite('attalpresident');
         $request = Request::create('/', 'GET', cookies: ['ap_consent' => '1']);
-        $cookieHelper = $this->createMock(ConsentCookieHelper::class);
+        $cookieHelper = $this->createStub(ConsentCookieHelper::class);
         $cookieHelper->method('read')->willReturn(true);
         $ext = $this->makeExtension($ctx, $cookieHelper, $request);
 
@@ -91,7 +91,7 @@ class PostHogTwigExtensionTest extends TestCase
         $ctx->setSite('parti-renaissance');
         $ext = $this->makeExtension($ctx);
 
-        $user = $this->createMock(Adherent::class);
+        $user = $this->createStub(Adherent::class);
         $user->method('getEmailAddress')->willReturn('test@example.com');
         $user->method('getPublicId')->willReturn('123ABCD');
 
