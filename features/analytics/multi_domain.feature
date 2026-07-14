@@ -8,11 +8,11 @@ Feature: Détection dynamique du site par hostname
         Then la variable Twig globale "posthog_site" devrait être "<site>"
 
         Examples:
-            | hostname                            | site               |
-            | utilisateur.parti-renaissance.fr    | parti-renaissance  |
-            | utilisateur.attalpresident.fr       | attalpresident     |
-            | utilisateur.avecgabrielattal.fr     | avecgabrielattal   |
-            | utilisateur.nouvellerepublique.fr   | nouvellerepublique |
+            | hostname                          | site               |
+            | utilisateur.parti-renaissance.fr  | parti-renaissance  |
+            | utilisateur.attalpresident.fr     | attalpresident     |
+            | utilisateur.avecgabrielattal.fr   | avecgabrielattal   |
+            | utilisateur.nouvellerepublique.fr | nouvellerepublique |
 
     Scenario: hostname hors périmètre PostHog n'est pas mappé (fail-open)
         When je visite "https://admin.attalpresident.fr/"
