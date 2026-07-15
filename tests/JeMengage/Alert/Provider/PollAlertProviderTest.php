@@ -50,7 +50,7 @@ final class PollAlertProviderTest extends TestCase
         self::assertSame(AlertTypeEnum::POLL, $alert->type);
         self::assertSame('Sondage', $alert->label);
         self::assertSame('Plutôt thé ou café ?', $alert->title);
-        self::assertSame('Je donne mon avis', $alert->ctaLabel);
+        self::assertSame('Je participe', $alert->ctaLabel);
         self::assertSame('/sondage/'.$poll->getUuid()->toRfc4122(), $alert->ctaUrl);
         self::assertSame($poll->getUuid()->toRfc4122(), $alert->data['uuid']);
         self::assertSame('Plutôt thé ou café ?', $alert->data['question']);
@@ -71,7 +71,7 @@ final class PollAlertProviderTest extends TestCase
         $alerts = new PollAlertProvider($this->pollRepository($poll), $voteRepository)->getAlerts($adherent);
 
         self::assertFalse($alerts[0]->data['participated']);
-        self::assertSame('Je donne mon avis', $alerts[0]->ctaLabel);
+        self::assertSame('Je participe', $alerts[0]->ctaLabel);
     }
 
     public function testAdherentWithVoteGetsParticipatedAlert(): void
