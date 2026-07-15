@@ -6,6 +6,7 @@ namespace Tests\App\Controller\Api\Vox;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
+use App\DataFixtures\ORM\LoadPollData;
 use App\Entity\Timeline\TimelineFeed;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -33,12 +34,13 @@ class GetTimelineFeedsIndexerControllerTest extends AbstractApiTestCase
     private const string RANKER_URL = 'https://indexer.timeline.test';
     // Mock ranker host whose get_items fixture omits "items" (host fixture ranker-invalid.timeline.test.json).
     private const string RANKER_INVALID_URL = 'https://ranker-invalid.timeline.test';
+    // Mock ranker host returning the real POLL_01 (host fixture ranker-poll.timeline.test.json).
+    private const string RANKER_POLL_URL = 'https://ranker-poll.timeline.test';
 
     // Must match tests/HttpClient/fixtures/indexer.timeline.test.json.
     private const string UUID_A = 'aaaa1111-1111-4111-8111-aaaaaaaaaaaa';
     private const string UUID_MISSING = 'cccc3333-3333-4333-8333-cccccccccccc';
     private const string UUID_B = 'bbbb2222-2222-4222-8222-bbbbbbbbbbbb';
-    private const string UUID_POLL = 'dddd4444-4444-4444-8444-dddddddddddd';
 
     protected function setUp(): void
     {
@@ -145,11 +147,7 @@ class GetTimelineFeedsIndexerControllerTest extends AbstractApiTestCase
     public function testIndexerReadPathHydratesPollWithUserVoteState(): void
     {
         $token = $this->accessToken();
-        // Only the poll row exists in the mirror for this test; the event/publication/action ids the
-        // indexer returns are orphans here and get skipped, leaving a single hydrated hit.
-        $this->insertFeed(self::UUID_POLL, 'Plutôt thé ou café ?', 'poll', ['cta_label' => 'Je participe']);
-        $this->manager->flush();
-        $this->enableRanker();
+        $_SERVER['TIMELINE_RANKER_URL'] = $_ENV['TIMELINE_RANKER_URL'] = self::RANKER_POLL_URL;
 
         $payload = $this->requestTimeline($token, 0, 'sess-poll');
 
@@ -157,12 +155,13 @@ class GetTimelineFeedsIndexerControllerTest extends AbstractApiTestCase
 
         $poll = $payload['hits'][0];
         self::assertSame('poll', $poll['type']);
-        self::assertSame('Plutôt thé ou café ?', $poll['title']);
-        // The PollProcessor ran end-to-end: per-user vote date is null (president-ad has not voted on this
-        // poll), and the hand-built item.poll block the mobile app consumes carries the matching has_voted.
-        self::assertArrayHasKey('user_registered_at', $poll);
         self::assertNull($poll['user_registered_at']);
-        self::assertSame(['question' => 'Plutôt thé ou café ?', 'has_voted' => false], $poll['poll']);
+        self::assertSame(LoadPollData::POLL_01_UUID, $poll['poll']['uuid']);
+        self::assertSame('Plutôt thé ou café ?', $poll['poll']['question']);
+        self::assertSame('in_progress', $poll['poll']['state']);
+        self::assertFalse($poll['poll']['has_voted']);
+        self::assertNull($poll['poll']['voted_choice']);
+        self::assertCount(3, $poll['poll']['choices']);
     }
 
     private function accessToken(): string

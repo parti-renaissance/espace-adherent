@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\App\JeMengage\Timeline\FeedProcessor;
 
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
+use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
 use App\JeMengage\Timeline\FeedProcessor\PollProcessor;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
+use App\Repository\Poll\PollRepository;
 use App\Repository\Poll\VoteRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Uid\Uuid;
 
 final class PollProcessorTest extends TestCase
 {
     private const string POLL_UUID = '8adca369-938c-450b-92e9-9c2b1f206fa3';
-    private const string QUESTION = 'Plutôt thé ou café ?';
 
     public function testSupportsOnlyPollItems(): void
     {
-        $processor = new PollProcessor($this->createStub(VoteRepository::class));
+        $processor = new PollProcessor(
+            $this->createStub(PollRepository::class),
+            $this->createStub(VoteRepository::class),
+            $this->createStub(NormalizerInterface::class),
+        );
         $user = $this->createStub(Adherent::class);
 
         self::assertTrue($processor->supports(['type' => TimelineFeedTypeEnum::POLL], $user));
@@ -27,13 +34,23 @@ final class PollProcessorTest extends TestCase
         self::assertFalse($processor->supports([], $user));
     }
 
-    public function testProcessSurfacesVoteDateAndVotedPollBlock(): void
+    public function testProcessSurfacesVoteDateAndNormalizedPoll(): void
     {
         $votedAt = new \DateTimeImmutable('2026-07-08 10:12:00');
         $user = $this->createStub(Adherent::class);
+        $poll = $this->createStub(Poll::class);
+        $normalizedPoll = ['question' => 'Plutôt thé ou café ?', 'has_voted' => true, 'voted_at' => '2026-07-08T10:12:00+02:00'];
 
         $vote = $this->createStub(Vote::class);
         $vote->method('getCreatedAt')->willReturn($votedAt);
+
+        $pollRepository = $this->createMock(PollRepository::class);
+        $pollRepository
+            ->expects($this->once())
+            ->method('findOneByUuid')
+            ->with(self::POLL_UUID)
+            ->willReturn($poll)
+        ;
 
         $voteRepository = $this->createMock(VoteRepository::class);
         $voteRepository
@@ -43,26 +60,41 @@ final class PollProcessorTest extends TestCase
             ->willReturn($vote)
         ;
 
-        $item = new PollProcessor($voteRepository)->process(
-            ['type' => TimelineFeedTypeEnum::POLL, 'objectID' => self::POLL_UUID, 'title' => self::QUESTION],
+        $normalizer = $this->createMock(NormalizerInterface::class);
+        $normalizer
+            ->expects($this->once())
+            ->method('normalize')
+            ->with($poll, null, [
+                'groups' => ['poll_read'],
+                PrivatePublicContextBuilder::CONTEXT_KEY => PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER,
+            ])
+            ->willReturn($normalizedPoll)
+        ;
+
+        $item = new PollProcessor($pollRepository, $voteRepository, $normalizer)->process(
+            ['type' => TimelineFeedTypeEnum::POLL, 'objectID' => self::POLL_UUID],
             $user,
         );
 
         self::assertSame($votedAt, $item['user_registered_at']);
-        self::assertSame(['question' => self::QUESTION, 'has_voted' => true], $item['poll']);
+        self::assertSame($normalizedPoll, $item['poll']);
     }
 
-    public function testProcessMarksNotVotedWhenUserHasNoVote(): void
+    public function testProcessReturnsItemUnchangedWhenPollNotFound(): void
     {
-        $voteRepository = $this->createStub(VoteRepository::class);
-        $voteRepository->method('findAdherentVote')->willReturn(null);
+        $pollRepository = $this->createStub(PollRepository::class);
+        $pollRepository->method('findOneByUuid')->willReturn(null);
 
-        $item = new PollProcessor($voteRepository)->process(
-            ['type' => TimelineFeedTypeEnum::POLL, 'objectID' => self::POLL_UUID, 'title' => self::QUESTION],
+        $item = new PollProcessor(
+            $pollRepository,
+            $this->createStub(VoteRepository::class),
+            $this->createStub(NormalizerInterface::class),
+        )->process(
+            ['type' => TimelineFeedTypeEnum::POLL, 'objectID' => self::POLL_UUID],
             $this->createStub(Adherent::class),
         );
 
-        self::assertNull($item['user_registered_at']);
-        self::assertSame(['question' => self::QUESTION, 'has_voted' => false], $item['poll']);
+        self::assertArrayNotHasKey('poll', $item);
+        self::assertArrayNotHasKey('user_registered_at', $item);
     }
 }
