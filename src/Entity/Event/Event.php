@@ -425,6 +425,10 @@ class Event implements \Stringable, ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $pinned = false;
 
+    #[Groups(['event_read', 'event_list_read', 'event_write', 'event_write_limited'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $mobileAppOnly = false;
+
     public function __construct(?Uuid $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::v4();
