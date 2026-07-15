@@ -56,6 +56,7 @@ class EventCleaner
         'editable',
         'hidden',
         'pinned',
+        'mobile_app_only',
         'user_registered_at',
     ];
 

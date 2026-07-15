@@ -85,6 +85,7 @@ Feature:
                 "local_finish_at": null,
                 "editable": false,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false,
                 "image_url": null,
                 "image": null
@@ -240,6 +241,7 @@ Feature:
                         "visio_url": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -295,6 +297,7 @@ Feature:
                         "visio_url": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false,
                         "is_national": false,
                         "mode": null,
@@ -380,6 +383,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -435,6 +439,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -490,6 +495,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     }
                 ]
@@ -561,6 +567,7 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -607,6 +614,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -653,6 +661,7 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": true,
                         "edit_link": true
                     }
@@ -725,6 +734,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -780,6 +790,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -835,6 +846,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     }
                 ]
@@ -905,6 +917,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     },
                     {
@@ -951,6 +964,7 @@ Feature:
                         "image": null,
                         "pinned": true,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": true,
                         "edit_link": true
                     },
@@ -998,6 +1012,7 @@ Feature:
                         "image": null,
                         "pinned": false,
                         "hidden": false,
+                        "mobile_app_only": false,
                         "editable": false
                     }
                 ]
@@ -1076,6 +1091,7 @@ Feature:
                 "image": null,
                 "editable": false,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -1136,6 +1152,7 @@ Feature:
                 "object_state": "full",
                 "editable": false,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -1193,6 +1210,7 @@ Feature:
                 "object_state": "full",
                 "editable": false,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -1264,6 +1282,7 @@ Feature:
                 "image": null,
                 "editable": false,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -1529,6 +1548,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -1733,6 +1753,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -2048,6 +2069,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": true
             }
             """
@@ -2457,6 +2479,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -2553,6 +2576,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -2769,6 +2793,7 @@ Feature:
                 "editable": true,
                 "edit_link": true,
                 "hidden": false,
+                "mobile_app_only": false,
                 "pinned": false,
                 "object_state": "full"
             }
@@ -3172,6 +3197,7 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "visibility": "public",
                 "hidden": true,
+                "mobile_app_only": false,
                 "pinned": false
             }
             """
@@ -3224,6 +3250,15 @@ Feature:
         When I send a "GET" request to "/api/v3/events?scope=president_departmental_assembly&pinned=0"
         Then the response status code should be 200
         And the JSON node "items" should not contain an element with "name" equal to "Événement épinglé test"
+        # The event has already begun (2023) so this PUT falls into the event_write_limited group: mobile_app_only must stay editable
+        When I send a "PUT" request to "/api/v3/events/:saved_response.uuid:?scope=president_departmental_assembly" with body:
+            """
+            {
+                "mobile_app_only": true
+            }
+            """
+        Then the response status code should be 200
+        And the JSON node "mobile_app_only" should be true
 
     Scenario: As a user I can create a national event and it is pinned by default
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -3238,12 +3273,14 @@ Feature:
                 "capacity": 50,
                 "mode": "online",
                 "time_zone": "Europe/Paris",
-                "visibility": "public"
+                "visibility": "public",
+                "mobile_app_only": true
             }
             """
         Then the response status code should be 201
         And the JSON node "pinned" should be true
         And the JSON node "is_national" should be true
+        And the JSON node "mobile_app_only" should be true
         And the JSON node "uuid" should exist
         When I save this response
         When I send a "GET" request to "/api/v3/events?scope=national&pinned=true&name=Événement national test"
@@ -3256,11 +3293,13 @@ Feature:
         When I send a "PUT" request to "/api/v3/events/:saved_response.uuid:?scope=national" with body:
             """
             {
-                "pinned": false
+                "pinned": false,
+                "mobile_app_only": false
             }
             """
         Then the response status code should be 200
         And the JSON node "pinned" should be false
+        And the JSON node "mobile_app_only" should be false
 
         When I send a "GET" request to "/api/v3/events?scope=national&pinned=false&name=Événement national test"
         Then the response status code should be 200
