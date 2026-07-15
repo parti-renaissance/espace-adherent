@@ -35,7 +35,7 @@ readonly class PollAlertProvider implements AlertProviderInterface
             'Sondage',
             $poll->getQuestion(),
             (string) $poll->getDescription(),
-            $participated ? 'Voir' : 'Je donne mon avis',
+            $participated ? 'Voir' : 'Je participe',
             '/sondage/'.$poll->getUuid()->toRfc4122(),
             data: [
                 'uuid' => $poll->getUuid()->toRfc4122(),

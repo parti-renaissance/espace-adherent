@@ -26,7 +26,7 @@ Feature:
                     "label": "Sondage",
                     "title": "Plutôt thé ou café ?",
                     "description": "",
-                    "cta_label": "Je donne mon avis",
+                    "cta_label": "Je participe",
                     "cta_url": "/sondage/8adca369-938c-450b-92e9-9c2b1f206fa3",
                     "image_url": null,
                     "data": {
