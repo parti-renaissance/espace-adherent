@@ -9,4 +9,5 @@ use MyCLabs\Enum\Enum;
 class DonationSourceEnum extends Enum
 {
     public const MEMBERSHIP = 'membership';
+    public const NATIONAL_EVENT = 'national_event';
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\NationalEvent;
 
+use App\Entity\Donation;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\NationalEvent\PaymentStatusEnum;
@@ -65,6 +66,17 @@ class Payment
 
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $replacement = null;
+
+    /**
+     * The donation materialising this payment on the Paybox rail, null on the Worldline rail. Owning side on purpose:
+     * it carries the FK, so it stays lazy and the (hot) donations table needs no mapping change at all.
+     *
+     * This is also the rail discriminator for a payment in flight: switching the PSP parameter must never move an
+     * already-started payment to the other rail.
+     */
+    #[ORM\JoinColumn(nullable: true, unique: true, onDelete: 'SET NULL')]
+    #[ORM\OneToOne]
+    public ?Donation $donation = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $expiredCheckedAt = null;
