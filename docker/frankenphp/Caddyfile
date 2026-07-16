@@ -94,8 +94,14 @@
 		}
 
 		# Cached built assets : 404 if not found
+		# The immutable header is only set on hits: a 404 must stay cheap to
+		# revalidate, otherwise a CDN freezes it for a year (see @builtAssetsFound).
 		@builtAssets path /built/*
-		header @builtAssets Cache-Control "public, max-age=31536000, immutable"
+		@builtAssetsFound {
+			path /built/*
+			file
+		}
+		header @builtAssetsFound Cache-Control "public, max-age=31536000, immutable"
 		file_server @builtAssets
 
 		@phpRoute {
