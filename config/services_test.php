@@ -35,6 +35,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
     $services->set(App\Chatbot\RateLimit\ChatbotRateLimitChecker::class)
         ->arg('$appEnvironment', 'production');
 
+    $services->set(App\Ses\Webhook\SnsSubscriptionConfirmer::class);
+
     $services->set(League\Glide\Server::class)
         ->factory([
             League\Glide\ServerFactory::class,
