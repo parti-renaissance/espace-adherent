@@ -2,4 +2,52 @@
     a {
         @apply text-ui_blue-50 hover:underline transition-colors;
     }
+
+    p {
+        @apply my-4;
+        min-height: 0.5rem;
+        min-height: calc(1lh - 1rem);
+    }
+
+    h1 {
+        @apply font-bold text-3xl my-6;
+    }
+
+    h2 {
+        @apply font-bold text-2xl my-5;
+    }
+
+    h3 {
+        @apply font-bold text-xl my-4;
+    }
+
+    h4,
+    h5,
+    h6 {
+        @apply font-bold text-base my-4;
+    }
+
+    ul {
+        @apply list-disc list-outside pl-6 my-4;
+    }
+
+    ol {
+        @apply list-decimal list-outside pl-6 my-4;
+    }
+
+    li {
+        @apply my-1;
+    }
+
+    li > p {
+        @apply my-0;
+    }
+
+    > :first-child {
+        @apply mt-0;
+    }
+
+    > :last-child {
+        @apply mb-0;
+    }
 }

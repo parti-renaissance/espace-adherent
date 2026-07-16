@@ -11,7 +11,7 @@
                         {% endif %}
 
                         {% if event.textIntro %}
-                            <div class="text-subtitle1">{{ event.textIntro|tw_html }}</div>
+                            {{ event.textIntro|bo_html }}
                         {% endif %}
 
                         <div class="bg-ui_gray-5 rounded-lg p-6">
@@ -171,7 +171,7 @@
 
                     {% if event.textHelp %}
                         <twig:Atoms:ReCard class="re-step !rounded-2xl !gap-6 !border-black !border-[1px] ">
-                            {{ event.textHelp|raw }}
+                            {{ event.textHelp|bo_html }}
                         </twig:Atoms:ReCard>
                     {% endif %}
 

@@ -40,8 +40,8 @@
                         class="relative overflow-hidden md:overflow-visible transition-all duration-300"
                         :class="expanded ? 'max-h-full' : 'max-h-[10rem]'"
                     >
-                        <div class="md:block formatted-text">
-                            {{ event.textHelp|raw }}
+                        <div class="md:block">
+                            {{ event.textHelp|bo_html }}
                         </div>
 
                         <div
@@ -73,12 +73,12 @@
                     <h1 class="font-bold text-5xl text-ui_gray-80">Inscription</h1>
 
                     {% if event.textIntro %}
-                        <div class="text-subtitle1">{{ event.textIntro|tw_html }}</div>
+                        {{ event.textIntro|bo_html }}
                     {% endif %}
 
                     <div class="bg-ui_gray-5 rounded-lg p-6 formatted-text">
                         {% if event.textIntroContact %}
-                            {{ event.textIntroContact|raw|nl2br }}
+                            {{ event.textIntroContact|bo_html }}
                         {% else %}
                             Une question relative à l’inscription ?<br/>
                             Écrivez-nous à <a href="mailto:evenements@parti-renaissance.fr" class="text-ui_blue-50">evenements@parti-renaissance.fr</a> ou appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
@@ -163,8 +163,8 @@
                         {{ form_errors(form.birthdate) }}
 
                         {% if event.textHelpBirthdateField %}
-                            <div class="text-ui_gray-50 formatted-text">
-                                {{ event.textHelpBirthdateField|raw|nl2br }}
+                            <div class="text-ui_gray-50">
+                                {{ event.textHelpBirthdateField|bo_html }}
                             </div>
                         {% endif %}
                     </fieldset>
@@ -216,8 +216,8 @@
                         }}) }}
 
                         {% if event.discountHelp %}
-                            <div class="text-ui_gray-60 formatted-text">
-                                {{ event.discountHelp|raw|nl2br }}
+                            <div class="text-ui_gray-60">
+                                {{ event.discountHelp|bo_html }}
                             </div>
                         {% endif %}
                     </div>

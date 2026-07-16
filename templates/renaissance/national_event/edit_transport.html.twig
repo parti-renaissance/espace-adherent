@@ -46,8 +46,8 @@
                         }}) }}
 
                         {% if event.discountHelp %}
-                            <div class="text-ui_gray-60 formatted-text">
-                                {{ event.discountHelp|raw|nl2br }}
+                            <div class="text-ui_gray-60">
+                                {{ event.discountHelp|bo_html }}
                             </div>
                         {% endif %}
                     </div>
