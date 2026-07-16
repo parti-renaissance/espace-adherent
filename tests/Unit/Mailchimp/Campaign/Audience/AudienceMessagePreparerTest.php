@@ -7,6 +7,7 @@ namespace Tests\App\Unit\Mailchimp\Campaign\Audience;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\MailchimpStaticSegment;
 use App\Mailchimp\Campaign\Audience\AudienceMessagePreparer;
 use App\Mailchimp\Campaign\Audience\Message\PrepareCampaignAudienceMessage;
 use App\Mailchimp\Campaign\Audience\PreparationStatusEnum;
@@ -32,6 +33,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $campaign->markAsPreparing($alice);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
@@ -59,6 +61,7 @@ class AudienceMessagePreparerTest extends TestCase
         $this->setEntityId($campaign, 42);
         $campaign->markAsPreparing($alice);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
@@ -83,6 +86,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $dispatched = null;
         $bus = $this->createMock(MessageBusInterface::class);
@@ -116,6 +120,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $localInitializer = $this->createMock(StaticSegmentInitializer::class);
         $localInitializer->expects(self::once())->method('ensureLocalSegment')->with(self::identicalTo($campaign));
@@ -153,6 +158,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $localInitializer = $this->createMock(StaticSegmentInitializer::class);
         $localInitializer->expects(self::once())->method('ensureLocalSegment')->with(self::identicalTo($campaign));
@@ -191,6 +197,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $localInitializer = $this->createMock(StaticSegmentInitializer::class);
         $localInitializer->expects(self::never())->method('ensureLocalSegment');
@@ -242,6 +249,7 @@ class AudienceMessagePreparerTest extends TestCase
         $campaign = new MailchimpCampaign($message);
         $this->setEntityId($campaign, 7);
         $message->addMailchimpCampaign($campaign);
+        $this->attachSegment($campaign);
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::once())
@@ -277,6 +285,46 @@ class AudienceMessagePreparerTest extends TestCase
         $preparer->prepare($message, $alice);
     }
 
+    public function testPrepareStartsANewRunBeforeDispatching(): void
+    {
+        $alice = $this->createUser(1, 'alice@example.com');
+
+        $message = new AdherentMessage();
+        $campaign = new MailchimpCampaign($message);
+        $this->setEntityId($campaign, 7);
+        $message->addMailchimpCampaign($campaign);
+        $segment = $this->attachSegment($campaign);
+
+        // State left behind by an earlier, failed Mailchimp preparation (grain 500 → 7 chunks).
+        // chunksTotal is the load-bearing one: left set, PrepareCampaignAudienceHandler treats the
+        // incoming message as a redelivery and skips the rebuild entirely.
+        $segment->attempts = 1;
+        $segment->chunksTotal = 7;
+        $segment->chunksDone = 2;
+        $segment->expectedCount = 3284;
+        $segment->errorSummary = 'HTTP 400 on chunk of 500 emails';
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(PrepareCampaignAudienceMessage::class))
+            ->willReturn(new Envelope(new \stdClass()));
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('flush');
+
+        $this->buildPreparer($em, $bus, adherentRepository: $this->repositoryReturningCount($message, 10))->prepare($message, $alice);
+
+        // The run state is cleared at the send boundary, before the message goes out — so the
+        // handler cannot mistake this fresh preparation for a Messenger redelivery.
+        self::assertNull($segment->chunksTotal);
+        self::assertSame(0, $segment->chunksDone);
+        self::assertNull($segment->expectedCount);
+        self::assertNull($segment->errorSummary);
+        self::assertSame(2, $segment->attempts);
+        self::assertNotNull($segment->buildStartedAt);
+    }
+
     public function testPrepareNoCampaignThrowsLogicException(): void
     {
         $message = new AdherentMessage();
@@ -286,6 +334,21 @@ class AudienceMessagePreparerTest extends TestCase
 
         $this->expectException(\LogicException::class);
         $this->buildPreparer($em, $bus)->prepare($message, $this->createUser(1, 'alice@example.com'));
+    }
+
+    /**
+     * A campaign always carries its static segment by the time prepare() resets the run state:
+     * ensureLocalSegment()/ensureRemoteChannel() create it when missing, and no-op when it already
+     * exists. The doubled initializers in these tests model that second case — the
+     * already-provisioned campaign, which is precisely the one that used to be impossible to
+     * re-prepare.
+     */
+    private function attachSegment(MailchimpCampaign $campaign): MailchimpStaticSegment
+    {
+        $segment = new MailchimpStaticSegment($campaign);
+        $campaign->setMailchimpStaticSegment($segment);
+
+        return $segment;
     }
 
     private function buildPreparer(

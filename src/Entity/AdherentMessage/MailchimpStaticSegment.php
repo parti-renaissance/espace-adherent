@@ -67,4 +67,19 @@ class MailchimpStaticSegment
     {
         $this->campaign = $campaign;
     }
+
+    public function startNewRun(): void
+    {
+        ++$this->attempts;
+        $this->buildStartedAt = new \DateTimeImmutable();
+        $this->builtAt = null;
+        $this->buildDurationMs = null;
+        $this->expectedCount = null;
+        $this->preparedCount = null;
+        $this->refusedCount = null;
+        $this->erroredCount = null;
+        $this->chunksTotal = null;
+        $this->chunksDone = 0;
+        $this->errorSummary = null;
+    }
 }

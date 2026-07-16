@@ -401,6 +401,98 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
     }
 
+    public function testIncompleteStagingBlocksSendAndMarksFailed(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $campaign->markAsPendingSend();
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->expectedCount = 1_000;
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
+        // Single flush after markAsFailed; no markAsReady / auto-send flush.
+        $em->expects(self::once())->method('flush');
+
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $repo->method('existsPending')->willReturn(false);
+        // 900 staged for 1000 expected: 100 rows silently dropped by insertIgnore. No errored
+        // chunk, so the PreparationErrors guard does not fire — only the completeness invariant can.
+        $repo->expects(self::once())
+            ->method('aggregateStatusCounts')
+            ->with(4242)
+            ->willReturn([
+                SegmentMemberStatusEnum::Added->value => 900,
+            ])
+        ;
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('error')
+            ->with(
+                '[AudienceFinalize] Send blocked: audience incomplete or empty',
+                self::callback(function (array $ctx): bool {
+                    return 7 === $ctx['campaign_id']
+                        && 1_000 === $ctx['expected_count']
+                        && 900 === $ctx['staged_count'];
+                }),
+            )
+        ;
+
+        $handler = $this->buildHandler($em, $repo, $bus, $logger);
+        $handler(new FinalizeCampaignAudienceMessage(7));
+
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::Empty, $campaign->getBlockReason());
+        self::assertFalse($campaign->isPendingSend());
+        self::assertNull($segment->builtAt);
+    }
+
+    public function testBuiltAtIsNotSetWhenPreparationIsBlocked(): void
+    {
+        $message = new AdherentMessage();
+        $this->setEntityId($message, 100);
+        $campaign = $this->buildCampaign($message, segmentId: 555);
+        $campaign->markAsPreparing($this->createStub(Adherent::class));
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->expectedCount = 1_000;
+        $segment->buildStartedAt = new \DateTimeImmutable('-3 seconds');
+
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects(self::once())->method('find')->with(MailchimpCampaign::class, 7)->willReturn($campaign);
+        $em->expects(self::once())->method('refresh')->with($campaign);
+        $em->expects(self::once())->method('flush');
+
+        $repo = $this->createMock(MailchimpStaticSegmentMemberRepository::class);
+        $repo->method('existsPending')->willReturn(false);
+        $repo->expects(self::once())
+            ->method('aggregateStatusCounts')
+            ->with(4242)
+            ->willReturn([
+                SegmentMemberStatusEnum::Added->value => 600,
+                SegmentMemberStatusEnum::Errored->value => 400,
+            ])
+        ;
+
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects(self::never())->method('dispatch');
+
+        $handler = $this->buildHandler($em, $repo, $bus);
+        $handler(new FinalizeCampaignAudienceMessage(7));
+
+        // builtAt means "audience built", not "finalize ran over this segment": a blocked run must
+        // not look built, even though buildStartedAt was set.
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertNull($segment->builtAt);
+        self::assertNull($segment->buildDurationMs);
+    }
+
     private function buildHandler(
         EntityManagerInterface $em,
         MailchimpStaticSegmentMemberRepository $repo,

@@ -104,7 +104,6 @@ class PrepareCampaignAudienceHandler
         }
 
         $campaign->markAsPreparing($lockedBy);
-        $this->resetTrackingFields($staticSegment);
         $this->captureFilterSnapshot($staticSegment, $campaign);
         $this->entityManager->flush();
 
@@ -182,20 +181,6 @@ class PrepareCampaignAudienceHandler
     private function redispatchFinalize(MailchimpCampaign $campaign): void
     {
         $this->bus->dispatch(new FinalizeCampaignAudienceMessage($campaign->getId()));
-    }
-
-    private function resetTrackingFields(MailchimpStaticSegment $staticSegment): void
-    {
-        ++$staticSegment->attempts;
-        $staticSegment->buildStartedAt = new \DateTimeImmutable();
-        $staticSegment->builtAt = null;
-        $staticSegment->buildDurationMs = null;
-        $staticSegment->preparedCount = null;
-        $staticSegment->refusedCount = null;
-        $staticSegment->erroredCount = null;
-        $staticSegment->chunksTotal = null;
-        $staticSegment->chunksDone = 0;
-        $staticSegment->errorSummary = null;
     }
 
     private function loadAndInsertMembers(MailchimpCampaign $campaign, bool $sendViaMailchimp): int
