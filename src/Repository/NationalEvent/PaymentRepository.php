@@ -40,7 +40,12 @@ class PaymentRepository extends ServiceEntityRepository
     public function findToCheck(): array
     {
         return $this->createQueryBuilder('p')
-            ->where('p.status IN (:statuses) OR (p.status = :expired_status AND p.expiredCheckedAt IS NULL)')
+            // Paybox payments are confirmed by their IPN and have no checkout session to poll: only Worldline
+            // payments (donation IS NULL) belong to this reconciliation.
+            ->where('p.donation IS NULL')
+            // The OR must stay parenthesised: AND binds tighter, so an unparenthesised OR would let expired
+            // payments escape the two conditions above.
+            ->andWhere('(p.status IN (:statuses) OR (p.status = :expired_status AND p.expiredCheckedAt IS NULL))')
             ->andWhere('p.createdAt < :from')
             ->setParameter('from', new \DateTime()->modify('-20 minutes'))
             ->setParameter('statuses', [PaymentStatusEnum::PENDING, PaymentStatusEnum::UNKNOWN])

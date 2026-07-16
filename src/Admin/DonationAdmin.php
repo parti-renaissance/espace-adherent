@@ -8,6 +8,7 @@ use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\UtmFilter;
 use App\Donation\DonationEvents;
+use App\Donation\DonationSourceEnum;
 use App\Donation\Event\DonationWasCreatedEvent;
 use App\Donation\Event\DonationWasUpdatedEvent;
 use App\Donation\Request\DonationRequestDestinationEnum;
@@ -302,6 +303,18 @@ class DonationAdmin extends AbstractAdmin
                     'multiple' => true,
                 ],
             ])
+            ->add('source', ChoiceFilter::class, [
+                'label' => 'Source',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Cotisation' => DonationSourceEnum::MEMBERSHIP,
+                        'Inscription événement' => DonationSourceEnum::NATIONAL_EVENT,
+                    ],
+                    'multiple' => true,
+                ],
+            ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -502,6 +515,9 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Statut du don',
                 'template' => 'admin/donation/list_status.html.twig',
             ])
+            ->add('source', null, [
+                'label' => 'Source',
+            ])
             ->add('code', null, [
                 'label' => 'Code don',
             ])
@@ -579,6 +595,7 @@ class DonationAdmin extends AbstractAdmin
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
                 'Cotisation' => $donation->isMembership(),
+                'Source' => $donation->getSource(),
                 'UTM Source' => $donation->utmSource,
                 'UTM Campagne' => $donation->utmCampaign,
             ];

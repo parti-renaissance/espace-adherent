@@ -29,6 +29,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('enable_canary', '%env(ENABLE_CANARY)%');
 
+    // Which PSP takes national event inscription payments: 'paybox' or 'worldline'. Defaulted through the env
+    // processor so no new prod variable is required; set NATIONAL_EVENT_PAYMENT_PSP to switch without redeploying.
+    $parameters->set('national_event_payment_psp_default', 'paybox');
+    $parameters->set('national_event_payment_psp', '%env(default:national_event_payment_psp_default:NATIONAL_EVENT_PAYMENT_PSP)%');
+
     $parameters->set('transactional_sender_email', 'contact@parti-renaissance.fr');
 
     $parameters->set('transactional_sender_name', 'Renaissance');

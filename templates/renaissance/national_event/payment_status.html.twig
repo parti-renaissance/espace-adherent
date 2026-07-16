@@ -60,3 +60,13 @@
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
 {% endblock %}
+
+{% block final_javascripts %}
+    {% if payment_check_url is defined and payment_check_url %}
+        <script type="text/javascript">
+            Bootstrap.onLoad(async function() {
+                await Main.runPaymentStatusPage('{{ payment_check_url }}');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

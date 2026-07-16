@@ -596,6 +596,11 @@ class Donation implements \Stringable, GeoPointInterface
         return $this->beneficiary;
     }
 
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
     public function setSource(?string $source): void
     {
         $this->source = $source;
@@ -608,6 +613,15 @@ class Donation implements \Stringable, GeoPointInterface
     public function isMembership(): bool
     {
         return $this->membership;
+    }
+
+    /**
+     * A national event inscription paid by card: it rides the Paybox rail like a donation, but it is not one.
+     * Keep this the single source of truth — never test the source string inline.
+     */
+    public function isForNationalEvent(): bool
+    {
+        return DonationSourceEnum::NATIONAL_EVENT === $this->source;
     }
 
     public function setMembership(bool $membership): void
