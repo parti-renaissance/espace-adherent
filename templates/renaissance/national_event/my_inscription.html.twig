@@ -246,21 +246,12 @@
                     {% import _self as display %}
 
                     {% set package_config = event.getIndexedPackageConfig() %}
-                    {% set keys_to_display = [
-                        'visitDay',
-                        'packagePlan',
-                        'transport',
-                        'packageCity',
-                        'packageDepartureTime',
-                        'packageDonation',
-                        'accommodation',
-                    ] %}
+                    {% set specially_rendered_keys = ['partie1place', 'partie2place'] %}
 
-                    {% for key in keys_to_display %}
+                    {% for key, fieldConfig in package_config ?? [] %}
                         {% set userValue = inscription.packageValues[key] ?? null %}
-                        {% set fieldConfig = attribute(package_config, key) ?? null %}
 
-                        {% if userValue and fieldConfig %}
+                        {% if userValue and fieldConfig and key not in specially_rendered_keys %}
                             {% if fieldConfig.options is not defined or fieldConfig.options is empty %}
                                 {{ display.info_card(
                                     null,

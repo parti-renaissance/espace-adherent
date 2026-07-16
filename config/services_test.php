@@ -13,6 +13,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $parameters->set('ssl_private_key', '%env(SSL_PRIVATE_KEY)%');
 
+    $parameters->set('national_event_payment_psp_default', 'worldline');
+
     $services = $containerConfigurator->services();
 
     $services->defaults()

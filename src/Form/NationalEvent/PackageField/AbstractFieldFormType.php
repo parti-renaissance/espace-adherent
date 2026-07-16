@@ -226,7 +226,7 @@ abstract class AbstractFieldFormType extends AbstractType
             return '<span class="text-ui_gray-60"> - Complet</span>';
         }
 
-        if ($availablePlaces > 50) {
+        if ($availablePlaces > 10) {
             return '<span class="text-ui_gray-60"> - Places limitées</span>';
         }
 
