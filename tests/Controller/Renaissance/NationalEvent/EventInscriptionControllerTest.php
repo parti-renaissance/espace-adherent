@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Tests\App\AbstractWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Payment\Worldline\FakeWorldlineConnection;
 
 #[Group('functional')]
 class EventInscriptionControllerTest extends AbstractWebTestCase
@@ -65,6 +66,29 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->assertInstanceOf(EventInscription::class, $eventInscription);
         $this->assertEquals($referrerCode, $eventInscription->referrerCode);
         $this->assertEquals($referrerEmail, $eventInscription->referrer?->getEmailAddress());
+    }
+
+    public function testExternalInscriptionCanReferAnotherParticipantFromItsConfirmationEmail(): void
+    {
+        $this->submitInscriptionForm('/grand-rassemblement/event-national-1', $referrerEmail = 'alice.external@example.com', 'Alice', 'External');
+
+        /** @var EventInscription $referrerInscription */
+        $referrerInscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $referrerEmail]);
+        $this->assertInstanceOf(EventInscription::class, $referrerInscription);
+        self::assertNull($referrerInscription->adherent, 'The referrer must be an external registrant for this scenario.');
+
+        // Her confirmation email must carry a referral link built on her own inscription public id.
+        $shareUrl = $this->getConfirmationEmailVars($referrerEmail)['share_url'] ?? null;
+        self::assertNotNull($shareUrl, 'External registrants must get a referral link in their confirmation email.');
+        self::assertStringEndsWith('/grand-rassemblement/event-national-1/'.$referrerInscription->getPublicId(), $shareUrl);
+
+        // Following that link must credit her as the referrer of the next participant.
+        $this->submitInscriptionForm(parse_url($shareUrl, \PHP_URL_PATH), $referredEmail = 'bob.external@example.com', 'Bob', 'External');
+
+        /** @var EventInscription $referredInscription */
+        $referredInscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $referredEmail]);
+        $this->assertInstanceOf(EventInscription::class, $referredInscription);
+        self::assertSame($referrerInscription->getPublicId(), $referredInscription->referrerCode);
     }
 
     public function testAutoAcceptedStatus(): void
@@ -353,9 +377,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -405,9 +429,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -457,9 +481,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -548,9 +572,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -674,9 +698,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -826,9 +850,9 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         $this->client->submitForm('Continuer vers ma banque');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->client->submitForm('Continuer vers ma banque');
+        // The submit now opens a Worldline checkout and redirects straight to it, instead of rendering an auto-posted form.
+        $this->assertClientIsRedirectedTo(FakeWorldlineConnection::REDIRECT_URL, $this->client);
 
         $this->em->clear();
 
@@ -1879,6 +1903,38 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
     public static function provideReferrerCodes(): iterable
     {
         yield ['123-456', 'michelle.dufour@example.ch'];
+    }
+
+    private function submitInscriptionForm(string $path, string $email, string $firstName, string $lastName): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, $path);
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $form = $crawler->selectButton('Je réserve ma place')->form();
+        $form['inscription_form[acceptCgu]']->tick();
+        $form['inscription_form[acceptMedia]']->tick();
+
+        $this->client->submit($form, [
+            'inscription_form' => [
+                'email' => $email,
+                'civility' => 'male',
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'birthPlace' => 'Paris',
+                'birthdate' => ['year' => '2000', 'month' => '10', 'day' => '2'],
+                'postalCode' => '75001',
+            ],
+        ]);
+    }
+
+    private function getConfirmationEmailVars(string $recipient): array
+    {
+        $emails = $this->getEmailRepository()->findRecipientMessages(NationalEventInscriptionConfirmationMessage::class, $recipient);
+        self::assertCount(1, $emails);
+
+        $payload = json_decode($emails[0]->getRequestPayloadJson(), true);
+
+        return array_column($payload['message']['global_merge_vars'], 'content', 'name');
     }
 
     public function testFormFieldsAreHiddenWhenToggleIsOff(): void

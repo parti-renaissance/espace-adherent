@@ -8,8 +8,8 @@ use App\Repository\NationalEvent\EventInscriptionRepository;
 
 class MeetingInscriptionPublicIdGenerator extends AbstractPublicIdGenerator
 {
-    public const PATTERN = '^E[0-9]{6}$';
-    public const REGEX = '#'.self::PATTERN.'#';
+    public const string PATTERN = 'E[0-9]{6}';
+    public const string REGEX = '#^'.self::PATTERN.'$#';
 
     public function __construct(public readonly EventInscriptionRepository $repository)
     {

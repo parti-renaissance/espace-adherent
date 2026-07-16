@@ -12,6 +12,7 @@ use App\NationalEvent\EventInscriptionManager;
 use App\NationalEvent\NationalEventTypeEnum;
 use App\NationalEvent\PaymentStatusEnum;
 use App\PublicId\AdherentPublicIdGenerator;
+use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use App\Repository\NationalEvent\NationalEventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -25,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Uid\Uuid;
 
 #[Route('/{slug}', name: 'app_national_event_by_slug', requirements: ['slug' => '[^/]+'], methods: ['GET', 'POST'])]
-#[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => AdherentPublicIdGenerator::PATTERN], methods: ['GET', 'POST'])]
+#[Route('/{slug}/{pid}', name: 'app_national_event_by_slug_with_referrer', requirements: ['slug' => '[^/]+', 'pid' => '(?:'.AdherentPublicIdGenerator::PATTERN.'|'.MeetingInscriptionPublicIdGenerator::PATTERN.')'], methods: ['GET', 'POST'])]
 class InscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
