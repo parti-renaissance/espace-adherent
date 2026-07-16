@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Webhook;
 
 use App\Ses\Webhook\Command\RecordSesRawEventCommand;
+use App\Ses\Webhook\SnsSubscriptionConfirmer;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,7 @@ class SesNotificationController extends AbstractController
     public function __construct(
         private readonly MessageBusInterface $bus,
         private readonly LoggerInterface $logger,
+        private readonly SnsSubscriptionConfirmer $subscriptionConfirmer,
         private readonly string $sesWebhookKey,
         private readonly string $sesNotificationTopicArn,
     ) {
@@ -44,9 +46,15 @@ class SesNotificationController extends AbstractController
         $type = $payload['Type'] ?? null;
 
         if ('SubscriptionConfirmation' === $type) {
-            $this->logger->warning('[SES][Webhook] SNS SubscriptionConfirmation received — confirm it via infra', [
-                'subscribe_url' => $payload['SubscribeURL'] ?? null,
-            ]);
+            $subscribeUrl = $payload['SubscribeURL'] ?? null;
+
+            if (!\is_string($subscribeUrl) || '' === $subscribeUrl) {
+                $this->logger->error('[SES][Webhook] SubscriptionConfirmation received without a SubscribeURL');
+
+                return new Response('OK');
+            }
+
+            $this->subscriptionConfirmer->confirm($subscribeUrl);
 
             return new Response('OK');
         }
