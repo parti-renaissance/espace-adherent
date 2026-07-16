@@ -315,7 +315,7 @@
             <twig:Atoms:ReCard class="h-fit">
                 <div class="flex flex-col gap-[24px] text-base">
                     {% if event.textConfirmation %}
-                        <div>{{ event.textConfirmation|raw }}</div>
+                        {{ event.textConfirmation|bo_html }}
                     {% endif %}
 
                     <hr/>
