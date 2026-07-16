@@ -57,6 +57,7 @@ class AudienceMessagePreparer
 
         $campaign->markAsPreparing($currentUser);
         $campaign->markAsPendingSend();
+        $campaign->getMailchimpStaticSegment()->startNewRun();
         $this->entityManager->flush();
 
         try {

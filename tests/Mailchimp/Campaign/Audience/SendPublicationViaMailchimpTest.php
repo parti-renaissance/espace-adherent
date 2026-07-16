@@ -22,6 +22,7 @@ use App\Mailchimp\Campaign\MailchimpChannelInitializer;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\MailchimpStaticSegmentServiceInterface;
 use App\Mailchimp\Campaign\StaticSegmentInitializer;
+use App\Mailchimp\Manager;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentMessage\MailchimpStaticSegmentMemberRepository;
 use App\Repository\AdherentRepository;
@@ -115,6 +116,63 @@ class SendPublicationViaMailchimpTest extends AbstractKernelTestCase
         $preparer->prepare($campaign->getMessage(), $campaign->getMessage()->getSender());
 
         self::assertTrue($campaign->sendViaMailchimp, 'audience over threshold must route via Mailchimp');
+    }
+
+    /**
+     * A campaign first prepared through SES owns a local-only segment (no mailchimpSegmentId). If its
+     * audience later crosses the threshold, the Mailchimp route must still provision the remote
+     * segment on that existing local one — ensureRemoteChannel() reuses the local segment and
+     * provisions the remote id when it is missing.
+     *
+     * This path only became reachable once re-preparation was fixed: before, a campaign already
+     * carrying a chunksTotal could never be prepared again, so it could never switch channel.
+     */
+    public function testExistingLocalSegmentIsProvisionedWhenSwitchingToMailchimp(): void
+    {
+        $campaign = $this->createCampaignWithRemoteSegment(2);
+        // Roll the segment back to a local-only, SES-shaped one carrying a previous run's grain.
+        $campaign->setStaticSegmentId(null);
+        $segment = $campaign->getMailchimpStaticSegment();
+        $segment->mailchimpSegmentId = null;
+        $segment->chunksTotal = 1;
+        $segment->attempts = 1;
+        $this->manager->flush();
+
+        $segmentService = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $segmentService->expects(self::once())
+            ->method('create')
+            ->with(self::anything(), [], self::anything())
+            ->willReturn(self::REMOTE_SEGMENT_ID)
+        ;
+
+        // Threshold 1 vs a real audience of 2 → Mailchimp. The real MailchimpChannelInitializer runs,
+        // with only the segment service and the campaign manager doubled (zero real HTTP).
+        $preparer = $this->buildPreparer(
+            self::getContainer()->get(StaticSegmentInitializer::class),
+            $this->buildChannelInitializer($segmentService),
+            threshold: 1,
+        );
+        $preparer->prepare($campaign->getMessage(), $campaign->getMessage()->getSender());
+
+        self::assertTrue($campaign->sendViaMailchimp);
+        self::assertSame(self::REMOTE_SEGMENT_ID, $campaign->getStaticSegmentId(), 'the remote segment must be provisioned on the existing local one');
+        self::assertSame(self::REMOTE_SEGMENT_ID, $segment->mailchimpSegmentId);
+        // The send click cleared the previous run's grain, so the handler will rebuild at the MC grain.
+        self::assertNull($segment->chunksTotal);
+        self::assertSame(2, $segment->attempts);
+    }
+
+    private function buildChannelInitializer(MailchimpStaticSegmentServiceInterface $segmentService): MailchimpChannelInitializer
+    {
+        $container = self::getContainer();
+
+        return new MailchimpChannelInitializer(
+            $container->get(StaticSegmentInitializer::class),
+            $segmentService,
+            $container->get(MailchimpObjectIdMapping::class),
+            $this->createStub(Manager::class),
+            $this->manager,
+        );
     }
 
     private function buildPreparer(

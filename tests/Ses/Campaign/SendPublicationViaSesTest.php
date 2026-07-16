@@ -183,6 +183,76 @@ class SendPublicationViaSesTest extends AbstractKernelTestCase
         $this->assertMessageIsNotDispatched(ProcessAudienceChunkMessage::class);
     }
 
+    /**
+     * Regression of the 2026-07-16 incident (campaign 3010): a campaign left with the run state of an
+     * earlier, failed Mailchimp preparation could never be re-prepared. The stale chunksTotal made
+     * PrepareCampaignAudienceHandler take its resume short-circuit — which skips the rebuild — so the
+     * finalize aggregated an empty table, promoted the campaign to Ready anyway, and the SES trigger
+     * ended on "No sendable recipient".
+     *
+     * prepare() now clears the run state at the send boundary, so the stale grain cannot survive a
+     * send click.
+     */
+    public function testStaleMailchimpRunStateDoesNotBlockSesRebuild(): void
+    {
+        $campaign = $this->createCampaignWithAudienceWithoutSegment(3);
+        $author = $campaign->getMessage()->getSender();
+
+        // The segment left behind by the failed Mailchimp preparation: grain 500 → 7 chunks, 2 done,
+        // push errors recorded, and an expectedCount from an audience that no longer applies.
+        $segment = new MailchimpStaticSegment($campaign);
+        $segment->attempts = 1;
+        $segment->chunksTotal = 7;
+        $segment->chunksDone = 2;
+        $segment->expectedCount = 3284;
+        $segment->errorSummary = 'HTTP 400 on chunk of 500 emails: None of the emails provided were subscribed to the list';
+        $campaign->setMailchimpStaticSegment($segment);
+        $this->manager->persist($segment);
+        $this->manager->flush();
+
+        $mailchimpSegment = $this->createMock(MailchimpStaticSegmentServiceInterface::class);
+        $mailchimpSegment->expects(self::never())->method('update');
+        self::getContainer()->set(MailchimpStaticSegmentServiceInterface::class, $mailchimpSegment);
+
+        $sentTo = [];
+        $sesClient = $this->createMock(SesEmailClient::class);
+        $sesClient
+            ->expects(self::exactly(3))
+            ->method('sendEmail')
+            ->willReturnCallback(static function (SesEmail $email) use (&$sentTo): SesSendOutcome {
+                $sentTo[] = $email->to;
+
+                return SesSendOutcome::sent('ses-msg-'.$email->to);
+            })
+        ;
+        self::getContainer()->set(SesEmailClient::class, $sesClient);
+
+        self::getContainer()->get(AudienceMessagePreparer::class)->prepare($campaign->getMessage(), $author);
+
+        $reloaded = $this->reloadCampaign($campaign);
+        $rebuilt = $reloaded->getMailchimpStaticSegment();
+        $segmentId = $rebuilt->id;
+
+        // The audience was rebuilt rather than short-circuited: real rows, staged and sent.
+        self::assertCount(3, $sentTo);
+        self::assertSame(3, $this->countByStatus($segmentId, SegmentMemberStatusEnum::Sent));
+        self::assertSame(3, $rebuilt->expectedCount);
+        self::assertSame(3, $rebuilt->preparedCount);
+
+        // The stale Mailchimp grain is gone: 3 recipients at the SES grain of 50 make a single chunk.
+        self::assertSame(1, $rebuilt->chunksTotal, 'the stale Mailchimp chunk grain (7) must not survive a send click');
+        self::assertSame([1], $this->distinctChunkNumbers($segmentId));
+        self::assertNull($rebuilt->errorSummary, 'the previous run error summary must be cleared');
+        self::assertSame(2, $rebuilt->attempts);
+
+        // The campaign went out through SES instead of failing on "No sendable recipient".
+        self::assertSame(MailchimpStatusEnum::Sent, $reloaded->status);
+        self::assertNotSame(MailchimpStatusEnum::Error, $reloaded->status);
+        $this->assertMessageIsDispatched(TriggerSesCampaignMessage::class);
+        $this->assertMessageIsNotDispatched(SendMailchimpCampaignCommand::class);
+        $this->assertMessageIsNotDispatched(ProcessAudienceChunkMessage::class);
+    }
+
     protected function getMessageRecorder(): MessageRecorderInterface
     {
         return self::getContainer()->get(MessageRecorderInterface::class);

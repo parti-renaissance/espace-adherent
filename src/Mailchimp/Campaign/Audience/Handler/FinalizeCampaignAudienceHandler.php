@@ -79,24 +79,22 @@ class FinalizeCampaignAudienceHandler
         }
 
         $counts = $this->memberRepository->aggregateStatusCounts($staticSegmentId);
-        $staticSegment->preparedCount = $counts[SegmentMemberStatusEnum::Added->value] ?? 0;
-        $staticSegment->refusedCount = $counts[SegmentMemberStatusEnum::Refused->value] ?? 0;
-        $staticSegment->erroredCount = $counts[SegmentMemberStatusEnum::Errored->value] ?? 0;
+        $preparedCount = $counts[SegmentMemberStatusEnum::Added->value] ?? 0;
+        $refusedCount = $counts[SegmentMemberStatusEnum::Refused->value] ?? 0;
+        $erroredCount = $counts[SegmentMemberStatusEnum::Errored->value] ?? 0;
 
-        $builtAt = new \DateTimeImmutable();
-        $staticSegment->builtAt = $builtAt;
-        if (null !== $staticSegment->buildStartedAt) {
-            $staticSegment->buildDurationMs = (int) (($builtAt->format('U.u') - $staticSegment->buildStartedAt->format('U.u')) * 1000);
-        }
+        $staticSegment->preparedCount = $preparedCount;
+        $staticSegment->refusedCount = $refusedCount;
+        $staticSegment->erroredCount = $erroredCount;
 
         // Errored chunks are infrastructure push failures (NOT legitimate refusals): the Mailchimp
         // segment is incomplete through no fault of the audience. Never auto-send a partial audience
         // caused by errors — block and alert so a human re-prepares or investigates.
-        if ($staticSegment->erroredCount > 0) {
+        if ($erroredCount > 0) {
             $this->logger->error('[AudienceFinalize] Send blocked: preparation completed with errored chunks', [
                 'campaign_id' => $campaign->getId(),
-                'errored_count' => $staticSegment->erroredCount,
-                'prepared_count' => $staticSegment->preparedCount,
+                'errored_count' => $erroredCount,
+                'prepared_count' => $preparedCount,
                 'expected_count' => $staticSegment->expectedCount,
             ]);
 
@@ -104,6 +102,28 @@ class FinalizeCampaignAudienceHandler
             $this->entityManager->flush();
 
             return;
+        }
+
+        $stagedCount = $preparedCount + $refusedCount + $erroredCount;
+
+        if ($stagedCount !== $staticSegment->expectedCount || 0 === $preparedCount) {
+            $this->logger->error('[AudienceFinalize] Send blocked: audience incomplete or empty', [
+                'campaign_id' => $campaign->getId(),
+                'expected_count' => $staticSegment->expectedCount,
+                'staged_count' => $stagedCount,
+                'prepared_count' => $preparedCount,
+            ]);
+
+            $campaign->markAsFailed(BlockReasonEnum::Empty);
+            $this->entityManager->flush();
+
+            return;
+        }
+
+        $builtAt = new \DateTimeImmutable();
+        $staticSegment->builtAt = $builtAt;
+        if (null !== $staticSegment->buildStartedAt) {
+            $staticSegment->buildDurationMs = (int) (($builtAt->format('U.u') - $staticSegment->buildStartedAt->format('U.u')) * 1000);
         }
 
         $campaign->markAsReady();
