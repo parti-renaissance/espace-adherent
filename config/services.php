@@ -107,11 +107,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$friendlyCaptchaEuropeSiteKey', '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%')
         ->bind('$mediaCdnBaseUrl', '%env(MEDIA_CDN_BASE_URL)%')
         ->bind('$friendlyCaptchaNewsletterSiteKey', '%env(FRIENDLY_CAPTCHA_NEWSLETTER_SITE_KEY)%')
-        ->bind('$ogonePspId', '%env(OGONE_PSPID)%')
-        ->bind('$ogoneUserId', '%env(OGONE_USER_ID)%')
-        ->bind('$ogoneUserPwd', '%env(OGONE_USER_PWD)%')
-        ->bind('$ogoneShaInKey', '%env(OGONE_SHAINKEY)%')
-        ->bind('$ogoneWebhookKey', '%env(OGONE_WEBHOOK_KEY)%')
+        ->bind('$worldlineMerchantId', '%env(WORLDLINE_MERCHANT_ID)%')
+        ->bind('$worldlineWebhookId', '%env(WORLDLINE_WEBHOOK_ID)%')
+        ->bind('$worldlineWebhookSecret', '%env(WORLDLINE_WEBHOOK_SECRET)%')
+        ->bind('$worldlineWebhookUrlKey', '%env(WORLDLINE_WEBHOOK_URL_KEY)%')
         ->bind('$appEnvironment', '%env(APP_ENVIRONMENT)%')
         ->bind('$googlePlaceApiKey', '%env(GMAPS_PRIVATE_API_KEY)%')
         ->bind('$maxIdleTime', '%env(SESSION_MAX_IDLE_TIME)%')
@@ -689,4 +688,29 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ]);
 
     $services->alias(Vich\UploaderBundle\Templating\Helper\UploaderHelperInterface::class, Vich\UploaderBundle\Templating\Helper\UploaderHelper::class);
+
+    $services->set(OnlinePayments\Sdk\CommunicatorConfiguration::class)
+        ->arg('$apiKeyId', '%env(WORLDLINE_API_KEY)%')
+        ->arg('$apiSecret', '%env(WORLDLINE_API_SECRET)%')
+        ->arg('$apiEndpoint', '%env(WORLDLINE_API_URL)%')
+        ->arg('$integrator', 'Renaissance')
+    ;
+
+    $services->set(OnlinePayments\Sdk\Communication\Connection::class, OnlinePayments\Sdk\Communication\DefaultConnection::class)
+        ->arg('$communicatorConfiguration', service(OnlinePayments\Sdk\CommunicatorConfiguration::class))
+    ;
+
+    $services->set(OnlinePayments\Sdk\Communicator::class)
+        ->arg('$communicatorConfiguration', service(OnlinePayments\Sdk\CommunicatorConfiguration::class))
+        ->arg('$authenticator', inline_service(OnlinePayments\Sdk\Authentication\V1HmacAuthenticator::class)
+            ->arg('$communicatorConfiguration', service(OnlinePayments\Sdk\CommunicatorConfiguration::class))
+        )
+        ->arg('$connection', service(OnlinePayments\Sdk\Communication\Connection::class))
+    ;
+
+    $services->set(OnlinePayments\Sdk\ClientInterface::class, OnlinePayments\Sdk\Client::class)
+        ->arg('$communicator', service(OnlinePayments\Sdk\Communicator::class))
+    ;
+
+    $services->alias(App\NationalEvent\Payment\Worldline\HostedCheckoutClientInterface::class, App\NationalEvent\Payment\Worldline\SdkHostedCheckoutClient::class);
 };

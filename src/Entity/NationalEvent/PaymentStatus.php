@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table('national_event_inscription_payment_status')]
+#[ORM\UniqueConstraint(columns: ['payment_id', 'worldline_payment_id', 'status_code'])]
 class PaymentStatus
 {
     use EntityTimestampableTrait;
@@ -26,6 +27,15 @@ class PaymentStatus
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
+    #[ORM\Column(nullable: true)]
+    public ?string $worldlinePaymentId = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $statusCode = null;
+
+    #[ORM\Column(enumType: PaymentStatusEnum::class, nullable: true)]
+    public ?PaymentStatusEnum $status = null;
+
     public function __construct(Payment $payment, array $payload = [])
     {
         $this->payment = $payment;
@@ -39,6 +49,10 @@ class PaymentStatus
 
     public function getStatus(): PaymentStatusEnum
     {
+        if (null !== $this->status) {
+            return $this->status;
+        }
+
         if (!isset($this->payload['STATUS'])) {
             return PaymentStatusEnum::UNKNOWN;
         }

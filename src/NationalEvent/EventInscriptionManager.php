@@ -10,12 +10,10 @@ use App\Entity\NationalEvent\Payment;
 use App\NationalEvent\DTO\InscriptionRequest;
 use App\NationalEvent\Event\NewNationalEventInscriptionEvent;
 use App\NationalEvent\Event\UpdateNationalEventInscriptionEvent;
-use App\NationalEvent\Payment\RequestParamsBuilder;
 use App\PublicId\MeetingInscriptionPublicIdGenerator;
 use App\Repository\AdherentRepository;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -26,8 +24,6 @@ class EventInscriptionManager
         private readonly EventInscriptionRepository $eventInscriptionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AdherentRepository $adherentRepository,
-        private readonly RequestParamsBuilder $requestParamsBuilder,
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly MeetingInscriptionPublicIdGenerator $meetingInscriptionPublicIdGenerator,
     ) {
     }
@@ -117,20 +113,13 @@ class EventInscriptionManager
     public function createPayment(EventInscription $eventInscription, ?int $newAmount = null, ?InscriptionRequest $inscriptionRequest = null): Payment
     {
         $amount = $newAmount ?? $eventInscription->amount;
-        $paymentParams = $this->requestParamsBuilder->build(
-            $uuid = Uuid::v4(),
-            $amount,
-            $eventInscription,
-            $this->urlGenerator->generate('app_national_event_payment_status', ['slug' => $eventInscription->event->getSlug(), 'uuid' => $eventInscription->getUuid()->toRfc4122()], UrlGeneratorInterface::ABSOLUTE_URL),
-        );
 
         $eventInscription->addPayment($payment = new Payment(
-            $uuid,
+            Uuid::v4(),
             $eventInscription,
             $amount,
             $inscriptionRequest ? $inscriptionRequest->getPackageValues() : $eventInscription->packageValues,
             ($inscriptionRequest ?? $eventInscription)->withDiscount,
-            $paymentParams
         ));
 
         return $payment;

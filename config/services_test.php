@@ -66,6 +66,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             '%env(SSL_PRIVATE_KEY)%',
         ]);
 
+    $services->set(OnlinePayments\Sdk\Communication\Connection::class, Tests\App\Test\Payment\Worldline\FakeWorldlineConnection::class);
+
     $services->set(Tests\App\Test\Chatbot\DummyAgent::class);
     $services->set(Tests\App\Test\Chatbot\DummyAntisecheAgent::class);
 

@@ -60,9 +60,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'google_place.client' => [
                     'base_uri' => 'https://maps.googleapis.com/maps/api/place/',
                 ],
-                'ogone.client' => [
-                    'base_uri' => '%env(OGONE_DIRECT_URL)%',
-                ],
                 'timeline_indexer.client' => [
                     'base_uri' => '%env(TIMELINE_INDEXER_URL)%',
                     'headers' => [
