@@ -149,7 +149,8 @@
         "ua-parser/uap-php": "^3.9",
         "ueberdosis/tiptap-php": "^1.4",
         "vich/uploader-bundle": "^2.5",
-        "willdurand/geocoder-bundle": "^5.12"
+        "willdurand/geocoder-bundle": "^5.12",
+        "wl-online-payments-direct/sdk-php": "^9.4"
     },
     "require-dev": {
         "behat/behat": "^3.10",

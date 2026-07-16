@@ -8,6 +8,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NationalEvent\Payment;
 use App\NationalEvent\EventInscriptionManager;
+use App\NationalEvent\Payment\Worldline\CheckoutInitiator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentController extends AbstractController
 {
@@ -64,6 +66,7 @@ class PaymentController extends AbstractController
         string $app_domain,
         #[MapEntity(mapping: ['slug' => 'slug'])] NationalEvent $event,
         #[MapEntity(mapping: ['uuid' => 'uuid'])] Payment $payment,
+        CheckoutInitiator $checkoutInitiator,
     ): Response {
         if (!$payment->isPending()) {
             $this->addFlash('error', 'Ce paiement n\'est pas valide ou a déjà été traité.');
@@ -85,9 +88,14 @@ class PaymentController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->render('renaissance/national_event/payment.html.twig', [
-                'params' => $payment->payload,
-            ]);
+            $returnUrl = $this->generateUrl('app_national_event_payment_status', [
+                'slug' => $event->getSlug(),
+                'uuid' => $inscription->getUuid()->toRfc4122(),
+                'app_domain' => $app_domain,
+                'payment' => $payment->getUuid()->toRfc4122(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return $this->redirect($checkoutInitiator->initiate($payment, $returnUrl));
         }
 
         return $this->render('renaissance/national_event/pre-payment.html.twig', [

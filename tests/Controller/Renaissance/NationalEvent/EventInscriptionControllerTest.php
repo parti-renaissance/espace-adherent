@@ -478,7 +478,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         $thirdInscription = $this->eventInscriptionRepository->findOneBy(['utmSource' => 'inscription_3']);
 
@@ -700,7 +700,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -853,7 +853,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -1046,7 +1046,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -1179,7 +1179,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -1325,7 +1325,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -1391,7 +1391,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         self::assertSame([
             'accommodation' => [
@@ -1419,7 +1419,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         self::assertTrue($payments[1]->isConfirmed());
         self::assertFalse($payments[1]->toRefund);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payments[0]->getUuid()->toRfc4122(), 'STATUS' => '8']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payments[0], 8)));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1538,7 +1538,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         self::assertSame('123-789', $inscription->roommateIdentifier);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         $this->em->clear();
         self::assertSame([
@@ -1660,7 +1660,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $payments[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '4']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 2)));
 
         $this->em->clear();
 
@@ -1715,7 +1715,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $inscription->getPayments()[0];
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 9)));
 
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
 
@@ -1725,7 +1725,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
 
         $this->assertCountMails(1, NationalEventInscriptionConfirmationMessage::class);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '8']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($payment, 8)));
 
         $this->em->clear();
 
@@ -1773,7 +1773,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $firstPayment = $inscription->getPayments()[0];
 
         // 1. First payment is confirmed by the bank.
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $firstPayment->getUuid()->toRfc4122(), 'STATUS' => '9']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($firstPayment, 9)));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1799,7 +1799,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         $this->client->request(Request::METHOD_GET, \sprintf('/grand-rassemblement/campus/%s/paiement-process', $secondPaymentUuid));
         $this->assertClientIsRedirectedTo(\sprintf('/grand-rassemblement/campus/%s', $inscription->getUuid()), $this->client);
 
-        $this->bus->dispatch(new PaymentStatusUpdateCommand(['orderID' => $secondPaymentUuid, 'STATUS' => '4']));
+        $this->bus->dispatch(new PaymentStatusUpdateCommand($this->worldlinePayload($secondPayment, 2)));
 
         $this->em->clear();
         $inscription = $this->eventInscriptionRepository->findOneBy(['addressEmail' => $email]);
@@ -1853,7 +1853,7 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         /** @var Payment $payment */
         $payment = $inscription->getPayments()[0];
 
-        $payload = ['orderID' => $payment->getUuid()->toRfc4122(), 'STATUS' => '9'];
+        $payload = $this->worldlinePayload($payment, 9);
 
         $this->bus->dispatch(new PaymentStatusUpdateCommand($payload));
 
@@ -2054,6 +2054,22 @@ class EventInscriptionControllerTest extends AbstractWebTestCase
         // Should stay on the form page with validation error
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         self::assertNull($this->eventInscriptionRepository->findOneBy(['addressEmail' => 'test-birthplace-required@example.com']));
+    }
+
+    /**
+     * Mirrors the payment payload Worldline pushes: the handler correlates on the merchant reference, dedups on
+     * (id, statusCode), and guards a confirmation against the local amount.
+     */
+    private function worldlinePayload(Payment $payment, int $statusCode): array
+    {
+        return [
+            'id' => $payment->getUuid()->toRfc4122().'_0',
+            'paymentOutput' => [
+                'amountOfMoney' => ['amount' => $payment->amount, 'currencyCode' => 'EUR'],
+                'references' => ['merchantReference' => $payment->getUuid()->toRfc4122()],
+            ],
+            'statusOutput' => ['statusCode' => $statusCode],
+        ];
     }
 
     protected function setUp(): void

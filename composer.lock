@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8f1dad2c6934a126bf644e2ffd0acbe",
+    "content-hash": "eb9b17b2d6634a20bf8732e3d4f5d9f2",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -10913,6 +10913,56 @@
             "time": "2025-12-02T15:19:04+00:00"
         },
         {
+            "name": "robtimus/multipart",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robtimus/php-multipart.git",
+                "reference": "98977024f1261185d139c9df0aaecbf28cb131f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robtimus/php-multipart/zipball/98977024f1261185d139c9df0aaecbf28cb131f4",
+                "reference": "98977024f1261185d139c9df0aaecbf28cb131f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Robtimus\\Multipart\\": [
+                        "src/Robtimus/Multipart"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Spoor",
+                    "email": "robtimus@users.noreply.github.com"
+                }
+            ],
+            "description": "A library to support (streaming) multiparts",
+            "homepage": "https://github.com/robtimus/php-multipart",
+            "keywords": [
+                "multipart",
+                "streaming"
+            ],
+            "support": {
+                "issues": "https://github.com/robtimus/php-multipart/issues",
+                "source": "https://github.com/robtimus/php-multipart/tree/1.0.1"
+            },
+            "time": "2023-01-16T18:51:47+00:00"
+        },
+        {
             "name": "runroom-packages/sortable-behavior-bundle",
             "version": "0.21.0.1",
             "dist": {
@@ -20948,6 +20998,62 @@
                 "source": "https://github.com/willdurand/Negotiation/tree/3.1.0"
             },
             "time": "2022-01-30T20:08:53+00:00"
+        },
+        {
+            "name": "wl-online-payments-direct/sdk-php",
+            "version": "9.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wl-online-payments-direct/sdk-php.git",
+                "reference": "38b0d3d336e772e19054fb56d148f78489282e94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wl-online-payments-direct/sdk-php/zipball/38b0d3d336e772e19054fb56d148f78489282e94",
+                "reference": "38b0d3d336e772e19054fb56d148f78489282e94",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-zlib": "*",
+                "php": ">=7.4",
+                "robtimus/multipart": "~1.0"
+            },
+            "require-dev": {
+                "doctrine/instantiator": "1.5.0",
+                "phpstan/phpstan": "2.1.32",
+                "phpunit/phpunit": "~9",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OnlinePayments\\Sdk\\": [
+                        "src/OnlinePayments/Sdk",
+                        "lib/OnlinePayments/Sdk"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "OnlinePayments"
+                }
+            ],
+            "description": "PHP SDK to communicate with the payment platform server-to-server API",
+            "keywords": [
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/wl-online-payments-direct/sdk-php/issues",
+                "source": "https://github.com/wl-online-payments-direct/sdk-php/tree/9.4.0"
+            },
+            "time": "2026-06-25T11:32:10+00:00"
         }
     ],
     "packages-dev": [

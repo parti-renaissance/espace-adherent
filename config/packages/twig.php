@@ -32,7 +32,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             'user_vox_host' => '%env(USER_VOX_HOST)%',
             'mapbox_token' => '%env(MAPBOX_TOKEN)%',
             'mapbox_style' => '%env(MAPBOX_STYLE)%',
-            'ogone_url' => '%env(OGONE_URL)%',
         ],
         'form_themes' => [
             'form_theme.html.twig',

@@ -78,7 +78,7 @@ class Notifier
     {
         $editUrl = $this->urlGenerator->generate('app_national_event_my_inscription', ['uuid' => $eventInscription->getUuid()->toRfc4122(), 'slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
         $eventUrl = $this->urlGenerator->generate('app_national_event_by_slug', ['slug' => $eventInscription->event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-        $shareUrl = $eventInscription->adherent ? $this->urlGenerator->generate('app_national_event_by_slug_with_referrer', ['slug' => $eventInscription->event->getSlug(), 'pid' => $eventInscription->adherent->getPublicId()], UrlGeneratorInterface::ABSOLUTE_URL) : null;
+        $shareUrl = ($publicId = $eventInscription->getPublicId()) ? $this->urlGenerator->generate('app_national_event_by_slug_with_referrer', ['slug' => $eventInscription->event->getSlug(), 'pid' => $publicId], UrlGeneratorInterface::ABSOLUTE_URL) : null;
         $civility = $eventInscription->gender ? $this->translator->trans(array_search($eventInscription->gender, Genders::CIVILITY_CHOICES, true)) : null;
         $region = $zone['region_name'] ?? null;
         $department = $zone['name'] ?? null;

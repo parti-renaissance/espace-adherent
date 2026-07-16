@@ -57,6 +57,12 @@ class Payment
     #[ORM\Column(type: 'json')]
     public array $payload = [];
 
+    #[ORM\Column(nullable: true)]
+    public ?string $hostedCheckoutId = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $worldlinePaymentId = null;
+
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $replacement = null;
 
@@ -86,7 +92,19 @@ class Payment
     public function addStatus(PaymentStatus $status): void
     {
         $this->statuses->add($status);
-        $this->status = $status->getStatus();
+
+        $newStatus = $status->getStatus();
+
+        if ($this->isFinal() && PaymentStatusEnum::REFUNDED !== $newStatus) {
+            return;
+        }
+
+        $this->status = $newStatus;
+    }
+
+    private function isFinal(): bool
+    {
+        return \in_array($this->status, [PaymentStatusEnum::CONFIRMED, PaymentStatusEnum::REFUNDED], true);
     }
 
     /** @return PaymentStatus[] */
