@@ -62,6 +62,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             name: 'api_poll_current_public',
             provider: CurrentPollProvider::class,
         ),
+        new Get(
+            uriTemplate: '/polls/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            name: 'api_poll_item_public',
+        ),
     ],
     normalizationContext: ['groups' => ['poll_public_read']],
 )]
