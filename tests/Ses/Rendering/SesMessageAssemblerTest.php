@@ -44,11 +44,35 @@ class SesMessageAssemblerTest extends AbstractKernelTestCase
         self::assertStringNotContainsString('{{content}}', $assembled->html);
         // Recipient-level Dictionary code preserved for the per-recipient pass (Phase 5).
         self::assertStringContainsString('{{Prénom}}', $assembled->html);
-        // Header metadata: the Reply-To header still points to the author (a real header, not the button).
+        // Header metadata: replies go to the generic mailbox, never to the author's own address.
         self::assertSame('Lettre de campagne', $assembled->subject);
         self::assertSame('contact@staging.parti-renaissance.fr', $assembled->fromEmail);
-        self::assertSame('Staging SES', $assembled->fromName);
-        self::assertSame('campaign-author@test.dev', $assembled->replyTo);
+        // No explicit signatory: the constructor defaults the sender to the author, so the From name is theirs.
+        self::assertSame('John Smith | Renaissance', $assembled->fromName);
+        self::assertSame('contact@staging.parti-renaissance.fr', $assembled->replyTo);
+        self::assertNotSame('campaign-author@test.dev', $assembled->replyTo);
+    }
+
+    public function testAssembleUsesSignatoryAsFromNameAndKeepsGenericReplyTo(): void
+    {
+        $author = $this->createAdherent('campaign-author-4@test.dev');
+        $signatory = $this->createAdherent('signatory@test.dev');
+
+        $message = new AdherentMessage(null, $author);
+        $message->setSubject('Lettre de campagne');
+        $message->setContent('<p>Bonjour {{Prénom}}</p>');
+        $message->setSender($signatory);
+
+        $assembled = $this->assembler->assemble($message);
+
+        // Mailchimp parity: the signatory is who the email appears to come from (from_name = getFromName()).
+        self::assertSame('John Smith | Renaissance', $assembled->fromName);
+        // The From address stays the verified, DKIM-aligned identity whatever the signatory is.
+        self::assertSame('contact@staging.parti-renaissance.fr', $assembled->fromEmail);
+        // Replies reach the monitored mailbox: neither the author's nor the signatory's own address.
+        self::assertSame('contact@staging.parti-renaissance.fr', $assembled->replyTo);
+        self::assertNotSame('campaign-author-4@test.dev', $assembled->replyTo);
+        self::assertNotSame('signatory@test.dev', $assembled->replyTo);
     }
 
     public function testAssembleInlinesMarginResetAndKeepsPlaceholdersSubstitutable(): void
