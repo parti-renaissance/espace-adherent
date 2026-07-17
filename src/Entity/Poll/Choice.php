@@ -23,7 +23,7 @@ class Choice implements \Stringable
 
     #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
     #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column]
     private ?string $value;
 

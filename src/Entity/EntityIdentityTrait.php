@@ -150,6 +150,7 @@ trait EntityIdentityTrait
         'national_event_list',
         'video_read',
         'poll_read',
+        'poll_public_read',
     ])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;

@@ -56,7 +56,10 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return empty($context[__CLASS__]) && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY]) && $data instanceof Poll;
+        return empty($context[__CLASS__])
+            && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY])
+            && \in_array('poll_read', $context['groups'] ?? [], true)
+            && $data instanceof Poll;
     }
 
     public function getSupportedTypes(?string $format): array

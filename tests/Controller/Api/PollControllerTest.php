@@ -56,6 +56,54 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame('', $this->client->getResponse()->getContent());
     }
 
+    public function testGetCurrentPollIsPubliclyAccessibleWithoutAuthentication(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/api/polls/current');
+
+        $response = $this->client->getResponse();
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode(), $response->getContent());
+
+        $data = json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+
+        self::assertEqualsCanonicalizing(
+            ['uuid', 'question', 'start_at', 'finish_at', 'result_display_end_at', 'description', 'choices', 'state'],
+            array_keys($data)
+        );
+        self::assertSame('in_progress', $data['state']);
+        self::assertEqualsCanonicalizing(['value', 'uuid'], array_keys($data['choices'][0]));
+
+        foreach (['participant_count', 'has_voted', 'voted_choice', 'voted_at', 'participants', 'result'] as $forbidden) {
+            self::assertArrayNotHasKey($forbidden, $data);
+        }
+    }
+
+    public function testReplyRequiresAuthentication(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            '/api/v3/polls/'.LoadPollData::POLL_01_UUID.'/reply',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['choice' => LoadPollData::POLL_01_CHOICE_01_UUID], \JSON_THROW_ON_ERROR)
+        );
+
+        self::assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testGetCurrentPollPublicReturnsNoContentWhenNoActivePoll(): void
+    {
+        foreach ($this->manager->getRepository(Poll::class)->findAll() as $poll) {
+            $poll->setPublished(false);
+        }
+        $this->manager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/api/polls/current');
+
+        self::assertSame(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
+        self::assertSame('', $this->client->getResponse()->getContent());
+    }
+
     public function testGetUnpublishedPollByUuidReturnsNotFound(): void
     {
         $poll = $this->manager->getRepository(Poll::class)->findOneByUuid(LoadPollData::POLL_01_UUID);

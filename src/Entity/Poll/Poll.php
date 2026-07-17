@@ -36,6 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(
             uriTemplate: '/polls/current',
+            name: 'api_v3_poll_current',
             provider: CurrentPollProvider::class,
         ),
         new Get(
@@ -54,6 +55,16 @@ use Symfony\Component\Validator\Constraints as Assert;
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['poll_read']],
 )]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/polls/current',
+            name: 'api_poll_current_public',
+            provider: CurrentPollProvider::class,
+        ),
+    ],
+    normalizationContext: ['groups' => ['poll_public_read']],
+)]
 #[ORM\Entity(repositoryClass: PollRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[PollDatesDoNotOverlap(payload: ['trusted_html' => true])]
@@ -66,32 +77,32 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
 
     #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     #[Assert\NotBlank(message: 'poll.question.not_blank')]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column]
     private ?string $question;
 
     #[Assert\NotNull(message: 'poll.start_at.not_null')]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $startAt;
 
     #[Assert\Expression('!value or !this.getStartAt() or value > this.getStartAt()', message: 'poll.finish_at.greater_than_start_at')]
     #[Assert\NotNull(message: 'poll.finish_at.not_null')]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $finishAt;
 
     #[Assert\Expression('!value or !this.getFinishAt() or value >= this.getFinishAt()', message: 'poll.result_display_end_at.greater_than_or_equal_finish_at')]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $resultDisplayEndAt;
 
     #[Assert\Length(max: 1000)]
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description;
 
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     #[ORM\OneToMany(targetEntity: Choice::class, mappedBy: 'poll', cascade: ['persist'], orphanRemoval: true)]
     private Collection $choices;
 
@@ -311,7 +322,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
         return $result;
     }
 
-    #[Groups(['poll_read'])]
+    #[Groups(['poll_read', 'poll_public_read'])]
     public function getState(): PollStateEnum
     {
         $date = new \DateTimeImmutable();
