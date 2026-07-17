@@ -104,6 +104,38 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame('', $this->client->getResponse()->getContent());
     }
 
+    public function testGetPollByUuidIsPubliclyAccessibleWithoutAuthentication(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/api/polls/'.LoadPollData::POLL_01_UUID);
+
+        $response = $this->client->getResponse();
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode(), $response->getContent());
+
+        $data = json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+
+        self::assertEqualsCanonicalizing(
+            ['uuid', 'question', 'start_at', 'finish_at', 'result_display_end_at', 'description', 'choices', 'state'],
+            array_keys($data)
+        );
+        self::assertSame(LoadPollData::POLL_01_UUID, $data['uuid']);
+        self::assertEqualsCanonicalizing(['value', 'uuid'], array_keys($data['choices'][0]));
+
+        foreach (['participant_count', 'has_voted', 'voted_choice', 'voted_at', 'participants', 'result'] as $forbidden) {
+            self::assertArrayNotHasKey($forbidden, $data);
+        }
+    }
+
+    public function testGetUnpublishedPollByUuidIsNotAccessiblePublicly(): void
+    {
+        $poll = $this->manager->getRepository(Poll::class)->findOneByUuid(LoadPollData::POLL_01_UUID);
+        $poll->setPublished(false);
+        $this->manager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/api/polls/'.LoadPollData::POLL_01_UUID);
+
+        self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testGetUnpublishedPollByUuidReturnsNotFound(): void
     {
         $poll = $this->manager->getRepository(Poll::class)->findOneByUuid(LoadPollData::POLL_01_UUID);
