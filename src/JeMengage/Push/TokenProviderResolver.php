@@ -10,6 +10,7 @@ use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\Event\Event;
 use App\Entity\NotificationObjectInterface;
+use App\Entity\Poll\Poll;
 use App\Entity\Pronostic\Pronostic;
 use App\Entity\ZoneableEntityInterface;
 use App\Firebase\Notification\MulticastNotificationInterface;
@@ -33,6 +34,7 @@ class TokenProviderResolver
             str_starts_with($scope, NotificationScope::PREFIX_PUBLICATION) => $this->getAudienceFilterTokens($object),
             str_starts_with($scope, NotificationScope::PREFIX_PRONOSTIC_NON_PARTICIPANTS) => $object instanceof Pronostic ? $this->pushTokenRepository->findAllForNonParticipants($object) : [],
             str_starts_with($scope, NotificationScope::PREFIX_PRONOSTIC_PARTICIPANTS) => $object instanceof Pronostic ? $this->pushTokenRepository->findAllForPronosticParticipants($object) : [],
+            str_starts_with($scope, NotificationScope::PREFIX_POLL_NON_VOTERS) => $object instanceof Poll ? $this->pushTokenRepository->findAllForPollNonVoters($object) : [],
             str_starts_with($scope, NotificationScope::PREFIX_COMMITTEE),
             str_starts_with($scope, NotificationScope::PREFIX_EVENT),
             str_starts_with($scope, NotificationScope::PREFIX_ACTION),
