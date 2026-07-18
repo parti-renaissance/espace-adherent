@@ -62,8 +62,8 @@ class PronosticAdmin extends AbstractAdmin
         $form
             ->with('Match', ['class' => 'col-md-6'])
                 ->add('title', null, ['label' => 'Titre'])
-                ->add('team1', null, ['label' => 'Équipe 1'])
-                ->add('team2', null, ['label' => 'Équipe 2'])
+                ->add('team1', null, ['label' => 'Équipe 1', 'trim' => false])
+                ->add('team2', null, ['label' => 'Équipe 2', 'trim' => false])
                 ->add('beginAt', DateTimePickerType::class, ['label' => 'Début des pronostics', 'input' => 'datetime_immutable'])
                 ->add('matchAt', DateTimePickerType::class, ['label' => 'Date du match / fin des pronostics', 'input' => 'datetime_immutable'])
                 ->add('displayed', CheckboxType::class, [
