@@ -68,9 +68,10 @@ class DispatchPollNotificationsCommand extends Command
             return;
         }
 
+        $startAt = $poll->getStartAt();
         $reminderAt = $finishAt->modify('-8 hours');
 
-        if ($now >= $reminderAt && $now < $finishAt) {
+        if (null !== $startAt && $startAt <= $reminderAt && $now >= $reminderAt && $now < $finishAt) {
             $this->dispatch($poll, PollReminderTypeEnum::REMINDER_H8);
         }
     }
@@ -81,9 +82,10 @@ class DispatchPollNotificationsCommand extends Command
             return;
         }
 
+        $startAt = $poll->getStartAt();
         $closingAt = $finishAt->modify('-1 hour');
 
-        if ($now >= $closingAt && $now < $finishAt) {
+        if (null !== $startAt && $startAt <= $closingAt && $now >= $closingAt && $now < $finishAt) {
             $this->dispatch($poll, PollReminderTypeEnum::CLOSING_H1);
         }
     }
