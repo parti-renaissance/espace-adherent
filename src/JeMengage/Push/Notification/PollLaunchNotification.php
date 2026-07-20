@@ -13,7 +13,7 @@ class PollLaunchNotification extends AbstractMulticastNotification
     public static function create(Poll $poll): self
     {
         return new self(
-            '🗳️ Nouvelle question de la semaine !',
+            '🗳️ Question de la semaine !',
             \sprintf('👉 Donnez votre avis ! %s', $poll->getShortQuestion()),
             NotificationScope::national(),
         );
