@@ -7,8 +7,10 @@ namespace App\DataFixtures\ORM;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\Geo\Zone;
 use App\Membership\AdherentFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
@@ -18,7 +20,7 @@ use Doctrine\Persistence\ObjectManager;
  *
  * Looked up by email in tests/Repository/AdherentRepositoryAudienceFilterTest.php.
  */
-class LoadAudienceFilterTestData extends Fixture
+class LoadAudienceFilterTestData extends Fixture implements DependentFixtureInterface
 {
     public const EMAIL_DOMAIN = 'audience-filter-test.local';
     public const EMAIL_PREFIX_GLOB = 'audience-filter-';
@@ -45,8 +47,25 @@ class LoadAudienceFilterTestData extends Fixture
     public const EMAIL_LAST_NAME_SPECIAL = 'audience-filter-last-name-special@audience-filter-test.local';
     public const EMAIL_HARD_BOUNCED = 'audience-filter-hard-bounced@audience-filter-test.local';
 
+    // Zone audience scenarios (CTE `z_adherents` path — the only filter branch left uncovered).
+    public const EMAIL_ZONE_DIRECT = 'audience-filter-zone-direct@audience-filter-test.local';
+    public const EMAIL_ZONE_CHILD_OF_PARENT = 'audience-filter-zone-child-of-parent@audience-filter-test.local';
+    public const EMAIL_ZONE_UNRELATED = 'audience-filter-zone-unrelated@audience-filter-test.local';
+    public const EMAIL_ZONE_PARENT_AND_CHILD = 'audience-filter-zone-parent-and-child@audience-filter-test.local';
+    public const EMAIL_ZONE_CANTON_CHILD = 'audience-filter-zone-canton-child@audience-filter-test.local';
+    public const EMAIL_ZONE_MULTI_PARENT = 'audience-filter-zone-multi-parent@audience-filter-test.local';
+
     public const FIRST_NAME_CHARLES = 'Charles-Audience-Filter';
     public const LAST_NAME_SPECIAL = 'Special-Audience-Filter';
+    public const FIRST_NAME_ZONE_FANOUT = 'ZoneFanOut-Audience-Filter';
+    public const FIRST_NAME_ZONE_MULTI_PARENT = 'ZoneMultiParent-Audience-Filter';
+
+    public const ZONE_CODE_DIRECT = '69100';             // commune (Rhône) — direct-match target
+    public const ZONE_CODE_PARENT = '69';                // department Rhône — parent of commune 69009
+    public const ZONE_CODE_UNRELATED = 'IT';             // country Italy — disjoint tree, under no French department
+    public const ZONE_CODE_CANTON = '6901';              // canton d'Anse — city-grouper parent of commune 69009
+    public const ZONE_CODE_MULTI_PARENT_A = '69';        // dept 69 — one parent of commune 69009
+    public const ZONE_CODE_MULTI_PARENT_B = '200040574'; // CC Beaujolais Pierres Dorées (EPCI) — another parent of commune 69009
 
     public function __construct(private readonly AdherentFactory $adherentFactory)
     {
@@ -284,7 +303,51 @@ class LoadAudienceFilterTestData extends Fixture
         ]);
         $hardBounced->markAsEmailHardBounced();
 
+        $zoneDirect = LoadGeoZoneData::getZoneReference($manager, 'zone_city_69100');
+        $zoneDpt69 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_69');
+        $zoneCommune = LoadGeoZoneData::getZoneReference($manager, 'zone_city_69009');
+        $zoneUnrelated = LoadGeoZoneData::getZoneReference($manager, 'zone_country_IT');
+
+        // Scenario 1 — directly attached to the target zone (direct branch).
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_DIRECT, 'Audience', [$zoneDirect]);
+        // Scenario 2 — attached to commune 69009, a child of the target parent zone (dept 69): descent branch.
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_CHILD_OF_PARENT, 'Audience', [$zoneCommune]);
+        // Scenario 3 — attached to an unrelated zone (country Italy): must be excluded, no over-inclusion.
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_UNRELATED, 'Audience', [$zoneUnrelated]);
+        // Scenarios 4 & 5 — attached to BOTH parent (dept 69) and child (69009): matched by the direct and the
+        // descent branch, must be counted once, and the COUNT must equal the id-list length. Unique first name to pin.
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_PARENT_AND_CHILD, self::FIRST_NAME_ZONE_FANOUT, [$zoneDpt69, $zoneCommune]);
+        // Scenario 6 — attached to commune 69009, a child of the canton d'Anse: freezes the city-grouper status quo (TECH_DEBT.md).
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_CANTON_CHILD, 'Audience', [$zoneCommune]);
+        // Scenario 7 — attached to commune 69009, whose parents include BOTH dept 69 and the Beaujolais EPCI;
+        // both targeted: intra-branch fan-out, counted once. Unique first name to pin the audience.
+        $this->createZonedAdherent($manager, self::EMAIL_ZONE_MULTI_PARENT, self::FIRST_NAME_ZONE_MULTI_PARENT, [$zoneCommune]);
+
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [LoadGeoZoneData::class];
+    }
+
+    /**
+     * @param Zone[] $zones
+     */
+    private function createZonedAdherent(ObjectManager $manager, string $email, string $firstName, array $zones): void
+    {
+        $adherent = $this->createAdherent($manager, [
+            'email' => $email,
+            'first_name' => $firstName,
+            'last_name' => 'Filter',
+            'gender' => 'male',
+            'birthdate' => '1985-01-01',
+            'registered_at' => '2024-01-01 12:00:00',
+        ]);
+
+        foreach ($zones as $zone) {
+            $adherent->addZone($zone);
+        }
     }
 
     private function createAdherent(ObjectManager $manager, array $data): Adherent
