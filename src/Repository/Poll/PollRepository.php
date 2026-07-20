@@ -72,6 +72,28 @@ class PollRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Poll[]
+     */
+    public function findPollsPendingNotification(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('poll');
+
+        return $queryBuilder
+            ->where('poll.published = true')
+            ->andWhere('poll.startAt <= :now')
+            ->andWhere('poll.finishAt > :now')
+            ->andWhere($queryBuilder->expr()->orX(
+                'poll.launchNotified = false',
+                'poll.reminderH8Notified = false',
+                'poll.closingH1Notified = false',
+            ))
+            ->setParameter('now', new \DateTimeImmutable())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function createSortedByFinishAtQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('poll')

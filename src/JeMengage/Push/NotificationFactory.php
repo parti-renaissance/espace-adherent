@@ -14,6 +14,7 @@ use App\JeMengage\Push\Command\NationalEventTicketAvailableNotificationCommand;
 use App\JeMengage\Push\Command\NewsCreatedNotificationCommand;
 use App\JeMengage\Push\Command\NotifyEventRegistrantsCommand;
 use App\JeMengage\Push\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\PollNotificationCommand;
 use App\JeMengage\Push\Command\PrivateMessageNotificationCommand;
 use App\JeMengage\Push\Command\PronosticNotificationCommand;
 use App\JeMengage\Push\Command\SendNotificationCommandInterface;
@@ -29,11 +30,15 @@ use App\JeMengage\Push\Notification\EventReminderNotification;
 use App\JeMengage\Push\Notification\EventUpdatedNotification;
 use App\JeMengage\Push\Notification\NationalEventTicketNotification;
 use App\JeMengage\Push\Notification\NewsCreatedNotification;
+use App\JeMengage\Push\Notification\PollClosingNotification;
+use App\JeMengage\Push\Notification\PollLaunchNotification;
+use App\JeMengage\Push\Notification\PollReminderNotification;
 use App\JeMengage\Push\Notification\PrivateMessageNotification;
 use App\JeMengage\Push\Notification\PronosticCreationNotification;
 use App\JeMengage\Push\Notification\PronosticReminderNotification;
 use App\JeMengage\Push\Notification\PronosticResultNotification;
 use App\JeMengage\Router;
+use App\Poll\PollReminderTypeEnum;
 use App\Pronostic\PronosticReminderTypeEnum;
 
 class NotificationFactory
@@ -107,6 +112,14 @@ class NotificationFactory
                 PronosticReminderTypeEnum::H_MINUS_1,
                 PronosticReminderTypeEnum::H_MINUS_5_MIN => PronosticReminderNotification::create($object, $command->type),
                 PronosticReminderTypeEnum::RESULTS => PronosticResultNotification::create($object),
+            };
+        }
+
+        if ($command instanceof PollNotificationCommand) {
+            return match ($command->type) {
+                PollReminderTypeEnum::LAUNCH => PollLaunchNotification::create($object),
+                PollReminderTypeEnum::REMINDER_H8 => PollReminderNotification::create($object),
+                PollReminderTypeEnum::CLOSING_H1 => PollClosingNotification::create($object),
             };
         }
 

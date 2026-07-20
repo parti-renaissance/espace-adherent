@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Poll;
 
+use App\Entity\Poll\Poll;
 use App\Entity\Poll\PollResultDisplayModeEnum;
 use App\Form\Admin\Poll\PollChoiceType;
 use App\Form\DateTimePickerType;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 
 class PollAdmin extends AbstractAdmin
 {
@@ -98,6 +100,7 @@ class PollAdmin extends AbstractAdmin
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('question', TextType::class, [
                     'label' => 'Question',
+                    'help' => 'Au-delà de 70 caractères, la question est tronquée dans le carrousel d’alerte.',
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
@@ -145,9 +148,55 @@ class PollAdmin extends AbstractAdmin
                 ->add('published', null, [
                     'label' => 'Publier le sondage',
                     'required' => false,
-                    'help' => 'Décoché, le sondage est masqué partout dans l’application. Cochez pour le rendre visible selon ses dates.',
+                    'help_html' => true,
+                    'help' => 'Décoché, le sondage est masqué partout dans l’application. Cochez pour le rendre visible selon ses dates.'
+                        .'<hr class="my-2"/><strong>Notifications push</strong> (envoyées uniquement entre 9h et 21h) :'
+                        .'<br/>• <strong>Lancement</strong> : à l’ouverture du vote, à tous les abonnés push.'
+                        .'<br/>• <strong>Relance H-8</strong> : 8h avant la clôture, aux inscrits n’ayant pas encore voté.'
+                        .'<br/>• <strong>Clôture H-1</strong> : 1h avant la clôture, aux inscrits n’ayant pas encore voté.'
+                        .'<br/>Chaque notification part une seule fois par personne et ouvre directement le sondage.'
+                        .'<hr class="my-2"/><strong>Aperçu des notifications :</strong>'
+                        .'<br/><br/>🗳️ <strong>Nouvelle question de la semaine !</strong>'
+                        .'<br/>{question} 👉Donnez votre avis !'
+                        .'<br/><br/>⏳ <strong>Plus que quelques heures pour voter !</strong>'
+                        .'<br/>« {question} » Le vote se termine ce soir, donnez votre avis !'
+                        .'<br/><br/>🚨 <strong>Dernière heure pour voter !</strong>'
+                        .'<br/>Le vote se termine dans 1h. Donnez vite votre avis !',
                 ])
             ->end()
         ;
+    }
+
+    protected function prePersist(object $object): void
+    {
+        parent::prePersist($object);
+
+        $this->warnIfOutsideSendWindow($object);
+    }
+
+    protected function preUpdate(object $object): void
+    {
+        parent::preUpdate($object);
+
+        $this->warnIfOutsideSendWindow($object);
+    }
+
+    private function warnIfOutsideSendWindow(object $object): void
+    {
+        if (!$object instanceof Poll) {
+            return;
+        }
+
+        foreach (array_filter([$object->getStartAt(), $object->getFinishAt()]) as $date) {
+            $minutes = (int) $date->format('H') * 60 + (int) $date->format('i');
+
+            if ($minutes < 9 * 60 || $minutes > 21 * 60) {
+                $session = $this->getRequest()->getSession();
+                \assert($session instanceof FlashBagAwareSessionInterface);
+                $session->getFlashBag()->add('warning', 'Une date du sondage est hors du créneau 9h–21h : les notifications push liées pourraient être envoyées en dehors de ce créneau.');
+
+                return;
+            }
+        }
     }
 }

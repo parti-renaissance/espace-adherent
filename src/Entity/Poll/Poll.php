@@ -13,9 +13,12 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
+use App\Entity\NotificationObjectInterface;
 use App\EntityListener\AlgoliaIndexListener;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Poll\Api\State\CreatePollVoteProcessor;
 use App\Poll\Api\State\CurrentPollProvider;
+use App\Poll\PollReminderTypeEnum;
 use App\Poll\Request\CreatePollVoteRequest;
 use App\Repository\Poll\PollRepository;
 use App\Validator\Poll\PollDatesDoNotOverlap;
@@ -74,7 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[PollDatesDoNotOverlap(payload: ['trusted_html' => true])]
 #[PollVotedChoiceCannotBeRemoved]
-class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface
+class Poll implements \Stringable, EntityAdministratorBlameableInterface, IndexableEntityInterface, NotificationObjectInterface
 {
     use EntityAdministratorBlameableTrait;
     use EntityIdentityTrait;
@@ -116,6 +119,15 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $alertEnabled;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $launchNotified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $reminderH8Notified = false;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $closingH1Notified = false;
 
     #[Assert\GreaterThanOrEqual(0)]
     #[Groups(['poll_read'])]
@@ -168,6 +180,17 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     public function setQuestion(string $question): void
     {
         $this->question = $question;
+    }
+
+    public function getShortQuestion(int $maxLength = 70): string
+    {
+        $question = (string) $this->question;
+
+        if (mb_strlen($question) <= $maxLength) {
+            return $question;
+        }
+
+        return rtrim(mb_substr($question, 0, $maxLength)).'…';
     }
 
     public function getStartAt(): ?\DateTimeImmutable
@@ -325,6 +348,38 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
         }
 
         return $result;
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return $this->alertEnabled;
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
+    }
+
+    public function isNational(): bool
+    {
+        return true;
+    }
+
+    public function hasReminderBeenSent(PollReminderTypeEnum $type): bool
+    {
+        return match ($type) {
+            PollReminderTypeEnum::LAUNCH => $this->launchNotified,
+            PollReminderTypeEnum::REMINDER_H8 => $this->reminderH8Notified,
+            PollReminderTypeEnum::CLOSING_H1 => $this->closingH1Notified,
+        };
+    }
+
+    public function markReminderSent(PollReminderTypeEnum $type): void
+    {
+        match ($type) {
+            PollReminderTypeEnum::LAUNCH => $this->launchNotified = true,
+            PollReminderTypeEnum::REMINDER_H8 => $this->reminderH8Notified = true,
+            PollReminderTypeEnum::CLOSING_H1 => $this->closingH1Notified = true,
+        };
     }
 
     #[Groups(['poll_read', 'poll_public_read'])]

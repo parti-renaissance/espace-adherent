@@ -20,6 +20,8 @@ use App\Entity\Jecoute\News;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Entity\NotificationObjectInterface;
+use App\Entity\Poll\Poll;
+use App\Entity\Poll\Vote;
 use App\Entity\Pronostic\Pronostic;
 use App\Entity\Pronostic\PronosticParticipation;
 use App\Entity\PushToken;
@@ -196,6 +198,18 @@ class PushTokenRepository extends ServiceEntityRepository
         return $qb
             ->andWhere(\sprintf('%s.id NOT IN (SELECT IDENTITY(pp.adherent) FROM %s pp WHERE pp.pronostic = :pronostic)', $adherentAlias, PronosticParticipation::class))
             ->setParameter('pronostic', $pronostic)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
+
+    public function findAllForPollNonVoters(Poll $poll): array
+    {
+        $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
+
+        return $qb
+            ->andWhere(\sprintf('NOT EXISTS (SELECT 1 FROM %s v WHERE v.poll = :poll AND v.adherent = %s)', Vote::class, $adherentAlias))
+            ->setParameter('poll', $poll)
             ->getQuery()
             ->getSingleColumnResult()
         ;
