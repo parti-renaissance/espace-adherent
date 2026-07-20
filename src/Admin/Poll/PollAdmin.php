@@ -100,7 +100,7 @@ class PollAdmin extends AbstractAdmin
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('question', TextType::class, [
                     'label' => 'Question',
-                    'help' => 'Au-delà de 70 caractères, la question est tronquée dans le carousel d’alerte.',
+                    'help' => 'Au-delà de 70 caractères, la question est tronquée dans le carrousel d’alerte.',
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
@@ -152,7 +152,7 @@ class PollAdmin extends AbstractAdmin
                     'help' => 'Décoché, le sondage est masqué partout dans l’application. Cochez pour le rendre visible selon ses dates.'
                         .'<hr class="my-2"/><strong>Notifications push</strong> (envoyées uniquement entre 9h et 21h) :'
                         .'<br/>• <strong>Lancement</strong> : à l’ouverture du vote, à tous les abonnés push.'
-                        .'<br/>• <strong>Relance J-8</strong> : 8h avant la clôture, aux inscrits n’ayant pas encore voté.'
+                        .'<br/>• <strong>Relance H-8</strong> : 8h avant la clôture, aux inscrits n’ayant pas encore voté.'
                         .'<br/>• <strong>Clôture H-1</strong> : 1h avant la clôture, aux inscrits n’ayant pas encore voté.'
                         .'<br/>Chaque notification part une seule fois par personne et ouvre directement le sondage.'
                         .'<hr class="my-2"/><strong>Aperçu des notifications :</strong>'

@@ -82,9 +82,10 @@ class PollRepository extends ServiceEntityRepository
         return $queryBuilder
             ->where('poll.published = true')
             ->andWhere('poll.startAt <= :now')
+            ->andWhere('poll.finishAt > :now')
             ->andWhere($queryBuilder->expr()->orX(
                 'poll.launchNotified = false',
-                'poll.reminderJ1Notified = false',
+                'poll.reminderH8Notified = false',
                 'poll.closingH1Notified = false',
             ))
             ->setParameter('now', new \DateTimeImmutable())

@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:poll:dispatch-notifications',
-    description: 'Dispatch poll push notifications (launch, J-1 reminder, H-1 reminder) for published polls.',
+    description: 'Dispatch poll push notifications (launch, H-8 reminder, H-1 reminder) for published polls.',
 )]
 class DispatchPollNotificationsCommand extends Command
 {
@@ -44,7 +44,7 @@ class DispatchPollNotificationsCommand extends Command
             }
 
             $this->dispatchLaunch($poll, $startAt, $finishAt, $now);
-            $this->dispatchReminderJ1($poll, $finishAt, $now);
+            $this->dispatchReminderH8($poll, $finishAt, $now);
             $this->dispatchClosingH1($poll, $finishAt, $now);
         }
 
@@ -62,16 +62,16 @@ class DispatchPollNotificationsCommand extends Command
         }
     }
 
-    private function dispatchReminderJ1(Poll $poll, \DateTimeImmutable $finishAt, \DateTimeImmutable $now): void
+    private function dispatchReminderH8(Poll $poll, \DateTimeImmutable $finishAt, \DateTimeImmutable $now): void
     {
-        if ($poll->hasReminderBeenSent(PollReminderTypeEnum::REMINDER_J1)) {
+        if ($poll->hasReminderBeenSent(PollReminderTypeEnum::REMINDER_H8)) {
             return;
         }
 
         $reminderAt = $finishAt->modify('-8 hours');
 
         if ($now >= $reminderAt && $now < $finishAt) {
-            $this->dispatch($poll, PollReminderTypeEnum::REMINDER_J1);
+            $this->dispatch($poll, PollReminderTypeEnum::REMINDER_H8);
         }
     }
 

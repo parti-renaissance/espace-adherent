@@ -118,7 +118,7 @@ class NotificationFactory
         if ($command instanceof PollNotificationCommand) {
             return match ($command->type) {
                 PollReminderTypeEnum::LAUNCH => PollLaunchNotification::create($object),
-                PollReminderTypeEnum::REMINDER_J1 => PollReminderNotification::create($object),
+                PollReminderTypeEnum::REMINDER_H8 => PollReminderNotification::create($object),
                 PollReminderTypeEnum::CLOSING_H1 => PollClosingNotification::create($object),
             };
         }

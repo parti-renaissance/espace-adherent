@@ -119,7 +119,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     private bool $launchNotified = false;
 
     #[ORM\Column(options: ['default' => false])]
-    private bool $reminderJ1Notified = false;
+    private bool $reminderH8Notified = false;
 
     #[ORM\Column(options: ['default' => false])]
     private bool $closingH1Notified = false;
@@ -363,7 +363,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     {
         return match ($type) {
             PollReminderTypeEnum::LAUNCH => $this->launchNotified,
-            PollReminderTypeEnum::REMINDER_J1 => $this->reminderJ1Notified,
+            PollReminderTypeEnum::REMINDER_H8 => $this->reminderH8Notified,
             PollReminderTypeEnum::CLOSING_H1 => $this->closingH1Notified,
         };
     }
@@ -372,7 +372,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     {
         match ($type) {
             PollReminderTypeEnum::LAUNCH => $this->launchNotified = true,
-            PollReminderTypeEnum::REMINDER_J1 => $this->reminderJ1Notified = true,
+            PollReminderTypeEnum::REMINDER_H8 => $this->reminderH8Notified = true,
             PollReminderTypeEnum::CLOSING_H1 => $this->closingH1Notified = true,
         };
     }

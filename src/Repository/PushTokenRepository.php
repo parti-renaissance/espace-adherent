@@ -208,7 +208,7 @@ class PushTokenRepository extends ServiceEntityRepository
         $qb = $this->createIdentifierQueryBuilder('t', $adherentAlias = 'a');
 
         return $qb
-            ->andWhere(\sprintf('%s.id NOT IN (SELECT IDENTITY(v.adherent) FROM %s v WHERE v.poll = :poll)', $adherentAlias, Vote::class))
+            ->andWhere(\sprintf('NOT EXISTS (SELECT 1 FROM %s v WHERE v.poll = :poll AND v.adherent = %s)', Vote::class, $adherentAlias))
             ->setParameter('poll', $poll)
             ->getQuery()
             ->getSingleColumnResult()

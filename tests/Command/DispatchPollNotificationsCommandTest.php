@@ -40,10 +40,10 @@ final class DispatchPollNotificationsCommandTest extends TestCase
         $dispatched = $this->runCommand($poll, $now);
 
         self::assertCount(1, $dispatched);
-        self::assertSame(PollReminderTypeEnum::REMINDER_J1, $dispatched[0]->type);
+        self::assertSame(PollReminderTypeEnum::REMINDER_H8, $dispatched[0]->type);
     }
 
-    public function testDoesNotDispatchReminderJ1MoreThanEightHoursBeforeClosing(): void
+    public function testDoesNotDispatchReminderH8MoreThanEightHoursBeforeClosing(): void
     {
         $now = $this->parisTime('2026-07-14 10:00:00');
         $poll = $this->createPoll($now, '-1 hour', '+12 hours');
@@ -57,7 +57,7 @@ final class DispatchPollNotificationsCommandTest extends TestCase
         $now = $this->parisTime('2026-07-14 10:00:00');
         $poll = $this->createPoll($now, '-5 days', '+30 minutes');
         $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
-        $poll->markReminderSent(PollReminderTypeEnum::REMINDER_J1);
+        $poll->markReminderSent(PollReminderTypeEnum::REMINDER_H8);
 
         $dispatched = $this->runCommand($poll, $now);
 
@@ -70,7 +70,7 @@ final class DispatchPollNotificationsCommandTest extends TestCase
         $now = $this->parisTime('2026-07-14 10:00:00');
         $poll = $this->createPoll($now, '-5 days', '+30 minutes');
         $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
-        $poll->markReminderSent(PollReminderTypeEnum::REMINDER_J1);
+        $poll->markReminderSent(PollReminderTypeEnum::REMINDER_H8);
         $poll->markReminderSent(PollReminderTypeEnum::CLOSING_H1);
 
         self::assertCount(0, $this->runCommand($poll, $now));
