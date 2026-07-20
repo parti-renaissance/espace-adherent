@@ -76,6 +76,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     use GeoZoneTrait;
     use AudienceFilterTrait;
 
+    /** @var array<string, int> */
+    private array $subscriptionTypeIdCache = [];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Adherent::class);
@@ -1808,7 +1811,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $sql = ($pieces['with'] ? $pieces['with']."\n" : '')
-            ."SELECT a.id {$pieces['baseFrom']}
+            ."SELECT DISTINCT a.id {$pieces['baseFrom']}
                 WHERE ".implode(' AND ', $where).'
                 ORDER BY a.id';
 
@@ -1866,10 +1869,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
             $with = <<<SQL
                     WITH z_adherents AS (
-                        SELECT DISTINCT a.adherent_id
-                        FROM adherent_zone a
-                        LEFT JOIN geo_zone_parent p ON p.child_id = a.zone_id
-                        WHERE p.parent_id IN ($inClause) OR a.zone_id IN ($inClause)
+                        SELECT az.adherent_id
+                        FROM adherent_zone az
+                        WHERE az.zone_id IN ($inClause)
+                        UNION
+                        SELECT az.adherent_id
+                        FROM adherent_zone az
+                        JOIN geo_zone_parent p ON p.child_id = az.zone_id
+                        WHERE p.parent_id IN ($inClause)
                     )
                 SQL;
 
@@ -2043,7 +2050,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $stId = null;
         if (($scope = $filter->getScope()) && !empty(SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope])) {
             $stCode = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope];
-            $stId = (int) $cnx->fetchOne('SELECT id FROM subscription_type WHERE code = ?', [$stCode]);
+            $stId = $this->subscriptionTypeIdCache[$stCode] ??= (int) $cnx->fetchOne('SELECT id FROM subscription_type WHERE code = ?', [$stCode]);
             $params['st_id'] = $stId;
             $types['st_id'] = ParameterType::INTEGER;
         }

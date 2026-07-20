@@ -14,20 +14,27 @@ class GetAdherentMessageRecipientsCountController extends AbstractController
 {
     public function __invoke(Request $request, AdherentMessage $message, AdherentRepository $adherentRepository): Response
     {
-        return $this->json(
-            array_merge(
-                [
-                    'contacts' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true, asUnion: true),
-                    'total' => $adherentRepository->countAdherentsForMessage($message),
-                ],
-                $request->query->getBoolean('partial') ? [] : [
-                    'push' => $adherentRepository->countAdherentsForMessage($message, byPush: true),
-                    'email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true),
-                    'push_email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true),
-                    'only_push' => $adherentRepository->countAdherentsForMessage($message, byEmail: false, byPush: true),
-                    'only_email' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: false),
-                ]
-            )
-        );
+        $total = $adherentRepository->countAdherentsForMessage($message);
+
+        if ($request->query->getBoolean('partial')) {
+            return $this->json([
+                'contacts' => $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true, asUnion: true),
+                'total' => $total,
+            ]);
+        }
+
+        $push = $adherentRepository->countAdherentsForMessage($message, byPush: true);
+        $email = $adherentRepository->countAdherentsForMessage($message, byEmail: true);
+        $pushEmail = $adherentRepository->countAdherentsForMessage($message, byEmail: true, byPush: true);
+
+        return $this->json([
+            'contacts' => $push + $email - $pushEmail,
+            'total' => $total,
+            'push' => $push,
+            'email' => $email,
+            'push_email' => $pushEmail,
+            'only_push' => $adherentRepository->countAdherentsForMessage($message, byEmail: false, byPush: true),
+            'only_email' => $email - $pushEmail,
+        ]);
     }
 }
