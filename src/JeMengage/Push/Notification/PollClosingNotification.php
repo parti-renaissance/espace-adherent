@@ -13,8 +13,8 @@ class PollClosingNotification extends AbstractMulticastNotification
     public static function create(Poll $poll): self
     {
         return new self(
-            '🚨 Dernière heure pour voter !',
-            'Le vote se termine dans 1h. Donnez vite votre avis !',
+            '🚨 Plus qu’une heure !',
+            'Dernière chance de participer au sondage.',
             NotificationScope::pollNonVoters($poll->getId()),
         );
     }

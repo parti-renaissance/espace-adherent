@@ -76,6 +76,15 @@ final class DispatchPollNotificationsCommandTest extends TestCase
         self::assertCount(0, $this->runCommand($poll, $now));
     }
 
+    public function testSkipsReminderH8WhenPollShorterThanEightHours(): void
+    {
+        $now = $this->parisTime('2026-07-14 18:05:00');
+        $poll = $this->createPoll($now, '-4 minutes', '+2 hours');
+        $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
+
+        self::assertCount(0, $this->runCommand($poll, $now));
+    }
+
     private function parisTime(string $time): \DateTimeImmutable
     {
         return new \DateTimeImmutable($time, new \DateTimeZone('Europe/Paris'));

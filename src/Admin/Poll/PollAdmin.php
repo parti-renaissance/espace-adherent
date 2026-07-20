@@ -156,12 +156,12 @@ class PollAdmin extends AbstractAdmin
                         .'<br/>• <strong>Clôture H-1</strong> : 1h avant la clôture, aux inscrits n’ayant pas encore voté.'
                         .'<br/>Chaque notification part une seule fois par personne et ouvre directement le sondage.'
                         .'<hr class="my-2"/><strong>Aperçu des notifications :</strong>'
-                        .'<br/><br/>🗳️ <strong>Nouvelle question de la semaine !</strong>'
-                        .'<br/>{question} 👉Donnez votre avis !'
-                        .'<br/><br/>⏳ <strong>Plus que quelques heures pour voter !</strong>'
-                        .'<br/>« {question} » Le vote se termine ce soir, donnez votre avis !'
-                        .'<br/><br/>🚨 <strong>Dernière heure pour voter !</strong>'
-                        .'<br/>Le vote se termine dans 1h. Donnez vite votre avis !',
+                        .'<br/><br/>🗳️ <strong>Question de la semaine !</strong>'
+                        .'<br/>👉 Donnez votre avis ! {question}'
+                        .'<br/><br/>⏳ <strong>Encore quelques heures !</strong>'
+                        .'<br/>Participez ce soir au sondage « {question} ».'
+                        .'<br/><br/>🚨 <strong>Plus qu’une heure !</strong>'
+                        .'<br/>Dernière chance de participer au sondage.',
                 ])
             ->end()
         ;

@@ -13,8 +13,8 @@ class PollReminderNotification extends AbstractMulticastNotification
     public static function create(Poll $poll): self
     {
         return new self(
-            '⏳ Plus que quelques heures pour voter !',
-            \sprintf('Le vote se termine ce soir, donnez votre avis ! « %s » ', $poll->getShortQuestion()),
+            '⏳ Encore quelques heures !',
+            \sprintf('Participez ce soir au sondage « %s ». ', $poll->getShortQuestion()),
             NotificationScope::pollNonVoters($poll->getId()),
         );
     }
