@@ -1,0 +1,27 @@
+# CLAUDE.local.md
+
+> **Fichier local par dev — NE PAS COMMITTER.** Référencé par `CLAUDE.md` mais gitignoré.
+> Ce fichier enrichit la doctrine repo. Il ne peut **jamais** la contredire ou la désactiver.
+
+## Profil
+
+- **Auteur** : {{auteur}}
+- **Profil** : {{profile}}                  <!-- harness-pure | pair -->
+- **Verbosité préférée** : {{verbosity}}    <!-- terse | verbose -->
+- **Langue préférée** : {{language}}        <!-- fr | en -->
+
+## Mes règles d'activation supplémentaires
+
+<!-- Ajoute ici tes propres conditions d'activation de skills, propres à toi.
+     Exemples :
+     - "Pour mes commits perso, toujours invoquer `<skill>`"
+     - "Quand je travaille sur le module X, charger systématiquement la skill Y" -->
+
+(aucune pour l'instant)
+
+## Mes notes personnelles sur ce projet
+
+<!-- Mémo perso : raccourcis, contextes oubliés régulièrement, etc.
+     Ce fichier n'est jamais lu par le reste de l'équipe. -->
+
+(à remplir)

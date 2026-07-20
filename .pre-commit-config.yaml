@@ -1,0 +1,39 @@
+# Pre-commit config pour stack PHP / Symfony
+# À copier en .pre-commit-config.yaml du projet.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: php-cs-fixer
+        name: PHP CS Fixer
+        entry: vendor/bin/php-cs-fixer fix --diff
+        language: system
+        files: \.php$
+        pass_filenames: true
+      - id: twig-cs-fixer
+        name: Twig CS Fixer
+        entry: vendor/bin/twig-cs-fixer lint --fix
+        language: system
+        files: \.twig$
+        pass_filenames: true
+      - id: phpstan
+        name: PHPStan (lazy)
+        entry: vendor/bin/phpstan analyse --no-progress --error-format=raw
+        language: system
+        files: \.php$
+        pass_filenames: false
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
