@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailchimp\Campaign\Audience\Message;
 
-use App\Ses\Campaign\Message\SesCampaignMessageInterface;
-
-class PrepareCampaignAudienceMessage implements SesCampaignMessageInterface
+class PrepareCampaignAudienceMessage implements MailchimpAudienceMessageInterface
 {
     public function __construct(
         public int $mailchimpCampaignId,

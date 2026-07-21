@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\PathTraversalDetected;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Server;
@@ -29,7 +30,13 @@ class AssetsController extends AbstractController
     #[Route(path: '/assets/{path}', name: 'asset_url', requirements: ['path' => '.+'], methods: ['GET'])]
     public function assetAction(Server $glide, FilesystemOperator $defaultStorage, string $path, Request $request): Response
     {
-        if (!$defaultStorage->has($path)) {
+        try {
+            $exists = $defaultStorage->has($path);
+        } catch (PathTraversalDetected $e) {
+            throw $this->createNotFoundException('', $e);
+        }
+
+        if (!$exists) {
             throw $this->createNotFoundException();
         }
 

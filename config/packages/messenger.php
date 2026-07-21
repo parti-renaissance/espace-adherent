@@ -163,6 +163,26 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                         ],
                     ],
                 ],
+                'mailchimp_audience' => [
+                    'dsn' => '%env(RABBITMQ_DSN)%',
+                    'retry_strategy' => [
+                        'delay' => 2000,
+                    ],
+                    'options' => [
+                        'exchange' => [
+                            'name' => 'messenger-topic',
+                            'type' => 'topic',
+                            'default_publish_routing_key' => 'mailchimp.audience',
+                        ],
+                        'queues' => [
+                            'mailchimp_audience' => [
+                                'binding_keys' => [
+                                    'mailchimp.audience',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
                 'ses_webhook' => [
                     'dsn' => '%env(RABBITMQ_DSN)%',
                     'retry_strategy' => [
@@ -266,6 +286,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
             ],
             'routing' => [
                 App\Event\Command\EventNotificationCommandInterface::class => 'event',
+                App\Mailchimp\Campaign\Audience\Message\MailchimpAudienceMessageInterface::class => 'mailchimp_audience',
                 App\Mailchimp\CampaignMessageInterface::class => 'mailchimp_campaign',
                 App\Mailchimp\SynchronizeMessageInterface::class => 'mailchimp_sync',
                 App\Mailer\Command\AsyncSendMessageCommand::class => 'notification',

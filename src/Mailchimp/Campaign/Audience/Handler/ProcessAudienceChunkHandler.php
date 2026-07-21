@@ -124,15 +124,16 @@ class ProcessAudienceChunkHandler
         }
 
         $data = $response->toArray(throw: false);
-        $totalAdded = isset($data['total_added']) ? (int) $data['total_added'] : null;
-
-        // Pathological case: HTTP 200 but nothing added (rejected list-side). Throw so Messenger retries
-        // and the failure subscriber eventually marks the chunk as errored if retries are exhausted.
-        if (null !== $totalAdded && 0 === $totalAdded && \count($emails) > 0) {
-            throw new \RuntimeException(\sprintf('Mailchimp 200 but total_added=0 on chunk of %d emails.', \count($emails)));
-        }
 
         $emailToError = $this->extractRefusedErrors($data);
+        $totalAdded = isset($data['total_added']) ? (int) $data['total_added'] : null;
+
+        if (0 === $totalAdded && [] === $emailToError && $emails) {
+            $this->logger->warning('[AudienceChunk] Mailchimp reported total_added=0 with no per-email error', [
+                'segment_id' => $segmentId,
+                'chunk_size' => \count($emails),
+            ]);
+        }
 
         $idToStatus = [];
         $idToErrorMessage = [];

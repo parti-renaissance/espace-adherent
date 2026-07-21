@@ -88,6 +88,69 @@ class AudiencePreparationGuardsTest extends AbstractKernelTestCase
     }
 
     /**
+     * Regression proof for the 2026-07-16 incident: a hiccuping chunk must not hold back the campaign.
+     * 500 errored rows out of 134 697 (0.37%, a single chunk) blocked 100% of the send, twice.
+     *
+     * Errored rows within both tolerances: the audience is short by a bounded, known amount, and the
+     * send proceeds.
+     */
+    public function testFinalizeProceedsWhenErroredChunksAreWithinTolerance(): void
+    {
+        $campaign = $this->createCampaignInPreparation(expectedCount: 100);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Added, 98);
+        // 2 errored rows spread over 2 distinct chunks: on the chunk bound (2), under the row bound (5).
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 1, chunkNumber: 2);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 1, chunkNumber: 3);
+
+        $dispatched = $this->runFinalize($campaign);
+
+        self::assertSame(PreparationStatusEnum::Ready, $campaign->getPreparationStatus());
+        self::assertNull($campaign->getBlockReason());
+        self::assertSame(98, $campaign->getMailchimpStaticSegment()->preparedCount);
+        self::assertSame(2, $campaign->getMailchimpStaticSegment()->erroredCount);
+        self::assertCount(1, $dispatched, 'errored rows within tolerance must not block the send');
+        self::assertInstanceOf(TriggerSesCampaignMessage::class, $dispatched[0]);
+    }
+
+    /**
+     * Chunk bound, isolated: 3 errored rows are 3% of the audience, well under the 5% row bound — only
+     * the chunk count blocks here. More failed chunks than tolerated means the push is systematically
+     * broken, not hiccuping.
+     */
+    public function testFinalizeBlocksWhenErroredChunksExceedTolerance(): void
+    {
+        $campaign = $this->createCampaignInPreparation(expectedCount: 100);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Added, 97);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 1, chunkNumber: 2);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 1, chunkNumber: 3);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 1, chunkNumber: 4);
+
+        $dispatched = $this->runFinalize($campaign);
+
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::PreparationErrors, $campaign->getBlockReason());
+        self::assertSame([], $dispatched, 'a systematically broken push must never reach a send');
+    }
+
+    /**
+     * Row bound, isolated: a single errored chunk is within the chunk bound, but on a small audience it
+     * amputates far too much (2 of 10 = 20% vs the 5% allowed). This is why the chunk count alone is not
+     * enough — one chunk is 0.37% of a 134k send but a large slice of a small one.
+     */
+    public function testFinalizeBlocksWhenErroredRowsExceedShareOfSmallAudience(): void
+    {
+        $campaign = $this->createCampaignInPreparation(expectedCount: 10);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Added, 8);
+        $this->stageMembers($campaign, SegmentMemberStatusEnum::Errored, 2, chunkNumber: 2);
+
+        $dispatched = $this->runFinalize($campaign);
+
+        self::assertSame(PreparationStatusEnum::Failed, $campaign->getPreparationStatus());
+        self::assertSame(BlockReasonEnum::PreparationErrors, $campaign->getBlockReason());
+        self::assertSame([], $dispatched, 'an audience amputated beyond the allowed share must never reach a send');
+    }
+
+    /**
      * @return list<object> the messages the finalize dispatched (a send command, or nothing)
      */
     private function runFinalize(MailchimpCampaign $campaign): array
@@ -104,6 +167,8 @@ class AudiencePreparationGuardsTest extends AbstractKernelTestCase
             $this->manager,
             self::getContainer()->get(MailchimpStaticSegmentMemberRepository::class),
             $bus,
+            maxErroredChunks: 2,
+            maxErroredPercent: 5,
         );
 
         $handler(new FinalizeCampaignAudienceMessage($campaign->getId()));
@@ -147,15 +212,19 @@ class AudiencePreparationGuardsTest extends AbstractKernelTestCase
         return $campaign;
     }
 
-    private function stageMembers(MailchimpCampaign $campaign, SegmentMemberStatusEnum $status, int $count): void
-    {
+    private function stageMembers(
+        MailchimpCampaign $campaign,
+        SegmentMemberStatusEnum $status,
+        int $count,
+        int $chunkNumber = 1,
+    ): void {
         $segment = $campaign->getMailchimpStaticSegment();
 
         for ($i = 0; $i < $count; ++$i) {
             $adherent = $this->makeSubscribedAdherent();
             $this->manager->persist($adherent);
 
-            $member = new MailchimpStaticSegmentMember($segment, $adherent, 1);
+            $member = new MailchimpStaticSegmentMember($segment, $adherent, $chunkNumber);
             $member->processingStatus = $status;
             $this->manager->persist($member);
         }

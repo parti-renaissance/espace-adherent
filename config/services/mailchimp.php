@@ -15,6 +15,8 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->bind('$mailchimpSignUpHost', '%env(MAILCHIMP_SIGNUP_HOST)%')
         ->bind('$maxRecipientDriftPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_DRIFT_MAX_PERCENT)%')
         ->bind('$maxRecipientUndershootPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_UNDERSHOOT_MAX_PERCENT)%')
+        ->bind('$maxErroredChunks', '%env(int:MAILCHIMP_AUDIENCE_MAX_ERRORED_CHUNKS)%')
+        ->bind('$maxErroredPercent', '%env(int:MAILCHIMP_SEND_RECIPIENT_UNDERSHOOT_MAX_PERCENT)%')
         ->bind('$sendViaMailchimpThreshold', '%env(int:PUBLICATION_SEND_VIA_MAILCHIMP_THRESHOLD)%')
     ;
 

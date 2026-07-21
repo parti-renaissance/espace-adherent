@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
@@ -250,12 +251,27 @@ class SendAdherentMessageControllerTest extends TestCase
         $this->assertGuardRejects($message, BadRequestHttpException::class, 'Subject is required.');
     }
 
-    public function testAlreadySentRejectsBeforeLock(): void
+    /**
+     * A statutory message owns no campaign to carry a send status, so isSent() stays its replay guard.
+     */
+    public function testAlreadySentStatutoryRejectsBeforeLock(): void
     {
         $message = $this->createStub(AdherentMessage::class);
         $message->method('isSynchronized')->willReturn(true);
         $message->method('getSubject')->willReturn('Subject');
+        $message->method('isStatutory')->willReturn(true);
         $message->method('isSent')->willReturn(true);
+
+        $this->assertGuardRejects($message, BadRequestHttpException::class, 'This message has been already sent.');
+    }
+
+    /**
+     * A publication whose campaign already left, or is leaving, must not be sent twice — the campaign
+     * status is what proves it, not isSent().
+     */
+    public function testPublicationWhoseCampaignAlreadyWentOutRejectsBeforeLock(): void
+    {
+        $message = $this->buildPublicationMessage(campaignStatus: MailchimpStatusEnum::Sent);
 
         $this->assertGuardRejects($message, BadRequestHttpException::class, 'This message has been already sent.');
     }
@@ -318,18 +334,24 @@ class SendAdherentMessageControllerTest extends TestCase
 
     /**
      * Build a Publication-flavored AdherentMessage stub with one MailchimpCampaign whose id is set.
+     *
+     * isSent defaults to true: a publication is marked sent the instant its author clicks, so that is the
+     * normal state of every message reaching this endpoint for a replay.
      */
-    private function buildPublicationMessage(): AdherentMessage
-    {
+    private function buildPublicationMessage(
+        MailchimpStatusEnum $campaignStatus = MailchimpStatusEnum::Save,
+        bool $isSent = true,
+    ): AdherentMessage {
         $message = $this->createStub(AdherentMessage::class);
         $message->method('isSynchronized')->willReturn(true);
         $message->method('getSubject')->willReturn('Subject');
-        $message->method('isSent')->willReturn(false);
+        $message->method('isSent')->willReturn($isSent);
         $message->method('getAuthor')->willReturn(null);
         $message->method('getSender')->willReturn(null);
         $message->method('isStatutory')->willReturn(false);
 
         $campaign = new MailchimpCampaign($message);
+        $campaign->status = $campaignStatus;
         $reflection = new \ReflectionObject($campaign);
         $property = $reflection->getProperty('id');
         $property->setValue($campaign, self::CAMPAIGN_ID);

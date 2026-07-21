@@ -231,6 +231,19 @@ class MailchimpStaticSegmentMemberRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function countErroredChunks(int $staticSegmentId): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('COUNT(DISTINCT m.chunkNumber)')
+            ->where('IDENTITY(m.staticSegment) = :staticSegmentId')
+            ->andWhere('m.processingStatus = :errored')
+            ->setParameter('staticSegmentId', $staticSegmentId)
+            ->setParameter('errored', SegmentMemberStatusEnum::Errored)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Distinct chunk numbers still holding at least one sendable row (Added + consented). Drives the
      * SES fan-out: only chunks with real work get a SendSesCampaignChunkMessage.

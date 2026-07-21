@@ -212,7 +212,7 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         self::assertFalse($campaign->isPendingSend());
     }
 
-    public function testErroredChunksBlockSendAndMarkFailed(): void
+    public function testErroredChunksOverToleranceBlockSendAndMarkFailed(): void
     {
         $message = new AdherentMessage();
         $this->setEntityId($message, 100);
@@ -220,6 +220,8 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $campaign->markAsPreparing($this->createStub(Adherent::class));
         $campaign->markAsPendingSend();
         $segment = $campaign->getMailchimpStaticSegment();
+        // 400 errored of 1 000 expected = 40%, far over the 5% allowed: an audience this amputated is an
+        // infrastructure failure, not the bounded noise the tolerance exists to absorb.
         $segment->expectedCount = 1_000;
 
         $em = $this->createMock(EntityManagerInterface::class);
@@ -238,6 +240,12 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
                 SegmentMemberStatusEnum::Errored->value => 400,
             ])
         ;
+        // Within the chunk bound: only the share of the audience blocks here, isolating that bound.
+        $repo->expects(self::once())
+            ->method('countErroredChunks')
+            ->with(4242)
+            ->willReturn(1)
+        ;
 
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects(self::never())->method('dispatch');
@@ -246,9 +254,9 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         $logger->expects(self::once())
             ->method('error')
             ->with(
-                '[AudienceFinalize] Send blocked: preparation completed with errored chunks',
+                '[AudienceFinalize] Send blocked: preparation errors over tolerance',
                 self::callback(function (array $ctx): bool {
-                    return 7 === $ctx['campaign_id'] && 400 === $ctx['errored_count'];
+                    return 7 === $ctx['campaign_id'] && 400 === $ctx['errored_count'] && 50 === $ctx['max_errored_rows'];
                 }),
             )
         ;
@@ -498,8 +506,10 @@ class FinalizeCampaignAudienceHandlerTest extends TestCase
         MailchimpStaticSegmentMemberRepository $repo,
         MessageBusInterface $bus,
         ?LoggerInterface $logger = null,
+        int $maxErroredChunks = 2,
+        int $maxErroredPercent = 5,
     ): FinalizeCampaignAudienceHandler {
-        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $logger);
+        return new FinalizeCampaignAudienceHandler($em, $repo, $bus, $maxErroredChunks, $maxErroredPercent, $logger);
     }
 
     private function buildCampaign(AdherentMessage $message, int $segmentId): MailchimpCampaign
