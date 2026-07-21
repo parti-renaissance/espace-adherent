@@ -137,7 +137,7 @@ class PollAdmin extends AbstractAdmin
                 ])
                 ->add('participantCountThreshold', IntegerType::class, [
                     'label' => 'Seuil d’affichage des participants',
-                    'attr' => ['min' => 0],
+                    'attr' => ['min' => 0, 'max' => Poll::MAX_PARTICIPANT_COUNT_THRESHOLD],
                     'help' => 'Les résultats restent masqués tant que ce nombre de participations n’est pas atteint.',
                 ])
                 ->add('resultDisplayMode', EnumType::class, [

@@ -83,6 +83,8 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    public const int MAX_PARTICIPANT_COUNT_THRESHOLD = 65535;
+
     #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     #[Assert\NotBlank(message: 'poll.question.not_blank')]
     #[Groups(['poll_read', 'poll_public_read'])]
@@ -130,6 +132,7 @@ class Poll implements \Stringable, EntityAdministratorBlameableInterface, Indexa
     private bool $closingH1Notified = false;
 
     #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(self::MAX_PARTICIPANT_COUNT_THRESHOLD)]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $participantCountThreshold;
 
