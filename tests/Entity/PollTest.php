@@ -51,16 +51,49 @@ class PollTest extends TestCase
         self::assertFalse($poll->canDisplayResult(new \DateTimeImmutable('2026-06-30 14:00:00'), true));
     }
 
-    public function testParticipantThresholdPreventsResultDisplay(): void
+    public function testCountThresholdIsExceededOnlyAboveThreshold(): void
     {
         $poll = $this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE, participantCountThreshold: 2);
+        $this->addVotes($poll, 2);
+
+        self::assertFalse($poll->exceedsParticipantCountThreshold());
+
         $this->addVotes($poll, 1);
 
-        self::assertFalse($poll->canDisplayResult(new \DateTimeImmutable('2026-06-30 12:00:00'), true));
+        self::assertTrue($poll->exceedsParticipantCountThreshold());
+    }
+
+    public function testCountThresholdIsExceededFromFirstParticipantWhenNoThresholdConfigured(): void
+    {
+        $poll = $this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE);
+
+        self::assertFalse($poll->exceedsParticipantCountThreshold());
 
         $this->addVotes($poll, 1);
 
-        self::assertTrue($poll->canDisplayResult(new \DateTimeImmutable('2026-06-30 12:00:00'), true));
+        self::assertTrue($poll->exceedsParticipantCountThreshold());
+    }
+
+    public function testAtThresholdParticipantCountIsReachedButNotExceeded(): void
+    {
+        $poll = $this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE, participantCountThreshold: 2);
+        $this->addVotes($poll, 2);
+
+        self::assertTrue($poll->reachesParticipantCountThreshold());
+        self::assertFalse($poll->exceedsParticipantCountThreshold());
+    }
+
+    public function testPercentageIsDisplayedToVoterUnlessNeverMode(): void
+    {
+        self::assertTrue($this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE)->canDisplayPercentage(true));
+        self::assertTrue($this->createPoll(PollResultDisplayModeEnum::AFTER_POLL)->canDisplayPercentage(true));
+        self::assertFalse($this->createPoll(PollResultDisplayModeEnum::NEVER)->canDisplayPercentage(true));
+    }
+
+    public function testPercentageIsHiddenFromNonVoter(): void
+    {
+        self::assertFalse($this->createPoll(PollResultDisplayModeEnum::AFTER_VOTE)->canDisplayPercentage(false));
+        self::assertFalse($this->createPoll(PollResultDisplayModeEnum::AFTER_POLL)->canDisplayPercentage(false));
     }
 
     public function testUnpublishedPollNeverDisplaysResult(): void

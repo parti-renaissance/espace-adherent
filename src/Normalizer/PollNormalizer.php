@@ -37,18 +37,22 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
             ? $this->voteRepository->findOneBy(['poll' => $data, 'adherent' => $adherent])
             : null;
 
-        $normalized['has_voted'] = null !== $vote;
+        $hasVoted = null !== $vote;
+
+        $normalized['has_voted'] = $hasVoted;
         $normalized['voted_choice'] = $vote?->getChoice()->getUuid()->toRfc4122();
         $normalized['voted_at'] = $vote?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
 
-        $canDisplayResult = $data->canDisplayResult($now, null !== $vote);
-
-        if ($data->isVotePeriodActive($now) || $canDisplayResult) {
+        if ($data->isVotePeriodActive($now) || $data->canDisplayResult($now, $hasVoted)) {
             $normalized['participants'] = $this->normalizeParticipants($data);
         }
 
-        if ($canDisplayResult) {
-            $normalized['result'] = $this->normalizeResult($data);
+        if (!$data->reachesParticipantCountThreshold()) {
+            unset($normalized['participant_count']);
+        }
+
+        if ($data->canDisplayPercentage($hasVoted)) {
+            $normalized['result'] = $this->normalizeResult($data, $data->exceedsParticipantCountThreshold());
         }
 
         return $normalized;
@@ -81,7 +85,6 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
         return array_map(
             fn (Adherent $adherent): array => [
-                'first_name' => $adherent->getFirstName(),
                 'image_url' => $this->urlGenerator->generate(
                     'asset_url',
                     ['path' => $adherent->getImagePath()],
@@ -92,20 +95,32 @@ class PollNormalizer implements NormalizerInterface, NormalizerAwareInterface
         );
     }
 
-    private function normalizeResult(Poll $poll): array
+    private function normalizeResult(Poll $poll, bool $withCount): array
     {
         $result = $poll->getResult();
 
-        return [
-            'total' => $result['total'],
-            'choices' => array_map(
-                fn (array $choiceResult): array => [
+        $normalized = [];
+
+        if ($withCount) {
+            $normalized['total'] = $result['total'];
+        }
+
+        $normalized['choices'] = array_map(
+            function (array $choiceResult) use ($withCount): array {
+                $choice = [
                     'choice' => $this->normalizeChoice($choiceResult['choice']),
-                    'count' => $choiceResult['count'],
                     'percentage' => $choiceResult['percentage'],
-                ],
-                $result['choices']
-            ),
-        ];
+                ];
+
+                if ($withCount) {
+                    $choice['count'] = $choiceResult['count'];
+                }
+
+                return $choice;
+            },
+            $result['choices']
+        );
+
+        return $normalized;
     }
 }
