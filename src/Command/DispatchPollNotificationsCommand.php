@@ -22,6 +22,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 )]
 class DispatchPollNotificationsCommand extends Command
 {
+    private const string MINIMUM_DELAY_AFTER_LAUNCH = '+30 minutes';
+
     public function __construct(
         private readonly MessageBusInterface $bus,
         private readonly PollRepository $pollRepository,
@@ -43,7 +45,14 @@ class DispatchPollNotificationsCommand extends Command
                 continue;
             }
 
+            $launchAlreadySent = $poll->hasReminderBeenSent(PollReminderTypeEnum::LAUNCH);
+
             $this->dispatchLaunch($poll, $startAt, $finishAt, $now);
+
+            if (!$launchAlreadySent) {
+                continue;
+            }
+
             $this->dispatchReminderH8($poll, $finishAt, $now);
             $this->dispatchClosingH1($poll, $finishAt, $now);
         }
@@ -71,7 +80,7 @@ class DispatchPollNotificationsCommand extends Command
         $startAt = $poll->getStartAt();
         $reminderAt = $finishAt->modify('-8 hours');
 
-        if (null !== $startAt && $startAt <= $reminderAt && $now >= $reminderAt && $now < $finishAt) {
+        if (null !== $startAt && $startAt < $reminderAt && $now >= $reminderAt && $now < $finishAt) {
             $this->dispatch($poll, PollReminderTypeEnum::REMINDER_H8);
         }
     }
@@ -85,7 +94,7 @@ class DispatchPollNotificationsCommand extends Command
         $startAt = $poll->getStartAt();
         $closingAt = $finishAt->modify('-1 hour');
 
-        if (null !== $startAt && $startAt <= $closingAt && $now >= $closingAt && $now < $finishAt) {
+        if (null !== $startAt && $closingAt >= $startAt->modify(self::MINIMUM_DELAY_AFTER_LAUNCH) && $now >= $closingAt && $now < $finishAt) {
             $this->dispatch($poll, PollReminderTypeEnum::CLOSING_H1);
         }
     }

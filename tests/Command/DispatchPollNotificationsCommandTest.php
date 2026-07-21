@@ -85,6 +85,74 @@ final class DispatchPollNotificationsCommandTest extends TestCase
         self::assertCount(0, $this->runCommand($poll, $now));
     }
 
+    public function testDispatchesReminderH8WhenPollJustOverEightHours(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-10 minutes', '+8 hours');
+        $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
+
+        $dispatched = $this->runCommand($poll, $now);
+
+        self::assertCount(1, $dispatched);
+        self::assertSame(PollReminderTypeEnum::REMINDER_H8, $dispatched[0]->type);
+    }
+
+    public function testDispatchesOnlyLaunchForOneHourPoll(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-1 minute', '+59 minutes');
+
+        $dispatched = $this->runCommand($poll, $now);
+
+        self::assertCount(1, $dispatched);
+        self::assertSame(PollReminderTypeEnum::LAUNCH, $dispatched[0]->type);
+    }
+
+    public function testSkipsClosingH1WhenPollShorterThanNinetyMinutes(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-50 minutes', '+30 minutes');
+        $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
+
+        self::assertCount(0, $this->runCommand($poll, $now));
+    }
+
+    public function testDispatchesClosingH1WhenPollExactlyNinetyMinutes(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-1 hour', '+30 minutes');
+        $poll->markReminderSent(PollReminderTypeEnum::LAUNCH);
+
+        $dispatched = $this->runCommand($poll, $now);
+
+        self::assertCount(1, $dispatched);
+        self::assertSame(PollReminderTypeEnum::CLOSING_H1, $dispatched[0]->type);
+    }
+
+    public function testDispatchesOnlyLaunchWhenH8WindowReachedButLaunchNotSent(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-5 days', '+2 hours');
+
+        $dispatched = $this->runCommand($poll, $now);
+
+        self::assertCount(1, $dispatched);
+        self::assertSame(PollReminderTypeEnum::LAUNCH, $dispatched[0]->type);
+        self::assertFalse($poll->hasReminderBeenSent(PollReminderTypeEnum::REMINDER_H8));
+    }
+
+    public function testDispatchesOnlyLaunchWhenClosingWindowReachedButLaunchNotSent(): void
+    {
+        $now = $this->parisTime('2026-07-14 10:00:00');
+        $poll = $this->createPoll($now, '-5 days', '+30 minutes');
+
+        $dispatched = $this->runCommand($poll, $now);
+
+        self::assertCount(1, $dispatched);
+        self::assertSame(PollReminderTypeEnum::LAUNCH, $dispatched[0]->type);
+        self::assertFalse($poll->hasReminderBeenSent(PollReminderTypeEnum::CLOSING_H1));
+    }
+
     private function parisTime(string $time): \DateTimeImmutable
     {
         return new \DateTimeImmutable($time, new \DateTimeZone('Europe/Paris'));

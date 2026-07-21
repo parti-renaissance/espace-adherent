@@ -150,7 +150,7 @@ class PollAdmin extends AbstractAdmin
                     'required' => false,
                     'help_html' => true,
                     'help' => 'Décoché, le sondage est masqué partout dans l’application. Cochez pour le rendre visible selon ses dates.'
-                        .'<hr class="my-2"/><strong>Notifications push</strong> (envoyées uniquement entre 9h et 21h) :'
+                        .'<hr class="my-2"/><strong>Notifications push</strong> :'
                         .'<br/>• <strong>Lancement</strong> : à l’ouverture du vote, à tous les abonnés push.'
                         .'<br/>• <strong>Relance H-8</strong> : 8h avant la clôture, aux inscrits n’ayant pas encore voté.'
                         .'<br/>• <strong>Clôture H-1</strong> : 1h avant la clôture, aux inscrits n’ayant pas encore voté.'
