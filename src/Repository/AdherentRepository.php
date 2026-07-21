@@ -1796,6 +1796,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
      * to Mailchimp must be subscribed. The email is resolved later via JOIN at
      * chunk-push time (see `MailchimpStaticSegmentMemberRepository::findPendingEmailsByChunk`).
      *
+     * DISTINCT is not an optimisation, it is what keeps this method agreeing with
+     * countAdherentsForMessage(), which counts the very same query pieces with COUNT(DISTINCT a.id).
+     * The perimeter joins can match an adherent more than once, and the caller turns this list into
+     * both expectedCount and the staged rows — which insertIgnore then deduplicates on
+     * (adherent, static_segment). Without DISTINCT the two drift apart and the finalize, comparing
+     * them for strict equality, blocks the whole campaign.
+     *
      * @return list<int>
      */
     public function findAdherentIdsForMessage(AdherentMessage $message): array

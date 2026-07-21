@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\AdherentMessage\AdherentMessageManager;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\Command\SendMailchimpCampaignCommand;
+use App\Ses\Campaign\Message\TriggerSesCampaignMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,16 +15,25 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * Manual escape hatch: sends a campaign whose audience preparation refused to auto-send (blocked,
+ * failed, or otherwise not `canSend()`), when a human has established the audience is actually usable.
+ *
+ * Bypasses canSend() — and only canSend(). Everything else on the real send path is kept: the recipient
+ * guard, the Sent/Sending idempotence, and the retry pipeline all live in the downstream handlers, which
+ * is why this dispatches the send command instead of reaching into the Manager.
+ */
 #[AsCommand(
     name: 'mailchimp:campaign:force-send',
-    description: 'Force-send a MailchimpCampaign bypassing canSend(). The Mailchimp retry pipeline (30s → 60min, 6 attempts) stays active if Mailchimp refuses.',
+    description: 'Force-send a campaign whose preparation blocked the auto-send, bypassing canSend().',
 )]
 class MailchimpCampaignForceSendCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AdherentMessageManager $manager,
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
@@ -46,21 +57,25 @@ class MailchimpCampaignForceSendCommand extends Command
             return Command::FAILURE;
         }
 
-        $message = $campaign->getMessage();
-        if ($message->isSent()) {
-            $io->warning(\sprintf('AdherentMessage #%d (uuid %s) already marked as sent. Aborting.', $message->getId(), $message->getUuid()->toRfc4122()));
+        if (\in_array($campaign->status, [MailchimpStatusEnum::Sent, MailchimpStatusEnum::Sending], true)) {
+            $io->warning(\sprintf('MailchimpCampaign #%d is already %s — nothing to force.', $campaignId, $campaign->status->value));
 
             return Command::SUCCESS;
         }
 
+        $message = $campaign->getMessage();
+        $channel = $campaign->sendViaMailchimp ? 'Mailchimp' : 'SES';
+
         $io->note([
-            \sprintf('MailchimpCampaign  : #%d (status: %s, block_reason: %s)',
+            \sprintf('MailchimpCampaign  : #%d (status: %s, preparation: %s, block_reason: %s)',
                 $campaign->getId(),
-                $campaign->getStatus()->value,
+                $campaign->status->value,
+                $campaign->getPreparationStatus()->value,
                 $campaign->getBlockReason()?->value ?? 'null',
             ),
             \sprintf('AdherentMessage    : #%d (uuid: %s)', $message->getId(), $message->getUuid()->toRfc4122()),
-            'Bypassing canSend(). If Mailchimp refuses, RetrySendMailchimpCampaignCommand is dispatched (30s, then 30s/1m/5m/10m/30m/60m); only the final exhausted retry is reported to Sentry.',
+            \sprintf('Send channel       : %s', $channel),
+            'Bypassing canSend(). The recipient guard still applies, and a refusal still goes through the retry pipeline (11 attempts, 30s up to ~2h17).',
         ]);
 
         if (!$io->confirm('Proceed?', false)) {
@@ -69,11 +84,16 @@ class MailchimpCampaignForceSendCommand extends Command
             return Command::SUCCESS;
         }
 
-        $this->manager->send($message, $this->manager->getRecipients($message));
+        if ($campaign->sendViaMailchimp) {
+            $this->bus->dispatch(new SendMailchimpCampaignCommand((int) $campaign->getId()));
+        } else {
+            $this->bus->dispatch(new TriggerSesCampaignMessage((int) $campaign->getId()));
+        }
 
         $io->success(\sprintf(
-            'Send pipeline triggered for MailchimpCampaign #%d. Watch Sentry for the [Mailchimp] Campaign retry exhausted alert (raised only if every retry fails).',
+            'Send dispatched for MailchimpCampaign #%d via %s. Watch Sentry for the retry-exhausted alert (raised only if every attempt fails).',
             $campaignId,
+            $channel,
         ));
 
         return Command::SUCCESS;

@@ -29,6 +29,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand::class => 'sync',
                 App\NationalEvent\Command\PaymentStatusUpdateCommand::class => 'sync',
                 App\JeMengage\Hit\Command\SaveAppHitCommand::class => 'sync',
+                App\Mailchimp\Campaign\Audience\Message\MailchimpAudienceMessageInterface::class => 'sync',
                 App\Ses\Campaign\Message\SesCampaignMessageInterface::class => 'sync',
                 App\Ses\Webhook\SesWebhookMessageInterface::class => 'sync',
             ],

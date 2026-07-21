@@ -217,19 +217,6 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? $response->toArray()['segments'] : [];
     }
 
-    /**
-     * Reads a single segment with its effective member_count (used after
-     * preparation to verify how many emails Mailchimp actually accepted).
-     *
-     * @return array{id?: int, name?: string, member_count?: int, ...}
-     */
-    public function getSegment(int $segmentId, string $listId): array
-    {
-        $response = $this->send('GET', \sprintf('/lists/%s/segments/%d', $listId, $segmentId));
-
-        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
-    }
-
     public function getMembers(string $listId, int $offset = 0, int $limit = 1000): array
     {
         $params = [

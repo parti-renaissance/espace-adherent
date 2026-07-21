@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
+use App\AdherentMessage\MailchimpStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -36,17 +37,15 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('Subject is required.');
         }
 
-        if ($message->isSent()) {
-            throw new BadRequestHttpException('This message has been already sent.');
-        }
-
         if ($adherent->sandboxMode || $message->getAuthor()?->sandboxMode || $message->getSender()?->sandboxMode) {
             throw new \RuntimeException('An error occurred. Please try again later.');
         }
 
-        // Statutory messages bypass the Mailchimp campaign + static segment lifecycle:
-        // recipients are computed from zones at send time and pushed via the transactional sender.
         if ($message->isStatutory()) {
+            if ($message->isSent()) {
+                throw new BadRequestHttpException('This message has been already sent.');
+            }
+
             $manager->send($message, $manager->getRecipients($message));
 
             return new JsonResponse(['status' => 'sent']);
@@ -55,6 +54,10 @@ class SendAdherentMessageController extends AbstractController
         $campaign = $message->getMailchimpCampaigns()[0] ?? null;
         if (!$campaign instanceof MailchimpCampaign) {
             throw new BadRequestHttpException('No Mailchimp campaign attached to this message.');
+        }
+
+        if (\in_array($campaign->status, [MailchimpStatusEnum::Sent, MailchimpStatusEnum::Sending], true)) {
+            throw new BadRequestHttpException('This message has been already sent.');
         }
 
         $lock = $lockFactory->createLock(\sprintf('adherent_message_send_%d', $campaign->getId()), 30.0);

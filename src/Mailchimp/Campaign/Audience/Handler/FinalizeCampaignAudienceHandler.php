@@ -24,10 +24,18 @@ class FinalizeCampaignAudienceHandler
 {
     private LoggerInterface $logger;
 
+    /**
+     * @param int $maxErroredChunks  how many whole chunks may fail their push before the send is blocked
+     * @param int $maxErroredPercent share of the audience that may be errored before the send is blocked;
+     *                               deliberately bound to the send-time recipient undershoot knob — both
+     *                               answer "how much of this audience may be missing before we refuse to send"
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly MailchimpStaticSegmentMemberRepository $memberRepository,
         private readonly MessageBusInterface $bus,
+        private readonly int $maxErroredChunks,
+        private readonly int $maxErroredPercent,
         ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
@@ -87,21 +95,40 @@ class FinalizeCampaignAudienceHandler
         $staticSegment->refusedCount = $refusedCount;
         $staticSegment->erroredCount = $erroredCount;
 
-        // Errored chunks are infrastructure push failures (NOT legitimate refusals): the Mailchimp
-        // segment is incomplete through no fault of the audience. Never auto-send a partial audience
-        // caused by errors — block and alert so a human re-prepares or investigates.
+        // Errored chunks are infrastructure push failures (NOT legitimate refusals): the segment is
+        // incomplete through no fault of the audience. Blocking outright was too blunt though — a single
+        // hiccuping chunk (500 rows, 0.37% of a 134k audience) held back the whole campaign twice on
+        // 2026-07-16. Tolerate a bounded amount of infrastructure noise, block anything beyond it.
+        //
+        // Two bounds, because neither alone is right:
+        //  - chunks: the real unit of failure (Errored is only ever set per whole chunk). Caps the raw
+        //    number of people silently dropped, whatever the audience size.
+        //  - percent: guards small audiences, where one chunk is a large slice (a chunk is 10% of a
+        //    5k send but 0.37% of a 134k one) — an amputated audience must never leave silently.
         if ($erroredCount > 0) {
-            $this->logger->error('[AudienceFinalize] Send blocked: preparation completed with errored chunks', [
+            $erroredChunks = $this->memberRepository->countErroredChunks($staticSegmentId);
+            $maxErroredRows = (int) floor(($staticSegment->expectedCount ?? 0) * $this->maxErroredPercent / 100);
+
+            $context = [
                 'campaign_id' => $campaign->getId(),
                 'errored_count' => $erroredCount,
+                'errored_chunks' => $erroredChunks,
+                'max_errored_chunks' => $this->maxErroredChunks,
+                'max_errored_rows' => $maxErroredRows,
                 'prepared_count' => $preparedCount,
                 'expected_count' => $staticSegment->expectedCount,
-            ]);
+            ];
 
-            $campaign->markAsFailed(BlockReasonEnum::PreparationErrors);
-            $this->entityManager->flush();
+            if ($erroredChunks > $this->maxErroredChunks || $erroredCount > $maxErroredRows) {
+                $this->logger->error('[AudienceFinalize] Send blocked: preparation errors over tolerance', $context);
 
-            return;
+                $campaign->markAsFailed(BlockReasonEnum::PreparationErrors);
+                $this->entityManager->flush();
+
+                return;
+            }
+
+            $this->logger->warning('[AudienceFinalize] Preparation errors within tolerance, proceeding', $context);
         }
 
         $stagedCount = $preparedCount + $refusedCount + $erroredCount;

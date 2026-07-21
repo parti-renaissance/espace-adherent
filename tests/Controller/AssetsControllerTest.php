@@ -54,6 +54,15 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testPathTraversalAttemptIsNotFound(): void
+    {
+        // Encoded "../" survives URL normalization and reaches the controller as a raw path,
+        // where Flysystem raises PathTraversalDetected. It must degrade to 404, not 500.
+        $this->client->request(Request::METHOD_GET, '/assets/..%2Fconfig%2Fdatabase.yml');
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
     public function testStaticMapsWithWrongQuery(): void
     {
         $this->client->request(Request::METHOD_GET, '/maps/47.3950813');
