@@ -147,19 +147,20 @@ class PollControllerTest extends AbstractApiTestCase
         self::assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testGetFinishedPollExposesResultsAndParticipants(): void
+    public function testGetFinishedPollHidesResultFromNonVoterButKeepsParticipants(): void
     {
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_06_UUID);
 
         self::assertSame(LoadPollData::POLL_06_UUID, $data['uuid']);
         self::assertSame('finished', $data['state']);
-        self::assertArrayHasKey('result', $data);
-        self::assertSame(4, $data['result']['total']);
+        self::assertFalse($data['has_voted']);
+        self::assertArrayNotHasKey('result', $data);
+        self::assertArrayNotHasKey('participant_count_threshold', $data);
         self::assertSame(4, $data['participant_count']);
 
         self::assertCount(3, $data['participants']);
         foreach ($data['participants'] as $participant) {
-            self::assertArrayHasKey('first_name', $participant);
+            self::assertArrayNotHasKey('first_name', $participant);
             self::assertStringContainsString('/images/profile/', $participant['image_url']);
         }
     }
@@ -205,6 +206,7 @@ class PollControllerTest extends AbstractApiTestCase
         $data = $this->getJson('/api/v3/polls/'.LoadPollData::POLL_01_UUID);
         self::assertSame(5, $data['participant_count']);
         self::assertSame(5, $data['result']['total']);
+        self::assertArrayNotHasKey('participant_count_threshold', $data);
         self::assertTrue($data['has_voted']);
         self::assertSame(LoadPollData::POLL_01_CHOICE_01_UUID, $data['voted_choice']);
         self::assertNotNull($data['voted_at']);
