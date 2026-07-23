@@ -143,6 +143,10 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->call('setTemplate', ['edit', 'admin/event/edit.html.twig'])
     ;
     $services
+        ->set('app.admin.action', App\Admin\ActionAdmin::class)
+        ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Action\Action::class, 'controller' => App\Controller\Admin\ActionCRUDController::class, 'label' => 'Actions', 'group' => 'Territoires'])
+    ;
+    $services
         ->set('app.admin.event_category', App\Admin\EventCategoryAdmin::class)
         ->tag('sonata.admin', ['manager_type' => 'orm', 'model_class' => App\Entity\Event\EventCategory::class, 'label' => 'Catégories d\'événements', 'group' => 'Territoires'])
     ;
@@ -590,6 +594,7 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->tag('sonata.admin.extension', ['target' => 'app.admin.national_event_inscriptions_jem'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.committee'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.event'])
+        ->tag('sonata.admin.extension', ['target' => 'app.admin.action'])
         ->tag('sonata.admin.extension', ['target' => 'app.admin.adherent_message'])
     ;
     $services

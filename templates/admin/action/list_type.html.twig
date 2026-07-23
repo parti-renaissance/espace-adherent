@@ -1,0 +1,8 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% set action_type_labels = constant('App\\Action\\ActionTypeEnum::LABELS') %}
+{% set action_type_emojis = constant('App\\Action\\ActionTypeEnum::EMOJIS') %}
+
+{% block field %}
+    {{ action_type_emojis[object.type] }} {{ action_type_labels[object.type]|default(object.type)|capitalize }}
+{% endblock %}

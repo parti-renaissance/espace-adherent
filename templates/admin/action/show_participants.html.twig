@@ -1,0 +1,30 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% set participants = object.participants %}
+    <span>Total : {{ participants|length }}</span>
+    {% if participants|length %}
+        <table class="table table-condensed" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th>Adhérent</th>
+                    <th>Présent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participant in participants %}
+                    <tr>
+                        <td>{{ include('admin/adherent/display_fullname_certified.html.twig', {object: participant.adherent}) }}</td>
+                        <td>
+                            {% if participant.isPresent %}
+                                <span class="label label-success">Oui</span>
+                            {% else %}
+                                <span class="label label-default">Non</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

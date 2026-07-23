@@ -1,0 +1,5 @@
+{% if not object.isCancelled %}
+    <a href="{{ admin.generateObjectUrl('cancel', object) }}" class="btn btn-sm btn-danger" title="Annuler">
+        <i class="fa fa-ban"></i> Annuler
+    </a>
+{% endif %}
