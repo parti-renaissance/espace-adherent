@@ -210,6 +210,11 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
                 'ROLE_APP_ADMIN_EVENT_EDIT',
                 'ROLE_APP_ADMIN_EVENT_DELETE',
             ],
+            'ROLE_ADMIN_TERRITOIRES_ACTIONS' => [
+                'ROLE_APP_ADMIN_ACTION_LIST',
+                'ROLE_APP_ADMIN_ACTION_VIEW',
+                'ROLE_APP_ADMIN_ACTION_EDIT',
+            ],
             'ROLE_ADMIN_TERRITOIRES_EVENT_REGISTRATIONS' => [
                 'ROLE_APP_ADMIN_EVENT_REGISTRATION_LIST',
                 'ROLE_APP_ADMIN_EVENT_REGISTRATION_EXPORT',

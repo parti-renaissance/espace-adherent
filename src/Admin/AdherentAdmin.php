@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\AppCodeEnum;
 use App\AppSession\SessionStatusEnum;
 use App\AppSession\SystemEnum;
+use App\Entity\Action\Action;
 use App\Entity\Agora;
 use App\Entity\AppSession;
 use App\Entity\OAuth\Client;
@@ -322,5 +323,13 @@ class AdherentAdmin extends AbstractAdherentAdmin
         $alias = $qb->getRootAliases()[0];
 
         $qb->andWhere(\sprintf('EXISTS (SELECT 1 FROM %s poll_vote WHERE poll_vote.adherent = %s)', Vote::class, $alias));
+    }
+
+    public function autocompleteCallbackFilterActionAuthors(ProxyQueryInterface $query): void
+    {
+        $qb = $query->getQueryBuilder();
+        $alias = $qb->getRootAliases()[0];
+
+        $qb->andWhere(\sprintf('EXISTS (SELECT 1 FROM %s vox_action WHERE vox_action.author = %s)', Action::class, $alias));
     }
 }
